@@ -1,0 +1,154 @@
+# wiki/schema.yml
+# Single governance source for the entire Fantasy Football Platform wiki system
+# Every structural rule for wiki pages lives here
+# Consumers: WIKI_CHAT_CONTEXT.md, DISCOVERY_PROTOCOL.md, ROUTING.md, MAINTAINER.md, CI health check, Claude Code
+# When a rule changes, update THIS FILE only. Every consumer picks it up.
+# Do not define schema rules anywhere else.
+---
+required_frontmatter:
+  always:
+    - title
+    - type
+    - category
+    - status
+    - last_updated
+    - confidence
+    - tags
+    - related
+  conditional:
+    - field: superseded_by
+      when: "status == deprecated"
+
+valid_values:
+  type:
+    - architecture
+    - product-spec
+    - domain-knowledge
+    - market-analysis
+    - decision-record
+    - debugging-lesson
+    - operations
+    - ux-research
+  status:
+    - active
+    - deprecated
+  confidence:
+    - high
+    - medium
+    - low
+  category:
+    - player-evaluation
+    - team-scheme
+    - league-mechanics
+    - in-season-management
+
+required_body_sections:
+  architecture:
+    - Summary
+    - Core Knowledge
+    - Key Decisions
+  product-spec:
+    - Summary
+    - Core Knowledge
+    - Key Decisions
+  domain-knowledge:
+    - Summary
+    - Core Knowledge
+    - Key Decisions
+  market-analysis:
+    - Summary
+    - Core Knowledge
+    - Key Decisions
+  decision-record:
+    - Context
+    - Decision
+    - Rationale
+    - Rejected Alternatives
+    - Date
+  debugging-lesson:
+    - Symptom
+    - Root Cause
+    - Fix
+    - Prevention
+    - Date
+  operations:
+    - Summary
+    - Core Knowledge
+    - Key Decisions
+  ux-research:
+    - Summary
+    - Core Knowledge
+    - Key Decisions
+
+page_size_tiers:
+  thin:
+    threshold_kb: 5
+    flag: warning
+    reason: "Page may be too shallow to be useful"
+  target:
+    min_kb: 10
+    max_kb: 30
+    flag: clean
+    reason: "Ideal size — substantial but ingestible by Claude Code"
+  watch:
+    min_kb: 30
+    max_kb: 35
+    flag: warning
+    reason: "Approaching split threshold"
+  split_required:
+    threshold_kb: 35
+    flag: error
+    reason: "Too large for reliable Claude Code ingestion — split logically"
+
+tag_constraints:
+  max_per_page: 15
+  naming_pattern: "^[a-z][a-z0-9-]*$"
+  registry: "wiki/tags.md"
+  enforcement: ci
+
+related_field:
+  empty_allowed: true
+  empty_flag: warning
+  bidirectional_check: required
+  format: "category/page-name"
+
+system_files_required:
+  - wiki/schema.yml
+  - wiki/tags.md
+  - wiki/index.md
+  - wiki/ROUTING.md
+  - wiki/MAINTAINER.md
+  - wiki/WIKI_CHAT_CONTEXT.md
+  - wiki/DISCOVERY_PROTOCOL.md
+  - wiki/WIKI_ROADMAP.md
+  - wiki/_queue_master.md
+  - wiki/session-state.md
+  - wiki/verification-cache.md
+  - wiki/templates/canonical-page.md
+  - wiki/templates/decision-record.md
+  - wiki/templates/debugging-lesson.md
+  - wiki/topics/player-evaluation/_index.md
+  - wiki/topics/team-scheme/_index.md
+  - wiki/topics/league-mechanics/_index.md
+  - wiki/topics/in-season-management/_index.md
+
+health_classification:
+  errors:
+    - missing_required_frontmatter_field
+    - invalid_type_value
+    - invalid_status_value
+    - invalid_confidence_value
+    - invalid_category_value
+    - missing_required_body_section
+    - page_exceeds_split_threshold
+    - unregistered_tag
+    - broken_related_link
+    - missing_system_file
+  warnings:
+    - thin_page
+    - page_approaching_split
+    - empty_related_field
+    - single_use_tag
+    - non_bidirectional_related_link
+  clean:
+    - all_checks_pass
