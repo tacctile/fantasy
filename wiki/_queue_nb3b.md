@@ -1,0 +1,66 @@
+# Queue File: Notebook 3 — League Mechanics, Scoring & Draft Strategy (Part B)
+
+**Notebook:** League Mechanics, Scoring & Draft Strategy
+**Wiki category:** league-mechanics
+**Entry range:** 3.8–3.13 (6 entries)
+**Generated:** 2026-07-14
+
+---
+
+### 3.8 Dynasty vs. Redraft vs. Keeper Value Frameworks
+
+- Status: PENDING
+- Wiki Category: league-mechanics
+- Description: How player valuation shifts across dynasty (multi-year rosters), keeper (retain N players), and redraft (annual fresh start) formats, with age curves, contract years, and rookie capital mattering differently in each.
+- Notes: corpus depth: Rich — ~150 sources
+
+---
+
+### 3.9 Best Ball Format Strategy
+
+- Status: PENDING
+- Wiki Category: league-mechanics
+- Description: The optimal draft and roster construction approach for best-ball formats where the highest-scoring lineup is auto-set each week, favoring upside, correlation stacks, and position scarcity over floor and consistency.
+- Notes: corpus depth: Rich — ~150 sources
+
+---
+
+### 3.10 Average Draft Position (ADP)
+
+- Status: PENDING
+- Wiki Category: league-mechanics
+- Description: The average pick number at which a player is selected across a large sample of drafts, serving as the market consensus valuation and the baseline against which value and reach decisions are evaluated.
+- Notes: corpus depth: Rich — ~150 sources
+
+---
+
+### 3.11 ADP vs. Expert Consensus Rank Differential
+
+- Status: PENDING
+- Wiki Category: league-mechanics
+- Description: The gap between a player's ADP in public drafts and their rank among professional analysts, identifying systematic market inefficiencies where public drafters over- or underprice certain players or positions.
+- Notes: corpus depth: Rich — ~150 sources
+
+---
+
+### 3.12 Positional Scarcity / Tier Breaks
+
+- Status: PENDING
+- Wiki Category: league-mechanics
+- Description: The distribution of talent at each position relative to league demand, used to identify tier breaks where significant production drop-offs occur and inform when to prioritize scarce positions over theoretically higher-value picks.
+- Notes: corpus depth: Rich — ~150 sources
+
+---
+
+### 3.13 Value-Based Drafting (VBD)
+
+- Status: PENDING
+- Wiki Category: league-mechanics
+- Description: A systematic draft framework that ranks players by their projected production above the baseline replacement level at their position, enabling apples-to-apples comparisons across positions in any draft round.
+- Notes: corpus depth: Rich — ~150 sources
+
+---
+
+This file covers entries 3.8–3.13. When all entries are COMPLETED or SKIPPED, update `wiki/_queue_master.md`: set this file → COMPLETED, set `wiki/_queue_nb3c.md` → ACTIVE.
+
+_End of wiki/_queue_nb3b.md_
