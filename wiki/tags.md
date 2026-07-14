@@ -1,0 +1,153 @@
+# wiki/tags.md
+# Controlled tag vocabulary for the Fantasy Football Platform wiki system
+# Rules: lowercase, hyphenated, 1-2 words preferred, no duplicates
+# Max 15 tags per page, only tag concepts the page substantively covers
+# Add new tags here before using them in any page frontmatter
+---
+
+## Player Metrics
+- target-share
+- air-yards
+- wopr
+- yprr
+- snap-share
+- red-zone
+- goal-line
+- adot
+- yac
+- catch-rate
+- ras
+- speed-score
+- burst-score
+- dominator-rating
+- breakout-age
+- fpoe
+- xfp
+- vorp
+- vbd
+- drop-rate
+- epa
+- cpoe
+- te-alignment
+- route-participation
+- explosive-play-rate
+- yards-after-contact
+- missed-tackles-forced
+- first-read-target-rate
+- qb-rush-rate
+- scramble-rate
+
+## Team & Scheme
+- pass-rate
+- proe
+- neutral-script
+- pace-of-play
+- play-action
+- rpo
+- personnel-groupings
+- motion-rate
+- red-zone-efficiency
+- third-down-rate
+- oc-tendencies
+- offensive-scheme
+- target-distribution
+- backfield-committee
+- dvp
+- defense-efficiency
+- dvoa
+- offensive-line
+- line-continuity
+- line-health
+- depth-chart
+- backup-qb
+
+## Matchup & Context
+- vegas-total
+- implied-team-total
+- point-spread
+- weather
+- wind
+- home-away
+- travel-splits
+- divisional-matchup
+- strength-of-schedule
+- playoff-schedule
+- short-week
+- thursday-game
+- prime-time
+- post-bye
+- game-script
+- garbage-time
+
+## League Mechanics
+- ppr
+- half-ppr
+- standard-scoring
+- te-premium
+- superflex
+- two-qb
+- passing-td-value
+- roster-construction
+- flex
+- league-size
+- dynasty
+- redraft
+- keeper
+- best-ball
+- adp
+- ecr
+- positional-scarcity
+- tier-breaks
+- vbd-drafting
+- zero-rb
+- hero-rb
+- robust-rb
+- late-round-qb
+- stacking
+- handcuff
+- auction-draft
+- faab
+- waiver-wire
+- trade-value
+- bye-week
+
+## Player Status & Injury
+- injury-status
+- practice-participation
+- acl
+- hamstring
+- recovery-timeline
+- return-to-production
+- age-curve
+- decline-modeling
+- workload-risk
+- touch-accumulation
+- contract-year
+- suspension
+- legal-status
+- snap-trend
+- target-trend
+- role-change
+
+## Draft & In-Season
+- start-sit
+- ros-rankings
+- next-man-up
+- injury-replacement
+- positional-run
+- reach-vs-value
+- team-grade
+- draft-recap
+- points-for
+- points-against
+- luck-analysis
+- coaching-change
+- rookie-integration
+- consistency-score
+- boom-bust
+- adp-divergence
+- breakout-modeling
+- bust-risk
+- regression
+- rookie-draft-capital
+- landing-spot
