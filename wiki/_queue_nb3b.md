@@ -54,7 +54,7 @@
 
 ### 3.13 Value-Based Drafting (VBD)
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: league-mechanics
 - Description: A systematic draft framework that ranks players by their projected production above the baseline replacement level at their position, enabling apples-to-apples comparisons across positions in any draft round.
 - Notes: corpus depth: Rich — ~150 sources
