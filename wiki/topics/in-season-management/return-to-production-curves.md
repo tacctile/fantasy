@@ -4,7 +4,7 @@ type: domain-knowledge
 category: in-season-management
 status: active
 last_updated: "2026-07-18"
-confidence: medium
+confidence: high
 tags:
   - recovery-timeline
   - return-to-production
@@ -47,6 +47,14 @@ Sources converge directionally, though not on precise week counts, that suppress
 
 **Quarterbacks** show the clearest split between pocket-based and rushing-based value. A pocket passer recovering from a lower-body injury frequently preserves passing volume and efficiency with comparatively little fantasy impact once medically cleared. A mobile quarterback shows a materially larger and more persistent post-return decline because designed runs, scramble volume, and pressure-avoidance movement are separately and specifically affected, and teams often continue restricting these concepts for a period even after full passing-game clearance — producing a pattern where passing-game output appears normal while a meaningful rushing-floor component remains suppressed.
 
+### Workload ramp-up is coach-driven and more predictable than physical-recovery metrics
+
+Multiple sources independently converge that touch and target volume in the first several games back follows a deliberate, coach-imposed ramp rather than tracking the player's true physical readiness — teams systematically hold returning players below their pre-injury workload for a period of roughly three to six games regardless of how the player looks physically, then release the workload cap once the coaching staff's own confidence threshold is met. Because this ramp is a coaching-behavior pattern rather than a physical-recovery signal, it is corroborated as a more reliable near-term predictor of upcoming volume than any efficiency or health indicator, and coaching-staff tendencies are flagged as varying meaningfully by team and play-caller — some staffs restore full workload within roughly two weeks, others extend the taper to a month or more. This is directional and team-specific rather than a fixed universal formula, but the underlying existence of a deliberate, multi-game workload cap independent of physical readiness is well corroborated.
+
+### The first-game-back statistical spike is a known trap
+
+Sources converge that a strong statistical performance in the first game back is frequently a false positive rather than evidence of full recovery — teams often script a handful of high-percentage, low-difficulty touches for a returning player's first game, and adrenaline or heightened focus can temporarily mask an underlying conditioning or explosiveness deficit. This scripted, favorable usage typically fades within one to two subsequent games as normal offensive variety resumes and opposing defenses adjust their game-planning to the returning player's known limitations, producing a "false positive week" pattern that inflates confidence prematurely if extrapolated forward.
+
 ### Known failure patterns and pitfalls
 
 Sources converge on several recurring analytical traps. The first-game-back sample is unreliable in isolation because it combines uncertain workload, matchup effects, game script, touchdown variance, and deliberately conservative route or play selection — a multi-game rolling window of roughly two to three games is the converged minimum before treating post-return data as stable signal. Touchdown-driven box scores create false positives and false negatives: a player can score well on clearly limited underlying work, or perform efficiently on the underlying metrics while failing to find the end zone, making touchdown-inclusive fantasy points a poor standalone indicator of true recovery status; expected-fantasy-points or opportunity-based metrics are better suited to isolating the underlying trend. An active-but-limited designation does not guarantee normal role — a player can be technically active while functioning in a reduced or situational capacity, and volume alone (without route-quality or touch-quality context) can conceal this. The replacement effect is a persistent confound, particularly for running backs and tight ends: a returning player may be physically ready but still lose role to a teammate who performed well during the absence. Team-level confounds — a coaching change, offensive-line shift, new quarterback, or schedule change — can dominate or mask the apparent injury effect and should be checked before attributing a production change to the injury itself.
@@ -63,8 +71,13 @@ The platform will apply position-specific and archetype-specific post-return dis
 
 The platform will incorporate the replacement player's performance during a starter's absence as an explicit input to post-return role projection, rather than assuming automatic role restoration upon a starter's activation, because sources converge that a well-performing replacement is a meaningful and common cause of role suppression independent of the returning player's physical readiness.
 
+The platform will model a team-specific, coach-driven workload ramp as a near-term volume ceiling for returning players (defaulting to a roughly three-to-six-game taper absent team-specific data, and refining toward observed team-specific patterns as historical data accumulates), and will treat this ramp as a more reliable near-term volume predictor than physical-recovery indicators, because sources converge that workload restoration is a deliberate coaching decision that does not track physical readiness on a 1:1 basis.
+
+The platform will explicitly discount an unusually strong first-game-back statistical performance rather than treating it as confirmation of recovery, because sources converge this is commonly a scripted-usage and adrenaline artifact that fades within one to two subsequent games rather than a stable signal.
+
 ## Open Questions
 
 - [ ] Exact suppression-window durations by injury type and position are directionally consistent but numerically inconsistent across sources — flagged for calibration against the platform's own historical post-return outcome data.
 - [ ] Whether publicly available tracking-derived metrics (acceleration, separation, max velocity) can reliably distinguish incomplete physical recovery from deliberate role management before fantasy production visibly declines is raised as an open tension without corroborated resolution.
 - [ ] The degree to which post-return suppression reflects genuine physical limitation versus deliberate coaching-staff workload management is repeatedly raised as difficult to disentangle from public data alone.
+- [ ] Team-specific and play-caller-specific workload-ramp tendencies are asserted to vary meaningfully but are not corroborated to a specific list of teams or coaches across the panel — should be built from the platform's own historical observation rather than adopted from any single source's team-specific claims.
