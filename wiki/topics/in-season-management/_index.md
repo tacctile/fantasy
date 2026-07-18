@@ -8,3 +8,6 @@
 | [injury-type-recovery-timelines](injury-type-recovery-timelines.md) | Tissue-biology-driven recovery windows and position sensitivity for ACL, hamstring, high ankle sprain, and MCL injuries. |
 | [return-to-production-curves](return-to-production-curves.md) | Post-return performance modeled as separate role-recovery and efficiency-recovery curves, by position. |
 | [career-workload-touch-accumulation-risk](career-workload-touch-accumulation-risk.md) | Career touch accumulation as a risk amplifier interacted with age, recency, and injury history — not a standalone durability proof or cliff threshold. |
+| [contract-year-motivation](contract-year-motivation.md) | Contract-year effect is weak-to-null once age curve and opportunity are controlled for; usable only as a minor tiebreaker. |
+| [suspension-legal-status-tracking](suspension-legal-status-tracking.md) | Staged disciplinary-process model (allegation → investigation → discipline → appeal) with expected-games-missed valuation. |
+| [snap-target-trend-alerts](snap-target-trend-alerts.md) | Detecting durable in-season role changes via multi-week route-participation and target-share confirmation, filtered for game-script noise. |

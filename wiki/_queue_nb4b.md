@@ -9,28 +9,28 @@
 
 ### 4.8 Contract Year Motivation
 
-- Status: IN_PROGRESS
+- Status: COMPLETED — created in-season-management/contract-year-motivation
 - Wiki Category: in-season-management
 - Description: The theory that players in the final year of their contracts are motivated to perform at elevated levels to maximize their next contract value, and the empirical evidence for and against this effect on fantasy production.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: corpus depth: Rich — ~150 sources; full 6-model panel received and convergence-filtered; corroborated finding is weak-to-null effect once age curve and opportunity are controlled for
 
 ---
 
 ### 4.9 Suspension / Legal Status Tracking
 
-- Status: IN_PROGRESS
+- Status: COMPLETED — created in-season-management/suspension-legal-status-tracking
 - Wiki Category: in-season-management
 - Description: The process of monitoring NFL disciplinary proceedings, league investigations, and legal matters that could result in player suspensions, determining when to buy or sell affected players and how to model availability risk.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: corpus depth: Rich — ~150 sources; full 6-model panel received and convergence-filtered; specific game-count thresholds by offense category flagged pending verification rather than adopted as fixed figures
 
 ---
 
 ### 4.10 Snap/Target Trend Alerts (In-Season Role Changes)
 
-- Status: IN_PROGRESS
+- Status: COMPLETED — created in-season-management/snap-target-trend-alerts
 - Wiki Category: in-season-management
 - Description: The identification of week-over-week changes in snap share, target volume, and route participation that signal emerging role expansions or contractions before they are reflected in ADP or consensus rankings.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: corpus depth: Rich — ~150 sources; full 6-model panel received and convergence-filtered; reciprocal links added to player-evaluation/route-participation-rate and player-evaluation/snap-share
 
 ---
 
