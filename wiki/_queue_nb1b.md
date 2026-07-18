@@ -27,7 +27,7 @@
 
 ### 1.10 Touches Per Game
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: player-evaluation
 - Description: Total combined carries and receptions per game, measuring the full workload allocated to a skill player and serving as a composite opportunity signal.
 - Notes: corpus depth: Rich — ~150 sources
@@ -36,7 +36,7 @@
 
 ### 1.11 Catch Rate / Contested Catch Rate
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: player-evaluation
 - Description: The percentage of targets a receiver converts to receptions, split into clean-catch and contested scenarios, measuring reliability and the ability to produce on difficult throws.
 - Notes: corpus depth: Rich — ~150 sources
@@ -45,7 +45,7 @@
 
 ### 1.12 Yards After Catch (YAC)
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: player-evaluation
 - Description: Receiving yards accumulated after the catch, distinguishing scheme-generated production (manufactured touches) from after-the-catch athleticism and broken-tackle ability.
 - Notes: corpus depth: Rich — ~150 sources
