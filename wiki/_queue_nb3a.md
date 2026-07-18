@@ -9,7 +9,7 @@
 
 ### 3.1 PPR / Half-PPR / Standard Scoring Impact
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: league-mechanics
 - Description: How per-reception point bonuses restructure positional value by amplifying the fantasy output of high-target receivers and pass-catching backs relative to their production in non-PPR formats.
 - Notes: corpus depth: Rich — ~150 sources
@@ -18,7 +18,7 @@
 
 ### 3.2 TE Premium Scoring
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: league-mechanics
 - Description: Bonus points awarded to tight ends on receptions or touchdowns, a format modifier that dramatically increases the positional value gap between elite TEs and replacements in affected leagues.
 - Notes: corpus depth: Rich — ~150 sources
@@ -27,7 +27,7 @@
 
 ### 3.3 Superflex / 2QB Format Value Shift
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: league-mechanics
 - Description: The positional scarcity dynamics created by formats requiring two starting quarterbacks or allowing a second QB in a flex spot, which inflates QB value and cascades down to affect ADP across all positions.
 - Notes: corpus depth: Rich — ~150 sources
