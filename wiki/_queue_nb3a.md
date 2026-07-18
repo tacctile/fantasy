@@ -36,7 +36,7 @@
 
 ### 3.4 Passing TD Value (4pt vs. 6pt)
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: league-mechanics
 - Description: The impact of awarding 4 versus 6 points for passing touchdowns on quarterback relative value and the strategic attractiveness of QB-stacking pairs in a given league.
 - Notes: corpus depth: Rich — ~150 sources
@@ -45,7 +45,7 @@
 
 ### 3.5 Roster Construction / Starting Lineup Requirements
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: league-mechanics
 - Description: The specific starting lineup and bench configuration in a league (positions, total roster size, IR slots), which determines positional demand, scarcity tiers, and optimal draft strategy.
 - Notes: corpus depth: Rich — ~150 sources
@@ -54,7 +54,7 @@
 
 ### 3.6 Flex Spot Configuration
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: league-mechanics
 - Description: The eligibility rules and positional composition of flex roster spots, which shape positional scarcity by expanding or contracting the pool of viable starters at RB, WR, TE, and QB.
 - Notes: corpus depth: Rich — ~150 sources
