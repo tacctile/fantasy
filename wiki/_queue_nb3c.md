@@ -36,7 +36,7 @@
 
 ### 3.17 Handcuff Strategy
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: league-mechanics
 - Description: The practice of rostering the backup behind a featured running back to maintain value if the starter is injured, particularly valuable in shallow leagues where waiver wire replacements are scarce.
 - Notes: corpus depth: Rich — ~150 sources
@@ -45,7 +45,7 @@
 
 ### 3.18 Auction Draft Budget Allocation
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: league-mechanics
 - Description: The principles governing how to distribute a fixed auction budget across positions and player tiers, including star-and-scrubs versus balanced-roster approaches and the optimal spend on elite versus mid-tier players.
 - Notes: corpus depth: Rich — ~150 sources
@@ -54,7 +54,7 @@
 
 ### 3.19 Rookie Draft Capital / Landing Spot
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: league-mechanics
 - Description: The evaluation of a rookie's NFL draft position and the offensive situation they enter — including depth chart competition, scheme fit, and team pass rate — as the primary inputs for projecting dynasty value and rookie redraft upside.
 - Notes: corpus depth: Rich — ~150 sources
