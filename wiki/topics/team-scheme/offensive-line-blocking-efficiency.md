@@ -13,6 +13,7 @@ tags:
   - opportunity
 related:
   - team-scheme/offensive-line-continuity
+  - team-scheme/offensive-line-injuries
   - player-evaluation/yards-after-contact
   - player-evaluation/qb-epa-cpoe
 ---
