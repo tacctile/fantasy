@@ -9,28 +9,28 @@
 
 ### 4.14 Reach vs. Value Detection
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: in-season-management
 - Description: The real-time assessment during a live draft of whether a pick represents a reach (drafting before consensus ADP) or value (drafting after ADP), used to calibrate remaining roster construction decisions.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created in-season-management/reach-vs-value-detection-draft-day.md
 
 ---
 
 ### 4.15 Team Grade / Draft Recap Methodology
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: in-season-management
 - Description: The post-draft framework for evaluating roster construction quality by assessing positional balance, ADP value captured, upside concentration, and exposure to high-risk situations.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created in-season-management/team-grade-draft-recap-methodology.md
 
 ---
 
 ### 4.16 Points For/Against Luck Analysis
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: in-season-management
 - Description: The assessment of how much of a team's win-loss record reflects actual roster quality versus scheduling luck, using points-for and points-against variance to identify teams likely to regress toward or away from their record.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created in-season-management/points-for-against-luck-analysis.md
 
 ---
 
