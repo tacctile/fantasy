@@ -25,6 +25,7 @@ related:
   - in-season-management/injury-status-practice-participation-tracking
   - in-season-management/injury-type-recovery-timelines
   - in-season-management/return-to-production-curves
+  - in-season-management/career-workload-touch-accumulation-risk
   - league-mechanics/trade-value-calculation
   - league-mechanics/playoff-schedule-strength
   - player-evaluation/value-over-replacement
