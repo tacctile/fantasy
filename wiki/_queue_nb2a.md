@@ -63,13 +63,13 @@
 
 ### 2.7 RPO Usage Rate
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: team-scheme
 - Description: The frequency with which a team employs run-pass options, a modern scheme indicator affecting the distribution of carries and targets and complicating traditional snap-share-based opportunity models.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created team-scheme/rpo-usage-rate; convergence-filtered from 6 panel responses (one flagged its own search-tool failure and was downweighted); lack of a standardized cross-provider RPO definition and the need to decompose usage into pass/handoff/keep branches confirmed as the central framing across all usable sources.
 
 ---
 
-This file covers entries 2.1–2.7. When all entries are COMPLETED or SKIPPED, update `wiki/_queue_master.md`: set this file → COMPLETED, set `wiki/_queue_nb2b.md` → ACTIVE.
+This file covers entries 2.1–2.7. All entries COMPLETED — `wiki/_queue_master.md` updated: this file → COMPLETED, `wiki/_queue_nb2b.md` → ACTIVE.
 
 _End of wiki/_queue_nb2a.md_
