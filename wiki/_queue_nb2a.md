@@ -63,7 +63,7 @@
 
 ### 2.7 RPO Usage Rate
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: team-scheme
 - Description: The frequency with which a team employs run-pass options, a modern scheme indicator affecting the distribution of carries and targets and complicating traditional snap-share-based opportunity models.
 - Notes: corpus depth: Rich — ~150 sources
