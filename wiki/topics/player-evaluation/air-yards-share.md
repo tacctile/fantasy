@@ -4,11 +4,12 @@ type: domain-knowledge
 category: player-evaluation
 status: active
 last_updated: "2026-07-17"
-confidence: medium
+confidence: high
 tags:
   - air-yards
   - adot
   - target-share
+  - regression
 related:
   - player-evaluation/target-share
   - player-evaluation/wopr
@@ -28,6 +29,8 @@ Air yards share equals a player's total air yards divided by the team's total ai
 
 This metric is more sensitive to charting methodology than target share. Definitional differences affect the total meaningfully: whether all intended targets are included, how throwaways are handled, whether deep shots nullified by penalty count, and how off-target or aborted throws are assigned. Small methodology differences between data sources can move a player's air yards share more than equivalent differences would move target share, so cross-source comparisons should be treated with more caution.
 
+A related but distinct concept is intended air yards versus completed air yards. Intended air yards are measured on every target, completed or not, and represent the full opportunity/depth signal. Completed air yards measure depth only on receptions that were actually caught, which describes where production occurred rather than the full opportunity the player was given. For opportunity analysis — identifying downfield role and projecting future value — intended air yards is the correct basis; using completed-air-yards figures as if they measured opportunity is a common analytical error, since it silently filters out exactly the incompletions that reveal a receiver's true target depth.
+
 ### Elite and Role Thresholds
 
 An air yards share of 40% or greater is the benchmark for an elite, primary downfield/vertical threat. A share above 30% indicates a meaningful, valuable big-play role within the offense. These thresholds carry medium corroboration — multiple independent analyses converge on them, though the underlying corpus coverage for this metric is thinner than for target share.
@@ -42,9 +45,11 @@ An air yards share of 40% or greater is the benchmark for an elite, primary down
 
 **Scheme dependency.** Offenses that rely on quick, layered short-passing concepts will show generally lower team-wide air yards regardless of individual talent, which can understate a player's relative importance within that system. Air yards share is most informative when compared within similar offensive schemes, not blindly across different offensive systems.
 
+**Backup-quarterback denominator trap.** A backup quarterback with a shorter, more conservative throwing profile reduces a team's total air yards. Because air yards share is a ratio, this can paradoxically increase a deep threat's share even as their absolute opportunity and production decline — if team air yards fall from 300 to 180 and the deep threat's own air yards fall from 90 to 60, their share actually rises from 30% to 33% despite a real loss of opportunity. Air yards share should always be checked against the underlying raw air yards total, not read as a percentage in isolation, whenever a quarterback change has occurred.
+
 ### Pairing with Efficiency Context
 
-Air yards share measures opportunity, not conversion. Pairing it with a receiver's air yards conversion rate (actual receiving yards produced relative to air yards targeted) clarifies whether underperformance relative to opportunity stems from poor quarterback accuracy/decision-making or from the receiver's own inefficiency at the catch point. High air yards share plus high target share together form the strongest combined opportunity signal available at the individual-metric level; a player strong in one but weak in the other describes a materially different (safer-but-lower-ceiling, or higher-ceiling-but-volatile) profile.
+Air yards share measures opportunity, not conversion. Pairing it with a receiver's Air Yards Conversion Ratio (RACR) — receiving yards divided by air yards — clarifies whether underperformance relative to opportunity stems from poor quarterback accuracy/decision-making or from the receiver's own inefficiency at the catch point. A RACR above 1.0 means the receiver is gaining more yards than their raw depth of target would suggest (strong yards-after-catch or contested-catch conversion); a RACR below 1.0 means they are underperforming their opportunity's depth. RACR is also useful as a regression signal in its own right: a receiver with a high air yards share but a below-1.0 RACR is a plausible positive-regression candidate once quarterback play or matchups normalize, while high air yards share paired with an already-high RACR suggests the current production level is closer to sustainable. High air yards share plus high target share together form the strongest combined opportunity signal available at the individual-metric level; a player strong in one but weak in the other describes a materially different (safer-but-lower-ceiling, or higher-ceiling-but-volatile) profile.
 
 ---
 
