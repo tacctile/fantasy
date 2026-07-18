@@ -36,31 +36,31 @@
 
 ### 4.17 Strength of Schedule (Positional, ROS)
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: in-season-management
 - Description: The projected difficulty of remaining matchups for a player or team on a position-specific basis, accounting for opponent defensive quality against each fantasy-relevant position through the playoff weeks.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created in-season-management/positional-strength-of-schedule-ros.md
 
 ---
 
 ### 4.18 Coaching Staff Changes Mid-Season
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: in-season-management
 - Description: The fantasy impact of in-season coaching changes — offensive coordinator firings, playcalling adjustments, and head coach changes — on pass rate, target distribution, and the value of affected skill players.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created in-season-management/coaching-staff-changes-mid-season.md
 
 ---
 
 ### 4.19 Short-Week / Thursday Game Performance
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: in-season-management
 - Description: The documented effect of short turnaround schedules (Thursday Night Football) on player performance and injury risk, with positional differences in vulnerability and the historical magnitude of scoring suppression.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created in-season-management/short-week-thursday-game-performance.md
 
 ---
 
-This file covers entries 4.14–4.19. When all entries are COMPLETED or SKIPPED, update `wiki/_queue_master.md`: set this file → COMPLETED, set `wiki/_queue_nb4d.md` → ACTIVE.
+This file covers entries 4.14–4.19. All entries COMPLETED. `wiki/_queue_master.md` updated: this file → COMPLETED, `wiki/_queue_nb4d.md` → ACTIVE.
 
 _End of wiki/_queue_nb4c.md_
