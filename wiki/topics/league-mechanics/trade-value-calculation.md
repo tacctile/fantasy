@@ -20,6 +20,7 @@ related:
   - league-mechanics/value-based-drafting
   - league-mechanics/dynasty-redraft-keeper-frameworks
   - league-mechanics/superflex-two-qb-value-shift
+  - in-season-management/points-for-against-luck-analysis
   - league-mechanics/bust-risk-regression-modeling
   - league-mechanics/waiver-wire-faab-strategy
   - league-mechanics/bye-week-management

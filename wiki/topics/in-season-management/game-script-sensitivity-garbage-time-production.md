@@ -20,6 +20,7 @@ tags:
   - ceiling
 related:
   - team-scheme/pass-rate
+  - in-season-management/points-for-against-luck-analysis
   - team-scheme/vegas-total
   - team-scheme/dvp
   - in-season-management/snap-target-trend-alerts
