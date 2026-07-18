@@ -32,10 +32,18 @@
 - route-participation
 - explosive-play-rate
 - yards-after-contact
+- yards-before-contact
 - missed-tackles-forced
+- mtf
+- yaco
+- contact-balance
+- contact-avoidance
+- elusiveness
 - first-read-target-rate
 - qb-rush-rate
 - scramble-rate
+- target-depth
+- receiving-role
 
 ## Team & Scheme
 - pass-rate
@@ -151,3 +159,7 @@
 - regression
 - rookie-draft-capital
 - landing-spot
+- volatility
+- ceiling
+- big-play-upside
+- efficiency
