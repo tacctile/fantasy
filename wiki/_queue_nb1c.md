@@ -27,7 +27,7 @@
 
 ### 1.16 Fantasy Points Over Expected (FPOE)
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: player-evaluation
 - Description: The difference between a player's actual fantasy points scored and the expected fantasy points given their opportunity profile, identifying outperformers and underperformers relative to their role.
 - Notes: corpus depth: Rich — ~150 sources
@@ -36,7 +36,7 @@
 
 ### 1.17 Expected Fantasy Points (xFP)
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: player-evaluation
 - Description: A model-derived estimate of how many fantasy points a player should score given their opportunity inputs, providing a regression baseline and floor/ceiling calibration tool.
 - Notes: corpus depth: Rich — ~150 sources
@@ -45,7 +45,7 @@
 
 ### 1.18 Value Over Replacement Player (VORP/VBD)
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: player-evaluation
 - Description: A player's fantasy production above the baseline replacement-level player at their position, the foundational metric for draft valuation and trade analysis.
 - Notes: corpus depth: Rich — ~150 sources
