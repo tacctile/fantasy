@@ -9,7 +9,7 @@
 
 ### 1.14 Explosive Play Rate / Breakaway Run Rate
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: player-evaluation
 - Description: The rate at which a skill player generates plays of 15+ yards (receivers) or 15+ yard runs (backs), measuring big-play upside and boom-week potential.
 - Notes: corpus depth: Rich — ~150 sources
@@ -18,7 +18,7 @@
 
 ### 1.15 Missed Tackles Forced / Yards After Contact
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: player-evaluation
 - Description: The number of missed tackles a ball carrier forces and yards gained after initial contact, measuring elusiveness and contact balance independent of blocking quality.
 - Notes: corpus depth: Rich — ~150 sources

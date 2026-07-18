@@ -54,7 +54,7 @@
 
 ### 1.13 Average Depth of Target (aDOT)
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: player-evaluation
 - Description: The average distance downfield a receiver is targeted, indicating route tree depth, separation at various levels, and expected volatility versus floor in fantasy production.
 - Notes: corpus depth: Rich — ~150 sources
