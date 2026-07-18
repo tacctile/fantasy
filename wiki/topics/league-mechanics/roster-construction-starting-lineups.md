@@ -19,6 +19,7 @@ related:
   - league-mechanics/ppr-half-ppr-standard-scoring
   - league-mechanics/league-size-scarcity-effects
   - league-mechanics/dynasty-redraft-keeper-frameworks
+  - league-mechanics/best-ball-strategy
 ---
 
 ## Summary

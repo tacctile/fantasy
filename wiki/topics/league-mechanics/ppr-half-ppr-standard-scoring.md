@@ -17,6 +17,7 @@ related:
   - league-mechanics/te-premium-scoring
   - league-mechanics/superflex-two-qb-value-shift
   - league-mechanics/roster-construction-starting-lineups
+  - league-mechanics/best-ball-strategy
 ---
 
 ## Summary

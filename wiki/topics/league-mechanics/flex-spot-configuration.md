@@ -18,6 +18,7 @@ related:
   - league-mechanics/superflex-two-qb-value-shift
   - league-mechanics/te-premium-scoring
   - league-mechanics/league-size-scarcity-effects
+  - league-mechanics/best-ball-strategy
 ---
 
 ## Summary
