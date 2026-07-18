@@ -24,6 +24,7 @@ related:
   - league-mechanics/ppr-half-ppr-standard-scoring
   - league-mechanics/average-draft-position
   - league-mechanics/adp-ecr-differential
+  - league-mechanics/value-based-drafting
 ---
 
 ## Summary
