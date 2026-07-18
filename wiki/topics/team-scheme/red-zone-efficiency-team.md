@@ -15,6 +15,8 @@ related:
   - player-evaluation/red-zone-target-share
   - player-evaluation/goal-line-carry-share
   - team-scheme/personnel-grouping-tendencies
+  - team-scheme/third-down-conversion-rate-team
+  - team-scheme/head-coach-aggressiveness
 ---
 
 ## Summary

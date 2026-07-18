@@ -36,28 +36,28 @@
 
 ### 2.11 Third-Down Conversion Rate (Team)
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: team-scheme
 - Description: A team's success rate on third downs, a proxy for offensive quality that predicts drive length and the total volume of plays (and therefore fantasy opportunities) generated per possession.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created team-scheme/third-down-conversion-rate-team; convergence-filtered from 6 panel responses; distance-bucket confounding of raw rate confirmed as the dominant cross-provider theme, with early-down efficiency established as the more stable predictive signal; EPA-weighted conversion rate flagged as a manual-only gap with no standardized public metric.
 
 ---
 
 ### 2.12 Coaching / OC Play-Calling Tendencies
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: team-scheme
 - Description: An offensive coordinator's historical and current tendencies in personnel usage, formation selection, pass/run ratio, and target distribution, enabling player valuation adjustments when coordinators change teams.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created team-scheme/oc-play-calling-tendencies; convergence-filtered from 6 panel responses; the HC/OC play-calling-authority attribution problem confirmed as the dominant cross-provider caution; PROE and pace identified as the most portable tendency dimensions, target distribution as the least portable.
 
 ---
 
 ### 2.13 Head Coach Offensive Philosophy (Aggressiveness, 4th Down)
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: team-scheme
 - Description: A head coach's decision-making framework on fourth downs, two-point conversions, and aggressive play-calling, which affects game script, scoring opportunities, and the fantasy value of skill players across all game states.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created team-scheme/head-coach-aggressiveness; convergence-filtered from 6 panel responses; team-strength confounding of raw go-rate confirmed as the dominant cross-provider caution, with aggressiveness-over-expected (vs. win-probability-optimal baseline) established as the correct measurement framework; kicker-suppression effect in the 30-38-yard range flagged as a high-confidence, directly actionable fantasy effect.
 
 ---
 

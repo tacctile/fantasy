@@ -8,7 +8,7 @@
 > **Total slots:** 100 (16 files × 6-7 per file)
 > **Cycle:** 1 (initial build)
 > **Generated:** 2026-07-14
-> **Updated:** 2026-07-17 — nb2a COMPLETED (entries 2.1–2.7 all done); nb2b now ACTIVE
+> **Updated:** 2026-07-17 — nb2b COMPLETED (entries 2.8–2.13 all done); nb2c now ACTIVE
 
 ---
 
@@ -32,8 +32,8 @@ Never add subject entries to this file. All entries live exclusively in the batc
 | [_queue_nb1c.md](_queue_nb1c.md) | Player Evaluation & Opportunity Metrics | 1.14–1.19 (6) | player-evaluation | COMPLETED |
 | [_queue_nb1d.md](_queue_nb1d.md) | Player Evaluation & Opportunity Metrics | 1.20–1.25 (6) | player-evaluation | COMPLETED |
 | [_queue_nb2a.md](_queue_nb2a.md) | Team & Scheme Context | 2.1–2.7 (7) | team-scheme | COMPLETED |
-| [_queue_nb2b.md](_queue_nb2b.md) | Team & Scheme Context | 2.8–2.13 (6) | team-scheme | ACTIVE |
-| [_queue_nb2c.md](_queue_nb2c.md) | Team & Scheme Context | 2.14–2.19 (6) | team-scheme | LOCKED |
+| [_queue_nb2b.md](_queue_nb2b.md) | Team & Scheme Context | 2.8–2.13 (6) | team-scheme | COMPLETED |
+| [_queue_nb2c.md](_queue_nb2c.md) | Team & Scheme Context | 2.14–2.19 (6) | team-scheme | ACTIVE |
 | [_queue_nb2d.md](_queue_nb2d.md) | Team & Scheme Context | 2.20–2.25 (6) | team-scheme | LOCKED |
 | [_queue_nb3a.md](_queue_nb3a.md) | League Mechanics, Scoring & Draft Strategy | 3.1–3.7 (7) | league-mechanics | LOCKED |
 | [_queue_nb3b.md](_queue_nb3b.md) | League Mechanics, Scoring & Draft Strategy | 3.8–3.13 (6) | league-mechanics | LOCKED |
