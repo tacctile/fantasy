@@ -9,7 +9,7 @@
 
 ### 2.20 Point Spread / Game Total
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: team-scheme
 - Description: The sportsbook-set point spread and over/under for a game, providing game script prediction and total scoring volume signals that drive positional opportunity allocation in fantasy.
 - Notes: corpus depth: Rich — ~150 sources
@@ -18,7 +18,7 @@
 
 ### 2.21 Weather Impact (Wind / Precipitation / Cold / Dome)
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: team-scheme
 - Description: The effect of game-day weather conditions on passing efficiency and play-calling tendency, with wind above 15 mph and precipitation most significantly suppressing aerial production and inflating running back value.
 - Notes: corpus depth: Rich — ~150 sources
@@ -27,7 +27,7 @@
 
 ### 2.22 Home/Away & Travel Splits
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: team-scheme
 - Description: Performance differentials between home and away games, including the effect of cross-country travel and time zone changes on scoring output and offensive efficiency.
 - Notes: corpus depth: Rich — ~150 sources
