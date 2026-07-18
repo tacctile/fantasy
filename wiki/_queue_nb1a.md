@@ -10,28 +10,28 @@
 
 ### 1.1 Target Share
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: player-evaluation
 - Description: The percentage of a team's total targets directed at a specific receiver, the single most predictive per-game opportunity metric for wide receivers and tight ends.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: corpus depth: Rich — ~150 sources. Created player-evaluation/target-share (confidence: high, 3-way model convergence).
 
 ---
 
 ### 1.2 Air Yards Share
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: player-evaluation
 - Description: A receiver's share of total team air yards (the distance the ball travels in the air on targets), capturing deep-ball opportunity and separation from catch-based metrics.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: corpus depth: Rich — ~150 sources. Created player-evaluation/air-yards-share (confidence: medium, 2-way model convergence).
 
 ---
 
 ### 1.3 Weighted Opportunity Rating (WOPR)
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: player-evaluation
 - Description: A composite metric combining target share and air yards share into a single opportunity score that better predicts fantasy production than either component alone.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: corpus depth: Rich — ~150 sources. Created player-evaluation/wopr (confidence: medium, 2-way model convergence).
 
 ---
 

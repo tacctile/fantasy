@@ -1,3 +1,9 @@
 # Player Evaluation
 
-*(No pages committed yet. Pages will appear here as queue entries in `wiki/_queue_nb1a.md` through `wiki/_queue_nb1d.md` are ingested.)*
+Core statistical models for assessing player performance, opportunity share, and efficiency.
+
+| Page | Description | Confidence |
+| ---- | ------------ | ---------- |
+| [target-share](target-share.md) | Percentage of team pass attempts directed at a player — the strongest per-game opportunity metric for WR/TE. | high |
+| [air-yards-share](air-yards-share.md) | Player's share of team air yards — isolates downfield/vertical opportunity from catch-based outcomes. | medium |
+| [wopr](wopr.md) | Composite of target share and air yards share (1.5×TS + 0.7×AY) — single-number opportunity predictor. | medium |
