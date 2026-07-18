@@ -22,6 +22,7 @@ related:
   - league-mechanics/dynasty-redraft-keeper-frameworks
   - league-mechanics/passing-td-value-4pt-6pt
   - league-mechanics/late-round-qb-strategy
+  - league-mechanics/auction-draft-budget-allocation
 ---
 
 ## Summary

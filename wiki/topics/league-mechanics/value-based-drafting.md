@@ -26,6 +26,7 @@ related:
   - league-mechanics/flex-spot-configuration
   - league-mechanics/zero-rb-hero-rb-robust-rb
   - league-mechanics/late-round-qb-strategy
+  - league-mechanics/auction-draft-budget-allocation
 ---
 
 ## Summary

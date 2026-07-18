@@ -22,6 +22,7 @@ related:
   - league-mechanics/league-size-scarcity-effects
   - league-mechanics/flex-spot-configuration
   - league-mechanics/handcuff-strategy
+  - league-mechanics/auction-draft-budget-allocation
 ---
 
 ## Summary
