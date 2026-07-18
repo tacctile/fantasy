@@ -9,7 +9,7 @@
 
 ### 4.8 Contract Year Motivation
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: in-season-management
 - Description: The theory that players in the final year of their contracts are motivated to perform at elevated levels to maximize their next contract value, and the empirical evidence for and against this effect on fantasy production.
 - Notes: corpus depth: Rich — ~150 sources
@@ -18,7 +18,7 @@
 
 ### 4.9 Suspension / Legal Status Tracking
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: in-season-management
 - Description: The process of monitoring NFL disciplinary proceedings, league investigations, and legal matters that could result in player suspensions, determining when to buy or sell affected players and how to model availability risk.
 - Notes: corpus depth: Rich — ~150 sources
@@ -27,7 +27,7 @@
 
 ### 4.10 Snap/Target Trend Alerts (In-Season Role Changes)
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: in-season-management
 - Description: The identification of week-over-week changes in snap share, target volume, and route participation that signal emerging role expansions or contractions before they are reflected in ADP or consensus rankings.
 - Notes: corpus depth: Rich — ~150 sources
