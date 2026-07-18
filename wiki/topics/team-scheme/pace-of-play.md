@@ -15,6 +15,7 @@ related:
   - team-scheme/proe
   - team-scheme/neutral-game-script-pass-rate
   - player-evaluation/touches-per-game
+  - team-scheme/weather-impact
 ---
 
 ## Summary

@@ -16,6 +16,7 @@ related:
   - player-evaluation/route-participation-rate
   - player-evaluation/target-share
   - player-evaluation/yards-after-catch
+  - team-scheme/weather-impact
 ---
 
 ## Summary
