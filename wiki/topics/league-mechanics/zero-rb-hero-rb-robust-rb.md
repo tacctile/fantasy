@@ -20,6 +20,7 @@ related:
   - league-mechanics/best-ball-strategy
   - league-mechanics/value-based-drafting
   - league-mechanics/league-size-scarcity-effects
+  - in-season-management/team-grade-draft-recap-methodology
   - league-mechanics/flex-spot-configuration
   - league-mechanics/handcuff-strategy
   - league-mechanics/auction-draft-budget-allocation

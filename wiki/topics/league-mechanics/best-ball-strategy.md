@@ -20,6 +20,7 @@ related:
   - league-mechanics/roster-construction-starting-lineups
   - league-mechanics/flex-spot-configuration
   - league-mechanics/ppr-half-ppr-standard-scoring
+  - in-season-management/team-grade-draft-recap-methodology
   - league-mechanics/passing-td-value-4pt-6pt
   - league-mechanics/zero-rb-hero-rb-robust-rb
   - league-mechanics/qb-stacking-strategy

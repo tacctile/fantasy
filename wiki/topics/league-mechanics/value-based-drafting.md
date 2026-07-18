@@ -24,6 +24,7 @@ related:
   - league-mechanics/superflex-two-qb-value-shift
   - league-mechanics/best-ball-strategy
   - in-season-management/reach-vs-value-detection-draft-day
+  - in-season-management/team-grade-draft-recap-methodology
   - league-mechanics/flex-spot-configuration
   - league-mechanics/zero-rb-hero-rb-robust-rb
   - league-mechanics/late-round-qb-strategy

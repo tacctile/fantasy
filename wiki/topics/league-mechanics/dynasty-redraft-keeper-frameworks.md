@@ -20,6 +20,7 @@ related:
   - league-mechanics/superflex-two-qb-value-shift
   - league-mechanics/rookie-draft-capital-landing-spot
   - league-mechanics/bust-risk-regression-modeling
+  - in-season-management/team-grade-draft-recap-methodology
 ---
 
 ## Summary

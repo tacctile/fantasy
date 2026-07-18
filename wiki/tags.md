@@ -163,6 +163,8 @@
 - consistency-score
 - boom-bust
 - adp-divergence
+- team-grade
+- draft-recap
 - breakout-modeling
 - bust-risk
 - regression
