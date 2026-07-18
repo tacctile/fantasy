@@ -18,6 +18,7 @@ related:
   - in-season-management/weekly-start-sit-projections
   - team-scheme/home-away-travel-splits
   - in-season-management/career-workload-touch-accumulation-risk
+  - in-season-management/prime-time-performance-splits
 ---
 
 ## Summary
