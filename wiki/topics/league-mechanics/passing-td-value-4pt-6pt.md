@@ -17,6 +17,8 @@ related:
   - league-mechanics/ppr-half-ppr-standard-scoring
   - league-mechanics/roster-construction-starting-lineups
   - league-mechanics/best-ball-strategy
+  - league-mechanics/late-round-qb-strategy
+  - league-mechanics/qb-stacking-strategy
 ---
 
 ## Summary

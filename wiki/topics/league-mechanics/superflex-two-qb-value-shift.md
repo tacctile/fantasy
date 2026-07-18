@@ -21,6 +21,7 @@ related:
   - league-mechanics/league-size-scarcity-effects
   - league-mechanics/dynasty-redraft-keeper-frameworks
   - league-mechanics/passing-td-value-4pt-6pt
+  - league-mechanics/late-round-qb-strategy
 ---
 
 ## Summary

@@ -24,6 +24,8 @@ related:
   - league-mechanics/superflex-two-qb-value-shift
   - league-mechanics/best-ball-strategy
   - league-mechanics/flex-spot-configuration
+  - league-mechanics/zero-rb-hero-rb-robust-rb
+  - league-mechanics/late-round-qb-strategy
 ---
 
 ## Summary
