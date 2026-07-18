@@ -16,6 +16,7 @@ related:
   - team-scheme/red-zone-efficiency-team
   - team-scheme/third-down-conversion-rate-team
   - team-scheme/oc-play-calling-tendencies
+  - in-season-management/coaching-staff-changes-mid-season
 ---
 
 ## Summary

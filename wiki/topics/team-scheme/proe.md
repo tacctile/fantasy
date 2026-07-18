@@ -16,6 +16,7 @@ related:
   - team-scheme/neutral-game-script-pass-rate
   - team-scheme/pace-of-play
   - player-evaluation/target-share
+  - in-season-management/coaching-staff-changes-mid-season
 ---
 
 ## Summary

@@ -20,6 +20,7 @@ related:
   - player-evaluation/target-share
   - in-season-management/weekly-start-sit-projections
   - in-season-management/rest-of-season-rankings
+  - in-season-management/coaching-staff-changes-mid-season
 ---
 
 ## Summary

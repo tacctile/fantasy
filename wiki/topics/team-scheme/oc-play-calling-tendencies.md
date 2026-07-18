@@ -21,6 +21,7 @@ related:
   - team-scheme/rpo-usage-rate
   - team-scheme/offensive-scheme-identity
   - team-scheme/target-distribution-concentration
+  - in-season-management/coaching-staff-changes-mid-season
 ---
 
 ## Summary
