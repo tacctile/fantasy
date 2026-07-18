@@ -21,6 +21,7 @@ related:
   - league-mechanics/value-based-drafting
   - league-mechanics/league-size-scarcity-effects
   - league-mechanics/flex-spot-configuration
+  - league-mechanics/handcuff-strategy
 ---
 
 ## Summary
