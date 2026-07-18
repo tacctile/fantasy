@@ -36,28 +36,28 @@
 
 ### 4.4 Injury Type Recovery Timelines (ACL, Hamstring, etc.)
 
-- Status: IN_PROGRESS
+- Status: COMPLETED — created in-season-management/injury-type-recovery-timelines
 - Wiki Category: in-season-management
 - Description: Position-specific and injury-specific recovery timelines for common NFL injuries — ACL, hamstring, high ankle sprain, MCL — providing expected return windows and production impact for each injury class.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: corpus depth: Rich — ~150 sources; panel had 3 usable distinct model responses of 6 configured
 
 ---
 
 ### 4.5 Return-to-Production Curves Post-Injury
 
-- Status: IN_PROGRESS
+- Status: COMPLETED — created in-season-management/return-to-production-curves
 - Wiki Category: in-season-management
 - Description: The typical pattern of fantasy production in the weeks immediately following a player's return from injury, including performance suppression windows and position-specific recovery trajectories.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: corpus depth: Rich — ~150 sources; panel had 3 usable distinct model responses of 6 configured
 
 ---
 
 ### 4.6 Age Curve / Decline Modeling by Position
 
-- Status: IN_PROGRESS
+- Status: COMPLETED — deepened existing age-curve section in in-season-management/rest-of-season-rankings
 - Wiki Category: in-season-management
 - Description: Position-specific production decline curves tied to player age, identifying the peak years, decline inflection points, and cliff-edge ages at which fantasy value tends to drop sharply for QBs, RBs, WRs, and TEs.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: corpus depth: Rich — ~150 sources; panel had 3 usable distinct model responses of 6 configured; existing page already had a step-function age-curve framework from an earlier ingest, so this update deepened rather than created
 
 ---
 
