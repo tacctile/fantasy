@@ -13,7 +13,7 @@
 - Status: COMPLETED
 - Wiki Category: player-evaluation
 - Description: The percentage of a team's total targets directed at a specific receiver, the single most predictive per-game opportunity metric for wide receivers and tight ends.
-- Notes: corpus depth: Rich — ~150 sources. Created player-evaluation/target-share (confidence: high, 3-way model convergence).
+- Notes: corpus depth: Rich — ~150 sources. Created player-evaluation/target-share (confidence: high, 3-way model convergence). Strengthened 2026-07-17 via chathub.gg 6-model panel redo (dropback denominator, YoY stability stat, vacated-targets pitfall).
 
 ---
 
@@ -22,7 +22,7 @@
 - Status: COMPLETED
 - Wiki Category: player-evaluation
 - Description: A receiver's share of total team air yards (the distance the ball travels in the air on targets), capturing deep-ball opportunity and separation from catch-based metrics.
-- Notes: corpus depth: Rich — ~150 sources. Created player-evaluation/air-yards-share (confidence: medium, 2-way model convergence).
+- Notes: corpus depth: Rich — ~150 sources. Created player-evaluation/air-yards-share (confidence: medium, 2-way model convergence). Strengthened 2026-07-17 via chathub.gg 6-model panel redo (RACR, intended-vs-completed distinction, backup-QB denominator trap); confidence upgraded to high.
 
 ---
 
@@ -31,7 +31,7 @@
 - Status: COMPLETED
 - Wiki Category: player-evaluation
 - Description: A composite metric combining target share and air yards share into a single opportunity score that better predicts fantasy production than either component alone.
-- Notes: corpus depth: Rich — ~150 sources. Created player-evaluation/wopr (confidence: medium, 2-way model convergence).
+- Notes: corpus depth: Rich — ~150 sources. Created player-evaluation/wopr (confidence: medium, 2-way model convergence). Strengthened 2026-07-17 via chathub.gg 6-model panel redo; resolved a coefficient contradiction (5-of-6 models confirmed canonical 1.5/0.7 formula against 1 outlier claiming 0.75/0.25).
 
 ---
 

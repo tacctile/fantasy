@@ -31,7 +31,7 @@
 
 | Topic | Claim | Source | Verified | Next Review |
 | ----- | ----- | ------ | -------- | ----------- |
-| — | — | — | — | — |
+| WOPR formula | WOPR = 1.5 × Target Share + 0.7 × Air Yards Share (Josh Hermsmeyer's canonical formula) | chathub.gg 6-model panel, 5-of-6 models confirmed; 1 model reported an unconfirmed alternate (0.75/0.25) attributed to a single platform | 2026-07-17 | 2026-10-15 |
 
 ---
 
