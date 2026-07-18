@@ -36,28 +36,28 @@
 
 ### 3.4 Passing TD Value (4pt vs. 6pt)
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: league-mechanics
 - Description: The impact of awarding 4 versus 6 points for passing touchdowns on quarterback relative value and the strategic attractiveness of QB-stacking pairs in a given league.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: chathub.gg 6-model panel. Created wiki/topics/league-mechanics/passing-td-value-4pt-6pt.md. Convergent findings: replacement-adjusted VORP is the correct lens, not raw point inflation; rushing production stays disproportionately valuable; stacking benefit is real but narrower than commonly assumed (raises QB's share of shared TD event only).
 
 ---
 
 ### 3.5 Roster Construction / Starting Lineup Requirements
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: league-mechanics
 - Description: The specific starting lineup and bench configuration in a league (positions, total roster size, IR slots), which determines positional demand, scarcity tiers, and optimal draft strategy.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: chathub.gg 6-model panel. Created wiki/topics/league-mechanics/roster-construction-starting-lineups.md. Convergent findings: replacement baselines must be recalculated per league's exact roster shape; IR slots are depth extenders only for role-secure injured players; bench depth controls waiver liquidity in both directions.
 
 ---
 
 ### 3.6 Flex Spot Configuration
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: league-mechanics
 - Description: The eligibility rules and positional composition of flex roster spots, which shape positional scarcity by expanding or contracting the pool of viable starters at RB, WR, TE, and QB.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: chathub.gg 6-model panel. Created wiki/topics/league-mechanics/flex-spot-configuration.md. Convergent findings: flex reallocates demand rather than adding points; RB/WR dominate standard flex; QB-eligible flex (Superflex) functions as a de facto second QB slot.
 
 ---
 
