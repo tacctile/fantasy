@@ -9,28 +9,28 @@
 
 ### 3.14 Zero-RB / Hero-RB / Robust-RB Strategy
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: league-mechanics
 - Description: The three primary running back draft philosophies: Zero-RB delays RB investment to exploit late-round depth, Hero-RB anchors the roster around one elite back while streaming the position elsewhere, and Robust-RB prioritizes RB early given positional scarcity.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created wiki/topics/league-mechanics/zero-rb-hero-rb-robust-rb.md from 6-model panel synthesis. corpus depth: Rich — ~150 sources
 
 ---
 
 ### 3.15 Late-Round QB Strategy
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: league-mechanics
 - Description: The approach of deliberately waiting until late rounds to draft a quarterback in single-QB leagues, exploiting the relative depth at the position to maximize value at scarcer positions in early rounds.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created wiki/topics/league-mechanics/late-round-qb-strategy.md from 6-model panel synthesis. corpus depth: Rich — ~150 sources
 
 ---
 
 ### 3.16 Stacking Strategy (QB + Pass-Catcher)
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: league-mechanics
 - Description: The deliberate pairing of a quarterback with one or more of his pass-catchers on the same fantasy roster to create correlated upside, concentrating scoring ceiling in games where the targeted offense has a high-volume performance.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created wiki/topics/league-mechanics/qb-stacking-strategy.md from 6-model panel synthesis. corpus depth: Rich — ~150 sources
 
 ---
 
