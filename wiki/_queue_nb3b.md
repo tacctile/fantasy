@@ -27,7 +27,7 @@
 
 ### 3.10 Average Draft Position (ADP)
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: league-mechanics
 - Description: The average pick number at which a player is selected across a large sample of drafts, serving as the market consensus valuation and the baseline against which value and reach decisions are evaluated.
 - Notes: corpus depth: Rich — ~150 sources
@@ -36,7 +36,7 @@
 
 ### 3.11 ADP vs. Expert Consensus Rank Differential
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: league-mechanics
 - Description: The gap between a player's ADP in public drafts and their rank among professional analysts, identifying systematic market inefficiencies where public drafters over- or underprice certain players or positions.
 - Notes: corpus depth: Rich — ~150 sources
@@ -45,7 +45,7 @@
 
 ### 3.12 Positional Scarcity / Tier Breaks
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: league-mechanics
 - Description: The distribution of talent at each position relative to league demand, used to identify tier breaks where significant production drop-offs occur and inform when to prioritize scarce positions over theoretically higher-value picks.
 - Notes: corpus depth: Rich — ~150 sources
