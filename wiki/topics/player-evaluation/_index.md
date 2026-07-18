@@ -13,3 +13,7 @@ Core statistical models for assessing player performance, opportunity share, and
 | [red-zone-target-share](red-zone-target-share.md) | Player's share of team red-zone pass attempts — touchdown-upside multiplier best read as a tiered inside-20/10/5 breakdown, not one blanket bucket. | medium |
 | [goal-line-carry-share](goal-line-carry-share.md) | Running back's share of team carries inside the 5-yard line — cleanest predictor of rushing TD upside, heavily suppressed by mobile-QB sneak usage. | medium |
 | [carries-per-game](carries-per-game.md) | Running back's raw rushing volume and share of team carries — the workload baseline, paired with CPG for absolute weekly expectation. | medium |
+| [average-depth-of-target](average-depth-of-target.md) | Average air-yard distance from line of scrimmage to target point — a role descriptor encoding receiver usage depth and expected weekly variance. | medium |
+| [explosive-play-rate](explosive-play-rate.md) | Percentage of touches gaining 15+ yards — measures ceiling and big-play upside; low year-over-year stability requires aggressive regression. | medium |
+| [missed-tackles-forced](missed-tackles-forced.md) | Frequency of failed tackle attempts caused by ball carrier — isolates elusiveness and contact-avoidance skill; ~0.45-0.55 year-over-year stability. | medium |
+| [yards-after-contact](yards-after-contact.md) | Yardage gained after first defensive contact in rushing plays — more stable than yards per carry; reveals runner-skill-driven vs. scheme-driven production. | medium |
