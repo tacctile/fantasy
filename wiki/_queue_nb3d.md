@@ -9,28 +9,28 @@
 
 ### 3.20 Breakout Candidate Modeling
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: league-mechanics
 - Description: The process of identifying players poised for a significant fantasy production increase based on improved opportunity signals, age curve trajectory, scheme changes, or market underestimation relative to underlying metrics.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created wiki/topics/league-mechanics/breakout-candidate-modeling.md from 6-model panel synthesis.
 
 ---
 
 ### 3.21 Bust Risk Modeling / Regression Candidates
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: league-mechanics
 - Description: The identification of players whose recent fantasy production has outpaced their opportunity metrics, signaling elevated touchdown dependency, unsustainable catch rates, or favorable game scripts unlikely to repeat.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created wiki/topics/league-mechanics/bust-risk-regression-modeling.md from 6-model panel synthesis.
 
 ---
 
 ### 3.22 Waiver Wire / FAAB Strategy
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: league-mechanics
 - Description: The principles governing in-season free agent acquisition through waiver priority systems and Free Agent Acquisition Budget auctions, including when to spend, how to bid, and which player profiles yield the most weekly value.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created wiki/topics/league-mechanics/waiver-wire-faab-strategy.md from 6-model panel synthesis.
 
 ---
 

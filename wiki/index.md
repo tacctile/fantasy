@@ -17,7 +17,7 @@
 | -------- | ---- | ----------- |
 | Player Evaluation | `wiki/topics/player-evaluation/` | Core statistical models for assessing player performance, opportunity share, and efficiency. Target share, air yards, WOPR, YPRR, snap share, route participation, touches per game, red zone target share, goal-line carry share, carries per game, catch rate, contested catch rate, drop rate, YAC, aDOT, explosive play rate, FPOE, xFP, VORP, college metrics, and athletic testing. |
 | Team & Scheme | `wiki/topics/team-scheme/` | Team-level context that determines player opportunity and value. Pass rate, PROE, pace, offensive line quality, play-action, RPO, personnel groupings, motion, red zone efficiency, coaching tendencies, scheme identity, target distribution, backfield structure, DvP, Vegas lines, weather, home/away splits, and depth chart stability. |
-| League Mechanics | `wiki/topics/league-mechanics/` | Scoring formats, draft strategy, and league structure. PPR/half-PPR/standard, TE premium, Superflex/2QB, roster construction, positional scarcity, ADP, VBD, Zero-RB/Hero-RB, stacking, handcuffs, auction draft, FAAB, dynasty vs. redraft vs. keeper, best ball, trade value, and playoff schedule strength. |
+| League Mechanics | `wiki/topics/league-mechanics/` | Scoring formats, draft strategy, and league structure. PPR/half-PPR/standard, TE premium, Superflex/2QB, roster construction, positional scarcity, ADP, VBD, Zero-RB/Hero-RB, stacking, handcuffs, auction draft, FAAB, waiver strategy, breakout/bust modeling, dynasty vs. redraft vs. keeper, best ball, trade value, and playoff schedule strength. |
 | In-Season Management | `wiki/topics/in-season-management/` | Weekly decisions, injury tracking, and situational data. Start/sit projections, ROS rankings, injury status, recovery timelines, age curves, workload risk, snap/target trend alerts, next-man-up value, game script sensitivity, strength of schedule, coaching changes, short-week effects, consistency scores, and ADP divergence. |
 
 ---
@@ -38,9 +38,9 @@
 | -------- | ----- |
 | Player Evaluation | 26 |
 | Team & Scheme | 24 |
-| League Mechanics | 18 |
+| League Mechanics | 21 |
 | In-Season Management | 0 |
-| **Total** | **68** |
+| **Total** | **71** |
 
 ---
 
