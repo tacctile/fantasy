@@ -1,5 +1,5 @@
 ---
-title: "League Size Effects on Positional Scarcity"
+title: "League Size Effects on Positional Scarcity and Tier Breaks"
 type: domain-knowledge
 category: league-mechanics
 status: active
@@ -15,16 +15,20 @@ tags:
   - two-qb
   - flex
   - roster-construction
+  - draft-strategy
+  - adp
 related:
   - league-mechanics/roster-construction-starting-lineups
   - league-mechanics/flex-spot-configuration
   - league-mechanics/superflex-two-qb-value-shift
   - league-mechanics/ppr-half-ppr-standard-scoring
+  - league-mechanics/average-draft-position
+  - league-mechanics/adp-ecr-differential
 ---
 
 ## Summary
 
-League size (team count) determines positional scarcity by setting the replacement-level baseline: the number of starters demanded league-wide scales linearly with team count, but the NFL's supply of productive players at each position does not, so larger leagues push the replacement baseline down into a steeper, thinner part of the talent distribution. This compresses value at the bottom of a position's draftable pool while expanding it at the top — elite players separate further from replacement in deep leagues even though the position's average value looks similar. Running back and tight end are the most sensitive positions to this effect because their productive-player supply is shallowest; standard single-QB quarterback is the least sensitive, while superflex/2QB leagues invert that entirely and make QB the most scarce position of all, at any league size.
+League size (team count) determines positional scarcity by setting the replacement-level baseline: the number of starters demanded league-wide scales linearly with team count, but the NFL's supply of productive players at each position does not, so larger leagues push the replacement baseline down into a steeper, thinner part of the talent distribution. This compresses value at the bottom of a position's draftable pool while expanding it at the top — elite players separate further from replacement in deep leagues even though the position's average value looks similar. Running back and tight end are the most sensitive positions to this effect because their productive-player supply is shallowest; standard single-QB quarterback is the least sensitive, while superflex/2QB leagues invert that entirely and make QB the most scarce position of all, at any league size. Tier breaks are how this scarcity becomes actionable at the draft table: a break is a point where the value gap between adjacent players is materially larger than nearby gaps, identified either algorithmically (clustering or fixed-threshold gap detection on projections) or via analyst judgment, and tier structure is dynamic — it shifts live as positional runs deplete the board and must be re-derived during a draft, not treated as a fixed pre-draft snapshot.
 
 ## Core Knowledge
 
@@ -54,6 +58,22 @@ League size changes the optimal balance between chasing ceiling and securing flo
 
 Multiple sources converge that team count alone is an incomplete predictor of scarcity — roster shape matters as much or more. A league with the same number of teams but more flex spots or deeper benches functionally acts like a larger league, because it increases the total number of players required to be startable league-wide without changing the visible team count. Similarly, the practical replacement pool should account for bench-hoarding behavior (managers rostering backup QBs, extra TEs, and handcuffs beyond their starting need), which pushes the true waiver-wire replacement level lower than public rankings assume, especially in deep leagues.
 
+### Tier breaks are how scarcity becomes an actionable draft-day signal
+
+Replacement level explains why a position is scarce in aggregate; tier breaks identify the specific points in a ranked list where that scarcity becomes decision-relevant. A tier break is a point where the projected-value gap between adjacent players is materially larger than the gap between other adjacent players nearby — within a tier, players are treated as roughly interchangeable for draft purposes, while crossing a tier break represents a real step down in expected value. Sources converge that tier breaks, not exact rank order within a tier, should drive draft-day prioritization: the cost of reaching one slot ahead of consensus for the last player in a tier is generally lower than the cost of letting an entire tier evaporate while chasing marginal rank-order precision within it.
+
+Two broad approaches to identifying tier breaks appear across sources. The first is a statistical/algorithmic approach — clustering methods (commonly a variant of k-means or hierarchical clustering) or fixed-threshold gap detection (flagging a break wherever the point differential between adjacent players exceeds some multiple of the average gap or the position's standard deviation) applied directly to projected points. This approach is reproducible and free of narrative bias, but is entirely dependent on the quality of the underlying projections and can manufacture false-precision breaks from noisy projection inputs. The second is analyst-curated tiering, which blends projection data with qualitative judgment about role stability, coaching tendencies, and injury risk. This approach captures context a pure point-gap calculation misses, but is less reproducible and carries individual analyst bias. Neither approach is corroborated as strictly superior; the practical guidance is that algorithmic tiers should be treated as a starting point requiring a qualitative sanity check, not a final answer.
+
+### Tier breaks are dynamic, not a pre-draft snapshot
+
+A tier sheet generated before a draft begins is a snapshot that decays in usefulness as the draft progresses, because tier breaks are a function of which players remain available, not solely of the underlying projections. A run of picks at one position can either compress a tier (if a run empties out a shallow tier quickly, accelerating the need to act) or expose a false scarcity signal (if a run is driven by herd behavior rather than genuine value recognition, and the position remains reasonably deep afterward). Static tier sheets that are not re-evaluated live are a documented failure pattern — the correct approach re-derives remaining tier structure after each meaningful run of picks, not just once before the draft.
+
+A related failure pattern is treating a tier break as a rigid, binary "must-draft-now" trigger. Rigid tier enforcement can produce reflexive reaches that ignore opportunity cost at other positions — a real tier break at one position does not automatically outweigh the value available at a different position at the same pick. The gap should be weighed against the best available alternative elsewhere on the board, and against the probability that a comparable player survives to the manager's next pick, not treated as an isolated signal.
+
+### Format and roster construction reshape where tier breaks fall
+
+The same underlying player pool produces different tier structures depending on league settings, independent of the replacement-level effects already covered above. Flex-eligible roster spots blur tier boundaries between positions that can fill the same slot, since a flex spot effectively pools RB, WR, and sometimes TE demand into a single competitive pool rather than three separate ones. Superflex and TE-premium formats shift tier breaks earlier for quarterbacks and premium-scoring tight ends respectively, for the same structural reasons covered above under replacement level — a standard-format tier sheet does not transfer to these formats. Best-ball formats tend to push tier breaks earlier for high-variance, high-ceiling players relative to managed redraft, because auto-set lineups reward spike-week probability over median weekly floor, so a "tier" built on median season-long projection can misrepresent true best-ball tier structure.
+
 ## Key Decisions
 
 The platform will calculate positional replacement level as an explicit function of the league's exact team count, starting lineup requirements, and flex configuration — not a fixed generic baseline (e.g., "12-team defaults") — because the corroborated evidence across all six sources is that replacement level is mechanically determined by these inputs, and generic baselines produce materially wrong valuations once league settings deviate from a standard 12-team, single-flex assumption.
@@ -66,9 +86,16 @@ The platform will bias roster construction guidance toward floor and depth as ef
 
 The platform will not adopt any single model's specific numeric thresholds for exactly when a position "becomes scarce" (e.g., precise team-count cutoffs, fixed ADP-slot adjustments, or fixed percentage markups) as settled figures, because these varied substantially and inconsistently across independent sources with no shared methodology. An alternative of averaging the conflicting numeric claims was considered and rejected, since averaging unverified, inconsistent figures manufactures false precision; directional and structural guidance is adopted instead.
 
+The platform will re-derive tier structure live during a draft after meaningful positional runs rather than relying solely on a static pre-draft tier sheet, because sources consistently identify stale, non-updated tiers as a documented failure pattern once draft flow diverges from pre-draft assumptions.
+
+The platform will surface tier breaks as a weighted input alongside opportunity cost at other positions and probability of survival to the next pick, rather than as a rigid, isolated "draft now" trigger, because sources agree that treating tier breaks as binary rules produces reflexive reaches that ignore superior value available elsewhere on the board.
+
+The platform will not treat algorithmically-derived tiers (clustering or fixed-threshold gap detection) as authoritative without a qualitative review layer, because the corroborated guidance is that automated tiering is only as reliable as its input projections and can manufacture false-precision breaks from noisy data.
+
 ## Open Questions
 
 - [ ] Whether 12-team leagues should be modeled with shallow-league (ceiling-favoring) or deep-league (floor-favoring) heuristics is genuinely contested across sources — needs either a decision from Nick on a default assumption or empirical outcome data across 12-team league samples.
 - [ ] The exact team-count or roster-depth threshold at which a position's scarcity sensitivity crosses from "manageable via waivers" to "structurally required to draft early" is not established with a consistent figure across sources — needs further verification or platform-specific backtesting.
 - [ ] Whether replacement level should be modeled against static preseason projections or a dynamic, in-season estimate accounting for injuries, bye weeks, and waiver churn is raised as unresolved — needs a platform architecture decision on whether replacement-level calculations update in-season.
 - [ ] How correlated scarcity (e.g., a rash of injuries at one position simultaneously) should be incorporated into replacement-level modeling beyond a simple independent-player baseline is unresolved across sources.
+- [ ] Whether algorithmic (clustering/threshold-based) or analyst-curated tiering produces more reliable draft-day guidance is not settled across sources — needs empirical comparison against realized outcomes or a platform-specific methodology decision.
