@@ -36,7 +36,7 @@
 
 ### 2.4 Offensive Line Continuity
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: team-scheme
 - Description: The degree to which an offensive line maintains the same five starters across consecutive games, a stability metric that predicts running back performance and quarterback protection quality.
 - Notes: corpus depth: Rich — ~150 sources
@@ -45,7 +45,7 @@
 
 ### 2.5 Offensive Line Pass-Block / Run-Block Efficiency
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: team-scheme
 - Description: Composite metrics measuring an offensive line's ability to protect the passer and create running lanes, the primary structural input for projecting QB efficiency and RB volume production.
 - Notes: corpus depth: Rich — ~150 sources
@@ -54,7 +54,7 @@
 
 ### 2.6 Play-Action Rate
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: team-scheme
 - Description: The percentage of pass attempts preceded by a running back fake, a scheme indicator that inflates quarterback efficiency and tends to concentrate targets on intermediate and deep routes.
 - Notes: corpus depth: Rich — ~150 sources
