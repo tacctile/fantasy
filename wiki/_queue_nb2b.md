@@ -36,7 +36,7 @@
 
 ### 2.11 Third-Down Conversion Rate (Team)
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: team-scheme
 - Description: A team's success rate on third downs, a proxy for offensive quality that predicts drive length and the total volume of plays (and therefore fantasy opportunities) generated per possession.
 - Notes: corpus depth: Rich — ~150 sources
@@ -45,7 +45,7 @@
 
 ### 2.12 Coaching / OC Play-Calling Tendencies
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: team-scheme
 - Description: An offensive coordinator's historical and current tendencies in personnel usage, formation selection, pass/run ratio, and target distribution, enabling player valuation adjustments when coordinators change teams.
 - Notes: corpus depth: Rich — ~150 sources
@@ -54,7 +54,7 @@
 
 ### 2.13 Head Coach Offensive Philosophy (Aggressiveness, 4th Down)
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: team-scheme
 - Description: A head coach's decision-making framework on fourth downs, two-point conversions, and aggressive play-calling, which affects game script, scoring opportunities, and the fantasy value of skill players across all game states.
 - Notes: corpus depth: Rich — ~150 sources
