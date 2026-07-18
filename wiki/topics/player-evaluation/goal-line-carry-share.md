@@ -17,6 +17,7 @@ related:
   - player-evaluation/carries-per-game
   - player-evaluation/snap-share
   - team-scheme/personnel-grouping-tendencies
+  - team-scheme/red-zone-efficiency-team
 ---
 
 ## Summary

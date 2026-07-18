@@ -15,6 +15,7 @@ related:
   - player-evaluation/target-share
   - player-evaluation/wopr
   - player-evaluation/goal-line-carry-share
+  - team-scheme/red-zone-efficiency-team
 ---
 
 ## Summary
