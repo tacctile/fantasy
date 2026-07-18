@@ -12,6 +12,8 @@ tags:
 related:
   - player-evaluation/target-share
   - player-evaluation/air-yards-share
+  - player-evaluation/red-zone-target-share
+  - player-evaluation/goal-line-carry-share
 ---
 
 ## Summary

@@ -13,6 +13,7 @@ tags:
 related:
   - player-evaluation/air-yards-share
   - player-evaluation/wopr
+  - player-evaluation/red-zone-target-share
 ---
 
 ## Summary
