@@ -19,6 +19,8 @@ related:
   - team-scheme/defense-vs-position
   - team-scheme/opponent-defense-efficiency-epa-dvoa
   - team-scheme/red-zone-efficiency-team
+  - team-scheme/weather-impact
+  - team-scheme/home-away-travel-splits
   - player-evaluation/red-zone-target-share
   - player-evaluation/goal-line-carry-share
 ---
