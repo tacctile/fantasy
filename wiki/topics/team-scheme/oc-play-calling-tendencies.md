@@ -19,6 +19,8 @@ related:
   - team-scheme/proe
   - team-scheme/play-action-rate
   - team-scheme/rpo-usage-rate
+  - team-scheme/offensive-scheme-identity
+  - team-scheme/target-distribution-concentration
 ---
 
 ## Summary
