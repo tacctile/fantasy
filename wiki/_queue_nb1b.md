@@ -27,19 +27,19 @@
 
 ### 1.10 Touches Per Game
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: player-evaluation
 - Description: Total combined carries and receptions per game, measuring the full workload allocated to a skill player and serving as a composite opportunity signal.
-- Notes: corpus depth: Rich — ~150 sources. Marked IN_PROGRESS 2026-07-17 for 3-subject panel prompt.
+- Notes: Created player-evaluation/touches-per-game; convergence-filtered from 6-model panel; high-confidence mechanics, platform consistency, best-practice pairing with snap share.
 
 ---
 
 ### 1.11 Catch Rate / Contested Catch Rate
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: player-evaluation
 - Description: The percentage of targets a receiver converts to receptions, split into clean-catch and contested scenarios, measuring reliability and the ability to produce on difficult throws.
-- Notes: corpus depth: Rich — ~150 sources. Marked IN_PROGRESS 2026-07-17 for 3-subject panel prompt.
+- Notes: Created player-evaluation/catch-rate and player-evaluation/contested-catch-rate; convergence-filtered from 6-model panel; platform variance significant; CCR requires 30+ targets to stabilize.
 
 ---
 

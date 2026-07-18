@@ -54,10 +54,10 @@
 
 ### 1.19 Drop Rate
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: player-evaluation
 - Description: The percentage of catchable targets a receiver fails to complete, measuring reliability and identifying negative regression candidates whose target volume exceeds their production.
-- Notes: corpus depth: Rich — ~150 sources. Marked IN_PROGRESS 2026-07-17 for 3-subject panel prompt.
+- Notes: Created player-evaluation/drop-rate; convergence-filtered from 6-model panel; PFF 1-3% higher than NFL official; requires 40-50 targets to stabilize; weak year-over-year persistence (r² ~0.35-0.40).
 
 ---
 
