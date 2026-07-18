@@ -22,6 +22,7 @@ related:
   - league-mechanics/best-ball-strategy
   - league-mechanics/dynasty-redraft-keeper-frameworks
   - league-mechanics/breakout-candidate-modeling
+  - in-season-management/reach-vs-value-detection-draft-day
 ---
 
 ## Summary

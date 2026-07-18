@@ -17,6 +17,7 @@ related:
   - league-mechanics/league-size-scarcity-effects
   - league-mechanics/dynasty-redraft-keeper-frameworks
   - league-mechanics/breakout-candidate-modeling
+  - in-season-management/reach-vs-value-detection-draft-day
 ---
 
 ## Summary

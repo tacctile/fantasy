@@ -22,6 +22,7 @@ related:
   - league-mechanics/tier-breaks
   - league-mechanics/superflex
   - league-mechanics/adp
+  - in-season-management/reach-vs-value-detection-draft-day
 superseded_by:
 ---
 
