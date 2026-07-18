@@ -12,6 +12,8 @@ tags:
 related:
   - player-evaluation/route-participation-rate
   - player-evaluation/target-share
+  - player-evaluation/carries-per-game
+  - player-evaluation/goal-line-carry-share
 ---
 
 ## Summary
