@@ -21,6 +21,7 @@ related:
   - league-mechanics/bust-risk-regression-modeling
   - league-mechanics/breakout-candidate-modeling
   - league-mechanics/superflex-two-qb-value-shift
+  - league-mechanics/bye-week-management
 ---
 
 ## Summary
