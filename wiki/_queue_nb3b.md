@@ -54,13 +54,13 @@
 
 ### 3.13 Value-Based Drafting (VBD)
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: league-mechanics
 - Description: A systematic draft framework that ranks players by their projected production above the baseline replacement level at their position, enabling apples-to-apples comparisons across positions in any draft round.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: chathub.gg 6-model panel, 6 usable responses (1 truncated near the end but usable). Created wiki/topics/league-mechanics/value-based-drafting.md, cross-linked to existing wiki/topics/league-mechanics/league-size-scarcity-effects.md which already owns core VORP/replacement-level mechanics. Convergent findings: baseline selection (not the subtraction) is the entire discipline; flex spots require pooled cross-position baselines; static pre-draft baselines decay and require live recalculation; superflex/best-ball need format-specific re-derivation; VBD and ADP are distinct axes to compare, not conflate; mean-based VBD's lack of risk-adjustment is unresolved.
 
 ---
 
-This file covers entries 3.8–3.13. When all entries are COMPLETED or SKIPPED, update `wiki/_queue_master.md`: set this file → COMPLETED, set `wiki/_queue_nb3c.md` → ACTIVE.
+This file covers entries 3.8–3.13. All entries COMPLETED. `wiki/_queue_master.md` updated: this file → COMPLETED, `wiki/_queue_nb3c.md` → ACTIVE.
 
 _End of wiki/_queue_nb3b.md_
