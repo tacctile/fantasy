@@ -17,6 +17,8 @@ related:
   - league-mechanics/flex-spot-configuration
   - league-mechanics/superflex-two-qb-value-shift
   - league-mechanics/ppr-half-ppr-standard-scoring
+  - league-mechanics/league-size-scarcity-effects
+  - league-mechanics/dynasty-redraft-keeper-frameworks
 ---
 
 ## Summary
