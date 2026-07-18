@@ -278,4 +278,26 @@ WIKI NOTE: [only when something should change in the wiki. Omit otherwise.]
 
 ---
 
+## Post-Session Push Workflow
+
+After the completion report, all changes have been committed locally. To push to GitHub:
+
+**Option A: Push immediately** (uncommon)
+```bash
+git push origin main
+```
+
+**Option B: Defer and batch push** (recommended — saves GitHub notification spam and allows review before publishing)
+- Let commits accumulate across multiple sessions
+- When ready to push a batch: `git push origin main`
+
+**To review uncommitted changes before deciding:**
+```bash
+git log --oneline origin/main..HEAD
+```
+
+This shows all local commits not yet pushed. Nick decides when to push based on batch size, review comfort, and publishing readiness.
+
+---
+
 _End of wiki/WIKI_CHAT_CONTEXT.md_
