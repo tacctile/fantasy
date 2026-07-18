@@ -36,7 +36,7 @@
 
 ### 2.23 Offensive Line Injuries / Health Status
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: team-scheme
 - Description: The injury status and availability of individual offensive linemen, a high-impact structural variable that affects quarterback pressures, running lane creation, and the fantasy viability of backfield and passing game players.
 - Notes: corpus depth: Rich — ~150 sources
@@ -45,7 +45,7 @@
 
 ### 2.24 Backup QB Impact on Offense
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: team-scheme
 - Description: The degree to which a backup quarterback's skill level and scheme fit depresses or maintains the fantasy value of surrounding pass-catchers when a starter is lost to injury.
 - Notes: corpus depth: Rich — ~150 sources
@@ -54,7 +54,7 @@
 
 ### 2.25 Depth Chart Stability / Volatility
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: team-scheme
 - Description: The historical tendency of a team's depth chart to remain stable or shuffle roles mid-season, affecting the reliability of opportunity projections and the risk premium assigned to players in volatile situations.
 - Notes: corpus depth: Rich — ~150 sources
