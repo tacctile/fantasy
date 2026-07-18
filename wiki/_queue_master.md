@@ -8,7 +8,7 @@
 > **Total slots:** 100 (16 files × 6-7 per file)
 > **Cycle:** 1 (initial build)
 > **Generated:** 2026-07-14
-> **Updated:** 2026-07-18 — nb4c COMPLETED (entries 4.14–4.19 all done); nb4d now ACTIVE
+> **Updated:** 2026-07-18 — nb4d COMPLETED (entries 4.20–4.25 all done); all 16 queue files COMPLETED — full discovery cycle complete
 
 ---
 
@@ -42,7 +42,7 @@ Never add subject entries to this file. All entries live exclusively in the batc
 | [_queue_nb4a.md](_queue_nb4a.md) | In-Season Management, Injury/Availability & Situational Data | 4.1–4.7 (7) | in-season-management | COMPLETED |
 | [_queue_nb4b.md](_queue_nb4b.md) | In-Season Management, Injury/Availability & Situational Data | 4.8–4.13 (6) | in-season-management | COMPLETED |
 | [_queue_nb4c.md](_queue_nb4c.md) | In-Season Management, Injury/Availability & Situational Data | 4.14–4.19 (6) | in-season-management | COMPLETED |
-| [_queue_nb4d.md](_queue_nb4d.md) | In-Season Management, Injury/Availability & Situational Data | 4.20–4.25 (6) | in-season-management | ACTIVE |
+| [_queue_nb4d.md](_queue_nb4d.md) | In-Season Management, Injury/Availability & Situational Data | 4.20–4.25 (6) | in-season-management | COMPLETED |
 
 **Status values:** ACTIVE / LOCKED / COMPLETED
 

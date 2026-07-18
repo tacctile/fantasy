@@ -36,28 +36,28 @@
 
 ### 4.23 Rookie Integration Rate by Team
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: in-season-management
 - Description: The historical rate at which rookies across positions earn immediate fantasy-relevant usage versus being eased in, segmented by team culture, coaching staff, and positional need, to calibrate rookie draft-day expectations and early-season waiver priorities.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created wiki/topics/in-season-management/rookie-integration-rate-by-team.md. 6-model panel converged no standardized public metric exists; RB integration fast/binary (gated by incumbent injury), TE integration slowest, draft capital strongest prior but not deterministic, coaching tendency real but weakly quantified.
 
 ---
 
 ### 4.24 Consistency Score / Boom-Bust Rate
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: in-season-management
 - Description: The measurement of week-to-week scoring variance for individual players, distinguishing high-floor/low-ceiling consistent producers from low-floor/high-ceiling boom-bust options, and how format context (GPP vs. cash) should drive the preference.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created wiki/topics/in-season-management/consistency-score-boom-bust-rate.md. 6-model panel converged CV/percentile framing beats raw standard deviation; stable opportunity (not TDs) drives genuine floor; format dictates preference (cash=floor, GPP/best-ball=ceiling).
 
 ---
 
 ### 4.25 Multi-Platform ADP Divergence (ESPN / Yahoo / Sleeper)
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: in-season-management
 - Description: The systematic differences in average draft position across major fantasy platforms (ESPN, Yahoo, Sleeper, NFFC, Underdog) driven by user-base composition, scoring defaults, and interface design, and how arbitraging those gaps creates draft-day value.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created wiki/topics/league-mechanics/multi-platform-adp-divergence.md (routed to league-mechanics per content fit alongside existing ADP pages). 6-model panel converged divergence is real (scoring defaults, user sophistication, interface effects) but raw gaps must be format-normalized before treating as arbitrage; best-ball ADP is not directly transferable to redraft value.
 
 ---
 

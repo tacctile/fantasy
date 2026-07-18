@@ -39,7 +39,7 @@ When all entries in a notebook's four batch files are COMPLETED or SKIPPED, that
 | 1 | Player Evaluation & Opportunity Metrics | player-evaluation | ✅ COMPLETED — all 25 subjects ingested |
 | 2 | Team & Scheme Context | team-scheme | ✅ COMPLETED — all 25 subjects ingested |
 | 3 | League Mechanics, Scoring & Draft Strategy | league-mechanics | ✅ COMPLETED — all 25 subjects ingested |
-| 4 | In-Season Management, Injury/Availability & Situational Data | in-season-management | 🔄 ACTIVE — nb4a queue ready, ingestion not yet begun |
+| 4 | In-Season Management, Injury/Availability & Situational Data | in-season-management | ✅ COMPLETED — all 25 subjects ingested |
 
 ---
 
@@ -117,7 +117,7 @@ When all entries in a notebook's four batch files are COMPLETED or SKIPPED, that
 | 1 — Player Evaluation & Opportunity Metrics | ✅ 25 subjects | ✅ 26 pages | ✅ COMPLETED |
 | 2 — Team & Scheme Context | ✅ 25 subjects | ✅ 24 pages | ✅ COMPLETED |
 | 3 — League Mechanics, Scoring & Draft Strategy | ✅ 25 subjects | ✅ 24 pages | ✅ COMPLETED |
-| 4 — In-Season Management, Injury/Availability & Situational Data | ✅ 25 subjects | ⬜ | 🔄 ACTIVE — ingestion not yet begun |
+| 4 — In-Season Management, Injury/Availability & Situational Data | ✅ 25 subjects | ✅ 23 pages | ✅ COMPLETED |
 
 ---
 
@@ -132,6 +132,8 @@ When all entries in a notebook's four batch files are COMPLETED or SKIPPED, that
 **2026-07-17 (later still):** Notebook 2 (Team & Scheme Context) fully ingested — all 25 subjects COMPLETED across nb2a–nb2d, 24 pages committed to `wiki/topics/team-scheme/`. Notebook 3 (League Mechanics, Scoring & Draft Strategy) is now ACTIVE via `wiki/_queue_nb3a.md`.
 
 **2026-07-18:** Notebook 3 (League Mechanics, Scoring & Draft Strategy) fully ingested — all 25 subjects COMPLETED across nb3a–nb3d, 24 pages committed to `wiki/topics/league-mechanics/`. Notebook 4 (In-Season Management, Injury/Availability & Situational Data) is now ACTIVE via `wiki/_queue_nb4a.md`.
+
+**2026-07-18 (later):** Notebook 4 (In-Season Management, Injury/Availability & Situational Data) fully ingested — all 25 subjects COMPLETED across nb4a–nb4d, 23 pages committed to `wiki/topics/in-season-management/` (2 pages routed to `wiki/topics/league-mechanics/` where content fit better: multi-platform-adp-divergence). All 16 queue files across all 4 notebooks are now COMPLETED. The full discovery cycle is complete — 100 subjects processed, 98 total wiki pages committed. No further discovery-protocol sessions are needed unless Nick manually adds new subjects to a batch file.
 
 ---
 

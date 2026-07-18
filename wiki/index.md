@@ -38,9 +38,9 @@
 | -------- | ----- |
 | Player Evaluation | 26 |
 | Team & Scheme | 24 |
-| League Mechanics | 24 |
-| In-Season Management | 21 |
-| **Total** | **95** |
+| League Mechanics | 25 |
+| In-Season Management | 23 |
+| **Total** | **98** |
 
 ---
 
