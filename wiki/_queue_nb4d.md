@@ -9,28 +9,28 @@
 
 ### 4.20 Prime-Time Performance Splits
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: in-season-management
 - Description: The documented difference in player and team scoring output between prime-time games (Sunday Night, Monday Night, Thursday Night) and afternoon games, including whether prime-time suppression is a persistent or noise-driven phenomenon.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created wiki/topics/in-season-management/prime-time-performance-splits.md. 6-model panel converged that SNF/MNF suppression is mostly opponent-selection bias, not a true slot effect; RBs resilient under preparation compression. Thursday-specific mechanics remain on the existing short-week-thursday-game-performance page.
 
 ---
 
 ### 4.21 Post-Bye Week Performance
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: in-season-management
 - Description: The historical fantasy scoring boost (or lack thereof) for players and teams in the week immediately following a bye, including whether rest advantages are consistent enough to influence start/sit decisions.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created wiki/topics/in-season-management/post-bye-week-performance.md. 6-model panel converged the team-level rest effect is real but modest, confounded by opponent-schedule selection bias and injury-return conflation; not a reliable standalone start/sit lever.
 
 ---
 
 ### 4.22 Divisional Matchup Tendencies
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: in-season-management
 - Description: The pattern of within-division game characteristics — pace, scoring totals, defensive familiarity — that may affect fantasy production in divisional matchups versus non-divisional games.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created wiki/topics/in-season-management/divisional-matchup-tendencies.md. 6-model panel converged familiarity suppresses efficiency/explosive plays more than volume, is stronger in rematches, is contingent on defensive competence, and erodes with coaching/QB turnover.
 
 ---
 
