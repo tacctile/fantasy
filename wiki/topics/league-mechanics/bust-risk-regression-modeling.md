@@ -21,6 +21,7 @@ related:
   - league-mechanics/value-based-drafting
   - league-mechanics/waiver-wire-faab-strategy
   - league-mechanics/dynasty-redraft-keeper-frameworks
+  - league-mechanics/trade-value-calculation
 ---
 
 ## Summary
