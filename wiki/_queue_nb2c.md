@@ -36,7 +36,7 @@
 
 ### 2.17 Defense vs. Position (DvP)
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: team-scheme
 - Description: A defense's historical and current performance against a specific offensive position in fantasy points allowed, the primary matchup-based input for weekly start/sit decisions.
 - Notes: corpus depth: Rich — ~150 sources
@@ -45,7 +45,7 @@
 
 ### 2.18 Opponent Pass/Run Defense Efficiency (EPA/DVOA)
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: team-scheme
 - Description: Advanced defensive efficiency metrics measuring how well an opponent limits passing or rushing value per play, providing a more predictive matchup signal than raw yards or points allowed.
 - Notes: corpus depth: Rich — ~150 sources
@@ -54,7 +54,7 @@
 
 ### 2.19 Vegas Implied Team Total
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: team-scheme
 - Description: The sportsbook-derived expected point total for a single team in a game, the single most predictive external signal for weekly fantasy scoring opportunities across all skill positions.
 - Notes: corpus depth: Rich — ~150 sources
