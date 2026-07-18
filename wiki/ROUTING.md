@@ -95,6 +95,9 @@ If two wiki pages contradict each other:
 | Rookie integration rate | In-Season Management | Player Evaluation |
 | Consistency score / boom-bust rate | In-Season Management | Player Evaluation |
 | Multi-platform ADP divergence | In-Season Management | League Mechanics |
+| Sleeper endpoint structure / player ID format / rate limits | Sleeper API | — |
+| ESPN cookie auth / undocumented view params / rate limits | ESPN API | — |
+| League scoping conventions / player ID mapping / league_config data model | Schema Reference | — |
 
 ---
 

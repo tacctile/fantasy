@@ -1,0 +1,24 @@
+# .claude/STATE.yml
+# Living "what happened last session" file. Overwritten completely at the end of every session — never patched.
+# Last Updated: 2026-07-18
+
+current_focus: "Governance scaffold committed. Awaiting Wave 1 (Foundation) kickoff."
+
+build_system:
+  index: ".claude/BUILD_INDEX.md"
+  files_location: ".claude/build/"
+  total_files: 0
+  next_build_file_number: 1
+  current_build_files: []
+
+nick_pending:
+  - "Decide Wave 1 kickoff timing and scope prompt."
+  - "Confirm ESPN league visibility (public vs. private) for both ESPN leagues before ESPN cookie-auth work begins."
+
+blockers: []
+
+known_issues: []
+
+warnings: []
+
+health: "clean"

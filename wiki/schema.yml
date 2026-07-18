@@ -41,6 +41,9 @@ valid_values:
     - team-scheme
     - league-mechanics
     - in-season-management
+    - sleeper-api
+    - espn-api
+    - schema-reference
 
 required_body_sections:
   architecture:
@@ -131,6 +134,9 @@ system_files_required:
   - wiki/topics/team-scheme/_index.md
   - wiki/topics/league-mechanics/_index.md
   - wiki/topics/in-season-management/_index.md
+  - wiki/topics/sleeper-api/_index.md
+  - wiki/topics/espn-api/_index.md
+  - wiki/topics/schema-reference/_index.md
 
 health_classification:
   errors:
