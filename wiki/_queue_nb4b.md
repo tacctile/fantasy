@@ -36,7 +36,7 @@
 
 ### 4.11 Next-Man-Up / Injury Replacement Value
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: in-season-management
 - Description: The framework for rapidly identifying and acquiring the player who inherits opportunity when a starter is injured, incorporating positional carry-over rates, role fit, and immediate matchup quality.
 - Notes: corpus depth: Rich — ~150 sources
@@ -45,7 +45,7 @@
 
 ### 4.12 Game Script Sensitivity / Garbage-Time Production
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: in-season-management
 - Description: The degree to which a player's fantasy production is dependent on their team trailing (pass-heavy desperation) or leading (run-heavy game management), distinguishing genuine opportunity from situation-dependent volume.
 - Notes: corpus depth: Rich — ~150 sources
@@ -54,7 +54,7 @@
 
 ### 4.13 Positional Run Detection (Draft-Day)
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: in-season-management
 - Description: The real-time identification of position-specific drafting surges during a live draft that signal a shift in the room's strategy, requiring reactive adjustments to avoid being stranded without viable starters at a depleted position.
 - Notes: corpus depth: Rich — ~150 sources
