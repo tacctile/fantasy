@@ -17,6 +17,7 @@ tags:
 related:
   - league-mechanics/zero-rb-hero-rb-robust-rb
   - league-mechanics/league-size-scarcity-effects
+  - league-mechanics/waiver-wire-faab-strategy
 ---
 
 ## Summary
