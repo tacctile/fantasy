@@ -36,7 +36,7 @@
 
 ### 3.23 Trade Value Calculation
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: league-mechanics
 - Description: The frameworks used to assess whether a proposed trade improves a team's roster by comparing player values across position, age, format, and current situation — including trade value charts, buy-low/sell-high principles, and negotiation strategy.
 - Notes: corpus depth: Rich — ~150 sources
@@ -45,7 +45,7 @@
 
 ### 3.24 Bye Week Management
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: league-mechanics
 - Description: The strategy of accounting for player bye weeks during the draft and throughout the season to ensure viable starting lineups in all weeks, including the relative cost of bye week conflicts and waiver-based mitigation.
 - Notes: corpus depth: Rich — ~150 sources
@@ -54,7 +54,7 @@
 
 ### 3.25 Playoff Schedule Strength (Weeks 15–17)
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: league-mechanics
 - Description: The difficulty of a player's matchups during the fantasy playoff weeks (typically weeks 15–17), a late-draft prioritization factor that can tip selection decisions between players of similar season-long value projections.
 - Notes: corpus depth: Rich — ~150 sources
