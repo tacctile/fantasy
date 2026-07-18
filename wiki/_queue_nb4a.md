@@ -9,7 +9,7 @@
 
 ### 4.1 Start/Sit Weekly Projections
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: in-season-management
 - Description: The framework for making weekly lineup decisions by integrating opportunity metrics, matchup data, health status, and Vegas context into a point projection and confidence tier for each roster player.
 - Notes: corpus depth: Rich — ~150 sources
@@ -18,7 +18,7 @@
 
 ### 4.2 Rest-of-Season (ROS) Rankings
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: in-season-management
 - Description: Player rankings based on projected fantasy production for the remainder of the season, incorporating schedule strength, injury trajectory, role stability, and age curve to guide trade and waiver decisions.
 - Notes: corpus depth: Rich — ~150 sources
@@ -27,7 +27,7 @@
 
 ### 4.3 Injury Status / Practice Participation Tracking
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: in-season-management
 - Description: The weekly system of monitoring official injury designations (Full/Limited/DNP practice, Questionable/Doubtful/Out game status) and using practice reports as the primary leading indicator of player availability.
 - Notes: corpus depth: Rich — ~150 sources
