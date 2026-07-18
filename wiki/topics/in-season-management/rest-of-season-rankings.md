@@ -15,6 +15,7 @@ tags:
   - recovery-timeline
   - age-curve
   - decline-modeling
+  - workload-risk
   - strength-of-schedule
   - playoff-schedule
   - handcuff
@@ -22,6 +23,8 @@ tags:
 related:
   - in-season-management/weekly-start-sit-projections
   - in-season-management/injury-status-practice-participation-tracking
+  - in-season-management/injury-type-recovery-timelines
+  - in-season-management/return-to-production-curves
   - league-mechanics/trade-value-calculation
   - league-mechanics/playoff-schedule-strength
   - player-evaluation/value-over-replacement
@@ -48,6 +51,14 @@ Sources converge that injury-related ROS discounting must differ by injury categ
 ### Age curves are real but should be applied as a step function tied to position-specific inflection ages, not a flat linear penalty
 
 Every source that addresses age agrees the effect is real and position-specific, and every source that addresses methodology warns against applying a uniform linear age penalty across the board. Running backs are corroborated as declining earliest and most sharply, with the decline concentrated around a mid-to-late-20s inflection point rather than spread evenly across a career; wide receivers decline later and more gradually, with a shallower slope through the late 20s and a steeper drop concentrated closer to the low 30s; tight ends and quarterbacks are described across sources as the most durable positions, with flatter decline curves extending further into a player's 30s. The corroborated correction to a flat linear model is a step-function approach: minimal adjustment before a position's inflection age, then a materially steeper decline factor applied after it, because a linear model both overstates decline risk for players just before the inflection point and understates it for players meaningfully past it. Age should function as a prior that gets outweighed by strong current-role evidence, not as an automatic override of demonstrated current usage — a veteran receiver who has shifted into a stable slot or short-area role can preserve fantasy value even as pure athletic decline sets in, because the role itself has adapted.
+
+Decline operates through two distinct and separable mechanisms that sources converge should not be modeled as one combined effect: efficiency decay (reduced burst, fewer explosive plays, declining separation or contact balance — a direct athletic-capacity effect) and role decay (teams shifting opportunity to younger players, contract-driven change, competition for touches — an organizational-behavior effect that can move faster than the underlying physical decline). For running backs specifically, role decay is frequently the dominant and faster-moving of the two, meaning a back's market and roster value can decline before his per-touch efficiency actually does — sources converge this makes cumulative career workload (total career carries and touches, not chronological age alone) a materially useful additional input, since heavy-workload backs are both more likely to decline early and more likely to lose role even absent a clear efficiency drop. A source-corroborated exposure-based framing treats running back risk as a function of chronological age, career carry volume, recent-season workload, and injury history together, rather than age in isolation.
+
+At wide receiver, decline is frequently masked longer than at running back because target share and role can persist even as underlying separation, yards-after-catch, and contested-catch efficiency quietly decline — a pattern sources describe as more dangerous to detect than a clean age cliff, because raw target and reception counts can look stable while the process metrics underneath erode. Archetype matters materially at this position: receivers whose value depends on raw speed and vertical separation are corroborated as declining earlier and more sharply than route-technician or possession-style receivers, who can sustain value later into their careers by winning through timing, leverage, and spatial awareness rather than pure closing speed. The same archetype-splitting logic is corroborated at tight end, where blocking-oriented, in-line tight ends are described as accumulating more cumulative physical trauma (and therefore facing earlier decline risk) than receiving-oriented, detached or "big slot" tight ends — though sources note the historical sample size for this newer archetype is still too small to fully separate from the traditional in-line aging pattern with confidence.
+
+At quarterback, the age curve should be treated as two separate components rather than one: passing-game efficiency, which is corroborated as the most durable production stream across all four positions and can remain strong well into a player's mid-to-late 30s for pocket-oriented passers; and rushing-game production (designed runs, scrambles, red-zone rushing), which shows a materially steeper and earlier age-related decline tied to horizontal agility and acceleration loss. A mobile quarterback's fantasy value can decline meaningfully before his passing output shows any comparable drop, because the rushing component erodes first and independently.
+
+A persistent methodological risk flagged across sources is survivorship bias in any historical age-curve dataset: players still active and productive at older ages are, by definition, the subset who avoided early decline, injury-driven exit, or roster replacement — meaning naive historical averages of "production at age X" systematically overstate the expected outcome for an average player reaching that age, since the majority of same-age peers already exited the sample through release, injury, or ineffectiveness rather than declining gradually within it.
 
 ### Remaining schedule strength matters, but less than role, and playoff-week schedule deserves separate treatment
 
