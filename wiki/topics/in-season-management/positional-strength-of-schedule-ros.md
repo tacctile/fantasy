@@ -19,6 +19,7 @@ related:
   - in-season-management/rest-of-season-rankings
   - in-season-management/weekly-start-sit-projections
   - team-scheme/pace-of-play
+  - in-season-management/divisional-matchup-tendencies
 ---
 
 ## Summary
