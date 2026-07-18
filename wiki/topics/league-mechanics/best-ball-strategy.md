@@ -21,6 +21,8 @@ related:
   - league-mechanics/flex-spot-configuration
   - league-mechanics/ppr-half-ppr-standard-scoring
   - league-mechanics/passing-td-value-4pt-6pt
+  - league-mechanics/zero-rb-hero-rb-robust-rb
+  - league-mechanics/qb-stacking-strategy
 ---
 
 ## Summary
