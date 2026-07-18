@@ -158,4 +158,23 @@ All rules defined in `wiki/schema.yml` under `page_size_tiers`. Summary:
 
 ---
 
+## Post-Session Push Workflow
+
+After every wiki maintenance session, all changes are committed locally to `main`. Pushing to GitHub is deferred — Nick batches pushes instead of publishing after every session.
+
+**Local commits are complete.** To see uncommitted changes awaiting push:
+```bash
+cd /path/to/fantasy
+git log --oneline origin/main..HEAD
+```
+
+**To push a batch whenever ready:**
+```bash
+git push origin main
+```
+
+This defers GitHub notifications and allows review before publishing. Recommended: push after 2–3 sessions or when the batch is substantial enough to merit a notification.
+
+---
+
 _End of wiki/MAINTAINER.md_
