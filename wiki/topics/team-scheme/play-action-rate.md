@@ -16,6 +16,7 @@ related:
   - player-evaluation/average-depth-of-target
   - team-scheme/offensive-line-blocking-efficiency
   - team-scheme/rpo-usage-rate
+  - team-scheme/motion-usage-rate
 ---
 
 ## Summary

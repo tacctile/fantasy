@@ -15,6 +15,7 @@ related:
   - team-scheme/play-action-rate
   - team-scheme/proe
   - team-scheme/offensive-line-blocking-efficiency
+  - team-scheme/motion-usage-rate
 ---
 
 ## Summary
