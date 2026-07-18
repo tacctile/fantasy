@@ -9,6 +9,7 @@ tags:
   - target-share
   - snap-share
   - route-participation
+  - waiver-wire
 related:
   - player-evaluation/air-yards-share
   - player-evaluation/wopr
@@ -26,15 +27,15 @@ Target share is the percentage of a team's pass attempts directed at a specific 
 
 Target share equals a player's individual targets divided by the team's total pass attempts over a game, sample of games, or season. It measures structural role and coaching intent — how large a slice of the passing offense a player commands — rather than how efficiently that opportunity converts into production. Because it normalizes for differing team pass volume, it allows fair comparison of receiver role across offenses with very different pass-attempt totals.
 
-There is a methodological split in how the denominator is defined. Basic calculations use raw team pass attempts from the box score. More rigorous charting-based calculations exclude non-intentional plays — throwaways, spiked balls, and passes batted down at the line of scrimmage — to better reflect actual offensive design and coaching intent. This distinction matters most in small samples and unusual game flows; over a full season the two approaches converge closely.
+There is a methodological split in how the denominator is defined. Basic calculations use raw team pass attempts from the box score. More rigorous charting-based calculations exclude non-intentional plays — throwaways, spiked balls, and passes batted down at the line of scrimmage — to better reflect actual offensive design and coaching intent. A related but distinct denominator is team dropbacks (pass attempts plus sacks plus scrambles on designed passing plays); this "dropback target rate" is not the conventional target-share statistic and should not be blended with pass-attempt-denominated figures, since sacks reduce a dropback-based denominator without producing a target, which otherwise inflates every receiver's apparent share. This distinction matters most in small samples and unusual game flows; over a full season the different denominators converge closely but not exactly.
 
 ### Why Opportunity Outpredicts Efficiency
 
-Target share is treated as more predictive of future fantasy output than efficiency stats (catch rate, yards per target, touchdown rate) because opportunity is sticky — a player's role tends to persist week to week — while efficiency is volatile and regresses toward the mean. A player who commands a large, stable share of targets will generally continue producing usable fantasy value even through stretches of poor efficiency, whereas an efficiency spike without a stable target share is far less repeatable.
+Target share is treated as more predictive of future fantasy output than efficiency stats (catch rate, yards per target, touchdown rate) because opportunity is sticky — a player's role tends to persist week to week — while efficiency is volatile and regresses toward the mean. A player who commands a large, stable share of targets will generally continue producing usable fantasy value even through stretches of poor efficiency, whereas an efficiency spike without a stable target share is far less repeatable. This is not just directional: year-over-year target share correlation is meaningfully higher (roughly 0.65–0.70 in cited analyses) than year-over-year correlation for total fantasy points (roughly 0.40–0.45), which is the quantitative basis for treating target share as a foundational input to projection rather than a secondary descriptive stat.
 
 ### Elite and Starter Thresholds
 
-A target share of 25% or higher is the accepted benchmark for elite, top-tier wide receiver usage. A share in the 20–24% range indicates a stable, reliable starter-caliber role. Below roughly 20%, sustained over multiple games, a player has not established a genuine primary role in the passing offense. These thresholds are corroborated across multiple independent analyses and treated as settled.
+A target share of 25% or higher is the accepted benchmark for elite, top-tier wide receiver usage, with some sources placing true elite closer to 28%+. A share in the 20–24% range indicates a stable, reliable starter-caliber role. Below roughly 20%, sustained over multiple games, a player has not established a genuine primary role in the passing offense. Tight end thresholds run lower across the board given the position's structural target-share ceiling — roughly 18–22% marks a strong TE1 role, with 22%+ considered elite. These thresholds are corroborated across multiple independent analyses and treated as settled, though exact cutoffs should be read as bands rather than precise breakpoints.
 
 ### Known Pitfalls and Failure Patterns
 
@@ -49,6 +50,8 @@ A target share of 25% or higher is the accepted benchmark for elite, top-tier wi
 **Dump-off and check-down inflation.** Short-area, schemed throws — screens, running back dump-offs, quick check-downs — inflate target share without reflecting downfield value or genuine offensive priority. A high share built primarily on short-area volume describes a different (generally lower-ceiling) role than one built on intermediate and deep involvement.
 
 **Garbage-time inflation.** Target share accumulated in blowout garbage time can overstate a player's role in competitive game states and should be discounted accordingly.
+
+**Vacated-target overestimation.** When a player departs a team (trade, free agency, retirement), their "vacated targets" are frequently assumed to redistribute proportionally among the remaining pass-catchers. In practice, redistribution depends heavily on the departed player's routes and alignment, whether their targets were designed or incidental, the specific replacement personnel, quarterback preference, and whether the offense's scheme changes alongside the personnel change. Vacated targets should be treated as an opportunity pool with uncertain allocation, not a guaranteed transfer to any single remaining player.
 
 ### Pairing with Route-Level and Depth Context
 
