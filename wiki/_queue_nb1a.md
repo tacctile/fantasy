@@ -37,7 +37,7 @@
 
 ### 1.4 Yards Per Route Run (YPRR)
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: player-evaluation
 - Description: Total receiving yards divided by routes run, an efficiency metric that normalizes production across receivers with different snap share and target volume.
 - Notes: corpus depth: Rich — ~150 sources
@@ -46,7 +46,7 @@
 
 ### 1.5 Route Participation Rate
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: player-evaluation
 - Description: The percentage of pass plays on which a receiver runs a route, distinguishing full-time slot receivers from red zone specialists and situational packages.
 - Notes: corpus depth: Rich — ~150 sources
@@ -55,7 +55,7 @@
 
 ### 1.6 Snap Share
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: player-evaluation
 - Description: The percentage of offensive snaps a player is on the field for, the foundational availability metric underlying all opportunity-based analysis.
 - Notes: corpus depth: Rich — ~150 sources
