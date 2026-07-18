@@ -17,6 +17,8 @@ tags:
 related:
   - league-mechanics/ppr-half-ppr-standard-scoring
   - league-mechanics/te-premium-scoring
+  - league-mechanics/flex-spot-configuration
+  - league-mechanics/passing-td-value-4pt-6pt
 ---
 
 ## Summary

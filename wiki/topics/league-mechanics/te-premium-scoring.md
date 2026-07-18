@@ -15,6 +15,7 @@ tags:
 related:
   - league-mechanics/ppr-half-ppr-standard-scoring
   - league-mechanics/superflex-two-qb-value-shift
+  - league-mechanics/flex-spot-configuration
 ---
 
 ## Summary
