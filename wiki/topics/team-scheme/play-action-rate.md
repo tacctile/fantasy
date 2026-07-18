@@ -15,6 +15,7 @@ related:
   - team-scheme/proe
   - player-evaluation/average-depth-of-target
   - team-scheme/offensive-line-blocking-efficiency
+  - team-scheme/rpo-usage-rate
 ---
 
 ## Summary
