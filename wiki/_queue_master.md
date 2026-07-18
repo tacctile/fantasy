@@ -8,7 +8,7 @@
 > **Total slots:** 100 (16 files × 6-7 per file)
 > **Cycle:** 1 (initial build)
 > **Generated:** 2026-07-14
-> **Updated:** 2026-07-18 — nb3d COMPLETED (entries 3.20–3.25 all done); Notebook 3 fully ingested; nb4a now ACTIVE
+> **Updated:** 2026-07-18 — nb4a COMPLETED (entries 4.1–4.7 all done); nb4b now ACTIVE
 
 ---
 
@@ -39,8 +39,8 @@ Never add subject entries to this file. All entries live exclusively in the batc
 | [_queue_nb3b.md](_queue_nb3b.md) | League Mechanics, Scoring & Draft Strategy | 3.8–3.13 (6) | league-mechanics | COMPLETED |
 | [_queue_nb3c.md](_queue_nb3c.md) | League Mechanics, Scoring & Draft Strategy | 3.14–3.19 (6) | league-mechanics | COMPLETED |
 | [_queue_nb3d.md](_queue_nb3d.md) | League Mechanics, Scoring & Draft Strategy | 3.20–3.25 (6) | league-mechanics | COMPLETED |
-| [_queue_nb4a.md](_queue_nb4a.md) | In-Season Management, Injury/Availability & Situational Data | 4.1–4.7 (7) | in-season-management | ACTIVE |
-| [_queue_nb4b.md](_queue_nb4b.md) | In-Season Management, Injury/Availability & Situational Data | 4.8–4.13 (6) | in-season-management | LOCKED |
+| [_queue_nb4a.md](_queue_nb4a.md) | In-Season Management, Injury/Availability & Situational Data | 4.1–4.7 (7) | in-season-management | COMPLETED |
+| [_queue_nb4b.md](_queue_nb4b.md) | In-Season Management, Injury/Availability & Situational Data | 4.8–4.13 (6) | in-season-management | ACTIVE |
 | [_queue_nb4c.md](_queue_nb4c.md) | In-Season Management, Injury/Availability & Situational Data | 4.14–4.19 (6) | in-season-management | LOCKED |
 | [_queue_nb4d.md](_queue_nb4d.md) | In-Season Management, Injury/Availability & Situational Data | 4.20–4.25 (6) | in-season-management | LOCKED |
 

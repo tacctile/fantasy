@@ -63,13 +63,13 @@
 
 ### 4.7 Career Workload / Touch Accumulation Risk
 
-- Status: IN_PROGRESS
+- Status: COMPLETED — created in-season-management/career-workload-touch-accumulation-risk
 - Wiki Category: in-season-management
 - Description: The relationship between lifetime carry and touch totals and the probability of injury or performance decline, used to identify running backs at elevated risk of breakdown regardless of current health status.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: corpus depth: Rich — ~150 sources; full 6-model panel received and convergence-filtered; one of six models argued a contrary "durability screening" thesis, resolved against the 5-model corroborated majority
 
 ---
 
-This file covers entries 4.1–4.7. When all entries are COMPLETED or SKIPPED, update `wiki/_queue_master.md`: set this file → COMPLETED, set `wiki/_queue_nb4b.md` → ACTIVE.
+This file covers entries 4.1–4.7. All entries COMPLETED. `wiki/_queue_master.md` updated: this file → COMPLETED, `wiki/_queue_nb4b.md` → ACTIVE.
 
 _End of wiki/_queue_nb4a.md_
