@@ -9,28 +9,28 @@
 
 ### 3.1 PPR / Half-PPR / Standard Scoring Impact
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: league-mechanics
 - Description: How per-reception point bonuses restructure positional value by amplifying the fantasy output of high-target receivers and pass-catching backs relative to their production in non-PPR formats.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: chathub.gg 6-model panel. Created wiki/topics/league-mechanics/ppr-half-ppr-standard-scoring.md. Convergent findings: value must be measured points-above-replacement, not raw PPR points; target share/route participation outpredict yards-per-touch.
 
 ---
 
 ### 3.2 TE Premium Scoring
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: league-mechanics
 - Description: Bonus points awarded to tight ends on receptions or touchdowns, a format modifier that dramatically increases the positional value gap between elite TEs and replacements in affected leagues.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: chathub.gg 6-model panel. Created wiki/topics/league-mechanics/te-premium-scoring.md. Convergent findings: premium only benefits true target-earning TEs, widens (not closes) the elite/replacement gap, reception-based premiums more stable than TD-based.
 
 ---
 
 ### 3.3 Superflex / 2QB Format Value Shift
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: league-mechanics
 - Description: The positional scarcity dynamics created by formats requiring two starting quarterbacks or allowing a second QB in a flex spot, which inflates QB value and cascades down to affect ADP across all positions.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: chathub.gg 6-model panel. Created wiki/topics/league-mechanics/superflex-two-qb-value-shift.md. Convergent findings: nonlinear replacement-level collapse from ~32-starter NFL supply cap, 2QB stricter than Superflex, rushing production disproportionately valuable.
 
 ---
 
