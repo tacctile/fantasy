@@ -14,6 +14,7 @@ tags:
 related:
   - team-scheme/vegas-implied-team-total
   - team-scheme/weather-impact
+  - in-season-management/short-week-thursday-game-performance
 ---
 
 ## Summary

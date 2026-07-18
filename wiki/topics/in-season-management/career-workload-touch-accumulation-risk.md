@@ -20,6 +20,7 @@ related:
   - in-season-management/rest-of-season-rankings
   - in-season-management/injury-type-recovery-timelines
   - in-season-management/return-to-production-curves
+  - in-season-management/short-week-thursday-game-performance
 ---
 
 ## Summary

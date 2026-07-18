@@ -21,6 +21,7 @@ related:
   - in-season-management/rest-of-season-rankings
   - in-season-management/injury-status-practice-participation-tracking
   - in-season-management/positional-strength-of-schedule-ros
+  - in-season-management/short-week-thursday-game-performance
   - in-season-management/return-to-production-curves
   - league-mechanics/playoff-schedule-strength
   - league-mechanics/trade-value-calculation
