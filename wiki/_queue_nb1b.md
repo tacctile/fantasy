@@ -9,7 +9,7 @@
 
 ### 1.8 Goal-Line Carry Share
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: player-evaluation
 - Description: A running back's share of carries inside the opponent's 5-yard line, a high-leverage opportunity metric that predicts rushing touchdown upside independent of overall carry volume.
 - Notes: corpus depth: Rich — ~150 sources
@@ -18,7 +18,7 @@
 
 ### 1.9 Carries Per Game / Carry Share
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: player-evaluation
 - Description: A running back's average carries per game and percentage of team rushing attempts, the primary opportunity baseline for evaluating backfield role and workload.
 - Notes: corpus depth: Rich — ~150 sources

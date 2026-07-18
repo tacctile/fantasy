@@ -64,7 +64,7 @@
 
 ### 1.7 Red Zone Target Share
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: player-evaluation
 - Description: A receiver's share of team targets inside the opponent's 20-yard line, a high-leverage opportunity metric that predicts touchdown upside disproportionate to overall target share.
 - Notes: corpus depth: Rich — ~150 sources
