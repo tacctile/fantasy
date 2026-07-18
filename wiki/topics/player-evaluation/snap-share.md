@@ -14,6 +14,7 @@ related:
   - player-evaluation/target-share
   - player-evaluation/carries-per-game
   - player-evaluation/goal-line-carry-share
+  - team-scheme/personnel-grouping-tendencies
 ---
 
 ## Summary

@@ -16,6 +16,7 @@ related:
   - player-evaluation/wopr
   - player-evaluation/carries-per-game
   - player-evaluation/snap-share
+  - team-scheme/personnel-grouping-tendencies
 ---
 
 ## Summary
