@@ -64,13 +64,13 @@
 
 ### 1.7 Red Zone Target Share
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: player-evaluation
 - Description: A receiver's share of team targets inside the opponent's 20-yard line, a high-leverage opportunity metric that predicts touchdown upside disproportionate to overall target share.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: corpus depth: Rich — ~150 sources. Created player-evaluation/red-zone-target-share (confidence: medium) via chathub.gg 6-model panel; converged on tiered inside-20/10/5 breakdown, small-sample volatility, mobile-QB suppression. Several single-model platform-methodology claims (named provider definitions, exact variance percentages) excluded per Convergence-Filtering Standard.
 
 ---
 
-This file covers entries 1.1–1.7. When all entries are COMPLETED or SKIPPED, update `wiki/_queue_master.md`: set this file → COMPLETED, set `wiki/_queue_nb1b.md` → ACTIVE.
+This file covers entries 1.1–1.7. All entries COMPLETED — `wiki/_queue_master.md` updated: this file → COMPLETED, `wiki/_queue_nb1b.md` → ACTIVE.
 
 _End of wiki/_queue_nb1a.md_

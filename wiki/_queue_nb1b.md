@@ -9,19 +9,19 @@
 
 ### 1.8 Goal-Line Carry Share
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: player-evaluation
 - Description: A running back's share of carries inside the opponent's 5-yard line, a high-leverage opportunity metric that predicts rushing touchdown upside independent of overall carry volume.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: corpus depth: Rich — ~150 sources. Created player-evaluation/goal-line-carry-share (confidence: medium) via chathub.gg 6-model panel; converged on mobile-QB suppression, small-sample volatility, team-vs-RB-only denominator distinction. Several single-model claims (named teams/players, exact numeric thresholds, hardcoded conversion coefficients) excluded per Convergence-Filtering Standard.
 
 ---
 
 ### 1.9 Carries Per Game / Carry Share
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: player-evaluation
 - Description: A running back's average carries per game and percentage of team rushing attempts, the primary opportunity baseline for evaluating backfield role and workload.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: corpus depth: Rich — ~150 sources. Created player-evaluation/carries-per-game (confidence: medium) via chathub.gg 6-model panel; converged on CPG/carry-share complementarity, denominator ambiguity (games-active vs. games-with-carry; kneel handling), game-script distortion. Several single-model claims (r-values, exact workhorse thresholds) excluded per Convergence-Filtering Standard.
 
 ---
 
