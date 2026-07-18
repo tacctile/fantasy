@@ -9,7 +9,7 @@
 
 ### 2.8 Personnel Grouping Tendencies (11/12/21)
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: team-scheme
 - Description: The frequency distribution of a team's offensive personnel packages (11=1RB/1TE/3WR, 12=1RB/2TE/2WR, 21=2RB/1TE/2WR), determining which positions see elevated opportunity and which are scheme-dependent.
 - Notes: corpus depth: Rich — ~150 sources
@@ -18,7 +18,7 @@
 
 ### 2.9 Motion Usage Rate
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: team-scheme
 - Description: The percentage of plays on which an offense employs pre-snap motion, a proxy for scheme sophistication that correlates with quarterback efficiency and receiver target opportunity.
 - Notes: corpus depth: Rich — ~150 sources
@@ -27,7 +27,7 @@
 
 ### 2.10 Red Zone Efficiency (Team)
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: team-scheme
 - Description: A team's scoring rate and playcalling tendencies inside the opponent's 20-yard line, determining how frequently red zone opportunities translate to touchdowns and which players are the primary beneficiaries.
 - Notes: corpus depth: Rich — ~150 sources
