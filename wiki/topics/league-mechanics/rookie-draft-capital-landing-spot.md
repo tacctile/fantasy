@@ -18,6 +18,7 @@ related:
   - league-mechanics/dynasty-redraft-keeper-frameworks
   - league-mechanics/value-based-drafting
   - league-mechanics/breakout-candidate-modeling
+  - in-season-management/rookie-integration-rate-by-team
 ---
 
 ## Summary
