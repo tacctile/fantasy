@@ -36,7 +36,7 @@
 
 ### 1.23 TE Alignment Rate (Inline vs. Slot/Wide)
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: player-evaluation
 - Description: The percentage of snaps a tight end lines up inline versus in the slot or split wide, determining route tree access, target opportunity, and the degree to which a TE functions as a receiver or blocker.
 - Notes: corpus depth: Rich — ~150 sources
@@ -45,7 +45,7 @@
 
 ### 1.24 Rookie College Dominator Rating / Breakout Age
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: player-evaluation
 - Description: A college receiver's share of team receiving production (targets, yards, touchdowns) and the age at which they first achieved a significant usage threshold, predicting NFL target share and breakout trajectory.
 - Notes: corpus depth: Rich — ~150 sources
@@ -54,7 +54,7 @@
 
 ### 1.25 Athletic Testing (RAS / Speed Score / Burst Score)
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: player-evaluation
 - Description: Composite athletic scores derived from NFL Combine and Pro Day data — Relative Athletic Score, Speed Score, and Burst Score — used to project upside and identify athleticism outliers in the draft.
 - Notes: corpus depth: Rich — ~150 sources
