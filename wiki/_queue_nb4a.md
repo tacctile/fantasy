@@ -63,7 +63,7 @@
 
 ### 4.7 Career Workload / Touch Accumulation Risk
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: in-season-management
 - Description: The relationship between lifetime carry and touch totals and the probability of injury or performance decline, used to identify running backs at elevated risk of breakdown regardless of current health status.
 - Notes: corpus depth: Rich — ~150 sources
