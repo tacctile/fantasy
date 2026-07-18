@@ -14,6 +14,7 @@ related:
   - player-evaluation/yprr
   - player-evaluation/snap-share
   - player-evaluation/target-share
+  - in-season-management/snap-target-trend-alerts
 ---
 
 ## Summary

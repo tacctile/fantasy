@@ -15,6 +15,7 @@ related:
   - player-evaluation/carries-per-game
   - player-evaluation/goal-line-carry-share
   - team-scheme/personnel-grouping-tendencies
+  - in-season-management/snap-target-trend-alerts
 ---
 
 ## Summary
