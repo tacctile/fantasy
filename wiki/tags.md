@@ -44,6 +44,10 @@
 - scramble-rate
 - target-depth
 - receiving-role
+- expected-value
+- opportunity
+- residual
+- regression-baseline
 
 ## Team & Scheme
 - pass-rate
@@ -107,6 +111,8 @@
 - positional-scarcity
 - tier-breaks
 - vbd-drafting
+- value-based-drafting
+- draft-strategy
 - zero-rb
 - hero-rb
 - robust-rb

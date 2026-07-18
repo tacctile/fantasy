@@ -36,11 +36,11 @@
 
 | Category | Pages |
 | -------- | ----- |
-| Player Evaluation | 13 |
+| Player Evaluation | 16 |
 | Team & Scheme | 0 |
 | League Mechanics | 0 |
 | In-Season Management | 0 |
-| **Total** | **13** |
+| **Total** | **16** |
 
 ---
 

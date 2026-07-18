@@ -17,3 +17,6 @@ Core statistical models for assessing player performance, opportunity share, and
 | [explosive-play-rate](explosive-play-rate.md) | Percentage of touches gaining 15+ yards — measures ceiling and big-play upside; low year-over-year stability requires aggressive regression. | medium |
 | [missed-tackles-forced](missed-tackles-forced.md) | Frequency of failed tackle attempts caused by ball carrier — isolates elusiveness and contact-avoidance skill; ~0.45-0.55 year-over-year stability. | medium |
 | [yards-after-contact](yards-after-contact.md) | Yardage gained after first defensive contact in rushing plays — more stable than yards per carry; reveals runner-skill-driven vs. scheme-driven production. | medium |
+| [expected-fantasy-points](expected-fantasy-points.md) | Model-derived estimate of fantasy points a player should score given their opportunity profile — isolates role quality from execution efficiency. | high |
+| [fantasy-points-over-expected](fantasy-points-over-expected.md) | Difference between actual and expected fantasy points — measures efficiency and luck residual; highly volatile but useful for identifying regression candidates. | high |
+| [value-over-replacement](value-over-replacement.md) | A player's fantasy production above replacement-level; core framework for draft valuation and trade analysis accounting for positional scarcity. | high |
