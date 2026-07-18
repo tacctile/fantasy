@@ -22,6 +22,7 @@ related:
   - player-evaluation/red-zone-target-share
   - team-scheme/red-zone-efficiency-team
   - team-scheme/offensive-scheme-identity
+  - team-scheme/depth-chart-stability
 ---
 
 ## Summary
