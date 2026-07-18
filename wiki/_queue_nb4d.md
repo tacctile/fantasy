@@ -9,7 +9,7 @@
 
 ### 4.20 Prime-Time Performance Splits
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: in-season-management
 - Description: The documented difference in player and team scoring output between prime-time games (Sunday Night, Monday Night, Thursday Night) and afternoon games, including whether prime-time suppression is a persistent or noise-driven phenomenon.
 - Notes: corpus depth: Rich — ~150 sources
@@ -18,7 +18,7 @@
 
 ### 4.21 Post-Bye Week Performance
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: in-season-management
 - Description: The historical fantasy scoring boost (or lack thereof) for players and teams in the week immediately following a bye, including whether rest advantages are consistent enough to influence start/sit decisions.
 - Notes: corpus depth: Rich — ~150 sources
@@ -27,7 +27,7 @@
 
 ### 4.22 Divisional Matchup Tendencies
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: in-season-management
 - Description: The pattern of within-division game characteristics — pace, scoring totals, defensive familiarity — that may affect fantasy production in divisional matchups versus non-divisional games.
 - Notes: corpus depth: Rich — ~150 sources
