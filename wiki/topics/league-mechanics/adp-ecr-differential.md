@@ -16,6 +16,7 @@ related:
   - league-mechanics/average-draft-position
   - league-mechanics/league-size-scarcity-effects
   - league-mechanics/dynasty-redraft-keeper-frameworks
+  - league-mechanics/breakout-candidate-modeling
 ---
 
 ## Summary

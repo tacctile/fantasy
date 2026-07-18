@@ -21,6 +21,7 @@ related:
   - league-mechanics/league-size-scarcity-effects
   - league-mechanics/best-ball-strategy
   - league-mechanics/dynasty-redraft-keeper-frameworks
+  - league-mechanics/breakout-candidate-modeling
 ---
 
 ## Summary
