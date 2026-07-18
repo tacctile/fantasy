@@ -33,6 +33,9 @@
 | ----- | ----- | ------ | -------- | ----------- |
 | WOPR formula | WOPR = 1.5 × Target Share + 0.7 × Air Yards Share (Josh Hermsmeyer's canonical formula) | chathub.gg 6-model panel, 5-of-6 models confirmed; 1 model reported an unconfirmed alternate (0.75/0.25) attributed to a single platform | 2026-07-17 | 2026-10-15 |
 | FPOE/xFP/VORP consensus | Core mechanics, platform variance, edge cases, and best practices across FPOE, xFP, VORP/VBD align across 6-model panel with high confidence. | chathub.gg 6-model panel convergence filtering (subjects 1.16, 1.17, 1.18); all 6 models agree on mechanics, edge cases, pitfalls; single-model claims on empirical coefficients flagged for future verification. | 2026-07-17 | 2026-10-15 |
+| Wind threshold for passing degradation | ~15 mph sustained wind is the consensus threshold where passing efficiency begins degrading materially; effect is non-linear and disproportionately affects deep passing over short passing. | chathub.gg 6-model panel (subject 2.21); 6-of-6 models converge on the ~15 mph threshold and the deep-vs-short asymmetry. | 2026-07-17 | 2026-10-15 |
+| Eastward vs. westward travel asymmetry | Eastward travel (advancing the body clock) is more circadian-disruptive than westward travel (delaying the body clock); the clearest documented case is a West Coast team traveling east for an early local kickoff. | chathub.gg 6-model panel (subject 2.22); 4+ of 6 models converge on this directional asymmetry. | 2026-07-17 | 2026-10-15 |
+| Divisional-game line reliability | Point spreads and totals in divisional matchups carry systematically higher error than non-divisional games, plausibly due to familiarity compressing market-priced variance. | chathub.gg 6-model panel (subject 2.20); 3+ of 6 models converge; no source provided a validated error-magnitude figure. | 2026-07-17 | 2026-10-15 |
 
 ---
 
