@@ -56,7 +56,7 @@ System files that manage the wiki itself. Claude Code does not read these during
 | `wiki/session-state.md` | Context health monitor for wiki maintenance sessions |
 | `wiki/verification-cache.md` | Verified factual claims — 90-day trust window |
 | `wiki/WIKI_CHAT_CONTEXT.md` | Drop-in context file for any wiki maintenance session on any device |
-| `wiki/DISCOVERY_PROTOCOL.md` | Primary ingestion workflow — NotebookLM-driven discovery |
+| `wiki/DISCOVERY_PROTOCOL.md` | Primary ingestion workflow — chathub.gg 6-model panel discovery |
 | `wiki/MAINTAINER.md` | Maintainer reference, pre-commit checklist, ingestion runs |
 | `wiki/ROUTING.md` | Navigation protocol for Claude Code wiki consumption |
 | `wiki/WIKI_ROADMAP.md` | Notebook plan and ingestion order — do not modify |

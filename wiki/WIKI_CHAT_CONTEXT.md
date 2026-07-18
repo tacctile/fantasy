@@ -15,7 +15,7 @@ When this file is dropped into a session, you are the Fantasy Football Platform 
 
 3. **Then do one of the following — no asking:**
    - If Nick dropped a source (URL, PDF, pasted text, AI response) into this session: run the Single-Source Ingest Protocol (see below).
-   - If no source was dropped: generate the 3-Subject Followup Prompt for the next 3 PENDING queue entries and present it to Nick so he can paste it into NotebookLM.
+   - If no source was dropped: generate the 3-Subject Panel Prompt for the next 3 PENDING queue entries and present it to Nick so he can paste it into chathub.gg (fans out to 6 configured AI models).
 
 **Do not greet Nick. Do not ask what he wants. Do not explain what you're about to do. Read the files and act.**
 
@@ -32,7 +32,7 @@ EXECUTION ENVIRONMENT: This file is used in four contexts — Claude Desktop wit
 >
 > Schema source of truth: `wiki/schema.yml`
 > Discovery queue: `wiki/_queue_master.md` (master index) → active notebook queue file
-> Last Updated: 2026-07-14
+> Last Updated: 2026-07-17
 
 ---
 
@@ -48,7 +48,7 @@ This is not documentation. This is a pre-compiled knowledge layer — synthesize
 
 ## Two Ingestion Modes
 
-**Discovery Protocol (PRIMARY) — `wiki/DISCOVERY_PROTOCOL.md`.** Subject-driven ingestion against the NotebookLM corpus. This is the default mode. Nick runs a Discovery Prompt in NotebookLM to generate a ranked subject queue, then you walk the queue three entries at a time, pulling synthesis from NotebookLM for each triple and committing strengthened pages to the wiki. Standard cadence: 3 subjects per session — Nick starts a new session after every triple. The master index (`wiki/_queue_master.md`) points to the active batch queue file — any fresh session on any device reads the master, opens the ACTIVE batch file, and picks up exactly where the last left off.
+**Discovery Protocol (PRIMARY) — `wiki/DISCOVERY_PROTOCOL.md`.** Subject-driven ingestion against a chathub.gg 6-model AI panel. This is the default mode. The subject queue (100 subjects across 4 notebooks) is already fully populated — there is no discovery-prompt step. You generate a 3-Subject Panel Prompt for the next 3 PENDING queue entries; Nick pastes it into chathub.gg, which runs it against all 6 configured models and returns 6 independent responses. Nick pastes each response back into the session, and you convergence-filter all 6 per the Convergence-Filtering Standard in `wiki/DISCOVERY_PROTOCOL.md` before synthesizing and committing strengthened pages. Standard cadence: 3 subjects per session — Nick starts a new session after every triple. The master index (`wiki/_queue_master.md`) points to the active batch queue file — any fresh session on any device reads the master, opens the ACTIVE batch file, and picks up exactly where the last left off.
 
 **Single-Source Ingestion (this file, sections below).** One-off mode for sources Nick drops directly into a session — a URL, a PDF, a pasted article, an AI response. The two-phase block system applies.
 
@@ -98,7 +98,7 @@ The `category` frontmatter field determines both the file path and the directory
 ## Single-Source Ingest Protocol — Two-Phase Block System
 
 > This protocol applies when Nick drops a specific source directly into the session.
-> For NotebookLM-driven discovery cycles, follow `wiki/DISCOVERY_PROTOCOL.md` instead.
+> For chathub.gg panel-driven discovery cycles, follow `wiki/DISCOVERY_PROTOCOL.md` instead.
 
 ### Phase 1: Read and Plan (no writes)
 

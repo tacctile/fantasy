@@ -39,7 +39,7 @@ Every file created, modified, or deleted must exist within `wiki/`. No exception
 
 ## Two Ingestion Modes
 
-**Discovery Protocol (PRIMARY):** Subject-driven ingestion against the NotebookLM corpus. See `wiki/DISCOVERY_PROTOCOL.md` for the full workflow. The master index (`wiki/_queue_master.md`) points to the ACTIVE batch queue file — any session on any device reads the master, opens the ACTIVE batch file, and knows exactly where things stand.
+**Discovery Protocol (PRIMARY):** Subject-driven ingestion against a chathub.gg 6-model AI panel. See `wiki/DISCOVERY_PROTOCOL.md` for the full workflow. The master index (`wiki/_queue_master.md`) points to the ACTIVE batch queue file — any session on any device reads the master, opens the ACTIVE batch file, and knows exactly where things stand.
 
 **Single-Source Ingestion:** One-off mode for sources Nick drops directly into a session. Full protocol in `wiki/WIKI_CHAT_CONTEXT.md`. The two-phase block system applies.
 

@@ -21,11 +21,11 @@ The repo is the memory. The queue is the state. Nothing is ever lost.
 
 ## The Core Workflow
 
-### Phase 0 — Discovery Prompt (once per notebook)
-Run the Discovery Prompt from `wiki/DISCOVERY_PROTOCOL.md` in the target NotebookLM notebook. The prompt requests exactly 25 subjects (this wiki has 25 subjects per notebook), ranked strictly by volume of source material (most coverage first), each annotated with a corpus depth rating (Rich / Moderate / Thin). NotebookLM returns the ranked list. Paste the response into the session. The AI parses it into the four `_queue_nb{N}{a-d}.md` batch files (~6-7 slots each), replaces any placeholder stubs, commits all four files, and updates `wiki/_queue_master.md`. The discovery cycle for that notebook is initialized.
+### Phase 0 — Queue Initialization (already complete)
+All 100 subjects across all 4 notebooks were pre-populated into the 16 batch queue files at wiki initialization (2026-07-14). This phase does not repeat — the subject list is fixed unless Nick manually edits a batch file to add new subjects.
 
 ### Phase 1 — Subject Ingestion (3 subjects per session)
-Each session processes exactly 3 subjects via the 3-Subject Followup Prompt. Nick starts a fresh session for each triple. After every triple, the AI marks the three queue entries COMPLETED (with notes), updates the relevant `_index.md` files, updates `wiki/index.md` page counts if pages were added, and updates `wiki/_queue_master.md` if the batch file boundary was crossed.
+Each session processes exactly 3 subjects via the 3-Subject Panel Prompt, pasted into chathub.gg to run against all 6 configured AI models. Nick pastes each of the 6 responses back into the session, and the AI convergence-filters them per `wiki/DISCOVERY_PROTOCOL.md` before synthesizing wiki pages. Nick starts a fresh session for each triple. After every triple, the AI marks the three queue entries COMPLETED (with notes), updates the relevant `_index.md` files, updates `wiki/index.md` page counts if pages were added, and updates `wiki/_queue_master.md` if the batch file boundary was crossed.
 
 ### Phase 2 — Notebook Complete
 When all entries in a notebook's four batch files are COMPLETED or SKIPPED, that notebook is done. Update the Progress Tracker below.
@@ -124,6 +124,8 @@ When all entries in a notebook's four batch files are COMPLETED or SKIPPED, that
 ## Notes & Audibles
 
 **2026-07-14:** Wiki initialized. All 16 batch queue files created with all 100 subjects pre-populated across 4 notebooks. nb1a is ACTIVE. No ingestion has begun — all 100 subjects are PENDING. Run the first wiki maintenance session to begin ingesting notebook 1.
+
+**2026-07-17:** Ingestion source switched from NotebookLM to a chathub.gg 6-model AI panel. NotebookLM is fully removed from the pipeline — no per-notebook discovery step, no corpus to diff against. Each session triple now generates a single 3-Subject Panel Prompt (opens with a fixed fantasy-football-analytics-expert framing, no platform/wiki context) run against all 6 models in chathub.gg; Nick pastes back the 6 responses and Claude applies the Convergence-Filtering Standard (`wiki/DISCOVERY_PROTOCOL.md`) before synthesizing pages. First triple ingested under this pipeline: 1.1 Target Share, 1.2 Air Yards Share, 1.3 WOPR — all three created in `wiki/topics/player-evaluation/`.
 
 ---
 
