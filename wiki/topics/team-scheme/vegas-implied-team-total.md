@@ -13,6 +13,8 @@ tags:
   - red-zone
   - weather
   - pace-of-play
+  - divisional-matchup
+  - thursday-game
 related:
   - team-scheme/defense-vs-position
   - team-scheme/opponent-defense-efficiency-epa-dvoa
@@ -79,6 +81,9 @@ Implied total primarily informs the touchdown-expectation and broader scoring-en
 - **Weather degrades both accuracy and predictive power.** Markets do incorporate known weather forecasts into total-setting, but the adjustment is imprecise, and the relationship between implied total and actual points scored is measurably weaker in games with significant wind, heavy rain, or snow than in good conditions — the same implied total carries wider uncertainty in bad weather, and scoring in those games can compress unpredictably rather than moving in a single obvious direction.
 - **Public-money bias in specific game contexts.** Line-setting can be influenced by public betting patterns beyond pure predictive efficiency, particularly for popular teams, marquee quarterbacks, and nationally televised games, meaning the raw implied total in these specific spots may carry a small but real bias relative to a more purely sharp-money-driven line.
 - **Pick'em/narrow-spread games produce a false sense of precision.** When two teams carry nearly identical implied totals (a narrow spread), the number implies roughly equal scoring expectation for both sides, but actual outcomes in these games frequently show one team meaningfully outscoring the other — the balanced implied totals do not imply balanced *variance*, and treating both teams as equally safe plays under this scenario overstates the certainty the number actually conveys.
+- **Divisional matchups degrade spread and total reliability.** Multiple models converge that lines in divisional games carry systematically higher error than non-divisional games, plausibly because familiarity between the two teams (shared film history, coaching staffs that have game-planned against each other repeatedly) compresses the variance the market is designed to price in. Implied totals in divisional games should be treated with wider uncertainty bands than the same numbers in a non-divisional matchup.
+- **Early-season lines (weeks 1-4) carry materially higher error than mid/late-season lines.** Multiple models converge that the market has less current-season information to price against early, leaning more heavily on prior-season roster and performance data that has already decayed — offensive line changes, coaching hires, and rookie integration are underweighted. Implied totals should be treated as lower-confidence inputs during the first month of the season, with more weight given to role/opportunity data as it accumulates.
+- **Short-week (Thursday) lines are less information-efficient.** The compressed preparation week gives the market less time to incorporate injury news, practice reports, and roster changes before the line is set and bet against, producing wider closing-line movement and higher error than a standard Sunday line. Implied totals for Thursday games warrant a reliability discount relative to the same total posted for a Sunday game.
 
 ## Key Decisions
 
@@ -98,8 +103,13 @@ Implied total primarily informs the touchdown-expectation and broader scoring-en
   **Reasoning:** The predictive relationship between implied total and actual scoring is measurably weaker in adverse weather, and presenting the number without this context overstates its reliability in exactly the games where it is least trustworthy.
   **Rejected alternative:** Displaying implied total identically regardless of weather conditions was rejected because it would misrepresent the metric's actual predictive reliability in weather-affected games.
 
+- **Decision:** The platform will apply a reduced-confidence indicator to implied totals for divisional games, games in weeks 1-4 of the season, and Thursday short-week games, rather than presenting these lines with the same reliability weighting as a standard non-divisional Sunday line in weeks 5+.
+  **Reasoning:** Multiple models converge that lines in each of these three contexts carry systematically higher error than the baseline case — divisional familiarity compresses market-priced variance, early-season lines lean on decayed prior-season data, and short-week lines have less time to incorporate current information — and presenting them with undifferentiated confidence would overstate their reliability in exactly the situations where they are weakest.
+  **Rejected alternative:** Treating all implied totals as equally reliable regardless of scheduling context was rejected because it ignores a specific, corroborated, and actionable reliability gradient.
+
 ## Open Questions
 
 - [ ] How should the platform quantify and apply a weather-severity adjustment (e.g., a specific point deduction per wind-speed threshold) to implied total, given that responses describe current market and analyst adjustments for weather as imprecise and non-standardized? — needs a validated wind-speed/precipitation-to-scoring-impact model, which no source in this synthesis provided with verifiable methodology.
 - [ ] Can betting-market volume or bet-count data (distinguishing sharp from public money) be reliably incorporated to identify which line movements are genuinely informative versus public-driven noise? — flagged as a promising but unvalidated approach across responses, with no consistent, reproducible method identified.
 - [ ] What is the correct method for converting a team's implied total into individual player touchdown-share and volume expectations — a fixed historical-share approach or a dynamic, role-based market-share approach? — described as contested across responses, with no consensus on which approach is more accurate or how to avoid overfitting a market-share model in-season.
+- [ ] What is the precise magnitude of the divisional-game and early-season line-error effects, and should the platform apply a quantified discount factor or only a qualitative confidence flag? — corroborated as directionally real across responses, but no source provided a validated error-magnitude figure suitable for a numeric adjustment.
