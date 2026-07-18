@@ -1,3 +1,7 @@
 # In-Season Management
 
-*(No pages committed yet. Pages will appear here as queue entries in `wiki/_queue_nb4a.md` through `wiki/_queue_nb4d.md` are ingested.)*
+| Page | Summary |
+| ---- | ------- |
+| [weekly-start-sit-projections](weekly-start-sit-projections.md) | Opportunity-first weekly lineup projection framework with Vegas context and health/role overlays. |
+| [rest-of-season-rankings](rest-of-season-rankings.md) | Value-over-replacement ROS ranking framework driven by role stability, injury trajectory, and age curve. |
+| [injury-status-practice-participation-tracking](injury-status-practice-participation-tracking.md) | Practice-report trajectory as the primary availability leading indicator, split from role-if-active. |

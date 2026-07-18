@@ -18,6 +18,8 @@ related:
   - league-mechanics/trade-value-calculation
   - league-mechanics/bye-week-management
   - league-mechanics/waiver-wire-faab-strategy
+  - in-season-management/rest-of-season-rankings
+  - in-season-management/weekly-start-sit-projections
 ---
 
 ## Summary
