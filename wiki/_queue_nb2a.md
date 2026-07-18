@@ -9,28 +9,28 @@
 
 ### 2.1 Team Pass Rate / Pass Rate Over Expected (PROE)
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: team-scheme
 - Description: A team's raw pass rate and the deviation from the expected pass rate given game script, isolating scheme-driven passing tendency from situation-driven variance to predict receiver opportunity.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created team-scheme/proe; convergence-filtered from 6 panel responses; excluded one response's fabricated-looking bracketed citations; scramble classification flagged as the primary unresolved provider disagreement.
 
 ---
 
 ### 2.2 Neutral Game Script Pass Rate
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: team-scheme
 - Description: A team's pass rate when the game is close (within one score), removing garbage time inflation and early-deficit depression to reveal true offensive passing philosophy.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created team-scheme/neutral-game-script-pass-rate; convergence-filtered from 6 panel responses; score-margin threshold (±7 vs ±8) and time-window rules confirmed unstandardized across sources.
 
 ---
 
 ### 2.3 Pace of Play / Plays Per Game
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: team-scheme
 - Description: The average number of offensive plays a team runs per game, a volume multiplier that amplifies or dampens individual opportunity metrics across all skill positions.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created team-scheme/pace-of-play; convergence-filtered from 6 panel responses; tempo (process) vs. plays-per-game (outcome) distinction confirmed as the central framing across all sources.
 
 ---
 
