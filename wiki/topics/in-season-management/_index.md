@@ -11,3 +11,6 @@
 | [contract-year-motivation](contract-year-motivation.md) | Contract-year effect is weak-to-null once age curve and opportunity are controlled for; usable only as a minor tiebreaker. |
 | [suspension-legal-status-tracking](suspension-legal-status-tracking.md) | Staged disciplinary-process model (allegation → investigation → discipline → appeal) with expected-games-missed valuation. |
 | [snap-target-trend-alerts](snap-target-trend-alerts.md) | Detecting durable in-season role changes via multi-week route-participation and target-share confirmation, filtered for game-script noise. |
+| [next-man-up-injury-replacement-value](next-man-up-injury-replacement-value.md) | Injury replacement value is a role-inheritance problem decomposed by opportunity category, with carry-over rate strongly position-dependent (RB highest, WR fragile, TE lowest). |
+| [game-script-sensitivity-garbage-time-production](game-script-sensitivity-garbage-time-production.md) | Garbage-time volume is often real but efficiency is inflated by prevent-defense tactics; opportunity and efficiency must be tracked separately by game state. |
+| [positional-run-detection-draft-day](positional-run-detection-draft-day.md) | Distinguishing demand-driven (tier-cliff) runs from panic-driven (contagion) runs, each requiring an opposite draft-day response. |

@@ -36,31 +36,31 @@
 
 ### 4.11 Next-Man-Up / Injury Replacement Value
 
-- Status: IN_PROGRESS
+- Status: COMPLETED — created in-season-management/next-man-up-injury-replacement-value
 - Wiki Category: in-season-management
 - Description: The framework for rapidly identifying and acquiring the player who inherits opportunity when a starter is injured, incorporating positional carry-over rates, role fit, and immediate matchup quality.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: corpus depth: Rich — ~150 sources; full 6-model panel received and convergence-filtered; carry-over rate corroborated as position-specific (RB highest, WR fragile, TE lowest)
 
 ---
 
 ### 4.12 Game Script Sensitivity / Garbage-Time Production
 
-- Status: IN_PROGRESS
+- Status: COMPLETED — created in-season-management/game-script-sensitivity-garbage-time-production
 - Wiki Category: in-season-management
 - Description: The degree to which a player's fantasy production is dependent on their team trailing (pass-heavy desperation) or leading (run-heavy game management), distinguishing genuine opportunity from situation-dependent volume.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: corpus depth: Rich — ~150 sources; full 6-model panel received and convergence-filtered; opportunity vs. efficiency separation and forward-looking Vegas lines as best predictor were the strongest corroborated findings
 
 ---
 
 ### 4.13 Positional Run Detection (Draft-Day)
 
-- Status: IN_PROGRESS
+- Status: COMPLETED — created in-season-management/positional-run-detection-draft-day
 - Wiki Category: in-season-management
 - Description: The real-time identification of position-specific drafting surges during a live draft that signal a shift in the room's strategy, requiring reactive adjustments to avoid being stranded without viable starters at a depleted position.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: corpus depth: Rich — ~150 sources; full 6-model panel received and convergence-filtered; demand-driven vs. panic-driven run distinction was the strongest corroborated finding, requiring opposite responses
 
 ---
 
-This file covers entries 4.8–4.13. When all entries are COMPLETED or SKIPPED, update `wiki/_queue_master.md`: set this file → COMPLETED, set `wiki/_queue_nb4c.md` → ACTIVE.
+This file covers entries 4.8–4.13. All entries COMPLETED. `wiki/_queue_master.md` updated: this file → COMPLETED, `wiki/_queue_nb4c.md` → ACTIVE.
 
 _End of wiki/_queue_nb4b.md_
