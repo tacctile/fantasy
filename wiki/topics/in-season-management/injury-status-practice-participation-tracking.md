@@ -16,6 +16,8 @@ tags:
 related:
   - in-season-management/weekly-start-sit-projections
   - in-season-management/rest-of-season-rankings
+  - in-season-management/injury-type-recovery-timelines
+  - in-season-management/return-to-production-curves
 ---
 
 ## Summary

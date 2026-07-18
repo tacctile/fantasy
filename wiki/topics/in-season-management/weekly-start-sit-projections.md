@@ -20,6 +20,7 @@ tags:
 related:
   - in-season-management/rest-of-season-rankings
   - in-season-management/injury-status-practice-participation-tracking
+  - in-season-management/return-to-production-curves
   - league-mechanics/playoff-schedule-strength
   - league-mechanics/trade-value-calculation
 ---
