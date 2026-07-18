@@ -9,7 +9,7 @@
 
 ### 1.20 First-Read Target Rate / Target Quality
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: player-evaluation
 - Description: The frequency with which a receiver is a quarterback's primary read, capturing target quality and scheme trust beyond raw target volume.
 - Notes: corpus depth: Rich — ~150 sources
@@ -18,7 +18,7 @@
 
 ### 1.21 QB Designed Rush Rate / Scramble Rate
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: player-evaluation
 - Description: The frequency of quarterback rushing attempts split by designed runs versus scrambles, measuring rushing floor and touchdown upside for dual-threat signal-callers in fantasy scoring.
 - Notes: corpus depth: Rich — ~150 sources
@@ -27,7 +27,7 @@
 
 ### 1.22 QB EPA per Dropback / CPOE
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: player-evaluation
 - Description: Expected Points Added per dropback and Completion Percentage Over Expected, the two primary efficiency metrics for evaluating quarterback quality and the downstream impact on pass-catcher value.
 - Notes: corpus depth: Rich — ~150 sources
