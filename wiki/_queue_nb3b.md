@@ -27,28 +27,28 @@
 
 ### 3.10 Average Draft Position (ADP)
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: league-mechanics
 - Description: The average pick number at which a player is selected across a large sample of drafts, serving as the market consensus valuation and the baseline against which value and reach decisions are evaluated.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: chathub.gg 6-model panel, 5 usable responses (1 returned only a reasoning trace, discarded as non-answer). Created wiki/topics/league-mechanics/average-draft-position.md. Convergent findings: ADP is market price not valuation; population-dependent (format/platform/time-window); best ball vs. redraft markets non-transferable; autodraft/default-ranking contamination and news-lag staleness are corroborated failure patterns.
 
 ---
 
 ### 3.11 ADP vs. Expert Consensus Rank Differential
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: league-mechanics
 - Description: The gap between a player's ADP in public drafts and their rank among professional analysts, identifying systematic market inefficiencies where public drafters over- or underprice certain players or positions.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: chathub.gg 6-model panel, 5 usable responses. Created wiki/topics/league-mechanics/adp-ecr-differential.md. Convergent findings: gap measures disagreement not correctness; format-compatibility between ADP/ECR sources required; news-lag asymmetry and ECR herd/anchoring bias are corroborated pitfalls; predictive value of exploiting the gap is contested (confidence: medium).
 
 ---
 
 ### 3.12 Positional Scarcity / Tier Breaks
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: league-mechanics
 - Description: The distribution of talent at each position relative to league demand, used to identify tier breaks where significant production drop-offs occur and inform when to prioritize scarce positions over theoretically higher-value picks.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: chathub.gg 6-model panel, 5 usable responses. Extended existing wiki/topics/league-mechanics/league-size-scarcity-effects.md (already owned VBD/replacement-level theory) with tier-break identification mechanics rather than creating a duplicate page. Convergent findings: tier breaks identified via clustering/threshold methods or analyst curation; tiers are dynamic and must be re-derived after draft runs, not treated as static pre-draft snapshots; rigid tier-break enforcement without opportunity-cost comparison is a documented failure pattern.
 
 ---
 
