@@ -36,7 +36,7 @@
 
 ### 4.17 Strength of Schedule (Positional, ROS)
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: in-season-management
 - Description: The projected difficulty of remaining matchups for a player or team on a position-specific basis, accounting for opponent defensive quality against each fantasy-relevant position through the playoff weeks.
 - Notes: corpus depth: Rich — ~150 sources
@@ -45,7 +45,7 @@
 
 ### 4.18 Coaching Staff Changes Mid-Season
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: in-season-management
 - Description: The fantasy impact of in-season coaching changes — offensive coordinator firings, playcalling adjustments, and head coach changes — on pass rate, target distribution, and the value of affected skill players.
 - Notes: corpus depth: Rich — ~150 sources
@@ -54,7 +54,7 @@
 
 ### 4.19 Short-Week / Thursday Game Performance
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: in-season-management
 - Description: The documented effect of short turnaround schedules (Thursday Night Football) on player performance and injury risk, with positional differences in vulnerability and the historical magnitude of scoring suppression.
 - Notes: corpus depth: Rich — ~150 sources
