@@ -54,10 +54,10 @@
 
 ### 1.19 Drop Rate
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: player-evaluation
 - Description: The percentage of catchable targets a receiver fails to complete, measuring reliability and identifying negative regression candidates whose target volume exceeds their production.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: corpus depth: Rich — ~150 sources. Marked IN_PROGRESS 2026-07-17 for 3-subject panel prompt.
 
 ---
 
