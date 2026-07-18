@@ -22,6 +22,7 @@ related:
   - player-evaluation/red-zone-target-share
   - team-scheme/oc-play-calling-tendencies
   - team-scheme/offensive-scheme-identity
+  - team-scheme/backup-qb-impact
 ---
 
 ## Summary
