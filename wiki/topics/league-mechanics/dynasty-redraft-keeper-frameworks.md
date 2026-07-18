@@ -18,6 +18,7 @@ tags:
 related:
   - league-mechanics/roster-construction-starting-lineups
   - league-mechanics/superflex-two-qb-value-shift
+  - league-mechanics/rookie-draft-capital-landing-spot
 ---
 
 ## Summary
