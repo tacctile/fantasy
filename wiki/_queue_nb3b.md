@@ -9,19 +9,19 @@
 
 ### 3.8 Dynasty vs. Redraft vs. Keeper Value Frameworks
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: league-mechanics
 - Description: How player valuation shifts across dynasty (multi-year rosters), keeper (retain N players), and redraft (annual fresh start) formats, with age curves, contract years, and rookie capital mattering differently in each.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: chathub.gg 6-model panel. Created wiki/topics/league-mechanics/dynasty-redraft-keeper-frameworks.md. Convergent findings: keeper ≠ dynasty (retention cost governs keeper, not age curve); RB peaks earliest/declines sharpest, WR sustains longest, QB/TE longest windows; contract-year performance bump is weak evidence.
 
 ---
 
 ### 3.9 Best Ball Format Strategy
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: league-mechanics
 - Description: The optimal draft and roster construction approach for best-ball formats where the highest-scoring lineup is auto-set each week, favoring upside, correlation stacks, and position scarcity over floor and consistency.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: chathub.gg 6-model panel. Created wiki/topics/league-mechanics/best-ball-strategy.md. Convergent findings: auto-set lineup rewards ceiling over floor via max-of-N logic; stacking raises ceiling through covariance not individual projection; Zero-RB/Hero-RB genuinely contested; over-stacking and bye clustering are documented pitfalls.
 
 ---
 

@@ -8,7 +8,7 @@
 > **Total slots:** 100 (16 files × 6-7 per file)
 > **Cycle:** 1 (initial build)
 > **Generated:** 2026-07-14
-> **Updated:** 2026-07-17 — nb2d COMPLETED (entries 2.20–2.25 all done); nb3a now ACTIVE
+> **Updated:** 2026-07-18 — nb3a COMPLETED (entries 3.1–3.7 all done); nb3b now ACTIVE
 
 ---
 
@@ -35,8 +35,8 @@ Never add subject entries to this file. All entries live exclusively in the batc
 | [_queue_nb2b.md](_queue_nb2b.md) | Team & Scheme Context | 2.8–2.13 (6) | team-scheme | COMPLETED |
 | [_queue_nb2c.md](_queue_nb2c.md) | Team & Scheme Context | 2.14–2.19 (6) | team-scheme | COMPLETED |
 | [_queue_nb2d.md](_queue_nb2d.md) | Team & Scheme Context | 2.20–2.25 (6) | team-scheme | COMPLETED |
-| [_queue_nb3a.md](_queue_nb3a.md) | League Mechanics, Scoring & Draft Strategy | 3.1–3.7 (7) | league-mechanics | ACTIVE |
-| [_queue_nb3b.md](_queue_nb3b.md) | League Mechanics, Scoring & Draft Strategy | 3.8–3.13 (6) | league-mechanics | LOCKED |
+| [_queue_nb3a.md](_queue_nb3a.md) | League Mechanics, Scoring & Draft Strategy | 3.1–3.7 (7) | league-mechanics | COMPLETED |
+| [_queue_nb3b.md](_queue_nb3b.md) | League Mechanics, Scoring & Draft Strategy | 3.8–3.13 (6) | league-mechanics | ACTIVE |
 | [_queue_nb3c.md](_queue_nb3c.md) | League Mechanics, Scoring & Draft Strategy | 3.14–3.19 (6) | league-mechanics | LOCKED |
 | [_queue_nb3d.md](_queue_nb3d.md) | League Mechanics, Scoring & Draft Strategy | 3.20–3.25 (6) | league-mechanics | LOCKED |
 | [_queue_nb4a.md](_queue_nb4a.md) | In-Season Management, Injury/Availability & Situational Data | 4.1–4.7 (7) | in-season-management | LOCKED |
