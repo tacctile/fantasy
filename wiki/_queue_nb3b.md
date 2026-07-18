@@ -9,7 +9,7 @@
 
 ### 3.8 Dynasty vs. Redraft vs. Keeper Value Frameworks
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: league-mechanics
 - Description: How player valuation shifts across dynasty (multi-year rosters), keeper (retain N players), and redraft (annual fresh start) formats, with age curves, contract years, and rookie capital mattering differently in each.
 - Notes: corpus depth: Rich — ~150 sources
@@ -18,7 +18,7 @@
 
 ### 3.9 Best Ball Format Strategy
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: league-mechanics
 - Description: The optimal draft and roster construction approach for best-ball formats where the highest-scoring lineup is auto-set each week, favoring upside, correlation stacks, and position scarcity over floor and consistency.
 - Notes: corpus depth: Rich — ~150 sources

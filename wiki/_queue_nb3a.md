@@ -63,7 +63,7 @@
 
 ### 3.7 League Size Effects on Scarcity
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: league-mechanics
 - Description: How the number of teams in a league compresses or expands positional tiers, alters the value of depth over upside, and changes optimal draft strategy across all roster spots.
 - Notes: corpus depth: Rich — ~150 sources
