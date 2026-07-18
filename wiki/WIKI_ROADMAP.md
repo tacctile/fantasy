@@ -36,8 +36,8 @@ When all entries in a notebook's four batch files are COMPLETED or SKIPPED, that
 
 | Priority | Notebook | Wiki Category | Status |
 | -------- | -------- | ------------- | ------ |
-| 1 | Player Evaluation & Opportunity Metrics | player-evaluation | 🔄 ACTIVE — nb1a queue ready, ingestion not yet begun |
-| 2 | Team & Scheme Context | team-scheme | 🔒 LOCKED |
+| 1 | Player Evaluation & Opportunity Metrics | player-evaluation | ✅ COMPLETED — all 25 subjects ingested |
+| 2 | Team & Scheme Context | team-scheme | 🔄 ACTIVE — nb2a queue ready, ingestion not yet begun |
 | 3 | League Mechanics, Scoring & Draft Strategy | league-mechanics | 🔒 LOCKED |
 | 4 | In-Season Management, Injury/Availability & Situational Data | in-season-management | 🔒 LOCKED |
 
@@ -114,8 +114,8 @@ When all entries in a notebook's four batch files are COMPLETED or SKIPPED, that
 
 | Notebook | Queue Populated | Pages Committed | Status |
 | -------- | --------------- | --------------- | ------ |
-| 1 — Player Evaluation & Opportunity Metrics | ✅ 25 subjects | ⬜ | 🔄 ACTIVE — ingestion not yet begun |
-| 2 — Team & Scheme Context | ✅ 25 subjects | ⬜ | 🔒 LOCKED |
+| 1 — Player Evaluation & Opportunity Metrics | ✅ 25 subjects | ✅ 26 pages | ✅ COMPLETED |
+| 2 — Team & Scheme Context | ✅ 25 subjects | ⬜ | 🔄 ACTIVE — ingestion not yet begun |
 | 3 — League Mechanics, Scoring & Draft Strategy | ✅ 25 subjects | ⬜ | 🔒 LOCKED |
 | 4 — In-Season Management, Injury/Availability & Situational Data | ✅ 25 subjects | ⬜ | 🔒 LOCKED |
 
@@ -126,6 +126,8 @@ When all entries in a notebook's four batch files are COMPLETED or SKIPPED, that
 **2026-07-14:** Wiki initialized. All 16 batch queue files created with all 100 subjects pre-populated across 4 notebooks. nb1a is ACTIVE. No ingestion has begun — all 100 subjects are PENDING. Run the first wiki maintenance session to begin ingesting notebook 1.
 
 **2026-07-17:** Ingestion source switched from NotebookLM to a chathub.gg 6-model AI panel. NotebookLM is fully removed from the pipeline — no per-notebook discovery step, no corpus to diff against. Each session triple now generates a single 3-Subject Panel Prompt (opens with a fixed fantasy-football-analytics-expert framing, no platform/wiki context) run against all 6 models in chathub.gg; Nick pastes back the 6 responses and Claude applies the Convergence-Filtering Standard (`wiki/DISCOVERY_PROTOCOL.md`) before synthesizing pages. First triple ingested under this pipeline: 1.1 Target Share, 1.2 Air Yards Share, 1.3 WOPR — all three created in `wiki/topics/player-evaluation/`.
+
+**2026-07-17 (later):** Notebook 1 (Player Evaluation & Opportunity Metrics) fully ingested — all 25 subjects COMPLETED across nb1a–nb1d, 26 pages committed to `wiki/topics/player-evaluation/`. Notebook 2 (Team & Scheme Context) is now ACTIVE via `wiki/_queue_nb2a.md`.
 
 ---
 

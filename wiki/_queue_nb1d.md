@@ -36,31 +36,31 @@
 
 ### 1.23 TE Alignment Rate (Inline vs. Slot/Wide)
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: player-evaluation
 - Description: The percentage of snaps a tight end lines up inline versus in the slot or split wide, determining route tree access, target opportunity, and the degree to which a TE functions as a receiver or blocker.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created player-evaluation/te-alignment-rate; convergence-filtered from 6 panel responses; excluded fabricated-looking specifics (bracketed pseudo-citations) from one response; motion classification flagged as the primary unresolved provider disagreement.
 
 ---
 
 ### 1.24 Rookie College Dominator Rating / Breakout Age
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: player-evaluation
 - Description: A college receiver's share of team receiving production (targets, yards, touchdowns) and the age at which they first achieved a significant usage threshold, predicting NFL target share and breakout trajectory.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created player-evaluation/college-dominator-breakout-age; convergence-filtered from 6 panel responses; threshold (20-30%) and competition-level adjustment confirmed unstandardized across sources; flagged as WR-primary, weaker for TE/RB.
 
 ---
 
 ### 1.25 Athletic Testing (RAS / Speed Score / Burst Score)
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: player-evaluation
 - Description: Composite athletic scores derived from NFL Combine and Pro Day data — Relative Athletic Score, Speed Score, and Burst Score — used to project upside and identify athleticism outliers in the draft.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created player-evaluation/athletic-testing; convergence-filtered from 6 panel responses; excluded one response's misattribution of RAS's creator and fabricated-looking correlation coefficients; Pro Day inflation confirmed as universal, unresolved data-quality issue.
 
 ---
 
-This file covers entries 1.20–1.25. When all entries are COMPLETED or SKIPPED, update `wiki/_queue_master.md`: set this file → COMPLETED, set `wiki/_queue_nb2a.md` → ACTIVE.
+This file covers entries 1.20–1.25. All entries COMPLETED. `wiki/_queue_master.md` updated: this file → COMPLETED, `wiki/_queue_nb2a.md` → ACTIVE. Notebook 1 (Player Evaluation & Opportunity Metrics, 25 subjects) is now fully ingested.
 
 _End of wiki/_queue_nb1d.md_
