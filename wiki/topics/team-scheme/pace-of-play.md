@@ -16,6 +16,7 @@ related:
   - team-scheme/neutral-game-script-pass-rate
   - player-evaluation/touches-per-game
   - team-scheme/weather-impact
+  - in-season-management/positional-strength-of-schedule-ros
 ---
 
 ## Summary

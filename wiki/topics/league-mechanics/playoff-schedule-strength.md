@@ -20,6 +20,7 @@ related:
   - league-mechanics/waiver-wire-faab-strategy
   - in-season-management/rest-of-season-rankings
   - in-season-management/weekly-start-sit-projections
+  - in-season-management/positional-strength-of-schedule-ros
 ---
 
 ## Summary
