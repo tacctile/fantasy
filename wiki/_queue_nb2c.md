@@ -9,28 +9,28 @@
 
 ### 2.14 Offensive Scheme Identity / Family
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: team-scheme
 - Description: The core offensive system a team runs (Air Raid, West Coast, Shanahan-style run-pass, spread-option, etc.), determining which positions are structurally advantaged and what opportunity profiles to expect across the season.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created wiki/topics/team-scheme/offensive-scheme-identity.md. 6-model panel, high convergence.
 
 ---
 
 ### 2.15 Target Distribution / Concentration by Team
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: team-scheme
 - Description: How evenly or unevenly a team distributes targets across its pass-catchers, with concentrated offenses producing more reliable WR1/TE1 value and diffuse offenses creating uncertainty across the receiving corps.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created wiki/topics/team-scheme/target-distribution-concentration.md. 6-model panel, high convergence.
 
 ---
 
 ### 2.16 Backfield Committee Structure
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: team-scheme
 - Description: The composition and role division of a team's running back group, distinguishing true three-down backs from early-down specialists, pass-catching backs, and goal-line vultures to assign opportunity correctly.
-- Notes: corpus depth: Rich — ~150 sources
+- Notes: Created wiki/topics/team-scheme/backfield-committee-structure.md. 6-model panel, high convergence.
 
 ---
 
