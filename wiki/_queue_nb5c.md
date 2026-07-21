@@ -37,7 +37,7 @@
 
 ### 5.16 Sleeper Players Payload Size and Caching Strategy
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: sleeper-api
 - Description: How large the /players/nfl payload is, and what caching or local-storage strategy Sleeper recommends or requires.
 - Notes: (pending ingestion)
@@ -46,7 +46,7 @@
 
 ### 5.17 Sleeper Player Data Quirks
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: sleeper-api
 - Description: Undocumented behaviors or inconsistencies around bye weeks, injured reserve status, or practice squad flags in Sleeper's player data.
 - Notes: (pending ingestion)
@@ -55,7 +55,7 @@
 
 ### 5.18 Sleeper Live vs. Finalized Scoring
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: sleeper-api
 - Description: Known quirks in how Sleeper reports partial-week/live scoring versus finalized weekly points.
 - Notes: (pending ingestion)
