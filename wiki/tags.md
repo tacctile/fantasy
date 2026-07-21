@@ -127,7 +127,6 @@
 - faab
 - waiver-wire
 - trade-value
-- bye-week
 
 ## Player Status & Injury
 - injury-status
