@@ -14,6 +14,7 @@ related:
   - sleeper-api/roster-endpoint
   - sleeper-api/league-endpoint
   - sleeper-api/playoff-bracket-endpoint
+  - sleeper-api/nfl-state-endpoint
 ---
 
 ## Summary
@@ -26,7 +27,7 @@ related:
 
 ### Response Shape: One Row Per Roster, Not One Object Per Matchup
 
-The endpoint's response grain is the single fact every other detail depends on: it returns an array with one entry per roster participating in that week, never a paired "matchup" object with home/away sides. There is no `opponent` field anywhere in the payload. Two rows sharing the same non-null `matchup_id` are the two sides of one contest, and reconstructing the week's schedule is an explicit grouping operation the caller must perform — Sleeper does not do it for you. A safe compound key for a matchup group is the triple of league ID, week, and `matchup_id`; `matchup_id` alone is not a durable or globally meaningful identifier; it resets in scope every week and has no relationship across weeks (a `matchup_id` of 1 in week 3 has no connection to `matchup_id` 1 in week 4).
+The endpoint's response grain is the single fact every other detail depends on: it returns an array with one entry per roster participating in that week, never a paired "matchup" object with home/away sides. There is no `opponent` field anywhere in the payload. Two rows sharing the same non-null `matchup_id` are the two sides of one contest, and reconstructing the week's schedule is an explicit grouping operation the caller must perform — Sleeper does not do it for you. A safe compound key for a matchup group is the triple of league ID, week, and `matchup_id`; `matchup_id` alone is not a durable or globally meaningful identifier; it resets in scope every week and has no relationship across weeks (a `matchup_id` of 1 in week 3 has no connection to `matchup_id` 1 in week 4). The `{week}` path parameter should be sourced from `sleeper-api/nfl-state-endpoint`'s `week` field (gated by `season_type == regular`), not from `display_week` or from calendar-date computation — using `display_week` here can request the wrong week's data around the Monday-to-Tuesday rollover boundary.
 
 ### Field Reference
 
