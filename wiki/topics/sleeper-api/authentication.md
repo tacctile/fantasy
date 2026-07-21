@@ -11,8 +11,11 @@ tags:
   - read-only-api
   - graphql
   - websocket
+  - rate-limits
+  - undocumented-endpoint
 related:
   - sleeper-api/roster-endpoint
+  - sleeper-api/league-endpoint
 ---
 
 ## Summary
@@ -35,7 +38,7 @@ Because no credential gates read access, Sleeper's public API does not distingui
 
 Beyond the public read API, Sleeper's own web and mobile clients rely on an undocumented, authenticated layer for actions the public REST API cannot perform: creating or renaming a league, executing a lineup change, processing a waiver claim, or completing a trade. This layer is commonly described as a GraphQL endpoint reached only after a standard login flow, issuing a session token that authorizes subsequent mutation requests. A companion real-time channel — commonly implemented as a WebSocket connection — pushes transaction, chat, and score-update events to authenticated clients; it exists primarily to support live in-app experiences and is not required to read historical or point-in-time league data through the standard REST resources.
 
-Both of these authenticated surfaces sit outside the documented public contract. They are reconstructed from client network traffic by the developer community rather than published by Sleeper, and their exact token format, session lifetime, and refresh behavior are not established with any real precision. Community-observed detail on this layer is considerably thinner and less corroborated than the public read API, and should be treated with correspondingly lower confidence.
+Both of these authenticated surfaces sit outside the documented public contract. They are reconstructed from client network traffic by the developer community rather than published by Sleeper. A second, independently-scoped panel run corroborated this layer's existence more strongly than the first pass — a majority of responses across two separate sessions now describe it — but its exact token format, session lifetime, and refresh behavior are still not established with any real precision. Treat the layer's existence as reasonably well-corroborated and its mechanics as low-confidence.
 
 ### No Formal Version or Key-Rotation Model on the Read Path
 
@@ -43,7 +46,13 @@ The public read API has operated under a single stable path prefix for its entir
 
 ### Practical Consequence for Rate Behavior
 
-Because there is no API key tying requests to an identified caller, Sleeper cannot apply per-application rate limits the way a keyed API can — any throttling it applies is necessarily based on coarser signals such as source IP or request volume patterns, not an authenticated client identity. This matters operationally: there is no way to request a higher limit, no account-level quota to negotiate, and no authenticated back-channel for resolving a block. Whatever throttling exists applies uniformly to anonymous traffic.
+Because there is no API key tying requests to an identified caller, Sleeper cannot apply per-application rate limits the way a keyed API can — any throttling it applies is necessarily based on coarser signals such as source IP or request volume patterns, not an authenticated client identity. This matters operationally: there is no way to request a higher limit, no account-level quota to negotiate, and no authenticated back-channel for resolving a block. Whatever throttling exists applies uniformly to anonymous traffic, and it is informally observed (community-reported guidance is to stay under roughly 1000 requests/minute) rather than published with contractual rate-limit headers.
+
+### Error Behavior and Identifier Handling
+
+Failures on the read path do not surface as authentication errors — there is no 401/403 taxonomy on this API, since there is no credential to reject in the first place. A non-existent league, user, or draft ID returns an ordinary not-found response, not a permission error, because permission is not a concept the read API enforces at all. The only error class tied to caller behavior is volume-based throttling (429, or a transient block at very high volume).
+
+Separately, every Sleeper identifier — league ID, user ID, draft ID, roster-scoped IDs, and player IDs — is a plain string, not a numeric type. Several of these IDs are large snowflake-style numeric strings, and coercing them to a numeric type in a language or datastore with limited integer precision risks silent truncation or rounding. IDs should be stored, compared, and transmitted as strings everywhere in the ingestion path, with no numeric parsing step anywhere in that pipeline.
 
 ---
 
@@ -61,9 +70,13 @@ Because there is no API key tying requests to an identified caller, Sleeper cann
   **Reasoning:** Since any league ID is fully readable by anyone who obtains it, unintentionally exposing a user's league ID (for example in a shared screenshot, log line, or public URL) effectively exposes that league's full roster, transaction, and matchup history with no way for the user to revoke access.
   **Rejected alternative:** Treating league IDs as ordinary, freely-loggable identifiers (as most platform-internal IDs are treated) was rejected specifically because Sleeper's lack of API-level privacy makes this ID more sensitive than a typical internal identifier.
 
+- **Decision:** The platform will store and transmit every Sleeper identifier (league, user, draft, roster, player) as a string end-to-end, with no numeric-typed ID field anywhere in the schema.
+  **Reasoning:** Sleeper IDs are large, snowflake-style numeric strings that risk silent precision loss if coerced to a numeric type; treating them uniformly as strings eliminates an entire class of ID-corruption bugs for near-zero cost.
+  **Rejected alternative:** Storing IDs as integers where they "look numeric" was rejected — the risk of silent truncation on a subset of large IDs is not worth the marginal storage or indexing benefit of a numeric type.
+
 ---
 
 ## Open Questions
 
-- [ ] What is the exact authentication mechanism (session token format, acquisition flow, expiry) for Sleeper's write-capable GraphQL/WebSocket layer, should the platform ever need native lineup-mutation support? — needs direct API experimentation or a response from Sleeper directly, since community sources describe this layer's existence with only partial, low-confidence detail on its mechanics.
+- [ ] What is the exact authentication mechanism (session token format, acquisition flow, expiry) for Sleeper's write-capable GraphQL/WebSocket layer, should the platform ever need native lineup-mutation support? — needs direct API experimentation or a response from Sleeper directly. Two independently-scoped panel runs now corroborate the layer's existence, but neither converges on its mechanics with precision.
 - [ ] Does Sleeper enforce a formal, published rate limit on the public read API, or only an informal, community-observed threshold? — addressed more fully once the dedicated Sleeper rate-limits subject is ingested; noted here because it bears directly on whether the platform's read-polling strategy needs a hard cap or can rely on adaptive backoff.
