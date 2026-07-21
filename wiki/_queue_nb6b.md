@@ -37,7 +37,7 @@
 
 ### 6.11 ESPN Draft Detail Response Structure
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: espn-api
 - Description: The structure of the draft detail response (mDraftDetail), including pick order, keeper flags, and auction values.
 - Notes: (pending ingestion)
@@ -46,7 +46,7 @@
 
 ### 6.12 ESPN Player Endpoint and Filtering
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: espn-api
 - Description: The structure of the player endpoint (kona_player_info view), and how the X-Fantasy-Filter header is used to query and filter players.
 - Notes: (pending ingestion)
@@ -55,7 +55,7 @@
 
 ### 6.13 ESPN Historical Season Access
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: espn-api
 - Description: How historical season data is accessed differently (leagueHistory endpoint) compared to the current season.
 - Notes: (pending ingestion)
