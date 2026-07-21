@@ -37,31 +37,31 @@
 
 ### 5.16 Sleeper Players Payload Size and Caching Strategy
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: sleeper-api
 - Description: How large the /players/nfl payload is, and what caching or local-storage strategy Sleeper recommends or requires.
-- Notes: (pending ingestion)
+- Notes: Ingested 2026-07-21 via cleanly-scoped 6-model panel. Updated `sleeper-api/players-endpoint.md` (default to UPDATE — existing page already covered daily-fetch guidance; added new caching-architecture, atomic-refresh-validation, and client-storage-pitfall content rather than creating a redundant page). Key findings: single centrally-scheduled ingestion job (not per-worker/per-request) is the correct architecture; browser localStorage quotas (~5MB) sit at or below the payload's own size, ruling out client-side full-dump caching; documented ~5MB average is approximate, not a hard ceiling — logged as an open question.
 
 ---
 
 ### 5.17 Sleeper Player Data Quirks
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: sleeper-api
 - Description: Undocumented behaviors or inconsistencies around bye weeks, injured reserve status, or practice squad flags in Sleeper's player data.
-- Notes: (pending ingestion)
+- Notes: Ingested 2026-07-21 via cleanly-scoped 6-model panel. Created `sleeper-api/player-data-quirks.md`. Updated `sleeper-api/roster-endpoint.md` and `sleeper-api/dst-and-free-agents.md` with reciprocal related links. Key findings: no `bye_week` field exists anywhere in `/players/nfl` (5/6, one contradicting claim rejected — see verification cache); `status`/`injury_status` are independent fields that can disagree; Sleeper documented behavior retains injury designations through a player's bye week; Sleeper fantasy IR-slot eligibility is not equivalent to real NFL injured reserve; practice-squad elevation is effectively invisible in the player object.
 
 ---
 
 ### 5.18 Sleeper Live vs. Finalized Scoring
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: sleeper-api
 - Description: Known quirks in how Sleeper reports partial-week/live scoring versus finalized weekly points.
-- Notes: (pending ingestion)
+- Notes: Ingested 2026-07-21 via cleanly-scoped 6-model panel. Updated `sleeper-api/matchup-endpoint.md` (default to UPDATE — existing "Live Scoring Has No Finality Signal" section extended rather than forking into a new page). Added reciprocal related link to `sleeper-api/player-data-quirks.md`. Key findings: stat corrections commonly continue through the following Thursday, with DST/IDP scoring most exposed; generic default-scored fields (`pts_std`/`pts_ppr`) reflect Sleeper's presets, not a league's actual `scoring_settings`, and must never substitute for a league-accurate calculation; cross-platform finalized-score divergence is expected, correction-timing-driven behavior, not a data-quality bug.
 
 ---
 
-This file covers entries 5.13–5.18 — the final Sleeper API batch. This file is LOCKED until `wiki/_queue_nb5b.md` reaches COMPLETED. When all entries in this file are COMPLETED or SKIPPED, update `wiki/_queue_master.md`: set this file → COMPLETED, `wiki/_queue_nb6a.md` → ACTIVE. Notebook 5 (Sleeper API Integration) will then be fully ingested.
+This file covers entries 5.13–5.18 — the final Sleeper API batch. **Notebook 5 (Sleeper API Integration) is now fully COMPLETED — all 18 subjects (5.1–5.18) ingested.** Per `wiki/_queue_master.md` transition rules, `wiki/_queue_nb6a.md` (ESPN API Integration) is now ACTIVE.
 
 _End of wiki/_queue_nb5c.md_
