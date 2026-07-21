@@ -44,8 +44,8 @@ When all entries in a notebook's batch files are COMPLETED or SKIPPED, that note
 | 2 | Team & Scheme Context | team-scheme | ✅ COMPLETED — all 25 subjects ingested |
 | 3 | League Mechanics, Scoring & Draft Strategy | league-mechanics | ✅ COMPLETED — all 25 subjects ingested |
 | 4 | In-Season Management, Injury/Availability & Situational Data | in-season-management | ✅ COMPLETED — all 25 subjects ingested |
-| 5 | Sleeper API Integration | sleeper-api | 🔄 ACTIVE — 15 of 18 ingested, 5.16–5.18 IN_PROGRESS in nb5c |
-| 6 | ESPN API Integration | espn-api | 🔒 LOCKED — queued via nb6a–c, begins after Notebook 5 completes |
+| 5 | Sleeper API Integration | sleeper-api | ✅ COMPLETED — all 18 subjects ingested |
+| 6 | ESPN API Integration | espn-api | 🔄 ACTIVE — queued via nb6a–c, beginning now that Notebook 5 is complete |
 | 7 | Schema Reference | schema-reference | 🔒 LOCKED — decision-record mode, begins after Notebook 6 completes |
 
 ---
@@ -122,8 +122,9 @@ When all entries in a notebook's batch files are COMPLETED or SKIPPED, that note
 **Wiki category:** sleeper-api
 **Question target:** 18 pages (one per subject, unless subjects are tightly related enough to consolidate)
 **Priority:** FIFTH — narrow-scope Wave 1 unblock, not part of the original 100-subject taxonomy
-**Queue files:** nb5a (COMPLETED, 5.1–5.3 ingested) · nb5b (COMPLETED, 5.4–5.12 ingested) · nb5c (ACTIVE, 5.13–5.15 ingested, 5.16–5.18 IN_PROGRESS)
+**Queue files:** nb5a (COMPLETED, 5.1–5.3 ingested) · nb5b (COMPLETED, 5.4–5.12 ingested) · nb5c (COMPLETED, 5.13–5.18 ingested)
 **Discovery run:** Subjects generated 2026-07-21 by Claude at Nick's request to cover: authentication (or lack thereof), endpoint structure (league, roster, matchup, draft, players), rate limits, player data format/canonical player ID structure, and known quirks/undocumented behavior.
+**Status: COMPLETE as of 2026-07-21.** 16 pages committed to `wiki/topics/sleeper-api/` (some subjects consolidated onto existing pages rather than forking new ones — see subjects 5.16 and 5.18 below).
 
 ### Subjects (5.1–5.18)
 1. Sleeper API Authentication Requirements — ✅ ingested (sleeper-api/authentication)
@@ -141,9 +142,9 @@ When all entries in a notebook's batch files are COMPLETED or SKIPPED, that note
 13. Cross-Referencing Sleeper Player IDs — ✅ ingested (sleeper-api/player-id-crosswalk)
 14. Sleeper Trending Players Endpoint — ✅ ingested (sleeper-api/trending-endpoint)
 15. Sleeper Defense and Free-Agent Player Representation — ✅ ingested (sleeper-api/dst-and-free-agents)
-16. Sleeper Players Payload Size and Caching Strategy — 🔄 IN_PROGRESS
-17. Sleeper Player Data Quirks — 🔄 IN_PROGRESS
-18. Sleeper Live vs. Finalized Scoring — 🔄 IN_PROGRESS
+16. Sleeper Players Payload Size and Caching Strategy — ✅ ingested (merged into sleeper-api/players-endpoint — existing page already covered the core caching guidance, so this subject added new caching-architecture, atomic-refresh-validation, and client-storage-pitfall content to it rather than forking a redundant page)
+17. Sleeper Player Data Quirks — ✅ ingested (sleeper-api/player-data-quirks — new page)
+18. Sleeper Live vs. Finalized Scoring — ✅ ingested (merged into sleeper-api/matchup-endpoint — existing page already had a "no finality signal" section, extended with the stat-correction window, generic-vs-custom scoring trap, and cross-platform divergence content)
 
 ---
 
@@ -152,7 +153,7 @@ When all entries in a notebook's batch files are COMPLETED or SKIPPED, that note
 **Wiki category:** espn-api
 **Question target:** 19 pages (one per subject, unless subjects are tightly related enough to consolidate)
 **Priority:** SIXTH — narrow-scope Wave 1 unblock, not part of the original 100-subject taxonomy
-**Queue files:** nb6a/b/c (LOCKED — begins after Notebook 5 completes)
+**Queue files:** nb6a (ACTIVE) · nb6b/c (LOCKED) — now unlocked and beginning, since Notebook 5 is complete
 **Discovery run:** Subjects generated 2026-07-21 by Claude at Nick's request to cover: cookie auth mechanics (espn_s2/SWID), public vs. private league detection, endpoint structure (league, roster, matchup, draft, players), and known quirks/undocumented behavior specific to ESPN's API.
 
 ### Subjects (6.1–6.19)
@@ -210,8 +211,8 @@ Full rationale lives in `wiki/_queue_nb7a.md` itself — read it in full before 
 | 2 — Team & Scheme Context | ✅ 25 subjects | ✅ 24 pages | ✅ COMPLETED |
 | 3 — League Mechanics, Scoring & Draft Strategy | ✅ 25 subjects | ✅ 24 pages | ✅ COMPLETED |
 | 4 — In-Season Management, Injury/Availability & Situational Data | ✅ 25 subjects | ✅ 23 pages | ✅ COMPLETED |
-| 5 — Sleeper API Integration | ✅ 18 subjects | ⏳ 13 pages | 🔄 ACTIVE — 5.16–5.18 up next in nb5c |
-| 6 — ESPN API Integration | ✅ 19 subjects | ⏳ 0 pages | 🔒 LOCKED |
+| 5 — Sleeper API Integration | ✅ 18 subjects | ✅ 16 pages | ✅ COMPLETED |
+| 6 — ESPN API Integration | ✅ 19 subjects | ⏳ 0 pages | 🔄 ACTIVE |
 | 7 — Schema Reference | ✅ 3 subjects | ⏳ 0 pages | 🔒 LOCKED — decision-record mode, begins after Notebook 6 |
 
 ---
@@ -234,9 +235,11 @@ Full rationale lives in `wiki/_queue_nb7a.md` itself — read it in full before 
 
 **2026-07-21 (later):** First Sleeper triple (5.1–5.3: authentication, league endpoint, roster endpoint) ingested — created `sleeper-api/authentication.md`, `sleeper-api/league-endpoint.md`, `sleeper-api/roster-endpoint.md` (all confidence: high). RISK: the chathub.gg panel run did not cleanly isolate the 3 requested subjects — most of the 6 responses answered a much broader "full Sleeper + ESPN" scope instead of the specific SUBJECT A/B/C framing (one model explicitly flagged the subjects as missing from its prompt). Only the material relevant to 5.1–5.3 was synthesized into pages; the extra material (Sleeper transactions, drafts, players endpoint, rate limits, trending, and substantial ESPN coverage) was not processed this session to preserve the 3-subject/session cadence and session-health limits, and is logged in `wiki/verification-cache.md` Unresolved Conflicts. Recommend future triples re-run a cleanly scoped panel prompt rather than reuse this dump. `_queue_nb5a.md` → COMPLETED, `_queue_nb5b.md` → ACTIVE, `_queue_master.md` updated accordingly.
 
-**2026-07-21 (later still):** Sleeper subjects 5.4–5.15 ingested across `_queue_nb5b.md` (COMPLETED) and the first half of `_queue_nb5c.md`, using cleanly-scoped 3-subject panel prompts per the fix noted above. 12 additional pages committed to `wiki/topics/sleeper-api/`. Sleeper API Integration is now at 15 of 18 subjects (83%). Subjects 5.16–5.18 (players payload/caching strategy, player data quirks, live vs. finalized scoring) marked IN_PROGRESS in `_queue_nb5c.md`, with the 3-Subject Panel Prompt generated and handed to Nick to run in chathub.gg.
+**2026-07-21 (later still):** Sleeper subjects 5.4–5.15 ingested across `_queue_nb5b.md` (COMPLETED) and the first half of `_queue_nb5c.md`, using cleanly-scoped 3-subject panel prompts per the fix noted above. 12 additional pages committed to `wiki/topics/sleeper-api/`. Sleeper API Integration is now at 15 of 18 subjects (83%). Subjects 5.16–5.18 (players payload/caching, player data quirks, live vs. finalized scoring) marked IN_PROGRESS in `_queue_nb5c.md`, with the 3-Subject Panel Prompt generated and handed to Nick to run in chathub.gg.
 
 **2026-07-21 (planning session):** Nick asked whether the wiki would have enough data to build against and flagged that `schema-reference` — a valid category since the 2026-07-18 governance scaffold — has zero content and no discovery queue, unlike sleeper-api/espn-api which at least got a Cycle 2 unblock. Clarified with Nick: he does not want to run schema-reference work now — he wants a solid plan in place so he can move straight into it once Sleeper and ESPN are both fully ingested, before build starts. Registered Cycle 3: `wiki/_queue_nb7a.md` (Notebook 7 — Schema Reference, subjects 7.1–7.3: multi-platform league identity/scoping, platform-agnostic player identity mapping, league_config data model), LOCKED until `_queue_nb6c.md` (last ESPN file) reaches COMPLETED. Key design call: schema-reference has no external source of truth like the other notebooks, so it runs in decision-record mode (Context/Decision/Rationale/Rejected Alternatives pages, not domain-knowledge synthesis) and is gated on ESPN as well as Sleeper — deciding a "platform-agnostic" schema on Sleeper facts alone risks rework once ESPN's ID/schema quirks (subjects 6.13, 6.15, 6.7–6.10) are known. This file, `wiki/_queue_master.md`, and `wiki/topics/schema-reference/_index.md` updated to reflect the plan.
+
+**2026-07-21 (final session triple):** Sleeper subjects 5.16–5.18 ingested via a cleanly-scoped 6-model panel. For 5.16 (players payload/caching) and 5.18 (live vs. finalized scoring), the affected existing pages (`sleeper-api/players-endpoint.md` and `sleeper-api/matchup-endpoint.md`) already covered substantial related ground, so per the "default to UPDATE over CREATE" rule these were extended rather than forked into new, partially-redundant pages — `players-endpoint.md` gained a caching-architecture/atomic-refresh-validation/client-storage-pitfall section, and `matchup-endpoint.md` gained stat-correction-window, generic-vs-custom-scoring, and cross-platform-divergence sections. For 5.17 (player data quirks), no existing page covered the bye-week/injury-status/practice-squad territory in depth, so a new page was created: `sleeper-api/player-data-quirks.md`. One cross-model contradiction was resolved: 1 of 6 responses claimed a hardcoded `bye_week` field exists on the player object; the other 5 confirmed no such field exists at all — resolved in favor of the majority and logged in `wiki/verification-cache.md`. **Notebook 5 (Sleeper API Integration) is now fully COMPLETED — 18 of 18 subjects, 16 pages in `wiki/topics/sleeper-api/`.** `_queue_nb5c.md` → COMPLETED, `_queue_nb6a.md` (ESPN API Integration) → ACTIVE. `wiki/index.md`, `wiki/tags.md` (new tag: `bye-week`), and `wiki/verification-cache.md` updated as part of housekeeping.
 
 ---
 
