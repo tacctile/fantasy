@@ -67,12 +67,13 @@ Both ingestion modes use this protocol. Full detail in `wiki/WIKI_CHAT_CONTEXT.m
 
 ## Discovery Queue Workflow
 
-The discovery queue is split across a master index and 16 batch queue files to minimize per-session token cost.
+The discovery queue is split across a master index and batch queue files to minimize per-session token cost.
 
-- `wiki/_queue_master.md` — navigation index only. Lists all 16 batch files with their status (ACTIVE / LOCKED / COMPLETED). Never contains individual subject entries.
-- `wiki/_queue_nb1a.md` through `wiki/_queue_nb4d.md` — 16 batch files, 4 per notebook. Each holds 6-7 entries.
+- `wiki/_queue_master.md` — navigation index only. Lists every batch file with its status (ACTIVE / LOCKED / COMPLETED), grouped by cycle. Never contains individual subject entries.
+- `wiki/_queue_nb1a.md` through `wiki/_queue_nb4d.md` — 16 Cycle 1 batch files (the original 100-subject sweep), 4 per notebook, 6-7 entries each. All COMPLETED.
+- `wiki/_queue_nb5a.md` through `wiki/_queue_nb6c.md` — 6 Cycle 2 batch files (Sleeper API / ESPN API Wave 1 unblock), 3 per notebook, 6-7 entries each.
 - Exactly one file is ACTIVE at any time. All others are LOCKED (not yet reached) or COMPLETED (fully processed).
-- Any session reads the master, opens the ACTIVE batch file, finds the topmost PENDING entry, and starts there.
+- Any session reads the master, opens the ACTIVE batch file, finds the topmost PENDING (or IN_PROGRESS) entry, and starts there.
 - No manual handoff or memory required between sessions.
 
 ---
@@ -129,10 +130,12 @@ Build top-down. The notebook priority and current status is defined in `wiki/WIK
 
 | Priority | Notebook | Wiki Category | Status |
 | -------- | -------- | ------------- | ------ |
-| 1 | Player Evaluation & Opportunity Metrics | player-evaluation | 🔄 ACTIVE — nb1a queue ready |
-| 2 | Team & Scheme Context | team-scheme | 🔒 LOCKED |
-| 3 | League Mechanics, Scoring & Draft Strategy | league-mechanics | 🔒 LOCKED |
-| 4 | In-Season Management, Injury/Availability & Situational Data | in-season-management | 🔒 LOCKED |
+| 1 | Player Evaluation & Opportunity Metrics | player-evaluation | ✅ COMPLETED |
+| 2 | Team & Scheme Context | team-scheme | ✅ COMPLETED |
+| 3 | League Mechanics, Scoring & Draft Strategy | league-mechanics | ✅ COMPLETED |
+| 4 | In-Season Management, Injury/Availability & Situational Data | in-season-management | ✅ COMPLETED |
+| 5 | Sleeper API Integration | sleeper-api | 🔄 ACTIVE — nb5a queue ready, 5.1–5.3 IN_PROGRESS |
+| 6 | ESPN API Integration | espn-api | 🔒 LOCKED |
 
 ---
 
@@ -147,7 +150,7 @@ All rules defined in `wiki/schema.yml` under `page_size_tiers`. Summary:
 
 ---
 
-## The 4 Valid Categories
+## The Valid Categories
 
 | Category | Slug | Covers |
 | -------- | ---- | ------ |
@@ -155,6 +158,10 @@ All rules defined in `wiki/schema.yml` under `page_size_tiers`. Summary:
 | Team & Scheme Context | `team-scheme` | Team-level tendencies, line quality, coaching philosophy, Vegas context, weather, matchup data |
 | League Mechanics, Scoring & Draft Strategy | `league-mechanics` | Scoring formats, draft strategy, positional scarcity, auction, dynasty, trade value |
 | In-Season Management, Injury/Availability & Situational Data | `in-season-management` | Weekly decisions, injury tracking, situational splits, consistency, trend alerts |
+| Sleeper API Integration | `sleeper-api` | Sleeper platform integration reference — endpoint structure, auth (none required), rate limits, canonical player ID scheme, and data-shape quirks |
+| ESPN API Integration | `espn-api` | ESPN platform integration reference — cookie-based auth (espn_s2/SWID), undocumented view parameters, endpoint structure, and quirks specific to ESPN's API |
+
+`schema-reference` is also a valid category in `wiki/schema.yml` but has no discovery queue and stays empty until Wave 1 defines the real schema — do not populate it during Notebook 5/6 ingestion.
 
 ---
 
