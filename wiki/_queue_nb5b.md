@@ -37,31 +37,31 @@
 
 ### 5.10 Sleeper NFL State Endpoint
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: sleeper-api
 - Description: What NFL state/season metadata is available via GET /state/nfl, and how it should be used to determine the current week.
-- Notes: Panel prompt generated 2026-07-21; awaiting chathub.gg responses.
+- Notes: Ingested via cleanly-scoped 6-model panel, 2026-07-21. Created `sleeper-api/nfl-state-endpoint`. Strong convergence (4-5 of 6) on the season_type-gated decision procedure (week for stats/matchups, leg for transactions, display_week for UI only), the Tuesday-rollover divergence between week/display_week, and league_season/league_create_season leading season during the winter rollover. Reciprocal related links added to league-endpoint, transactions-endpoint, matchup-endpoint.
 
 ---
 
 ### 5.11 Sleeper API Rate Limits
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: sleeper-api
 - Description: Sleeper's documented and empirically observed rate limits, and what HTTP behavior occurs when they're exceeded.
-- Notes: Panel prompt generated 2026-07-21; awaiting chathub.gg responses.
+- Notes: Ingested via cleanly-scoped 6-model panel, 2026-07-21. Created `sleeper-api/rate-limits` (confidence: medium, due to a cross-model contradiction on the exact ceiling — 5 of 6 responses stated ~1,000 requests/minute, 1 response reported an empirically observed ~100/minute — logged in `wiki/verification-cache.md` Unresolved Conflicts). Strong convergence on the players-dump once-daily rule and on enforcement escalating beyond clean 429s to connection-level failures or edge/CDN challenge responses. Reciprocal related link added to authentication.
 
 ---
 
 ### 5.12 Sleeper Players Dump and Canonical Player ID
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: sleeper-api
 - Description: The structure of the full GET /players/nfl dump, and Sleeper's canonical player_id scheme.
-- Notes: Panel prompt generated 2026-07-21; awaiting chathub.gg responses.
+- Notes: Ingested via cleanly-scoped 6-model panel, 2026-07-21. Created `sleeper-api/players-endpoint`. Unanimous 6-of-6 agreement on the canonical ID scheme (numeric player IDs, team-abbreviation defense IDs) — the single strongest corroboration of any claim in this session — and on the once-daily fetch guidance. Reciprocal related links added to roster-endpoint, draft-endpoint, transactions-endpoint, rate-limits.
 
 ---
 
-This file covers entries 5.7–5.12. This file is LOCKED until `wiki/_queue_nb5a.md` reaches COMPLETED. When all entries in this file are COMPLETED or SKIPPED, update `wiki/_queue_master.md`: set this file → COMPLETED, `wiki/_queue_nb5c.md` → ACTIVE.
+This file covers entries 5.7–5.12. All entries are now COMPLETED. Per `wiki/_queue_master.md` transition rules, this file is set to COMPLETED and `wiki/_queue_nb5c.md` is promoted to ACTIVE.
 
 _End of wiki/_queue_nb5b.md_
