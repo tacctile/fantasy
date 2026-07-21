@@ -10,7 +10,7 @@
 
 ### 5.13 Cross-Referencing Sleeper Player IDs
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: sleeper-api
 - Description: How Sleeper player_id should be cross-referenced or mapped to other ID systems (ESPN, Yahoo, PFR, GSIS) for cross-platform data joins.
 - Notes: (pending ingestion)
@@ -19,7 +19,7 @@
 
 ### 5.14 Sleeper Trending Players Endpoint
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: sleeper-api
 - Description: The structure and update cadence of GET /players/nfl/trending/{add|drop}.
 - Notes: (pending ingestion)
@@ -28,7 +28,7 @@
 
 ### 5.15 Sleeper Defense and Free-Agent Player Representation
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: sleeper-api
 - Description: How team defenses (DST) and free-agent-only players are represented in the Sleeper players dataset.
 - Notes: (pending ingestion)
