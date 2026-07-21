@@ -45,8 +45,8 @@ When all entries in a notebook's batch files are COMPLETED or SKIPPED, that note
 | 3 | League Mechanics, Scoring & Draft Strategy | league-mechanics | ✅ COMPLETED — all 25 subjects ingested |
 | 4 | In-Season Management, Injury/Availability & Situational Data | in-season-management | ✅ COMPLETED — all 25 subjects ingested |
 | 5 | Sleeper API Integration | sleeper-api | ✅ COMPLETED — all 18 subjects ingested |
-| 6 | ESPN API Integration | espn-api | 🔄 ACTIVE — queued via nb6a–c, beginning now that Notebook 5 is complete |
-| 7 | Schema Reference | schema-reference | 🔒 LOCKED — decision-record mode, begins after Notebook 6 completes |
+| 6 | ESPN API Integration | espn-api | ✅ COMPLETED — all 19 subjects ingested |
+| 7 | Schema Reference | schema-reference | 🔄 ACTIVE — decision-record mode, unlocked now that Notebook 6 is complete |
 
 ---
 
@@ -153,7 +153,7 @@ When all entries in a notebook's batch files are COMPLETED or SKIPPED, that note
 **Wiki category:** espn-api
 **Question target:** 19 pages (one per subject, unless subjects are tightly related enough to consolidate)
 **Priority:** SIXTH — narrow-scope Wave 1 unblock, not part of the original 100-subject taxonomy
-**Queue files:** nb6a (ACTIVE — 3 of 7 subjects completed) · nb6b/c (LOCKED)
+**Queue files:** nb6a, nb6b, nb6c — all COMPLETED, 19 of 19 subjects ingested
 **Discovery run:** Subjects generated 2026-07-21 by Claude at Nick's request to cover: cookie auth mechanics (espn_s2/SWID), public vs. private league detection, endpoint structure (league, roster, matchup, draft, players), and known quirks/undocumented behavior specific to ESPN's API.
 
 ### Subjects (6.1–6.19)
@@ -184,7 +184,7 @@ When all entries in a notebook's batch files are COMPLETED or SKIPPED, that note
 **Wiki category:** schema-reference
 **Question target:** 3 decision-record pages (not domain-knowledge — see below)
 **Priority:** SEVENTH — Wave 1 unblock, added 2026-07-21 at Nick's request for a plan he can execute right after Sleeper + ESPN finish, before build starts
-**Queue files:** nb7a (LOCKED — begins after Notebook 6 completes)
+**Queue files:** nb7a (ACTIVE — unlocked 2026-07-21 now that Notebook 6 is complete)
 **Discovery run:** N/A in the Cycle 1/2 sense. Schema-reference has no external source of truth — it's this platform's own internal data model. There's nothing for a chathub.gg panel to converge on the way it does for fantasy analytics consensus or published third-party API docs.
 
 ### Why this notebook works differently
@@ -212,8 +212,8 @@ Full rationale lives in `wiki/_queue_nb7a.md` itself — read it in full before 
 | 3 — League Mechanics, Scoring & Draft Strategy | ✅ 25 subjects | ✅ 24 pages | ✅ COMPLETED |
 | 4 — In-Season Management, Injury/Availability & Situational Data | ✅ 25 subjects | ✅ 23 pages | ✅ COMPLETED |
 | 5 — Sleeper API Integration | ✅ 18 subjects | ✅ 16 pages | ✅ COMPLETED |
-| 6 — ESPN API Integration | ✅ 19 subjects | ⏳ 2 pages (3 of 19 subjects) | 🔄 ACTIVE |
-| 7 — Schema Reference | ✅ 3 subjects | ⏳ 0 pages | 🔒 LOCKED — decision-record mode, begins after Notebook 6 |
+| 6 — ESPN API Integration | ✅ 19 subjects | ✅ 15 pages | ✅ COMPLETED |
+| 7 — Schema Reference | ✅ 3 subjects | ⏳ 0 pages | 🔄 ACTIVE — decision-record mode |
 
 ---
 

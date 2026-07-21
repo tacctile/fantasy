@@ -8,7 +8,7 @@
 > **Total slots:** 100 (16 files × 6-7 per file, Cycle 1) + 37 (6 files × 6-7 per file, Cycle 2) + 3 (1 file, Cycle 3)
 > **Cycle:** 1 (initial build) — COMPLETED · 2 (Wave 1 API unblock) — ACTIVE · 3 (Wave 1 schema unblock) — LOCKED
 > **Generated:** 2026-07-14 (Cycle 1) · 2026-07-21 (Cycle 2) · 2026-07-21 (Cycle 3)
-> **Updated:** 2026-07-21 — Subjects 6.11–6.13 (draft detail, player endpoint/filtering, historical season access) ingested via cleanly-scoped 6-model panels. `_queue_nb6b.md` is now fully COMPLETED — all 6 of 6 subjects ingested. `_queue_nb6c.md` (subjects 6.14–6.19) is now ACTIVE.
+> **Updated:** 2026-07-21 — Subjects 6.17–6.19 (breaking changes/schema drift, bye/IR/lineup lock quirks, scoringPeriodId/matchupPeriodId mismatches) ingested via cleanly-scoped 6-model panel. `_queue_nb6c.md` is now fully COMPLETED — Notebook 6 (ESPN API) is fully ingested at 19 of 19 subjects, and Cycle 2 (Wave 1 API unblock) is fully COMPLETED. Cycle 3 (`_queue_nb7a.md`, schema-reference) is now ACTIVE.
 
 ---
 
@@ -57,21 +57,21 @@ Narrow-scope supplemental cycle. `sleeper-api` and `espn-api` were registered as
 | [_queue_nb5c.md](_queue_nb5c.md) | Sleeper API Integration | 5.13–5.18 (6) | sleeper-api | COMPLETED |
 | [_queue_nb6a.md](_queue_nb6a.md) | ESPN API Integration | 6.1–6.7 (7) | espn-api | COMPLETED |
 | [_queue_nb6b.md](_queue_nb6b.md) | ESPN API Integration | 6.8–6.13 (6) | espn-api | COMPLETED |
-| [_queue_nb6c.md](_queue_nb6c.md) | ESPN API Integration | 6.14–6.19 (6) | espn-api | ACTIVE |
+| [_queue_nb6c.md](_queue_nb6c.md) | ESPN API Integration | 6.14–6.19 (6) | espn-api | COMPLETED |
 
 **Status values:** ACTIVE / LOCKED / COMPLETED
 
-**Valid categories (7 total):** `player-evaluation`, `team-scheme`, `league-mechanics`, `in-season-management`, `sleeper-api`, `espn-api`, `schema-reference` (schema-reference's discovery queue is Cycle 3 below — it runs in decision-record mode, not panel-synthesis mode, and stays LOCKED until Cycle 2 finishes).
+**Valid categories (7 total):** `player-evaluation`, `team-scheme`, `league-mechanics`, `in-season-management`, `sleeper-api`, `espn-api`, `schema-reference`.
 
-### Cycle 3 — Wave 1 Schema Unblock (LOCKED, added 2026-07-21)
+**Cycle 2 is now fully COMPLETED** (2026-07-21) — both Sleeper API (18 subjects) and ESPN API (19 subjects) notebooks are fully ingested. Cycle 3 below is now unlocked.
 
-Single-file supplemental cycle for the `schema-reference` category. Unlike Cycles 1 and 2, these subjects have no external source of truth to synthesize from — they are the platform's own internal data model and must be decided, not researched. Pages here are `decision-record` type, not `domain-knowledge`. Full rationale and process notes live in `_queue_nb7a.md` itself.
+### Cycle 3 — Wave 1 Schema Unblock (ACTIVE, unlocked 2026-07-21)
+
+Single-file supplemental cycle for the `schema-reference` category. Unlike Cycles 1 and 2, these subjects have no external source of truth to synthesize from — they are the platform's own internal data model and must be decided, not researched. Pages here are `decision-record` type, not `domain-knowledge`. Full rationale and process notes live in `_queue_nb7a.md` itself. Run as a dedicated decision-making session with Nick, not a solo panel-and-commit loop.
 
 | File | Notebook | Subjects | Category | Status |
 | ---- | ---- | -------- | -------- | ------ |
-| [_queue_nb7a.md](_queue_nb7a.md) | Schema Reference | 7.1–7.3 (3) | schema-reference | LOCKED |
-
-**Unlocks when:** `_queue_nb6c.md` (Cycle 2's last file) reaches COMPLETED — i.e. after both Sleeper and ESPN are fully ingested. Run as a dedicated decision-making session with Nick, not a solo panel-and-commit loop.
+| [_queue_nb7a.md](_queue_nb7a.md) | Schema Reference | 7.1–7.3 (3) | schema-reference | ACTIVE |
 
 ---
 

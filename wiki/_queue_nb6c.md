@@ -37,28 +37,28 @@
 
 ### 6.17 ESPN's History of Unannounced Breaking Changes
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: espn-api
 - Description: Breaking changes ESPN has historically introduced to this API without notice, and how an integration should be built to tolerate them.
-- Notes: (pending ingestion)
+- Notes: Ingested via cleanly-scoped 6-model panel. Created `espn-api/breaking-changes-and-schema-drift.md`.
 
 ---
 
 ### 6.18 ESPN Bye Week, IR, and Locked Lineup Quirks
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: espn-api
 - Description: Quirks around bye weeks, IR slots, and locked lineups in ESPN's roster/matchup data.
-- Notes: (pending ingestion)
+- Notes: Ingested via cleanly-scoped 6-model panel. Created `espn-api/bye-ir-and-lineup-lock-quirks.md`.
 
 ---
 
 ### 6.19 ESPN scoringPeriodId/matchupPeriodId Mismatches
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: espn-api
 - Description: How ESPN handles scoringPeriodId vs. matchupPeriodId mismatches for leagues with non-standard weekly schedules (playoffs, bye weeks).
-- Notes: (pending ingestion)
+- Notes: Ingested via cleanly-scoped 6-model panel. Updated `espn-api/matchup-response-structure.md` (deepened existing coverage rather than creating a new page).
 
 ---
 
