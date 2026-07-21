@@ -18,6 +18,7 @@ related:
   - sleeper-api/transactions-endpoint
   - sleeper-api/user-leagues-endpoint
   - sleeper-api/playoff-bracket-endpoint
+  - sleeper-api/nfl-state-endpoint
 ---
 
 ## Summary
@@ -32,7 +33,7 @@ The Sleeper league endpoint (`GET /league/{league_id}`) returns a single league 
 
 The league object carries identity and lifecycle fields alongside the three core substructures: `league_id`, `name`, `season` (a string, e.g. `"2026"`, not a number), `sport`, `status`, `total_rosters`, `draft_id`, `avatar`, and `metadata`. Dynasty and keeper leagues additionally carry `previous_league_id`, letting an integration walk a league's history backward season by season — though this chain is not guaranteed to be unbroken, since commissioner resets, league recreations, or platform-side migrations can sever it. Newer league formats, notably best-ball, introduce additional fields such as `company_id` that do not appear on standard redraft or dynasty leagues. Playoff bracket identifiers (`bracket_id`, `loser_bracket_id`) also live at this top level, pointing to the separate bracket resources rather than embedding bracket data directly — see `sleeper-api/playoff-bracket-endpoint` for the structure those resources return.
 
-League `status` progresses through a small set of lifecycle values — commonly `pre_draft`, `drafting`, `in_season`, and `complete` — that gate which nested and related resources are meaningfully populated. Requesting matchup or transaction data before a league reaches `in_season` typically yields empty results rather than an explicit error, so an integration should treat lifecycle status as the signal for which downstream calls are worth making, not rely on error codes to detect an unready league.
+League `status` progresses through a small set of lifecycle values — commonly `pre_draft`, `drafting`, `in_season`, and `complete` — that gate which nested and related resources are meaningfully populated. Requesting matchup or transaction data before a league reaches `in_season` typically yields empty results rather than an explicit error, so an integration should treat lifecycle status as the signal for which downstream calls are worth making, not rely on error codes to detect an unready league. This top-level `season` field is the league's own authoritative season identity and should be preferred over the global `sleeper-api/nfl-state-endpoint`'s `season` value when working with a specific league, since the state endpoint's `season`/`league_season` fields can diverge from a given league's own season during the winter rollover window.
 
 ### League Renewal Creates a New League ID Every Season
 
