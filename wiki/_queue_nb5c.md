@@ -10,28 +10,28 @@
 
 ### 5.13 Cross-Referencing Sleeper Player IDs
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: sleeper-api
 - Description: How Sleeper player_id should be cross-referenced or mapped to other ID systems (ESPN, Yahoo, PFR, GSIS) for cross-platform data joins.
-- Notes: (pending ingestion)
+- Notes: Ingested 2026-07-21 via cleanly-scoped 6-model panel. Created `sleeper-api/player-id-crosswalk.md`. Updated `sleeper-api/players-endpoint.md` with reciprocal related link. Key findings: no native `pfr_id` field in Sleeper's dump (unanimous 6/6); nflverse/DynastyProcess crosswalk is the community-standard reconciliation layer; join hierarchy is direct embedded IDs, then community crosswalk, then name+birthdate+position as last resort. One contested claim (gsis_id field existence) resolved via majority in verification cache.
 
 ---
 
 ### 5.14 Sleeper Trending Players Endpoint
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: sleeper-api
 - Description: The structure and update cadence of GET /players/nfl/trending/{add|drop}.
-- Notes: (pending ingestion)
+- Notes: Ingested 2026-07-21 via cleanly-scoped 6-model panel. Created `sleeper-api/trending-endpoint.md`. Updated `sleeper-api/players-endpoint.md` and `sleeper-api/rate-limits.md` with reciprocal related links. Key findings: raw unnormalized count with no denominator (unanimous 6/6); add/drop are independent unnetted streams; refresh cadence undocumented; dynasty/best-ball population skew.
 
 ---
 
 ### 5.15 Sleeper Defense and Free-Agent Player Representation
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: sleeper-api
 - Description: How team defenses (DST) and free-agent-only players are represented in the Sleeper players dataset.
-- Notes: (pending ingestion)
+- Notes: Ingested 2026-07-21 via cleanly-scoped 6-model panel. Created `sleeper-api/dst-and-free-agents.md`. Updated `sleeper-api/players-endpoint.md`, `sleeper-api/roster-endpoint.md`, and `sleeper-api/league-endpoint.md` with reciprocal related links. Key findings: DST keyed by team abbreviation with no cross-provider external IDs (unanimous 6/6); free-agent status is two independent concepts (NFL employment vs. fantasy-league availability, unanimous 6/6); league availability computed via roster set subtraction, not a dedicated endpoint.
 
 ---
 

@@ -19,7 +19,7 @@
 | Team & Scheme | `wiki/topics/team-scheme/` | Team-level context that determines player opportunity and value. Pass rate, PROE, pace, offensive line quality, play-action, RPO, personnel groupings, motion, red zone efficiency, coaching tendencies, scheme identity, target distribution, backfield structure, DvP, Vegas lines, weather, home/away splits, and depth chart stability. |
 | League Mechanics | `wiki/topics/league-mechanics/` | Scoring formats, draft strategy, and league structure. PPR/half-PPR/standard, TE premium, Superflex/2QB, roster construction, positional scarcity, ADP, VBD, Zero-RB/Hero-RB, stacking, handcuffs, auction draft, FAAB, waiver strategy, breakout/bust modeling, dynasty vs. redraft vs. keeper, best ball, trade value, bye week management, and playoff schedule strength. |
 | In-Season Management | `wiki/topics/in-season-management/` | Weekly decisions, injury tracking, and situational data. Start/sit projections, ROS rankings, injury status, recovery timelines, age curves, workload risk, snap/target trend alerts, next-man-up value, game script sensitivity, strength of schedule, coaching changes, short-week effects, consistency scores, and ADP divergence. |
-| Sleeper API | `wiki/topics/sleeper-api/` | Sleeper platform integration reference: endpoint structure, rate limits, auth (none required), and data-shape quirks for player identity, stats, and league data. In progress — 12 of 18 planned subjects ingested (authentication, league endpoint, roster endpoint, matchup endpoint, draft endpoint, users endpoint, transactions endpoint, user/user-leagues endpoints, playoff bracket endpoint, NFL state endpoint, rate limits, players endpoint). |
+| Sleeper API | `wiki/topics/sleeper-api/` | Sleeper platform integration reference: endpoint structure, rate limits, auth (none required), and data-shape quirks for player identity, stats, and league data. In progress — 15 of 18 planned subjects ingested (authentication, league endpoint, roster endpoint, matchup endpoint, draft endpoint, users endpoint, transactions endpoint, user/user-leagues endpoints, playoff bracket endpoint, NFL state endpoint, rate limits, players endpoint, player-ID crosswalk, trending endpoint, DST/free-agent representation). |
 | ESPN API | `wiki/topics/espn-api/` | ESPN platform integration reference: cookie-based auth (espn_s2/SWID), undocumented view parameters, rate limits, and endpoint structure for rosters, draft state, standings, and matchups. Queued — ingestion begins after Sleeper API notebook completes. |
 
 ---
@@ -42,9 +42,9 @@
 | Team & Scheme | 24 |
 | League Mechanics | 25 |
 | In-Season Management | 23 |
-| Sleeper API | 12 |
+| Sleeper API | 15 |
 | ESPN API | 0 |
-| **Total** | **110** |
+| **Total** | **113** |
 
 ---
 
