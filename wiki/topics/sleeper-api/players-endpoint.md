@@ -15,6 +15,9 @@ related:
   - sleeper-api/draft-endpoint
   - sleeper-api/transactions-endpoint
   - sleeper-api/rate-limits
+  - sleeper-api/player-id-crosswalk
+  - sleeper-api/trending-endpoint
+  - sleeper-api/dst-and-free-agents
 ---
 
 ## Summary
@@ -33,13 +36,13 @@ The endpoint returns one JSON object whose top-level keys are Sleeper `player_id
 
 Individual players are keyed by a Sleeper-assigned numeric string (for example, a four- or five-digit string), assigned roughly sequentially as a player enters Sleeper's system, so ID magnitude loosely clusters by draft-class vintage. These numeric IDs are stable for the life of a player — there is no corroborated evidence of Sleeper ever reassigning or recycling an individual player's ID to a different person, and this stability is the entire foundation dynasty and keeper tooling relies on for long-horizon player tracking.
 
-Team defenses are the one universal, unanimous exception: a team defense's `player_id` is the team's abbreviation string itself (for example `"DET"`, `"KC"`, `"SF"`), not a numeric-style ID. Every response consulted for this page independently identified this same fact with no dissent, making it the single best-corroborated claim in the entire subject. Any code path that assumes `player_id` values are uniformly numeric-looking strings will break the first time it processes a real roster, since defenses occupy ordinary starting slots on rosters and matchups exactly like any offensive or defensive player.
+Team defenses are the one universal, unanimous exception: a team defense's `player_id` is the team's abbreviation string itself (for example `"DET"`, `"KC"`, `"SF"`), not a numeric-style ID. Every response consulted for this page independently identified this same fact with no dissent, making it the single best-corroborated claim in the entire subject. Any code path that assumes `player_id` values are uniformly numeric-looking strings will break the first time it processes a real roster, since defenses occupy ordinary starting slots on rosters and matchups exactly like any offensive or defensive player. The full treatment of defense representation, franchise-relocation abbreviation drift, and how league-level free-agent availability is derived lives in `sleeper-api/dst-and-free-agents`.
 
 ### Field Inventory
 
 Field presence is uneven across records — treat every field beyond `player_id` as potentially absent, especially for inactive, historical, or deep practice-squad players. Commonly present fields include: `first_name`, `last_name`, `full_name` (frequently absent or unreliable for defenses); `position` (primary position) and `fantasy_positions` (an array — a player can be fantasy-eligible at more than one position simultaneously); `team` (the current NFL team abbreviation, `null` for a free agent); `status` (roster status such as Active, Inactive, Injured Reserve, or Practice Squad) and `injury_status` (a separate field for the official injury-report designation); `age`, `height`, `weight`, `college`, `years_exp`, and `birth_date`; `number` (jersey number); `depth_chart_position` and `depth_chart_order`; `search_full_name` (a lowercased, punctuation-stripped normalization of the player's name that Sleeper uses internally for search, and the best available field for any fuzzy name-based lookup); and `search_rank` (Sleeper's internal relevance/display ordering — low values for actively relevant fantasy players, very high sentinel-style values for deep or inactive entries). This is Sleeper's own internal ordering signal, not a talent or value metric, and it is not a documented, stable contract.
 
-The dump also carries a block of cross-provider identifier fields: `espn_id`, `yahoo_id`, `sportradar_id`, `gsis_id` (the NFL's official Game Statistics and Information System ID — the standard join key into nflverse/nflfastR play-by-play data), `stats_id`, `rotowire_id`, `rotoworld_id`, `fantasy_data_id`, and `swish_id`, with additional fields observed to appear over time without notice. Any of these can be `null`, absent, or represented inconsistently (`null` versus an empty string versus a missing key entirely) for a given player — never assume completeness, and normalize all three absence forms to a single null representation at ingestion.
+The dump also carries a block of cross-provider identifier fields: `espn_id`, `yahoo_id`, `sportradar_id`, `gsis_id` (the NFL's official Game Statistics and Information System ID — the standard join key into nflverse/nflfastR play-by-play data), `stats_id`, `rotowire_id`, `rotoworld_id`, `fantasy_data_id`, and `swish_id`, with additional fields observed to appear over time without notice. Any of these can be `null`, absent, or represented inconsistently (`null` versus an empty string versus a missing key entirely) for a given player — never assume completeness, and normalize all three absence forms to a single null representation at ingestion. The full join hierarchy, the PFR gap in this field set, and the community crosswalk used to close it are covered in `sleeper-api/player-id-crosswalk`.
 
 ### Cross-Provider ID Coverage Is Uneven — Use a Maintained Crosswalk
 
