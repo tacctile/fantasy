@@ -16,6 +16,8 @@ related:
   - sleeper-api/matchup-endpoint
   - sleeper-api/draft-endpoint
   - sleeper-api/transactions-endpoint
+  - sleeper-api/user-leagues-endpoint
+  - sleeper-api/playoff-bracket-endpoint
 ---
 
 ## Summary

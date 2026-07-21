@@ -12,6 +12,7 @@ tags:
 related:
   - sleeper-api/roster-endpoint
   - sleeper-api/transactions-endpoint
+  - sleeper-api/user-leagues-endpoint
 ---
 
 ## Summary
@@ -24,7 +25,7 @@ related:
 
 ### This Endpoint Returns Accounts, Not Teams
 
-Every object in the array returned by `GET /league/{league_id}/users` is a Sleeper account associated with the league — `user_id`, `display_name`, `username`, `avatar`, `metadata`, and `is_owner`. None of these objects carry a `roster_id`, and there is no field here that identifies which fantasy team, if any, a given user manages. Team identity and roster assignment live entirely on the separate rosters resource; this endpoint answers "who is in this league" and the rosters resource answers "who owns which team." Treating the users endpoint as if it already contained team assignments is a fundamental misreading of the data model, not an edge case.
+Every object in the array returned by `GET /league/{league_id}/users` is a Sleeper account associated with the league — `user_id`, `display_name`, `username`, `avatar`, `metadata`, and `is_owner`. None of these objects carry a `roster_id`, and there is no field here that identifies which fantasy team, if any, a given user manages. Team identity and roster assignment live entirely on the separate rosters resource; this endpoint answers "who is in this league" and the rosters resource answers "who owns which team." Treating the users endpoint as if it already contained team assignments is a fundamental misreading of the data model, not an edge case. This endpoint is league-scoped and distinct from the global identity and league-discovery endpoints on `sleeper-api/user-leagues-endpoint` — the two are easy to confuse by name but answer different questions at different scopes.
 
 ### The Canonical Join: rosters.owner_id to users.user_id
 
@@ -44,7 +45,7 @@ The league-specific team name a user has set lives in `metadata.team_name` — i
 
 ### Current State Only — Not a Historical Ownership Ledger
 
-Both the users endpoint and the rosters endpoint reflect current membership and current ownership at the moment of the request. Neither endpoint preserves what a roster's ownership was at some point in the past. If a roster changes hands mid-season — an owner departs and a new manager takes over, or a co-owner arrangement changes — a later read of these two endpoints will show only the current state; there is no way to recover who owned a given roster during, say, a completed week's matchup purely from these two resources. Any feature that needs to attribute historical decisions (a bad lineup call, a since-regretted trade) to the person actually responsible at the time needs its own periodic snapshotting of the ownership mapping — these endpoints cannot answer that question retroactively on their own. The transactions resource (`sleeper-api/transactions-endpoint`) can help partially reconstruct who initiated specific moves via its `creator` field, but `creator` reflects who acted, not necessarily who owned the roster at that moment, so it is a supplement to snapshotting, not a substitute for it.
+Both the users endpoint and the rosters endpoint reflect current membership and current ownership at the moment of the request. Neither endpoint preserves what a roster's ownership was at some point in the past. If a roster changes hands mid-season — an owner departs and a new manager takes over, or a co-owner arrangement changes — a later read of these two endpoints will show only the current state; there is no way to recover who owned a given roster during, say, a completed week's matchup purely from these two resources. Any feature that needs to attribute historical decisions (a bad lineup call, a since-regretted trade) to the person actually responsible at the time needs its own periodic snapshotting of the ownership mapping — these endpoints cannot answer that question retroactively on their own. The transactions resource (`sleeper-api/transactions-endpoint`) can help partially reconstruct who initiated specific moves via its `creator` field, but `creator` reflects who acted, not necessarily who owned the roster at that moment, so it is a supplement to snapshotting, not a substitute for it. The user-leagues endpoint has this same current-state-only limitation at the league-membership level — see `sleeper-api/user-leagues-endpoint`.
 
 ### Avatar Handling
 

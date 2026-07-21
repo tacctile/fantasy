@@ -16,6 +16,8 @@ related:
   - sleeper-api/draft-endpoint
   - sleeper-api/users-endpoint
   - sleeper-api/transactions-endpoint
+  - sleeper-api/user-leagues-endpoint
+  - sleeper-api/playoff-bracket-endpoint
 ---
 
 ## Summary
@@ -58,7 +60,7 @@ Roster arrays reflect a point-in-time snapshot of the league's transaction state
 
 ### Distinguishing Roster IDs from Other Sleeper ID Domains
 
-Sleeper's data model uses several separate ID domains that all commonly appear as plain strings and are easy to conflate: a global user ID, a global league ID, a league-scoped roster ID, a global draft ID, and a Sleeper player ID. The roster endpoint specifically deals in `roster_id` and `owner_id` — a league-local team identifier and a global user identifier, respectively — and these must not be treated as interchangeable with each other or with identifiers returned by other Sleeper resources, such as draft-pick ownership fields that are also named with "owner"-style keys but refer to roster IDs rather than user IDs in that context.
+Sleeper's data model uses several separate ID domains that all commonly appear as plain strings and are easy to conflate: a global user ID, a global league ID, a league-scoped roster ID, a global draft ID, and a Sleeper player ID. The roster endpoint specifically deals in `roster_id` and `owner_id` — a league-local team identifier and a global user identifier, respectively — and these must not be treated as interchangeable with each other or with identifiers returned by other Sleeper resources, such as draft-pick ownership fields that are also named with "owner"-style keys but refer to roster IDs rather than user IDs in that context. The global `user_id` used here is the identical identity key resolved and discovered via `sleeper-api/user-leagues-endpoint`.
 
 ---
 
