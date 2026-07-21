@@ -13,6 +13,7 @@ tags:
 related:
   - sleeper-api/roster-endpoint
   - sleeper-api/league-endpoint
+  - sleeper-api/playoff-bracket-endpoint
 ---
 
 ## Summary
@@ -49,7 +50,7 @@ In leagues that score against the weekly league median in addition to head-to-he
 
 ### Playoff Bracket Structure Lives on a Separate Endpoint
 
-This endpoint keeps returning ordinary roster-week rows during playoff weeks, including for eliminated and consolation teams, but it carries no bracket semantics whatsoever — no round label, no seeding, no indication of which weeks constitute a single advancement round. That structure lives on the league's separate bracket resources (winners and losers bracket), whose entries carry their own round and match identifiers plus advancement pointers between rounds. Multi-week playoff rounds appear here only as separate per-week matchup rows that must be summed; the bracket resource, not this one, is what tells a caller which weeks belong to which round. Do not attempt to infer bracket structure purely from a week's `matchup_id` values.
+This endpoint keeps returning ordinary roster-week rows during playoff weeks, including for eliminated and consolation teams, but it carries no bracket semantics whatsoever — no round label, no seeding, no indication of which weeks constitute a single advancement round. That structure lives on the league's separate bracket resources (`sleeper-api/playoff-bracket-endpoint`), whose entries carry their own round and match identifiers plus advancement pointers between rounds, resolved via reference objects rather than a flat schedule. Multi-week playoff rounds appear here only as separate per-week matchup rows that must be summed; the bracket resource, not this one, is what tells a caller which weeks belong to which round — and even the bracket resource requires combining `settings.playoff_week_start` (see `sleeper-api/league-endpoint`) with round number to know exactly which week or weeks a given round covers. Do not attempt to infer bracket structure purely from a week's `matchup_id` values, and do not assume the bracket's own match ID shares a namespace with this endpoint's `matchup_id`.
 
 ### Player ID Handling and Team Defenses
 
@@ -79,7 +80,7 @@ In best-ball leagues, the `starters` array reflects Sleeper's own retroactive li
   **Reasoning:** The endpoint has no representation of median results at all; only the roster object's own `settings.wins`/`settings.losses` reflects the true record in a median league, and reconciliation logic needs to expect and explain the resulting gap versus pure head-to-head derivation.
   **Rejected alternative:** Ignoring median scoring and deriving standings purely from matchup pairings was rejected — it produces systematically wrong win totals for any league using this common format.
 
-- **Decision:** The platform will source playoff bracket structure (round labeling, advancement, seeding) exclusively from the league's bracket resources, and will treat this matchup endpoint purely as a per-week roster-score source even during playoff weeks.
+- **Decision:** The platform will source playoff bracket structure (round labeling, advancement, seeding, and final placement) exclusively from the league's bracket resources (`sleeper-api/playoff-bracket-endpoint`), and will treat this matchup endpoint purely as a per-week roster-score source even during playoff weeks.
   **Reasoning:** This endpoint carries zero bracket semantics; attempting to infer round or advancement from `matchup_id` values or week numbers alone is unsupported by the data and would break on any non-standard bracket size or consolation-ladder configuration.
   **Rejected alternative:** Inferring playoff structure heuristically from week number and league settings was rejected — the bracket resources exist precisely to make this unnecessary and more reliable.
 
@@ -89,4 +90,4 @@ In best-ball leagues, the `starters` array reflects Sleeper's own retroactive li
 
 - [ ] What is the exact placeholder value Sleeper uses for an empty `starters` slot on this endpoint — the same open question already logged on `sleeper-api/roster-endpoint` — and is it consistent across league states and formats? — needs direct sampling against live matchup responses with intentionally empty lineup slots.
 - [ ] Does Sleeper publish or intend any formal precedence contract between `points` and `custom_points`, or is the app's display behavior (prefer override when present) the only available signal? — needs either direct confirmation from Sleeper or systematic comparison against displayed league results across a range of leagues that use manual score overrides.
-- [ ] Does the alignment between this endpoint's `matchup_id` and the bracket resource's match identifier hold reliably across every bracket size and consolation-ladder configuration during playoff weeks? — needs direct sampling against real leagues using non-standard playoff formats, since available sources converge on ordinary bracket shapes but not exhaustively on unusual ones.
+- [ ] Does the alignment between this endpoint's `matchup_id` and the bracket resource's match identifier hold reliably across every bracket size and consolation-ladder configuration during playoff weeks? — needs direct sampling against real leagues using non-standard playoff formats, since available sources converge on ordinary bracket shapes but not exhaustively on unusual ones. Note: `sleeper-api/playoff-bracket-endpoint` treats these as two entirely separate ID namespaces requiring a roster-ID-and-week join rather than a direct ID comparison — this question is about whether that join is airtight in every configuration, not whether the IDs themselves ever coincide.
