@@ -37,7 +37,7 @@
 
 ### 6.4 Detecting Public vs. Private ESPN Leagues
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: espn-api
 - Description: How to programmatically determine whether an ESPN league is public or private before attempting authenticated requests.
 - Notes: (pending ingestion)
@@ -46,7 +46,7 @@
 
 ### 6.5 ESPN Error Responses for Auth Failures
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: espn-api
 - Description: The HTTP status code or error response ESPN returns when accessing a private league without valid credentials, versus an invalid league ID.
 - Notes: (pending ingestion)
@@ -55,7 +55,7 @@
 
 ### 6.6 ESPN Public vs. Private Data Completeness
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: espn-api
 - Description: Whether public leagues expose the same data completeness as private leagues, or whether any fields are restricted regardless of authentication.
 - Notes: (pending ingestion)
