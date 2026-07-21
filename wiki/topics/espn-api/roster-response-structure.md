@@ -15,6 +15,8 @@ related:
   - espn-api/view-parameter-reference
   - espn-api/matchup-response-structure
   - espn-api/base-url-and-versioning
+  - espn-api/player-endpoint-and-filtering
+  - espn-api/historical-season-access
 ---
 
 ## Summary

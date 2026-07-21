@@ -18,6 +18,9 @@ related:
   - espn-api/view-parameter-reference
   - espn-api/roster-response-structure
   - espn-api/matchup-response-structure
+  - espn-api/draft-detail-response-structure
+  - espn-api/player-endpoint-and-filtering
+  - espn-api/historical-season-access
 ---
 
 ## Summary

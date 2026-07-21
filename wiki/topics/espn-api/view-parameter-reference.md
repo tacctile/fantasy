@@ -16,6 +16,8 @@ related:
   - espn-api/roster-response-structure
   - espn-api/matchup-response-structure
   - espn-api/data-completeness
+  - espn-api/draft-detail-response-structure
+  - espn-api/player-endpoint-and-filtering
 ---
 
 ## Summary
