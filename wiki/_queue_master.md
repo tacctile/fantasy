@@ -8,7 +8,7 @@
 > **Total slots:** 100 (16 files × 6-7 per file, Cycle 1) + 37 (6 files × 6-7 per file, Cycle 2)
 > **Cycle:** 1 (initial build) — COMPLETED · 2 (Wave 1 API unblock) — ACTIVE
 > **Generated:** 2026-07-14 (Cycle 1) · 2026-07-21 (Cycle 2)
-> **Updated:** 2026-07-21 — Subjects 5.4–5.6 (matchup, draft, users endpoints) ingested via a cleanly-scoped 6-model panel; `_queue_nb5a.md` is now fully COMPLETED (all 6 entries, 5.1–5.6). `_queue_nb5b.md` promoted to ACTIVE for subjects 5.7–5.12.
+> **Updated:** 2026-07-21 — Subjects 5.10–5.12 (NFL state, rate limits, players dump/canonical ID) ingested via a cleanly-scoped 6-model panel; `_queue_nb5b.md` is now fully COMPLETED (all 6 entries, 5.7–5.12). `_queue_nb5c.md` promoted to ACTIVE for subjects 5.13–5.18.
 
 ---
 
@@ -53,8 +53,8 @@ Narrow-scope supplemental cycle. `sleeper-api` and `espn-api` were registered as
 | File | Notebook | Subjects | Category | Status |
 | ---- | -------- | -------- | -------- | ------ |
 | [_queue_nb5a.md](_queue_nb5a.md) | Sleeper API Integration | 5.1–5.6 (6) | sleeper-api | COMPLETED |
-| [_queue_nb5b.md](_queue_nb5b.md) | Sleeper API Integration | 5.7–5.12 (6) | sleeper-api | ACTIVE |
-| [_queue_nb5c.md](_queue_nb5c.md) | Sleeper API Integration | 5.13–5.18 (6) | sleeper-api | LOCKED |
+| [_queue_nb5b.md](_queue_nb5b.md) | Sleeper API Integration | 5.7–5.12 (6) | sleeper-api | COMPLETED |
+| [_queue_nb5c.md](_queue_nb5c.md) | Sleeper API Integration | 5.13–5.18 (6) | sleeper-api | ACTIVE |
 | [_queue_nb6a.md](_queue_nb6a.md) | ESPN API Integration | 6.1–6.7 (7) | espn-api | LOCKED |
 | [_queue_nb6b.md](_queue_nb6b.md) | ESPN API Integration | 6.8–6.13 (6) | espn-api | LOCKED |
 | [_queue_nb6c.md](_queue_nb6c.md) | ESPN API Integration | 6.14–6.19 (6) | espn-api | LOCKED |
