@@ -10,28 +10,28 @@
 
 ### 6.8 ESPN "view" Query Parameter
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: espn-api
 - Description: The role of the view query parameter, and which views (mRoster, mTeam, mMatchup, mMatchupScore, mSettings, mDraftDetail, mLiveScoring) return which data.
-- Notes: (pending ingestion)
+- Notes: Ingested via cleanly-scoped 6-model panel. Created `espn-api/view-parameter-reference.md`.
 
 ---
 
 ### 6.9 ESPN Roster Response Structure
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: espn-api
 - Description: The structure of the roster response (mRoster view), including lineupSlotId mappings and slot-to-position tables.
-- Notes: (pending ingestion)
+- Notes: Ingested via cleanly-scoped 6-model panel. Created `espn-api/roster-response-structure.md`. One single-source disagreement on whether to derive slot mappings from mSettings vs. hardcode was resolved in favor of the majority (mSettings-authoritative), consistent with MASTER_CONTEXT.md's league_config schema rule — see verification cache.
 
 ---
 
 ### 6.10 ESPN Matchup Response Structure
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: espn-api
 - Description: The structure of the matchup response (mMatchup/mMatchupScore), including the distinction between scoringPeriodId and matchupPeriodId.
-- Notes: (pending ingestion)
+- Notes: Ingested via cleanly-scoped 6-model panel. Created `espn-api/matchup-response-structure.md`.
 
 ---
 
