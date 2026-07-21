@@ -1,1 +1,67 @@
-IyBRdWV1ZSBGaWxlOiBOb3RlYm9vayA1IOKAlCBTbGVlcGVyIEFQSSBJbnRlZ3JhdGlvbiAoUGFydCBBKQoKKipOb3RlYm9vazoqKiBTbGVlcGVyIEFQSSBJbnRlZ3JhdGlvbgoqKldpa2kgY2F0ZWdvcnk6Kiogc2xlZXBlci1hcGkKKipQcmlvcml0eToqKiBXYXZlIDEgdW5ibG9jayDigJQgbmFycm93LXNjb3BlIHN1cHBsZW1lbnRhbCBjeWNsZSwgYWRkZWQgMjAyNi0wNy0yMSAobm90IHBhcnQgb2YgdGhlIG9yaWdpbmFsIDEwMC1zdWJqZWN0LzQtbm90ZWJvb2sgc3dlZXApCioqRW50cnkgcmFuZ2U6KiogNS4x4oCTNS42ICg2IGVudHJpZXMpCioqR2VuZXJhdGVkOioqIDIwMjYtMDctMjEKCi0tLQoKIyMjIDUuMSBTbGVlcGVyIEFQSSBBdXRoZW50aWNhdGlvbiBSZXF1aXJlbWVudHMKCi0gU3RhdHVzOiBDT01QTEVURUQKLSBXaWtpIENhdGVnb3J5OiBzbGVlcGVyLWFwaQotIERlc2NyaXB0aW9uOiBEb2VzIHRoZSBTbGVlcGVyIEFQSSByZXF1aXJlIEFQSSBrZXlzLCBPQXV0aCwgb3IgYW55IGF1dGhlbnRpY2F0aW9uIGZvciByZWFkIGVuZHBvaW50cywgYW5kIGFyZSB0aGVyZSBhbnkgYXV0aGVudGljYXRlZCBvciB3cml0ZSBlbmRwb2ludHMgYXQgYWxsPwotIE5vdGVzOiBDcmVhdGVkIHdpa2kvdG9waWNzL3NsZWVwZXItYXBpL2F1dGhlbnRpY2F0aW9uLm1kIChjb25maWRlbmNlOiBoaWdoKS4gY2hhdGh1Yi5nZyA2LW1vZGVsIHBhbmVsIHVuYW5pbW91cyAoNi82KSB0aGF0IHB1YmxpYyByZWFkIGFjY2VzcyByZXF1aXJlcyBubyBhdXRoOyAyLTMgbW9kZWxzIGFkZGl0aW9uYWxseSBjb3Jyb2JvcmF0ZWQgYW4gdW5kb2N1bWVudGVkIGF1dGhlbnRpY2F0ZWQgR3JhcGhRTC9XZWJTb2NrZXQgbGF5ZXIgZm9yIG11dGF0aW9ucyBhbmQgbGl2ZSBwdXNoLCBidXQgd2l0aCBsb3cgcHJlY2lzaW9uIG9uIG1lY2hhbmljcyAoc2VlIHZlcmlmaWNhdGlvbi1jYWNoZS5tZCBQZW5kaW5nIFZlcmlmaWNhdGlvbikuIFJJU0s6IHRoZSBwYW5lbCBydW4gZGlkIG5vdCBjbGVhbmx5IGlzb2xhdGUgc3ViamVjdHMgNS4xLTUuMyDigJQgbW9zdCByZXNwb25zZXMgYW5zd2VyZWQgYSBmdWxsIFNsZWVwZXIrRVNQTiBzd2VlcCByYXRoZXIgdGhhbiB0aGUgMyByZXF1ZXN0ZWQgc3ViamVjdHM7IG9ubHkgdGhlIHBvcnRpb25zIHJlbGV2YW50IHRvIDUuMSB3ZXJlIHN5bnRoZXNpemVkIGhlcmUuCgotLS0KCiMjIyA1LjIgU2xlZXBlciBMZWFndWUgRW5kcG9pbnQgU3RydWN0dXJlCgotIFN0YXR1czogQ09NUExFVEVECi0gV2lraSBDYXRlZ29yeTogc2xlZXBlci1hcGkKLSBEZXNjcmlwdGlvbjogVGhlIGZ1bGwgc3RydWN0dXJlIGFuZCByZXNwb25zZSBzY2hlbWEgb2YgR0VUIC9sZWFndWUve2xlYWd1ZV9pZH0sIGluY2x1ZGluZyBzZXR0aW5ncywgc2NvcmluZ19zZXR0aW5ncywgYW5kIHJvc3Rlcl9wb3NpdGlvbnMuCi0gTm90ZXM6IENyZWF0ZWQgd2lraS90b3BpY3Mvc2xlZXBlci1hcGkvbGVhZ3VlLWVuZHBvaW50Lm1kIChjb25maWRlbmNlOiBoaWdoKS4gNCsgb2YgNiBwYW5lbCByZXNwb25zZXMgY29udmVyZ2VkIGluIGRldGFpbCBvbiB0aGUgc2V0dGluZ3Mvc2NvcmluZ19zZXR0aW5ncy9yb3N0ZXJfcG9zaXRpb25zIHRyaWFkLCBsaWZlY3ljbGUgc3RhdHVzIHZhbHVlcywgYW5kIHByZXZpb3VzX2xlYWd1ZV9pZCBkeW5hc3R5IGNoYWluaW5nLiBTYW1lIHBhbmVsLXNjb3BlLW1pc21hdGNoIFJJU0sgYXMgNS4xIGFwcGxpZXMg4oCUIHNlZSB2ZXJpZmljYXRpb24tY2FjaGUubWQgVW5yZXNvbHZlZCBDb25mbGljdHMuCgotLS0KCiMjIyA1LjMgU2xlZXBlciBSb3N0ZXIgRW5kcG9pbnQgU3RydWN0dXJlCgotIFN0YXR1czogQ09NUExFVEVECi0gV2lraSBDYXRlZ29yeTogc2xlZXBlci1hcGkKLSBEZXNjcmlwdGlvbjogVGhlIHN0cnVjdHVyZSBvZiBHRVQgL2xlYWd1ZS97bGVhZ3VlX2lkfS9yb3N0ZXJzLCBhbmQgaG93IHJvc3RlciBzbG90cywgdGF4aSBzcXVhZCwgSVIsIGFuZCByZXNlcnZlIGFyZSByZXByZXNlbnRlZC4KLSBOb3RlczogQ3JlYXRlZCB3aWtpL3RvcGljcy9zbGVlcGVyLWFwaS9yb3N0ZXItZW5kcG9pbnQubWQgKGNvbmZpZGVuY2U6IGhpZ2gpLiAzKyBvZiA2IHBhbmVsIHJlc3BvbnNlcyBjb252ZXJnZWQgb24gcm9zdGVyX2lkL293bmVyX2lkL3BsYXllcnMvc3RhcnRlcnMvcmVzZXJ2ZS90YXhpIHN0cnVjdHVyZSBhbmQgdGhlIGZwdHMgaW50ZWdlci9kZWNpbWFsIHNwbGl0IG1lY2hhbmljIChhbHNvIGxvZ2dlZCB0byB2ZXJpZmljYXRpb24tY2FjaGUubWQpLiBTYW1lIHBhbmVsLXNjb3BlLW1pc21hdGNoIFJJU0sgYXMgNS4xIGFwcGxpZXMuCgotLS0KCiMjIyA1LjQgU2xlZXBlciBNYXRjaHVwIEVuZHBvaW50IFN0cnVjdHVyZQoKLSBTdGF0dXM6IElOX1BST0dSRVNTCi0gV2lraSBDYXRlZ29yeTogc2xlZXBlci1hcGkKLSBEZXNjcmlwdGlvbjogVGhlIHN0cnVjdHVyZSBvZiBHRVQgL2xlYWd1ZS97bGVhZ3VlX2lkfS9tYXRjaHVwcy97d2Vla30sIGFuZCBob3cgbWF0Y2h1cF9pZCBwYWlyaW5ncyBhbmQgc3RhcnRlcnMvcG9pbnRzIGFyZSByZXBvcnRlZC4KLSBOb3RlczogUGFuZWwgcHJvbXB0IGdlbmVyYXRlZCAyMDI2LTA3LTIxOyBhd2FpdGluZyBjaGF0aHViLmdnIHJlc3BvbnNlcy4KCi0tLQoKIyMjIDUuNSBTbGVlcGVyIERyYWZ0IEVuZHBvaW50IFN0cnVjdHVyZQoKLSBTdGF0dXM6IElOX1BST0dSRVNTCi0gV2lraSBDYXRlZ29yeTogc2xlZXBlci1hcGkKLSBEZXNjcmlwdGlvbjogVGhlIHN0cnVjdHVyZSBvZiBHRVQgL2xlYWd1ZS97bGVhZ3VlX2lkfS9kcmFmdHMsIEdFVCAvZHJhZnQve2RyYWZ0X2lkfSwgYW5kIEdFVCAvZHJhZnQve2RyYWZ0X2lkfS9waWNrcywgaW5jbHVkaW5nIHBpY2sgbWV0YWRhdGEuCi0gTm90ZXM6IFBhbmVsIHByb21wdCBnZW5lcmF0ZWQgMjAyNi0wNy0yMTsgYXdhaXRpbmcgY2hhdGh1Yi5nZyByZXNwb25zZXMuCgotLS0KCiMjIyA1LjYgU2xlZXBlciBVc2VycyBFbmRwb2ludCBTdHJ1Y3R1cmUKCi0gU3RhdHVzOiBJTl9QUk9HUkVTUwotIFdpa2kgQ2F0ZWdvcnk6IHNsZWVwZXItYXBpCi0gRGVzY3JpcHRpb246IFRoZSBzdHJ1Y3R1cmUgb2YgR0VUIC9sZWFndWUve2xlYWd1ZV9pZH0vdXNlcnMsIGFuZCBob3cgdXNlcl9pZCwgZGlzcGxheV9uYW1lLCBhbmQgdGVhbSBuYW1lcyBtYXAgdG8gcm9zdGVycy4KLSBOb3RlczogUGFuZWwgcHJvbXB0IGdlbmVyYXRlZCAyMDI2LTA3LTIxOyBhd2FpdGluZyBjaGF0aHViLmdnIHJlc3BvbnNlcy4KCi0tLQoKVGhpcyBmaWxlIGNvdmVycyBlbnRyaWVzIDUuMeKAkzUuNi4gRW50cmllcyA1LjHigJM1LjMgYXJlIENPTVBMRVRFRCAoMjAyNi0wNy0yMSkuIEVudHJpZXMgNS40LTUuNiBhcmUgSU5fUFJPR1JFU1MgKHBhbmVsIHByb21wdCBnZW5lcmF0ZWQsIGF3YWl0aW5nIE5pY2sncyBjaGF0aHViLmdnIHJlc3BvbnNlcykuIGB3aWtpL19xdWV1ZV9tYXN0ZXIubWRgIGNvcnJlY3RlZDogdGhpcyBmaWxlIHJlbWFpbnMgQUNUSVZFIHVudGlsIGFsbCA2IGVudHJpZXMgYXJlIENPTVBMRVRFRC9TS0lQUEVELgoKX0VuZCBvZiB3aWtpL19xdWV1ZV9uYjVhLm1kXwo=
+# Queue File: Notebook 5 — Sleeper API Integration (Part A)
+
+**Notebook:** Sleeper API Integration
+**Wiki category:** sleeper-api
+**Priority:** Wave 1 unblock — narrow-scope supplemental cycle, added 2026-07-21 (not part of the original 100-subject/4-notebook sweep)
+**Entry range:** 5.1–5.6 (6 entries)
+**Generated:** 2026-07-21
+
+---
+
+### 5.1 Sleeper API Authentication Requirements
+
+- Status: COMPLETED
+- Wiki Category: sleeper-api
+- Description: Does the Sleeper API require API keys, OAuth, or any authentication for read endpoints, and are there any authenticated or write endpoints at all?
+- Notes: Created wiki/topics/sleeper-api/authentication.md (confidence: high). chathub.gg 6-model panel unanimous (6/6) that public read access requires no auth; 2-3 models additionally corroborated an undocumented authenticated GraphQL/WebSocket layer for mutations and live push, but with low precision on mechanics (see verification-cache.md Pending Verification). RISK: the panel run did not cleanly isolate subjects 5.1-5.3 — most responses answered a full Sleeper+ESPN sweep rather than the 3 requested subjects; only the portions relevant to 5.1 were synthesized here.
+
+---
+
+### 5.2 Sleeper League Endpoint Structure
+
+- Status: COMPLETED
+- Wiki Category: sleeper-api
+- Description: The full structure and response schema of GET /league/{league_id}, including settings, scoring_settings, and roster_positions.
+- Notes: Created wiki/topics/sleeper-api/league-endpoint.md (confidence: high). 4+ of 6 panel responses converged in detail on the settings/scoring_settings/roster_positions triad, lifecycle status values, and previous_league_id dynasty chaining. Same panel-scope-mismatch RISK as 5.1 applies — see verification-cache.md Unresolved Conflicts.
+
+---
+
+### 5.3 Sleeper Roster Endpoint Structure
+
+- Status: COMPLETED
+- Wiki Category: sleeper-api
+- Description: The structure of GET /league/{league_id}/rosters, and how roster slots, taxi squad, IR, and reserve are represented.
+- Notes: Created wiki/topics/sleeper-api/roster-endpoint.md (confidence: high). 3+ of 6 panel responses converged on roster_id/owner_id/players/starters/reserve/taxi structure and the fpts integer/decimal split mechanic (also logged to verification-cache.md). Same panel-scope-mismatch RISK as 5.1 applies.
+
+---
+
+### 5.4 Sleeper Matchup Endpoint Structure
+
+- Status: COMPLETED
+- Wiki Category: sleeper-api
+- Description: The structure of GET /league/{league_id}/matchups/{week}, and how matchup_id pairings and starters/points are reported.
+- Notes: Created wiki/topics/sleeper-api/matchup-endpoint.md (confidence: high). This was a cleanly-scoped 3-subject panel run (5.4-5.6) — all 6 responses addressed the requested subjects directly. 6/6 unanimous on the core structural fact (one object per roster, not per matchup; group by matchup_id to reconstruct pairings) and on the full field set (roster_id, matchup_id, points, custom_points, starters, starters_points, players, players_points). Strong convergence (5-6/6) on custom_points precedence, live-scoring finality gap, and median-league invisibility.
+
+---
+
+### 5.5 Sleeper Draft Endpoint Structure
+
+- Status: COMPLETED
+- Wiki Category: sleeper-api
+- Description: The structure of GET /league/{league_id}/drafts, GET /draft/{draft_id}, and GET /draft/{draft_id}/picks, including pick metadata.
+- Notes: Created wiki/topics/sleeper-api/draft-endpoint.md (confidence: high). Cleanly-scoped panel run. 6/6 unanimous that a league can have multiple drafts, on the three-endpoint structure, and that roster_id (not draft_slot or picked_by) is the authoritative pick-ownership field reflecting traded picks. Strong convergence (5-6/6) on snake-draft math being a fallback only, auction metadata.amount as the true cost signal, and pick metadata staleness.
+
+---
+
+### 5.6 Sleeper Users Endpoint Structure
+
+- Status: COMPLETED
+- Wiki Category: sleeper-api
+- Description: The structure of GET /league/{league_id}/users, and how user_id, display_name, and team names map to rosters.
+- Notes: Created wiki/topics/sleeper-api/users-endpoint.md (confidence: high). Cleanly-scoped panel run. 6/6 unanimous that this endpoint returns accounts (no roster_id at all) and that the owner_id/co_owners join to the rosters endpoint is required to map users to teams; also unanimous on the team-name display fallback hierarchy and on user_id as the only safe identity key. Strong convergence (4-5/6) on orphaned-roster and users-without-rosters edge cases.
+
+---
+
+This file covers entries 5.1–5.6. All 6 entries are now COMPLETED (2026-07-21). `wiki/_queue_master.md` updated: this file is now COMPLETED in full; `wiki/_queue_nb5b.md` is promoted to ACTIVE for subjects 5.7–5.12.
+
+_End of wiki/_queue_nb5a.md_
