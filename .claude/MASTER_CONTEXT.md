@@ -1,6 +1,6 @@
 # MASTER_CONTEXT.md
 **Single source of truth — tacctile/fantasy**
-**Last Updated:** 2026-07-18
+**Last Updated:** 2026-07-21
 
 ---
 
@@ -12,16 +12,16 @@ Not monetized. Personal tool for Nick's own leagues, built and stress-tested pri
 
 **Stack:** Next.js, Supabase, Vercel, shadcn/ui, Tailwind CSS.
 
-**Leagues in scope:** 2 Sleeper leagues, 2 ESPN leagues. A 5th league (Yahoo) is explicitly out of scope for v1 — deferred indefinitely, not cancelled. No Yahoo integration, no scaffolding for it, no TODOs implying it's coming next.
+**Leagues in scope:** Any number of Sleeper and/or ESPN leagues Nick connects — not a fixed count. The schema must support N leagues per platform from day one (this is already covered by `league_id` scoping below); do not hardcode assumptions about how many leagues exist anywhere in the app. Yahoo is explicitly out of scope for v1 — deferred indefinitely, not cancelled. No Yahoo integration, no scaffolding for it, no TODOs implying it's coming next.
 
-**Explicitly rejected for v1** (named and rejected, not silently ignored, not half-built): multi-sport support, multi-tenant/multi-user support (this app manages Nick's own leagues, not other people's accounts), historical/season-over-season views.
+**Explicitly rejected for v1** (named and rejected, not silently ignored, not half-built): multi-sport support, multi-tenant/multi-user support in the sense of other people owning/managing their own separate leagues on this platform (this app manages Nick's own leagues; leaguemates get read-only access to Nick's leagues, never their own admin space — see Access Model below), historical/season-over-season views.
 
 ---
 
 ## Data Source Architecture (non-negotiable)
 
 - **Sleeper** is the universal source for all player data — identity, stats, metadata — regardless of which platform a given league actually runs on. No auth required. Use it as the backbone for player data across the entire app, including for players in the ESPN leagues.
-- **ESPN** is used ONLY for league-specific state Sleeper cannot provide: rosters, draft state, standings, matchups — scoped to the 2 ESPN leagues specifically. Requires cookie-based auth (`espn_s2`, `SWID`) since ESPN has no public OAuth. Treat this integration as fragile and isolate it defensively — if ESPN's integration breaks or their API changes, it must NOT take down Sleeper-sourced features elsewhere in the app.
+- **ESPN** is used ONLY for league-specific state Sleeper cannot provide: rosters, draft state, standings, matchups — scoped per ESPN league Nick connects. Requires cookie-based auth (`espn_s2`, `SWID`) since ESPN has no public OAuth. Treat this integration as fragile and isolate it defensively — if ESPN's integration breaks or their API changes, it must NOT take down Sleeper-sourced features elsewhere in the app.
 - Before building ESPN cookie auth for a given league: check whether that league is set to public visibility. Public ESPN leagues do not require cookie auth. Do not assume private/cookie-auth is required without checking.
 - Do not build a generic "N-platform" abstraction speculatively. Build for exactly two data sources — Sleeper and ESPN — as they actually behave. No plugin system for hypothetical future platforms.
 
@@ -32,8 +32,9 @@ Not monetized. Personal tool for Nick's own leagues, built and stress-tested pri
 1. **`league_id`** on every league-scoped table, most importantly `player_scores` and `draft_state`. A player's fantasy value is never a single global number — it's always `(player_id, league_id)`, because scoring settings differ per league even for the identical player. Retrofitting this later means rewriting every query that touches these tables.
 2. **`platform`** column — extensible enum (`sleeper` | `espn`), not a boolean, not inferred from table name — on every league-scoped table. This is what lets a future platform get added without restructuring.
 3. **`season_year`** column on every stat/score/matchup table from day one, even though only the current season is populated in v1. No historical views ship in v1, but the column must exist so next season's data lands correctly without a migration.
-4. **Sleeper-anchored player identity.** Canonical player key is a stable `sleeper_player_id`. `espn_player_id` joins to it via a mapping layer (not a parallel table). This reconciliation is required now, for the 2 ESPN leagues — if ESPN and Sleeper player IDs don't reconcile cleanly, that surfaces as a `WIKI NOTE` or a build blocker immediately, not a surprise discovered mid-build.
-5. **`league_config`** table, keyed by `league_id`, stores scoring rules, roster slots, and PPR/half-PPR/TE-premium settings as data — never hardcoded assumptions in application code. Nick's 5 leagues already have different scoring rules from each other; this is required today, not future-proofing.
+4. **Sleeper-anchored player identity.** Canonical player key is a stable `sleeper_player_id`. `espn_player_id` joins to it via a mapping layer (not a parallel table). This reconciliation is required now, for every ESPN league Nick connects — if ESPN and Sleeper player IDs don't reconcile cleanly, that surfaces as a `WIKI NOTE` or a build blocker immediately, not a surprise discovered mid-build.
+5. **`league_config`** table, keyed by `league_id`, stores scoring rules, roster slots, and PPR/half-PPR/TE-premium settings as data — never hardcoded assumptions in application code. Nick's leagues already have different scoring rules from each other; this is required today, not future-proofing.
+6. **`share_token`** column on every league record — a random, unguessable, revocable token generated at league creation, used to construct that league's read-only spectator URL. No login system for viewers; possession of the link is the access control. See Access Model below.
 
 ## Supabase Migration Rule
 
@@ -47,6 +48,16 @@ Never edit the baseline migration. All schema changes go through `supabase migra
 - **Spectator/viewer page** (leaguemates pulling this up on their phones during a live draft) — mobile-first. Light, fast, glanceable. Drafted board, live stats, positional tracker — nothing dense.
 
 These are two different builds with two different design priorities, not one undifferentiated "make it responsive" task.
+
+---
+
+## Access Model — Owner View vs. Read-Only Share Link
+
+- Nick is the sole owner/admin of every league on the platform. There is no concept of another person owning or administering a league — leaguemates never get an admin account, never see draft controls, and never see any UI implying an admin layer exists.
+- Every league has a shareable, no-login read-only URL, built from that league's `share_token` (Schema Rules, above). Anyone with the link can view that league's spectator dashboard — no account, no signup, no auth flow for viewers.
+- The read-only surface is a genuinely separate rendering path, not the admin view with controls conditionally hidden. A viewer hitting the share link must never receive draft-board, admin, or in-season-management markup or data in the response — this is a data-exposure boundary, not just a UI toggle, since hidden-but-present admin UI in the client bundle would leak Nick's tooling to anyone who inspects the page.
+- `share_token` must be revocable/regeneratable per league (Nick can invalidate a leaked or no-longer-wanted link and issue a new one) without needing a full league re-creation.
+- This access model applies per league, independent of platform (Sleeper or ESPN) and independent of league count — every league Nick connects gets its own owner view and its own share link, automatically, with no per-league special-casing in application code.
 
 ---
 

@@ -1,8 +1,8 @@
 # .claude/STATE.yml
 # Living "what happened last session" file. Overwritten completely at the end of every session — never patched.
-# Last Updated: 2026-07-18
+# Last Updated: 2026-07-21
 
-current_focus: "Governance scaffold committed. Awaiting Wave 1 (Foundation) kickoff."
+current_focus: "Wiki fully complete (132 pages, all 3 discovery cycles COMPLETED — see wiki/_queue_master.md). Scope corrections landed in MASTER_CONTEXT.md and BUILD_INDEX.md this session: league count is open-ended (not fixed at 4/5), owner-vs-read-only-share-link access model added, Wave 3 manual+automated draft entry now ship together (no manual-first staging). Awaiting Wave 1 (Foundation) kickoff."
 
 build_system:
   index: ".claude/BUILD_INDEX.md"
@@ -13,7 +13,7 @@ build_system:
 
 nick_pending:
   - "Decide Wave 1 kickoff timing and scope prompt."
-  - "Confirm ESPN league visibility (public vs. private) for both ESPN leagues before ESPN cookie-auth work begins."
+  - "Confirm ESPN league visibility (public vs. private) for each ESPN league being connected, before ESPN cookie-auth work begins for that league."
 
 blockers: []
 

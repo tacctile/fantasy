@@ -7,6 +7,22 @@ Newest entry on top.
 
 ---
 
+## 2026-07-21 — Scope Corrections: Open-Ended League Count, Access Model, Draft-Entry Sequencing
+
+Three scope corrections landed in `MASTER_CONTEXT.md` and `BUILD_INDEX.md`, driven by a full extraction of Nick's prior conversation history on this project cross-checked against the committed repo state. This is a governance/scope change affecting all future build sessions.
+
+**What changed:**
+- **League count is now open-ended, not fixed.** Previous text hardcoded "2 Sleeper leagues, 2 ESPN leagues." Corrected to: the platform must support any number of Sleeper and/or ESPN leagues Nick connects — the schema already supports this via `league_id` scoping, this was a documentation framing fix, not an architecture change. Yahoo remains explicitly out of scope for v1, unchanged.
+- **Access Model added** (`MASTER_CONTEXT.md`, new section after UX Architecture): Nick is sole owner/admin of every league; leaguemates get a no-login, revocable, per-league `share_token`-based read-only URL. The read-only surface is a genuinely separate rendering path — never the admin view with controls conditionally hidden — since leaked admin markup in a client bundle would expose Nick's draft tooling to viewers. Added as Schema Rule #6 (`share_token` column, one-way door, correct from migration one).
+- **Wave 3b scope changed**: manual click-to-draft and live ESPN draft polling now ship together in v1, both writing to one shared `draft_state` table (first-write-wins) — no staged "manual first, poller as v2" sequencing (that staging was a real decision from an earlier session, explicitly reversed by Nick this session).
+- **Wave 4 scope note added**: the read-only share-link dashboard is part of Wave 4 (League Dashboard), not a separate later build — same data, gated by `share_token` instead of owner auth.
+
+**Why:** Nick ran a full extraction of every prior conversation touching this project (spanning an abandoned 2025 Bubble/no-code era and the current 2026 Next.js/Supabase era) and reconciled it against the live repo. Most of the extraction confirmed existing `MASTER_CONTEXT.md` content; these three items were genuine gaps or reversals Nick called out directly rather than items the extraction resolved on its own.
+
+**Not yet resolved:** ESPN league public/private visibility per league — still pending Nick's confirmation before ESPN cookie-auth work begins (see `STATE.yml` → `nick_pending`).
+
+---
+
 ## 2026-07-18 — .claude/ Governance Scaffold Established
 
 Committed the full `.claude/` build-governance system for tacctile/fantasy, adapted from `tacctile/tacctile_webapp`'s governance model. This is a governance system change affecting all future sessions.

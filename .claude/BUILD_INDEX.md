@@ -1,6 +1,6 @@
 # BUILD_INDEX.md
 **Master build router — tacctile/fantasy**
-**Last Updated:** 2026-07-18
+**Last Updated:** 2026-07-21
 
 Nothing gets built without a registered build file. No exceptions. Every new feature requires a registered build file in this index before a single line of code is written.
 
@@ -38,8 +38,8 @@ Atomic, one task per fresh Claude Code session. No scope bleed across sessions.
 | 1 | Foundation | ⬜ | Supabase schema (with `league_id`, `platform`, `season_year`, player-identity mapping, `league_config` per MASTER_CONTEXT.md Schema Rules), env/secrets setup, initial Vercel deploy |
 | 2 | Data Pipeline | ⬜ | Sleeper sync (build/validate first — no-auth, trivial case), then ESPN cookie-auth integration (harder, isolate failures defensively), cron/polling strategy |
 | 3a | Draft Assistant — Static Board | ⬜ | Static draft board UI, ADP ingestion, no live polling |
-| 3b | Draft Assistant — Live Draft | ⬜ | Live ESPN draft polling, BPA recommendation engine. Depends on 3a and Wave 2 (ESPN integration) |
-| 4 | League Dashboard | ⬜ | Standings, matchups, power rankings, player cards |
+| 3b | Draft Assistant — Live Draft | ⬜ | Manual click-to-draft AND live ESPN draft polling ship together — both write to the same shared `draft_state` table, first-write-wins, no staged manual-first/poller-later sequencing. BPA recommendation engine. Depends on 3a and Wave 2 (ESPN integration) |
+| 4 | League Dashboard | ⬜ | Standings, matchups, power rankings, player cards. Includes the read-only share-link surface (per `MASTER_CONTEXT.md` Access Model) — same dashboard data, gated by `share_token` instead of owner auth, not a separate later build |
 | 5 | Eye Candy | ⬜ | Score charts, lucky/unlucky tracker, positional breakdowns, playoff picture |
 | 6 | Report + Tools | ⬜ | League report generator, free agent board, PWA manifest/service worker |
 
