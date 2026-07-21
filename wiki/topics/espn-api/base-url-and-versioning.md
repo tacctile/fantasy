@@ -15,6 +15,9 @@ related:
   - espn-api/authentication
   - espn-api/format-requirements
   - espn-api/data-completeness
+  - espn-api/view-parameter-reference
+  - espn-api/roster-response-structure
+  - espn-api/matchup-response-structure
 ---
 
 ## Summary
