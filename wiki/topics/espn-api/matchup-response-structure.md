@@ -14,6 +14,7 @@ related:
   - espn-api/view-parameter-reference
   - espn-api/roster-response-structure
   - espn-api/base-url-and-versioning
+  - espn-api/bye-ir-and-lineup-lock-quirks
 ---
 
 ## Summary
@@ -42,6 +43,14 @@ In a standard single-week-per-matchup regular season, these are equal: `matchupP
 
 The most consistently reported failure pattern for this subject: code that assumes `matchupPeriodId` and `scoringPeriodId` are always interchangeable will misbehave specifically during multi-week playoff rounds — either pulling only one constituent week's score and treating it as the full matchup result (undercounting), or, if a returned total field already represents the cumulative matchup sum, re-summing it against individually pulled weekly figures (double-counting). Before aggregating any matchup total across scoring periods, it must first be established whether a given points field already represents a cumulative sum or a single-period value.
 
+### `currentScoringPeriodId` Is an Unreliable Proxy for "Current Matchup"
+
+ESPN's league-level response surfaces a `currentScoringPeriodId`-style value tracking the active NFL week. During a multi-week playoff matchup, this value increments with each constituent NFL week, while the corresponding `matchupPeriodId` does not — it stays fixed for the whole multi-week matchup. Code that uses the current-scoring-period value as a stand-in for "which matchup period is active" will lose the matchup grouping partway through a multi-week playoff round, incorrectly treating the second constituent week as a new, separate matchup period rather than a continuation of the same one. The two values must be tracked and reasoned about independently; neither is a reliable proxy for the other outside the standard single-week case.
+
+### Build the Full Matchup-to-Scoring-Period Map at League Load, Not Lazily
+
+Rather than resolving the `matchupPeriodId` → `{scoringPeriodId, ...}` relationship on demand per request, the more robust pattern is to fetch and store the complete bidirectional mapping for the league once at load time (from `mSettings.scheduleSettings` or the schedule payload), and route every subsequent request through that stored map — using `scoringPeriodId` for player-stat and lineup lookups, and `matchupPeriodId` for standings/matchup-result lookups. This mapping is configured per league at creation time and can differ between leagues in the same season (different regular-season lengths, different playoff round lengths), so it must never be treated as a shared constant across leagues, even leagues on the identical platform and season.
+
 ### Player Stat Records and Reconciliation
 
 Player-level stat records nested in matchup/roster data are distinguished by `scoringPeriodId`, `statSourceId` (actual vs. projected), and `statSplitTypeId` (weekly vs. season split) — the same disambiguation requirement documented on `espn-api/roster-response-structure` applies here. Summing individual starter point totals to reconstruct a team's matchup score will not always exactly equal the official `totalPoints` field returned by ESPN — discrepancies can arise from commissioner manual adjustments, timing of stat corrections, or precision/rounding differences. The official schedule-side total should be treated as authoritative for standings and win/loss determination; an independently computed player-level sum is useful as an audit/reconciliation figure, not a replacement.
@@ -61,6 +70,10 @@ In leagues with an odd number of teams, or during certain playoff bracket struct
 - **Decision:** The platform will store `scoringPeriodId` and `matchupPeriodId` as two distinct fields on every matchup and score record, and will resolve their relationship per league from that league's schedule settings rather than assuming numeric equality.
   **Reasoning:** The two values are only coincidentally equal in standard-format regular seasons; treating them as one field would silently break playoff-period scoring the first time it's exercised against a multi-week playoff league, which is exactly the highest-stakes period for the platform's draft/in-season features to be correct.
   **Rejected alternative:** Collapsing both into a single `week` field, as several generic cross-platform data models do, was rejected — this is a documented, repeated source of data loss specifically at the point (playoffs) where matchup accuracy matters most to users.
+
+- **Decision:** The platform will build the complete `matchupPeriodId` ↔ `scoringPeriodId` mapping for a league once at league load (or league-settings refresh), store it, and route all subsequent scoring/matchup queries through that stored map rather than re-deriving the relationship per request or relying on `currentScoringPeriodId` as a proxy for the active matchup period.
+  **Reasoning:** `currentScoringPeriodId` is a documented unreliable proxy for the active matchup period during multi-week playoff rounds — it advances independently of `matchupPeriodId` — and the mapping itself is configured per league at creation time and varies between leagues, so it must be fetched and cached per league rather than assumed or recomputed ad hoc.
+  **Rejected alternative:** Deriving the matchup/scoring-period relationship lazily on each request, or using `currentScoringPeriodId` as a stand-in for the active matchup period, was rejected — both approaches are the specific pattern responsible for the multi-week summation pitfall documented above.
 
 - **Decision:** ESPN's official `totalPoints` field on a matchup side will be treated as the authoritative score for standings, win/loss records, and playoff seeding; an independently summed player-level total will be computed only as a reconciliation/audit check, never as the source of truth.
   **Reasoning:** Commissioner adjustments and stat-correction timing can cause a player-level sum to diverge from ESPN's official total in ways the platform cannot independently reproduce or predict, and standings must match what ESPN itself displays to league members to avoid user-facing discrepancies.

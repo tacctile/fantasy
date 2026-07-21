@@ -19,6 +19,7 @@ related:
   - espn-api/historical-season-access
   - espn-api/player-id-inconsistencies
   - espn-api/team-owner-member-id-structure
+  - espn-api/bye-ir-and-lineup-lock-quirks
 ---
 
 ## Summary
