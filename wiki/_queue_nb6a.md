@@ -37,28 +37,28 @@
 
 ### 6.4 Detecting Public vs. Private ESPN Leagues
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: espn-api
 - Description: How to programmatically determine whether an ESPN league is public or private before attempting authenticated requests.
-- Notes: (pending ingestion)
+- Notes: Ingested via cleanly-scoped 6-model panel. Merged into `espn-api/authentication.md` (new "Detecting Public vs. Private Leagues Programmatically" section) rather than a separate page — detection mechanics are a natural extension of the existing auth-mechanics page.
 
 ---
 
 ### 6.5 ESPN Error Responses for Auth Failures
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: espn-api
 - Description: The HTTP status code or error response ESPN returns when accessing a private league without valid credentials, versus an invalid league ID.
-- Notes: (pending ingestion)
+- Notes: Ingested via cleanly-scoped 6-model panel. Merged into `espn-api/authentication.md` (new "Disambiguating Auth-Failure Error Responses" section) alongside 6.4.
 
 ---
 
 ### 6.6 ESPN Public vs. Private Data Completeness
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: espn-api
 - Description: Whether public leagues expose the same data completeness as private leagues, or whether any fields are restricted regardless of authentication.
-- Notes: (pending ingestion)
+- Notes: Ingested via cleanly-scoped 6-model panel. Created `espn-api/data-completeness.md` — kept as a separate page since data completeness is a distinct, independently-reusable reference concern from auth mechanics.
 
 ---
 
