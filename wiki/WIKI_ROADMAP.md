@@ -46,7 +46,7 @@ When all entries in a notebook's batch files are COMPLETED or SKIPPED, that note
 | 4 | In-Season Management, Injury/Availability & Situational Data | in-season-management | ✅ COMPLETED — all 25 subjects ingested |
 | 5 | Sleeper API Integration | sleeper-api | ✅ COMPLETED — all 18 subjects ingested |
 | 6 | ESPN API Integration | espn-api | ✅ COMPLETED — all 19 subjects ingested |
-| 7 | Schema Reference | schema-reference | 🔄 ACTIVE — decision-record mode, unlocked now that Notebook 6 is complete |
+| 7 | Schema Reference | schema-reference | ✅ COMPLETED — all 3 decisions made |
 
 ---
 
@@ -184,7 +184,7 @@ When all entries in a notebook's batch files are COMPLETED or SKIPPED, that note
 **Wiki category:** schema-reference
 **Question target:** 3 decision-record pages (not domain-knowledge — see below)
 **Priority:** SEVENTH — Wave 1 unblock, added 2026-07-21 at Nick's request for a plan he can execute right after Sleeper + ESPN finish, before build starts
-**Queue files:** nb7a (ACTIVE — unlocked 2026-07-21 now that Notebook 6 is complete)
+**Queue files:** nb7a — COMPLETED, all 3 subjects decided 2026-07-21
 **Discovery run:** N/A in the Cycle 1/2 sense. Schema-reference has no external source of truth — it's this platform's own internal data model. There's nothing for a chathub.gg panel to converge on the way it does for fantasy analytics consensus or published third-party API docs.
 
 ### Why this notebook works differently
@@ -213,7 +213,7 @@ Full rationale lives in `wiki/_queue_nb7a.md` itself — read it in full before 
 | 4 — In-Season Management, Injury/Availability & Situational Data | ✅ 25 subjects | ✅ 23 pages | ✅ COMPLETED |
 | 5 — Sleeper API Integration | ✅ 18 subjects | ✅ 16 pages | ✅ COMPLETED |
 | 6 — ESPN API Integration | ✅ 19 subjects | ✅ 15 pages | ✅ COMPLETED |
-| 7 — Schema Reference | ✅ 3 subjects | ⏳ 0 pages | 🔄 ACTIVE — decision-record mode |
+| 7 — Schema Reference | ✅ 3 subjects | ✅ 3 pages | ✅ COMPLETED |
 
 ---
 

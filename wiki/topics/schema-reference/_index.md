@@ -1,10 +1,11 @@
 # Schema Reference
 
-Database schema documentation: league scoping conventions, platform-agnostic player identity mapping (Sleeper-anchored), and league configuration data model.
+This platform's own internal data model — decided, not researched. League scoping conventions, platform-agnostic player identity mapping (Sleeper-anchored), and the league configuration data model. Pages here are `decision-record` type, not `domain-knowledge`, and were produced through a dedicated decision session with Nick rather than chathub.gg panel synthesis.
 
 | Page | Description | Confidence |
 | ---- | ------------ | ---------- |
+| [league-identity-and-scoping](league-identity-and-scoping.md) | Internally-generated `platform_league_uuid` as the primary key for every league record, with `previous_platform_league_uuid` threading Sleeper's per-season renewal chain while ESPN's stable `leagueId` needs no chain at all. | high |
+| [player-identity-mapping](player-identity-mapping.md) | Sleeper-anchored `player_id_crosswalk` table, population priority order (Sleeper embedded fields → nflverse/DynastyProcess crosswalk → local ESPN reconciliation), and D/ST as a distinct entity type. | high |
+| [league-configuration-data-model](league-configuration-data-model.md) | One `league_config` table per league storing raw provider-native scoring/roster payloads plus a small derived, platform-agnostic settings subset for day-to-day application queries. | high |
 
-_No pages yet. This category was registered as part of the .claude/ governance scaffold commit (2026-07-18) — content is added only through dedicated wiki ingestion sessions._
-
-_A plan for this category exists: `wiki/_queue_nb7a.md` (Notebook 7, subjects 7.1–7.3 — league identity/scoping, player identity mapping, league_config model). It is LOCKED until Sleeper (Notebook 5) and ESPN (Notebook 6) are both fully ingested, and runs in decision-record mode rather than the panel-synthesis mode used elsewhere — see `wiki/WIKI_ROADMAP.md` "Notebook 7" for the full rationale before starting._
+Complete — all 3 planned subjects ingested (2026-07-21).

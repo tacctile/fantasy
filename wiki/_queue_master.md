@@ -8,7 +8,7 @@
 > **Total slots:** 100 (16 files × 6-7 per file, Cycle 1) + 37 (6 files × 6-7 per file, Cycle 2) + 3 (1 file, Cycle 3)
 > **Cycle:** 1 (initial build) — COMPLETED · 2 (Wave 1 API unblock) — ACTIVE · 3 (Wave 1 schema unblock) — LOCKED
 > **Generated:** 2026-07-14 (Cycle 1) · 2026-07-21 (Cycle 2) · 2026-07-21 (Cycle 3)
-> **Updated:** 2026-07-21 — Subjects 6.17–6.19 (breaking changes/schema drift, bye/IR/lineup lock quirks, scoringPeriodId/matchupPeriodId mismatches) ingested via cleanly-scoped 6-model panel. `_queue_nb6c.md` is now fully COMPLETED — Notebook 6 (ESPN API) is fully ingested at 19 of 19 subjects, and Cycle 2 (Wave 1 API unblock) is fully COMPLETED. Cycle 3 (`_queue_nb7a.md`, schema-reference) is now ACTIVE.
+> **Updated:** 2026-07-21 — Subjects 7.1–7.3 (league identity/scoping, player identity mapping, league_config data model) decided in a dedicated session with Nick and committed as decision-record pages. `_queue_nb7a.md` is now fully COMPLETED. All three cycles (100-subject original sweep, Sleeper/ESPN API unblock, schema-reference decisions) are now fully COMPLETED — no ACTIVE queue file remains. The wiki discovery program is complete.
 
 ---
 
@@ -71,7 +71,7 @@ Single-file supplemental cycle for the `schema-reference` category. Unlike Cycle
 
 | File | Notebook | Subjects | Category | Status |
 | ---- | ---- | -------- | -------- | ------ |
-| [_queue_nb7a.md](_queue_nb7a.md) | Schema Reference | 7.1–7.3 (3) | schema-reference | ACTIVE |
+| [_queue_nb7a.md](_queue_nb7a.md) | Schema Reference | 7.1–7.3 (3) | schema-reference | COMPLETED |
 
 ---
 
