@@ -64,7 +64,7 @@
 
 ### 6.7 ESPN Fantasy API Base URL and Versioning
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: espn-api
 - Description: The base URL structure and versioning for ESPN's Fantasy Football API (v3, games/ffl, seasons, leagueId).
 - Notes: (pending ingestion)
