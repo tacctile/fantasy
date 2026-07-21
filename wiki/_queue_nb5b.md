@@ -37,28 +37,28 @@
 
 ### 5.10 Sleeper NFL State Endpoint
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: sleeper-api
 - Description: What NFL state/season metadata is available via GET /state/nfl, and how it should be used to determine the current week.
-- Notes: (pending ingestion)
+- Notes: Panel prompt generated 2026-07-21; awaiting chathub.gg responses.
 
 ---
 
 ### 5.11 Sleeper API Rate Limits
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: sleeper-api
 - Description: Sleeper's documented and empirically observed rate limits, and what HTTP behavior occurs when they're exceeded.
-- Notes: (pending ingestion)
+- Notes: Panel prompt generated 2026-07-21; awaiting chathub.gg responses.
 
 ---
 
 ### 5.12 Sleeper Players Dump and Canonical Player ID
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: sleeper-api
 - Description: The structure of the full GET /players/nfl dump, and Sleeper's canonical player_id scheme.
-- Notes: (pending ingestion)
+- Notes: Panel prompt generated 2026-07-21; awaiting chathub.gg responses.
 
 ---
 
