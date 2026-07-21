@@ -14,6 +14,7 @@ related:
   - sleeper-api/players-endpoint
   - sleeper-api/roster-endpoint
   - sleeper-api/league-endpoint
+  - sleeper-api/player-data-quirks
 superseded_by:
 ---
 
@@ -47,7 +48,7 @@ Sleeper exposes no "list available players for this league" endpoint. Fantasy-le
 
 ### A Null Team Is Ambiguous — It Is Not a Reliable Retirement Signal
 
-A `null` or absent `team` field on an individual player is commonly, and incorrectly, read as "this player has retired." In practice it covers several distinct situations: a genuinely unsigned free agent, a player between transactions during an active waiver or signing window, and — because the players dump is recommended to refresh at most daily — simple update lag behind a same-day real-world transaction. Retired players, meanwhile, are not consistently purged or distinctly flagged; some linger with a `null` team and an `"Inactive"`-style status indefinitely, while others retain stale team data. None of these states should be inferred confidently from `team` alone; `status` must be read alongside it, and even the two together do not constitute a reliable, timely transaction feed — a dedicated, fresher data source is needed for any feature that depends on knowing the moment a player's employment status actually changes.
+A `null` or absent `team` field on an individual player is commonly, and incorrectly, read as "this player has retired." In practice it covers several distinct situations: a genuinely unsigned free agent, a player between transactions during an active waiver or signing window, and — because the players dump is recommended to refresh at most daily — simple update lag behind a same-day real-world transaction. Retired players, meanwhile, are not consistently purged or distinctly flagged; some linger with a `null` team and an `"Inactive"`-style status indefinitely, while others retain stale team data. None of these states should be inferred confidently from `team` alone; `status` must be read alongside it, and even the two together do not constitute a reliable, timely transaction feed — a dedicated, fresher data source is needed for any feature that depends on knowing the moment a player's employment status actually changes. The fuller treatment of `status`/`injury_status` semantics, including how they interact with bye weeks and practice-squad elevation, lives on `sleeper-api/player-data-quirks`.
 
 ### Practice Squad, Reserve, and Taxi Players Remain Owned
 
