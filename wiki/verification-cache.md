@@ -36,6 +36,8 @@
 | Wind threshold for passing degradation | ~15 mph sustained wind is the consensus threshold where passing efficiency begins degrading materially; effect is non-linear and disproportionately affects deep passing over short passing. | chathub.gg 6-model panel (subject 2.21); 6-of-6 models converge on the ~15 mph threshold and the deep-vs-short asymmetry. | 2026-07-17 | 2026-10-15 |
 | Eastward vs. westward travel asymmetry | Eastward travel (advancing the body clock) is more circadian-disruptive than westward travel (delaying the body clock); the clearest documented case is a West Coast team traveling east for an early local kickoff. | chathub.gg 6-model panel (subject 2.22); 4+ of 6 models converge on this directional asymmetry. | 2026-07-17 | 2026-10-15 |
 | Divisional-game line reliability | Point spreads and totals in divisional matchups carry systematically higher error than non-divisional games, plausibly due to familiarity compressing market-priced variance. | chathub.gg 6-model panel (subject 2.20); 3+ of 6 models converge; no source provided a validated error-magnitude figure. | 2026-07-17 | 2026-10-15 |
+| Sleeper read API requires no auth; no API-level private-league concept | Sleeper's public REST API (`api.sleeper.app/v1`) requires no API key, token, or OAuth for any read endpoint; consequently any league is fully readable by anyone holding its league ID, regardless of in-app privacy settings. | chathub.gg 6-model panel (subjects 5.1-5.3, though the panel run answered broadly rather than isolating the 3 subjects — see Unresolved Conflicts); 6-of-6 responses agree on the no-auth-for-reads claim. | 2026-07-21 | 2026-10-19 |
+| Sleeper fpts split integer/decimal representation | Sleeper roster `settings.fpts` and `fpts_decimal` (and equivalent points-against/projected pairs) are two fields representing one decimal score, e.g. `fpts:1234` + `fpts_decimal:56` = 1234.56 points — not two independent statistics. | chathub.gg 6-model panel (subject 5.3); corroborated by 2+ independent detailed responses. | 2026-07-21 | 2026-10-19 |
 
 ---
 
@@ -67,6 +69,7 @@ Claims included in wiki pages from corpus synthesis that have not been independe
 | Drop rate year-over-year | Drop rate year-over-year r² ~0.35-0.40 for WRs ≥80 targets; 12-16% skill, rest noise/QB/scheme change. | drop-rate | 2026-07-17 | PFF multi-year WR correlations; verify r² coefficient stability |
 | TPG correlation with fantasy | Fantasy points per game correlation with TPG: r ~0.65-0.75 half-PPR RB, ~0.55-0.65 WR, once role established. | touches-per-game | 2026-07-17 | Multi-year, multi-player regression analysis; RB vs WR subsets |
 | Catch rate QB dependence | Catch rate shifts 5-8% when QB changes from inaccurate to accurate; isolate via separation/target-depth split. | catch-rate | 2026-07-17 | Players traded mid-season, old QB vs new QB; aDOT-adjusted comparison |
+| Sleeper authenticated GraphQL/WebSocket layer mechanics | Sleeper's write-capable layer (lineup moves, commissioner actions, live push) is commonly described as an authenticated GraphQL endpoint plus a companion WebSocket channel, but exact token format, session lifetime, and refresh behavior are not established with precision. | sleeper-api/authentication | 2026-07-21 | Direct API experimentation or a response from Sleeper; only 2-3 of 6 panel responses addressed this layer at all, with low mutual corroboration on mechanics |
 
 ---
 
@@ -76,7 +79,7 @@ Claims where sources directly contradict each other and the conflict could not b
 
 | Topic | Conflict | Status | Notes |
 | ----- | -------- | ------ | ----- |
-| — | — | — | — |
+| Sleeper 5.1-5.3 panel scope mismatch | The chathub.gg panel prompt for subjects 5.1 (auth), 5.2 (league endpoint), 5.3 (roster endpoint) was intended to isolate those 3 subjects, but most of the 6 returned responses answered a much broader "Sleeper + ESPN full API" scope instead (one model explicitly noted the 3 subjects were missing from what it received). Convergence-filtering was applied only to the material actually relevant to 5.1-5.3; the remainder of each response (transactions, drafts, players endpoint, rate limits, and full ESPN API coverage) was not discarded as false, but was not synthesized into pages this session to preserve the 3-subject-per-session cadence and session-health limits. | Noted, not blocking | Future sessions for 5.4+ and all of Notebook 6 should re-run a cleanly scoped 3-subject panel prompt rather than reuse this dump, since convergence cannot be cleanly attributed per-subject across responses that answered different scopes. |
 
 ---
 

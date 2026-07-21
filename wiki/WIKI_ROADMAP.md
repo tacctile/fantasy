@@ -42,7 +42,7 @@ When all entries in a notebook's batch files are COMPLETED or SKIPPED, that note
 | 2 | Team & Scheme Context | team-scheme | ✅ COMPLETED — all 25 subjects ingested |
 | 3 | League Mechanics, Scoring & Draft Strategy | league-mechanics | ✅ COMPLETED — all 25 subjects ingested |
 | 4 | In-Season Management, Injury/Availability & Situational Data | in-season-management | ✅ COMPLETED — all 25 subjects ingested |
-| 5 | Sleeper API Integration | sleeper-api | 🔄 ACTIVE — nb5a queue ready, entries 5.1–5.3 IN_PROGRESS (dispatched to chathub.gg 2026-07-21) |
+| 5 | Sleeper API Integration | sleeper-api | 🔄 ACTIVE — nb5a COMPLETED (5.1–5.3 ingested), nb5b ACTIVE |
 | 6 | ESPN API Integration | espn-api | 🔒 LOCKED — queued via nb6a–c, begins after Notebook 5 completes |
 
 ---
@@ -119,13 +119,13 @@ When all entries in a notebook's batch files are COMPLETED or SKIPPED, that note
 **Wiki category:** sleeper-api
 **Question target:** 18 pages (one per subject, unless subjects are tightly related enough to consolidate)
 **Priority:** FIFTH — narrow-scope Wave 1 unblock, not part of the original 100-subject taxonomy
-**Queue files:** nb5a (ACTIVE, entries 5.1–5.3 IN_PROGRESS) · nb5b/c (LOCKED)
+**Queue files:** nb5a (COMPLETED, 5.1–5.3 ingested) · nb5b (ACTIVE) · nb5c (LOCKED)
 **Discovery run:** Subjects generated 2026-07-21 by Claude at Nick's request to cover: authentication (or lack thereof), endpoint structure (league, roster, matchup, draft, players), rate limits, player data format/canonical player ID structure, and known quirks/undocumented behavior.
 
 ### Subjects (5.1–5.18)
-1. Sleeper API Authentication Requirements
-2. Sleeper League Endpoint Structure
-3. Sleeper Roster Endpoint Structure
+1. Sleeper API Authentication Requirements — ✅ ingested (sleeper-api/authentication)
+2. Sleeper League Endpoint Structure — ✅ ingested (sleeper-api/league-endpoint)
+3. Sleeper Roster Endpoint Structure — ✅ ingested (sleeper-api/roster-endpoint)
 4. Sleeper Matchup Endpoint Structure
 5. Sleeper Draft Endpoint Structure
 6. Sleeper Users Endpoint Structure
@@ -183,7 +183,7 @@ When all entries in a notebook's batch files are COMPLETED or SKIPPED, that note
 | 2 — Team & Scheme Context | ✅ 25 subjects | ✅ 24 pages | ✅ COMPLETED |
 | 3 — League Mechanics, Scoring & Draft Strategy | ✅ 25 subjects | ✅ 24 pages | ✅ COMPLETED |
 | 4 — In-Season Management, Injury/Availability & Situational Data | ✅ 25 subjects | ✅ 23 pages | ✅ COMPLETED |
-| 5 — Sleeper API Integration | ✅ 18 subjects | ⏳ 0 pages | 🔄 ACTIVE — 5.1–5.3 IN_PROGRESS |
+| 5 — Sleeper API Integration | ✅ 18 subjects | ⏳ 3 pages | 🔄 ACTIVE — 5.4 up next in nb5b |
 | 6 — ESPN API Integration | ✅ 19 subjects | ⏳ 0 pages | 🔒 LOCKED |
 
 ---
@@ -202,7 +202,9 @@ When all entries in a notebook's batch files are COMPLETED or SKIPPED, that note
 
 **2026-07-18 (later):** Notebook 4 (In-Season Management, Injury/Availability & Situational Data) fully ingested — all 25 subjects COMPLETED across nb4a–nb4d, 23 pages committed to `wiki/topics/in-season-management/` (2 pages routed to `wiki/topics/league-mechanics/` where content fit better: multi-platform-adp-divergence). All 16 queue files across all 4 notebooks are now COMPLETED. The full discovery cycle (Cycle 1) is complete — 100 subjects processed, 98 total wiki pages committed.
 
-**2026-07-21:** `sleeper-api` and `espn-api` identified as blockers for Wave 1 of the build roadmap — both were registered as valid categories in `wiki/schema.yml` at governance-scaffold time (2026-07-18) but never had a discovery queue or any content. Ran a narrow, targeted subject-generation pass (not a full taxonomy sweep): 18 subjects for sleeper-api and 19 subjects for espn-api. Initialized Cycle 2 of the discovery queue — Notebook 5 (Sleeper API Integration, `_queue_nb5a–c.md`) and Notebook 6 (ESPN API Integration, `_queue_nb6a–c.md`) — using the identical structure, 3-Subject Panel Prompt template (reframed for API/technical-integration expertise instead of fantasy analytics), and 3-subjects-per-session cadence as Cycle 1. `wiki/_queue_master.md`, `wiki/MAINTAINER.md`, and this file updated for consistency. nb5a set ACTIVE with entries 5.1–5.3 (Sleeper auth, league endpoint, roster endpoint) IN_PROGRESS — panel prompt already generated and sent to Nick, dispatched to chathub.gg, awaiting the 6 model responses. `schema-reference` remains untouched and empty per the roadmap — it stays empty until Wave 1 defines the real schema.
+**2026-07-21:** `sleeper-api` and `espn-api` identified as blockers for Wave 1 of the build roadmap — both were registered as valid categories in `wiki/schema.yml` at governance-scaffold time (2026-07-18) but never had a discovery queue or any content. Ran a narrow, targeted subject-generation pass (not a full taxonomy sweep): 18 subjects for sleeper-api and 19 subjects for espn-api. Initialized Cycle 2 of the discovery queue — Notebook 5 (Sleeper API Integration, `_queue_nb5a–c.md`) and Notebook 6 (ESPN API Integration, `_queue_nb6a–c.md`) — using the identical structure, 3-Subject Panel Prompt template (reframed for API/technical-integration expertise instead of fantasy analytics), and 3-subjects-per-session cadence as Cycle 1.
+
+**2026-07-21 (later):** First Sleeper triple (5.1–5.3: authentication, league endpoint, roster endpoint) ingested — created `sleeper-api/authentication.md`, `sleeper-api/league-endpoint.md`, `sleeper-api/roster-endpoint.md` (all confidence: high). RISK: the chathub.gg panel run did not cleanly isolate the 3 requested subjects — most of the 6 responses answered a much broader "full Sleeper + ESPN" scope instead of the specific SUBJECT A/B/C framing (one model explicitly flagged the subjects as missing from its prompt). Only the material relevant to 5.1–5.3 was synthesized into pages; the extra material (Sleeper transactions, drafts, players endpoint, rate limits, trending, and substantial ESPN coverage) was not processed this session to preserve the 3-subject/session cadence and session-health limits, and is logged in `wiki/verification-cache.md` Unresolved Conflicts. Recommend future triples re-run a cleanly scoped panel prompt rather than reuse this dump. `_queue_nb5a.md` → COMPLETED, `_queue_nb5b.md` → ACTIVE, `_queue_master.md` updated accordingly.
 
 ---
 

@@ -174,3 +174,20 @@
 - ceiling
 - big-play-upside
 - efficiency
+
+## API Integration
+- rest-api
+- authentication
+- read-only-api
+- rate-limits
+- caching-strategy
+- player-id-mapping
+- endpoint-structure
+- league-settings
+- scoring-configuration
+- roster-structure
+- ownership-model
+- websocket
+- graphql
+- cookie-auth
+- undocumented-endpoint

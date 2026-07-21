@@ -10,28 +10,28 @@
 
 ### 5.1 Sleeper API Authentication Requirements
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: sleeper-api
 - Description: Does the Sleeper API require API keys, OAuth, or any authentication for read endpoints, and are there any authenticated or write endpoints at all?
-- Notes: First Sleeper triple (5.1–5.3) dispatched to chathub.gg 2026-07-21. Panel prompt already sent to Nick — awaiting the 6 model responses.
+- Notes: Created wiki/topics/sleeper-api/authentication.md (confidence: high). chathub.gg 6-model panel unanimous (6/6) that public read access requires no auth; 2-3 models additionally corroborated an undocumented authenticated GraphQL/WebSocket layer for mutations and live push, but with low precision on mechanics (see verification-cache.md Pending Verification). RISK: the panel run did not cleanly isolate subjects 5.1-5.3 — most responses answered a full Sleeper+ESPN sweep rather than the 3 requested subjects; only the portions relevant to 5.1 were synthesized here.
 
 ---
 
 ### 5.2 Sleeper League Endpoint Structure
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: sleeper-api
 - Description: The full structure and response schema of GET /league/{league_id}, including settings, scoring_settings, and roster_positions.
-- Notes: First Sleeper triple (5.1–5.3) dispatched to chathub.gg 2026-07-21. Panel prompt already sent to Nick — awaiting the 6 model responses.
+- Notes: Created wiki/topics/sleeper-api/league-endpoint.md (confidence: high). 4+ of 6 panel responses converged in detail on the settings/scoring_settings/roster_positions triad, lifecycle status values, and previous_league_id dynasty chaining. Same panel-scope-mismatch RISK as 5.1 applies — see verification-cache.md Unresolved Conflicts.
 
 ---
 
 ### 5.3 Sleeper Roster Endpoint Structure
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: sleeper-api
 - Description: The structure of GET /league/{league_id}/rosters, and how roster slots, taxi squad, IR, and reserve are represented.
-- Notes: First Sleeper triple (5.1–5.3) dispatched to chathub.gg 2026-07-21. Panel prompt already sent to Nick — awaiting the 6 model responses.
+- Notes: Created wiki/topics/sleeper-api/roster-endpoint.md (confidence: high). 3+ of 6 panel responses converged on roster_id/owner_id/players/starters/reserve/taxi structure and the fpts integer/decimal split mechanic (also logged to verification-cache.md). Same panel-scope-mismatch RISK as 5.1 applies.
 
 ---
 
@@ -40,7 +40,7 @@
 - Status: PENDING
 - Wiki Category: sleeper-api
 - Description: The structure of GET /league/{league_id}/matchups/{week}, and how matchup_id pairings and starters/points are reported.
-- Notes: (pending ingestion)
+- Notes: (pending ingestion) — recommend re-running a cleanly scoped 3-subject panel prompt for 5.4-5.6 rather than reusing the 5.1-5.3 dump, since that material answered a broader scope than requested.
 
 ---
 
@@ -62,6 +62,6 @@
 
 ---
 
-This file covers entries 5.1–5.6. Entries 5.1–5.3 are IN_PROGRESS (first Sleeper triple dispatched to chathub.gg 2026-07-21). When all entries in this file are COMPLETED or SKIPPED, update `wiki/_queue_master.md`: set this file → COMPLETED, `wiki/_queue_nb5b.md` → ACTIVE.
+This file covers entries 5.1–5.6. Entries 5.1–5.3 are COMPLETED (2026-07-21). `wiki/_queue_master.md` updated: this file → COMPLETED, `wiki/_queue_nb5b.md` → ACTIVE.
 
 _End of wiki/_queue_nb5a.md_
