@@ -19,6 +19,7 @@ related:
   - sleeper-api/user-leagues-endpoint
   - sleeper-api/playoff-bracket-endpoint
   - sleeper-api/players-endpoint
+  - sleeper-api/dst-and-free-agents
 ---
 
 ## Summary
@@ -41,11 +42,11 @@ Four separate arrays partition a roster's players by role. `players` holds the c
 
 An empty starting slot is not omitted from `starters` — it is represented in place, either as a null entry or as a placeholder value, depending on state. Code that walks `starters` positionally against `roster_positions` must handle these placeholder entries explicitly rather than assuming every element is a populated player ID.
 
-A team defense occupies a starter slot like any other position, but is represented by a team abbreviation — for example `"DET"` — rather than a numeric-style player identifier, consistent with how canonical player IDs are structured across the whole API (see `sleeper-api/players-endpoint` for the full ID scheme and its cross-provider crosswalk). Any code or logic that assumes every entry in `players`, `starters`, `reserve`, or `taxi` is a standard numeric-style player ID will mishandle defense entries; defense IDs need to be recognized and routed differently from ordinary player IDs during any lookup against the player directory.
+A team defense occupies a starter slot like any other position, but is represented by a team abbreviation — for example `"DET"` — rather than a numeric-style player identifier, consistent with how canonical player IDs are structured across the whole API (see `sleeper-api/players-endpoint` for the full ID scheme and its cross-provider crosswalk, and `sleeper-api/dst-and-free-agents` for the full treatment of defense identity, scoring, and league-availability derivation). Any code or logic that assumes every entry in `players`, `starters`, `reserve`, or `taxi` is a standard numeric-style player ID will mishandle defense entries; defense IDs need to be recognized and routed differently from ordinary player IDs during any lookup against the player directory.
 
 ### Bench Must Be Derived — There Is No Bench Array
 
-Sleeper does not return a dedicated bench array on the roster object. A team's bench is not directly represented anywhere in the response; it must be computed by the caller as a set difference: take `players` (the full squad) and remove every ID that also appears in `starters`, `reserve`, and `taxi`. The most common version of this bug in practice is computing bench as only `players` minus `starters`, which leaves reserve (IR) and taxi players misclassified as bench players — since `players` includes reserve and taxi occupants, both of those groups must be explicitly subtracted, not just the starting lineup. Any feature that displays, counts, or reasons about a team's bench must implement this full three-way subtraction, not a two-way one.
+Sleeper does not return a dedicated bench array on the roster object. A team's bench is not directly represented anywhere in the response; it must be computed by the caller as a set difference: take `players` (the full squad) and remove every ID that also appears in `starters`, `reserve`, and `taxi`. The most common version of this bug in practice is computing bench as only `players` minus `starters`, which leaves reserve (IR) and taxi players misclassified as bench players — since `players` includes reserve and taxi occupants, both of those groups must be explicitly subtracted, not just the starting lineup. Any feature that displays, counts, or reasons about a team's bench must implement this full three-way subtraction, not a two-way one. This same `players` array, unioned across every roster in a league, is also the basis for computing which players are fantasy-available (free agents) in that league — see `sleeper-api/dst-and-free-agents` for the full derivation.
 
 ### Standings and Scoring Fields
 
