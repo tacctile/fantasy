@@ -20,6 +20,7 @@ related:
   - sleeper-api/playoff-bracket-endpoint
   - sleeper-api/players-endpoint
   - sleeper-api/dst-and-free-agents
+  - sleeper-api/player-data-quirks
 ---
 
 ## Summary
@@ -63,6 +64,10 @@ Roster arrays reflect a point-in-time snapshot of the league's transaction state
 ### Distinguishing Roster IDs from Other Sleeper ID Domains
 
 Sleeper's data model uses several separate ID domains that all commonly appear as plain strings and are easy to conflate: a global user ID, a global league ID, a league-scoped roster ID, a global draft ID, and a Sleeper player ID (documented in full, including its canonical numeric-vs-team-abbreviation scheme, on `sleeper-api/players-endpoint`). The roster endpoint specifically deals in `roster_id` and `owner_id` — a league-local team identifier and a global user identifier, respectively — and these must not be treated as interchangeable with each other or with identifiers returned by other Sleeper resources, such as draft-pick ownership fields that are also named with "owner"-style keys but refer to roster IDs rather than user IDs in that context. The global `user_id` used here is the identical identity key resolved and discovered via `sleeper-api/user-leagues-endpoint`.
+
+### Roster Status Fields Are Not the Whole Availability Picture
+
+The player-level `status` and `injury_status` values referenced by IDs in `reserve` and elsewhere on a roster are only two of the signals needed to reason about availability — bye weeks, weekly designation resets, and the gap between Sleeper's own IR-slot eligibility rules and genuine NFL injured-reserve status are all covered in full on `sleeper-api/player-data-quirks`, and apply identically to players referenced from this endpoint.
 
 ---
 
