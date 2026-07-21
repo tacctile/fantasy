@@ -91,6 +91,7 @@
 - thursday-game
 - prime-time
 - post-bye
+- bye-week
 - game-script
 - garbage-time
 
