@@ -2,13 +2,13 @@
 
 > **Navigation index only — no subject entries live here**
 >
-> **Read this file first → find the first ACTIVE queue file — read that file → find the topmost PENDING entry**
+> **Read this file first → find the first ACTIVE queue file → read that file → find the topmost PENDING entry**
 >
-> **Total subjects:** 100 (Cycle 1 — original sweep) + 37 (Cycle 2 — Wave 1 API unblock: sleeper-api 18, espn-api 19)
-> **Total slots:** 100 (16 files × 6-7 per file, Cycle 1) + 37 (6 files × 6-7 per file, Cycle 2)
-> **Cycle:** 1 (initial build) — COMPLETED · 2 (Wave 1 API unblock) — ACTIVE
-> **Generated:** 2026-07-14 (Cycle 1) · 2026-07-21 (Cycle 2)
-> **Updated:** 2026-07-21 — Subjects 5.10–5.12 (NFL state, rate limits, players dump/canonical ID) ingested via a cleanly-scoped 6-model panel; `_queue_nb5b.md` is now fully COMPLETED (all 6 entries, 5.7–5.12). `_queue_nb5c.md` promoted to ACTIVE for subjects 5.13–5.18.
+> **Total subjects:** 100 (Cycle 1 — original sweep) + 37 (Cycle 2 — Wave 1 API unblock: sleeper-api 18, espn-api 19) + 3 (Cycle 3 — Wave 1 schema unblock: schema-reference 3, decision-record mode)
+> **Total slots:** 100 (16 files × 6-7 per file, Cycle 1) + 37 (6 files × 6-7 per file, Cycle 2) + 3 (1 file, Cycle 3)
+> **Cycle:** 1 (initial build) — COMPLETED · 2 (Wave 1 API unblock) — ACTIVE · 3 (Wave 1 schema unblock) — LOCKED
+> **Generated:** 2026-07-14 (Cycle 1) · 2026-07-21 (Cycle 2) · 2026-07-21 (Cycle 3)
+> **Updated:** 2026-07-21 — Subjects 5.16–5.18 (players payload/caching, player data quirks, live vs. finalized scoring) marked IN_PROGRESS in `_queue_nb5c.md`. Cycle 3 registered: `_queue_nb7a.md` (Notebook 7 — Schema Reference, subjects 7.1–7.3) created and LOCKED. It runs in decision-record mode, not panel-synthesis mode — see that file's "Why This Notebook Is Different" section before starting. It unlocks only when `_queue_nb6c.md` (the last ESPN file) reaches COMPLETED, i.e. after both Sleeper and ESPN are fully ingested.
 
 ---
 
@@ -61,7 +61,17 @@ Narrow-scope supplemental cycle. `sleeper-api` and `espn-api` were registered as
 
 **Status values:** ACTIVE / LOCKED / COMPLETED
 
-**Valid categories (7 total):** `player-evaluation`, `team-scheme`, `league-mechanics`, `in-season-management`, `sleeper-api`, `espn-api`, `schema-reference` (schema-reference has no discovery queue — it stays empty until Wave 1 defines the real schema, per `wiki/WIKI_ROADMAP.md`).
+**Valid categories (7 total):** `player-evaluation`, `team-scheme`, `league-mechanics`, `in-season-management`, `sleeper-api`, `espn-api`, `schema-reference` (schema-reference's discovery queue is Cycle 3 below — it runs in decision-record mode, not panel-synthesis mode, and stays LOCKED until Cycle 2 finishes).
+
+### Cycle 3 — Wave 1 Schema Unblock (LOCKED, added 2026-07-21)
+
+Single-file supplemental cycle for the `schema-reference` category. Unlike Cycles 1 and 2, these subjects have no external source of truth to synthesize from — they are the platform's own internal data model and must be decided, not researched. Pages here are `decision-record` type, not `domain-knowledge`. Full rationale and process notes live in `_queue_nb7a.md` itself.
+
+| File | Notebook | Subjects | Category | Status |
+| ---- | -------- | -------- | -------- | ------ |
+| [_queue_nb7a.md](_queue_nb7a.md) | Schema Reference | 7.1–7.3 (3) | schema-reference | LOCKED |
+
+**Unlocks when:** `_queue_nb6c.md` (Cycle 2's last file) reaches COMPLETED — i.e. after both Sleeper and ESPN are fully ingested. Run as a dedicated decision-making session with Nick, not a solo panel-and-commit loop.
 
 ---
 
@@ -69,7 +79,7 @@ Narrow-scope supplemental cycle. `sleeper-api` and `espn-api` were registered as
 
 When all entries in the ACTIVE file are COMPLETED or SKIPPED:
 1. Set the current ACTIVE file → COMPLETED in the table above.
-2. Set the next file in the table → ACTIVE (order: nb1a → nb1b → nb1c → nb1d → nb2a → … → nb4d → nb5a → nb5b → nb5c → nb6a → nb6b → nb6c.
+2. Set the next file in the table → ACTIVE (order: nb1a → nb1b → nb1c → nb1d → nb2a → … → nb4d → nb5a → nb5b → nb5c → nb6a → nb6b → nb6c → nb7a).
 3. Commit this file (`wiki/_queue_master.md`) as part of housekeeping.
 
 When all files in a cycle's table are COMPLETED or SKIPPED, that cycle is complete. Report it and stop — do not auto-start a new cycle.
