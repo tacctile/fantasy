@@ -11,6 +11,7 @@ tags:
   - player-id-mapping
 related:
   - sleeper-api/roster-endpoint
+  - sleeper-api/transactions-endpoint
 ---
 
 ## Summary
@@ -31,7 +32,7 @@ The mapping path from a fantasy team to the human running it is `roster.owner_id
 
 ### user_id Is the Only Safe Identity Key
 
-`user_id` is a stable, global, permanent identifier for a Sleeper account, and it is the only field on this endpoint that is safe to use as a join key or a durable reference. `display_name` and `username` are both account-level, both mutable at any time by the account holder, and neither is guaranteed to stay unique in a way that makes it safe for historical joins — two members can share a similar or identical display name, and a name that uniquely identified a user last season may not this season. Any historical record, cross-session reference, or deduplication logic keyed on a name field instead of `user_id` will eventually misattribute or collide.
+`user_id` is a stable, global, permanent identifier for a Sleeper account, and it is the only field on this endpoint that is safe to use as a join key or a durable reference. `display_name` and `username` are both account-level, both mutable at any time by the account holder, and neither is guaranteed to stay unique in a way that makes it safe for historical joins — two members can share a similar or identical display name, and a name that uniquely identified a user last season may not this season. Any historical record, cross-session reference, or deduplication logic keyed on a name field instead of `user_id` will eventually misattribute or collide. This is the same identity model used by the standalone user-lookup and user-leagues endpoints — see `sleeper-api/user-leagues-endpoint` for how `user_id` is resolved and used outside a specific league's context.
 
 ### Team Names Live in metadata, Scoped to This League
 
@@ -43,7 +44,7 @@ The league-specific team name a user has set lives in `metadata.team_name` — i
 
 ### Current State Only — Not a Historical Ownership Ledger
 
-Both the users endpoint and the rosters endpoint reflect current membership and current ownership at the moment of the request. Neither endpoint preserves what a roster's ownership was at some point in the past. If a roster changes hands mid-season — an owner departs and a new manager takes over, or a co-owner arrangement changes — a later read of these two endpoints will show only the current state; there is no way to recover who owned a given roster during, say, a completed week's matchup purely from these two resources. Any feature that needs to attribute historical decisions (a bad lineup call, a since-regretted trade) to the person actually responsible at the time needs its own periodic snapshotting of the ownership mapping — these endpoints cannot answer that question retroactively on their own.
+Both the users endpoint and the rosters endpoint reflect current membership and current ownership at the moment of the request. Neither endpoint preserves what a roster's ownership was at some point in the past. If a roster changes hands mid-season — an owner departs and a new manager takes over, or a co-owner arrangement changes — a later read of these two endpoints will show only the current state; there is no way to recover who owned a given roster during, say, a completed week's matchup purely from these two resources. Any feature that needs to attribute historical decisions (a bad lineup call, a since-regretted trade) to the person actually responsible at the time needs its own periodic snapshotting of the ownership mapping — these endpoints cannot answer that question retroactively on their own. The transactions resource (`sleeper-api/transactions-endpoint`) can help partially reconstruct who initiated specific moves via its `creator` field, but `creator` reflects who acted, not necessarily who owned the roster at that moment, so it is a supplement to snapshotting, not a substitute for it.
 
 ### Avatar Handling
 

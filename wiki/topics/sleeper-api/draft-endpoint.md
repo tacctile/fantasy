@@ -13,6 +13,7 @@ tags:
 related:
   - sleeper-api/roster-endpoint
   - sleeper-api/league-endpoint
+  - sleeper-api/transactions-endpoint
 ---
 
 ## Summary
@@ -41,11 +42,11 @@ Each element of the picks array carries `pick_no` (the overall, 1-indexed pick n
 
 ### roster_id Is the Ownership Field — Not draft_slot, Not picked_by
 
-This is the single most consequential distinction on this endpoint. `draft_slot` is the pick's original structural position on the board and does not change even when the pick itself is traded. `picked_by` identifies the human who executed the selection, which can diverge from the team that actually owns the pick's outcome — a co-manager, a commissioner making a pick on someone's behalf, or an autopick can all produce a `picked_by` value unrelated to strategic ownership. `roster_id` is the field that reflects the actual current owner of the pick at the time it was made, including the effect of any traded-pick history. Any feature answering "which fantasy team acquired this player" must use `roster_id`; using `draft_slot` or `picked_by` for that purpose is a well-corroborated, common failure pattern that silently misattributes picks in any league with traded draft capital.
+This is the single most consequential distinction on this endpoint. `draft_slot` is the pick's original structural position on the board and does not change even when the pick itself is traded. `picked_by` identifies the human who executed the selection, which can diverge from the team that actually owns the pick's outcome — a co-manager, a commissioner making a pick on someone's behalf, or an autopick can all produce a `picked_by` value unrelated to strategic ownership. `roster_id` is the field that reflects the actual current owner of the pick at the time it was made, including the effect of any traded-pick history. Any feature answering "which fantasy team acquired this player" must use `roster_id`; using `draft_slot` or `picked_by` for that purpose is a well-corroborated, common failure pattern that silently misattributes picks in any league with traded draft capital. This is the same asset-attribution principle applied to future pick trades on `sleeper-api/transactions-endpoint`, where a trade's `draft_picks` array uses the equivalent `roster_id`/`previous_owner_id`/`owner_id` fields.
 
 ### Traded Picks Require a Separate Endpoint for Full Lineage
 
-A completed pick's `roster_id` correctly reflects who owned that pick when it was made, but reconstructing the full trade lineage behind that — which roster originally held the slot, and through how many trades it passed before draft day — requires the dedicated traded-picks resource (in-draft trade movement) plus the league-level future-picks trade resource for picks traded across seasons before a draft has even occurred. Neither the draft object nor the picks array alone provides complete historical asset-ownership lineage; dynasty draft-capital accounting needs to combine pick-level `roster_id` with these dedicated trade resources.
+A completed pick's `roster_id` correctly reflects who owned that pick when it was made, but reconstructing the full trade lineage behind that — which roster originally held the slot, and through how many trades it passed before draft day — requires the dedicated traded-picks resource (in-draft trade movement) plus the league-level future-picks trade resource for picks traded across seasons before a draft has even occurred. Neither the draft object nor the picks array alone provides complete historical asset-ownership lineage; dynasty draft-capital accounting needs to combine pick-level `roster_id` with these dedicated trade resources, including the `draft_picks` entries on individual trade transactions.
 
 ### Snake Draft Math Is a Fallback, Never a Substitute for Sleeper's Own Fields
 

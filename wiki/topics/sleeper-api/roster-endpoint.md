@@ -15,6 +15,7 @@ related:
   - sleeper-api/matchup-endpoint
   - sleeper-api/draft-endpoint
   - sleeper-api/users-endpoint
+  - sleeper-api/transactions-endpoint
 ---
 
 ## Summary
@@ -53,7 +54,7 @@ The roster endpoint reflects current state only — it is not a per-week histori
 
 ### Roster State During Transactions
 
-Roster arrays reflect a point-in-time snapshot of the league's transaction state. During an active waiver run, trade processing window, or IR designation change, the `players`, `reserve`, and `taxi` arrays reflect whatever the platform's transaction processing has already committed at the moment of the request — a roster fetched mid-processing may not yet show the outcome of a transaction that has been submitted but not finalized. An integration that needs to reflect a transaction's effect promptly should rely on the transaction resource's own status field to know when a change is final, rather than inferring completion purely from a roster snapshot appearing to have changed.
+Roster arrays reflect a point-in-time snapshot of the league's transaction state. During an active waiver run, trade processing window, or IR designation change, the `players`, `reserve`, and `taxi` arrays reflect whatever the platform's transaction processing has already committed at the moment of the request — a roster fetched mid-processing may not yet show the outcome of a transaction that has been submitted but not finalized. An integration that needs to reflect a transaction's effect promptly should rely on the transaction resource's own status field to know when a change is final, rather than inferring completion purely from a roster snapshot appearing to have changed. See `sleeper-api/transactions-endpoint` for the full transaction object structure and its own status-filtering pitfalls.
 
 ### Distinguishing Roster IDs from Other Sleeper ID Domains
 
