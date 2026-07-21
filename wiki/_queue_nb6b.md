@@ -10,7 +10,7 @@
 
 ### 6.8 ESPN "view" Query Parameter
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: espn-api
 - Description: The role of the view query parameter, and which views (mRoster, mTeam, mMatchup, mMatchupScore, mSettings, mDraftDetail, mLiveScoring) return which data.
 - Notes: (pending ingestion)
@@ -19,7 +19,7 @@
 
 ### 6.9 ESPN Roster Response Structure
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: espn-api
 - Description: The structure of the roster response (mRoster view), including lineupSlotId mappings and slot-to-position tables.
 - Notes: (pending ingestion)
@@ -28,7 +28,7 @@
 
 ### 6.10 ESPN Matchup Response Structure
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: espn-api
 - Description: The structure of the matchup response (mMatchup/mMatchupScore), including the distinction between scoringPeriodId and matchupPeriodId.
 - Notes: (pending ingestion)
