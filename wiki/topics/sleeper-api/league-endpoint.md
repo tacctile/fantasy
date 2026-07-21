@@ -14,6 +14,7 @@ related:
   - sleeper-api/roster-endpoint
   - sleeper-api/authentication
   - sleeper-api/matchup-endpoint
+  - sleeper-api/draft-endpoint
 ---
 
 ## Summary

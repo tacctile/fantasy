@@ -13,6 +13,7 @@ related:
   - sleeper-api/authentication
   - sleeper-api/league-endpoint
   - sleeper-api/matchup-endpoint
+  - sleeper-api/draft-endpoint
 ---
 
 ## Summary
