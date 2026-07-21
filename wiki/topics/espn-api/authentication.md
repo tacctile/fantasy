@@ -14,6 +14,7 @@ tags:
 related:
   - espn-api/format-requirements
   - espn-api/data-completeness
+  - espn-api/base-url-and-versioning
   - sleeper-api/authentication
 ---
 
