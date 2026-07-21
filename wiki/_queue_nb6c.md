@@ -10,7 +10,7 @@
 
 ### 6.14 ESPN Team, Owner, and Member ID Structure
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: espn-api
 - Description: How team, owner, and member IDs are structured and cross-referenced within ESPN league responses.
 - Notes: (pending ingestion)
@@ -19,7 +19,7 @@
 
 ### 6.15 ESPN Proprietary Player ID Inconsistencies
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: espn-api
 - Description: Known inconsistencies in ESPN's proprietary player ID scheme across seasons or between endpoints.
 - Notes: (pending ingestion)
@@ -28,7 +28,7 @@
 
 ### 6.16 ESPN Undocumented Rate-Limiting and IP Blocking
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: espn-api
 - Description: Undocumented rate-limiting or IP-blocking behavior observed by the developer community, and recommended mitigation patterns.
 - Notes: (pending ingestion)
