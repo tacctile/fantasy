@@ -68,7 +68,9 @@
 
 | Topic | Claim | Source | Verified | Next Review |
 | ----- | ----- | ------ | -------- | ----------- |
-| — | — | — | — | — |
+| ESPN espn_s2/SWID two-cookie auth model | SWID (account-identifying GUID) and espn_s2 (opaque session token) are both required together for private ESPN league access; SWID alone does not authenticate, espn_s2 must be treated as the sensitive credential. | chathub.gg-style panel, subjects 6.1-6.2 (2026-07-21); converged tightly across all responses reviewed, no dissent. | 2026-07-21 | 2026-10-19 |
+| ESPN cookie extraction: Network tab preferred over Storage panel | The DevTools Network tab's raw outgoing `Cookie` request header is a more reliable extraction source than the Storage/Application cookie viewer, since the latter can display a transformed (decoded/re-encoded) representation that does not match what is actually transmitted. | chathub.gg-style panel, subjects 6.1-6.3 (2026-07-21); converged across all responses reviewed. | 2026-07-21 | 2026-10-19 |
+| ESPN cookie format: SWID braces and espn_s2 encoding | SWID must retain literal curly braces on the wire; espn_s2 must be transmitted with exactly one layer of URL-encoding (never re-encoded, never decoded-and-sent-raw) to avoid double-encoding or header-corruption failures. | chathub.gg-style panel, subject 6.3 (2026-07-21); converged across all responses reviewed as the most common real-world cause of ESPN auth failures. | 2026-07-21 | 2026-10-19 |
 
 ---
 

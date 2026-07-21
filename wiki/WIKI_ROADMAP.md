@@ -2,7 +2,7 @@
 
 > **Living status document — updated after every notebook completes**
 >
-> **This file is for Nick and the wiki maintenance AI — not for Claude Code**
+> **This file is for Nick and whichever session is doing wiki maintenance — Claude Code included, when that's the session type in play**
 >
 > **Last Updated:** 2026-07-21
 
@@ -10,12 +10,12 @@
 
 ## How to Resume After Any Break
 
-1. Open a fresh Cowork or Claude Desktop session with GitHub MCP
-2. Drop `wiki/WIKI_CHAT_CONTEXT.md` into the session (or read it directly from the repo)
+1. Open a fresh session in whichever environment Nick is working from that day — Cowork, Claude Desktop with GitHub MCP, claude.ai chat, or Claude Code (VS Code/terminal, repo already cloned). All four are equally valid; none is the default.
+2. Drop `wiki/WIKI_CHAT_CONTEXT.md` into the session (or, in Claude Code, it's already readable directly from the repo).
 3. The AI reads `wiki/_queue_master.md` → opens the ACTIVE batch file → finds the topmost PENDING entry
-4. Say: "Continue wiki ingestion." Everything picks up exactly where it left off.
+4. Say: "Continue wiki ingestion." Everything picks up exactly where it left off, regardless of which environment or device the previous session ran in.
 
-The repo is the memory. The queue is the state. Nothing is ever lost.
+The repo is the memory. The queue is the state. Nothing is ever lost — including across a switch between environments mid-notebook.
 
 ---
 
@@ -153,7 +153,7 @@ When all entries in a notebook's batch files are COMPLETED or SKIPPED, that note
 **Wiki category:** espn-api
 **Question target:** 19 pages (one per subject, unless subjects are tightly related enough to consolidate)
 **Priority:** SIXTH — narrow-scope Wave 1 unblock, not part of the original 100-subject taxonomy
-**Queue files:** nb6a (ACTIVE) · nb6b/c (LOCKED) — now unlocked and beginning, since Notebook 5 is complete
+**Queue files:** nb6a (ACTIVE — 3 of 7 subjects completed) · nb6b/c (LOCKED)
 **Discovery run:** Subjects generated 2026-07-21 by Claude at Nick's request to cover: cookie auth mechanics (espn_s2/SWID), public vs. private league detection, endpoint structure (league, roster, matchup, draft, players), and known quirks/undocumented behavior specific to ESPN's API.
 
 ### Subjects (6.1–6.19)
@@ -212,7 +212,7 @@ Full rationale lives in `wiki/_queue_nb7a.md` itself — read it in full before 
 | 3 — League Mechanics, Scoring & Draft Strategy | ✅ 25 subjects | ✅ 24 pages | ✅ COMPLETED |
 | 4 — In-Season Management, Injury/Availability & Situational Data | ✅ 25 subjects | ✅ 23 pages | ✅ COMPLETED |
 | 5 — Sleeper API Integration | ✅ 18 subjects | ✅ 16 pages | ✅ COMPLETED |
-| 6 — ESPN API Integration | ✅ 19 subjects | ⏳ 0 pages | 🔄 ACTIVE |
+| 6 — ESPN API Integration | ✅ 19 subjects | ⏳ 2 pages (3 of 19 subjects) | 🔄 ACTIVE |
 | 7 — Schema Reference | ✅ 3 subjects | ⏳ 0 pages | 🔒 LOCKED — decision-record mode, begins after Notebook 6 |
 
 ---
@@ -240,6 +240,10 @@ Full rationale lives in `wiki/_queue_nb7a.md` itself — read it in full before 
 **2026-07-21 (planning session):** Nick asked whether the wiki would have enough data to build against and flagged that `schema-reference` — a valid category since the 2026-07-18 governance scaffold — has zero content and no discovery queue, unlike sleeper-api/espn-api which at least got a Cycle 2 unblock. Clarified with Nick: he does not want to run schema-reference work now — he wants a solid plan in place so he can move straight into it once Sleeper and ESPN are both fully ingested, before build starts. Registered Cycle 3: `wiki/_queue_nb7a.md` (Notebook 7 — Schema Reference, subjects 7.1–7.3: multi-platform league identity/scoping, platform-agnostic player identity mapping, league_config data model), LOCKED until `_queue_nb6c.md` (last ESPN file) reaches COMPLETED. Key design call: schema-reference has no external source of truth like the other notebooks, so it runs in decision-record mode (Context/Decision/Rationale/Rejected Alternatives pages, not domain-knowledge synthesis) and is gated on ESPN as well as Sleeper — deciding a "platform-agnostic" schema on Sleeper facts alone risks rework once ESPN's ID/schema quirks (subjects 6.13, 6.15, 6.7–6.10) are known. This file, `wiki/_queue_master.md`, and `wiki/topics/schema-reference/_index.md` updated to reflect the plan.
 
 **2026-07-21 (final session triple):** Sleeper subjects 5.16–5.18 ingested via a cleanly-scoped 6-model panel. For 5.16 (players payload/caching) and 5.18 (live vs. finalized scoring), the affected existing pages (`sleeper-api/players-endpoint.md` and `sleeper-api/matchup-endpoint.md`) already covered substantial related ground, so per the "default to UPDATE over CREATE" rule these were extended rather than forked into new, partially-redundant pages — `players-endpoint.md` gained a caching-architecture/atomic-refresh-validation/client-storage-pitfall section, and `matchup-endpoint.md` gained stat-correction-window, generic-vs-custom-scoring, and cross-platform-divergence sections. For 5.17 (player data quirks), no existing page covered the bye-week/injury-status/practice-squad territory in depth, so a new page was created: `sleeper-api/player-data-quirks.md`. One cross-model contradiction was resolved: 1 of 6 responses claimed a hardcoded `bye_week` field exists on the player object; the other 5 confirmed no such field exists at all — resolved in favor of the majority and logged in `wiki/verification-cache.md`. **Notebook 5 (Sleeper API Integration) is now fully COMPLETED — 18 of 18 subjects, 16 pages in `wiki/topics/sleeper-api/`.** `_queue_nb5c.md` → COMPLETED, `_queue_nb6a.md` (ESPN API Integration) → ACTIVE. `wiki/index.md`, `wiki/tags.md` (new tag: `bye-week`), and `wiki/verification-cache.md` updated as part of housekeeping.
+
+---
+
+**2026-07-21 (ESPN triple 1, executed directly in VS Code/Claude Code under the Rule 22 exception at Nick's explicit direction):** ESPN subjects 6.1–6.3 ingested (espn_s2/SWID origin and auth mechanics, cookie extraction/refresh, cookie/header format requirements). Two pages committed to `wiki/topics/espn-api/`: `authentication.md` (merging 6.1 and 6.2, since origin/mechanics and extraction/refresh form one coherent narrative) and `format-requirements.md` (6.3, kept separate as an independently-reusable encoding/format reference). All content converged tightly with no contradictions across the responses reviewed — confidence: high on all three subjects. `_queue_nb6a.md` entries 6.1–6.3 → COMPLETED (6.4–6.7 remain PENDING in the same file, so no master-index transition yet). `wiki/index.md`, `wiki/topics/espn-api/_index.md`, and `wiki/verification-cache.md` updated as part of housekeeping. No new tags required — all tags used (`authentication`, `cookie-auth`, `undocumented-endpoint`, `rest-api`) already existed in `wiki/tags.md`.
 
 ---
 

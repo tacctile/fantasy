@@ -10,28 +10,28 @@
 
 ### 6.1 ESPN espn_s2/SWID Origin and Auth Mechanics
 
-- Status: PENDING
+- Status: COMPLETED
 - Wiki Category: espn-api
 - Description: What the espn_s2 and SWID cookies are, where they come from, and how they authenticate ESPN Fantasy API requests.
-- Notes: (pending ingestion)
+- Notes: Ingested via cleanly-scoped panel (2 full chathub.gg-style responses plus prior partial responses, high convergence). Created `espn-api/authentication.md`, merged with 6.2 (extraction/refresh) since the origin/mechanics and extraction/refresh material forms one coherent page.
 
 ---
 
 ### 6.2 Extracting and Refreshing ESPN Auth Cookies
 
-- Status: PENDING
+- Status: COMPLETED
 - Wiki Category: espn-api
 - Description: How to extract espn_s2 and SWID from a browser session, and how long these cookies remain valid before expiring.
-- Notes: (pending ingestion)
+- Notes: Ingested — merged into `espn-api/authentication.md` alongside 6.1 rather than forked into a separate page (see 6.1 notes).
 
 ---
 
 ### 6.3 ESPN Cookie/Header Format Requirements
 
-- Status: PENDING
+- Status: COMPLETED
 - Wiki Category: espn-api
 - Description: The HTTP header/cookie format required when passing espn_s2 and SWID to API requests, including URL-encoding of espn_s2.
-- Notes: (pending ingestion)
+- Notes: Ingested. Created `espn-api/format-requirements.md` — kept as a separate page from authentication.md since the encoding/formatting pitfalls are a distinct, independently-reusable reference concern.
 
 ---
 

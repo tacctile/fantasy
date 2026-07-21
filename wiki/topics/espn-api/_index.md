@@ -4,5 +4,5 @@ ESPN platform integration reference: undocumented view parameters, cookie-based 
 
 | Page | Description | Confidence |
 | ---- | ------------ | ---------- |
-
-_No pages yet. This category was registered as part of the .claude/ governance scaffold commit (2026-07-18) — content is added only through dedicated wiki ingestion sessions._
+| [authentication](authentication.md) | Cookie-based auth model (SWID/espn_s2), origin, public/private league distinction, extraction procedure, and validation-driven refresh strategy. | high |
+| [format-requirements](format-requirements.md) | Cookie header construction, SWID brace and espn_s2 encoding pitfalls, client-interface differences, supplementary headers. | high |
