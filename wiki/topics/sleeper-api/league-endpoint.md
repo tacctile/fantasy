@@ -19,6 +19,7 @@ related:
   - sleeper-api/user-leagues-endpoint
   - sleeper-api/playoff-bracket-endpoint
   - sleeper-api/nfl-state-endpoint
+  - sleeper-api/dst-and-free-agents
 ---
 
 ## Summary
@@ -53,7 +54,7 @@ The exact key set present on a given league depends heavily on its format and th
 
 ### Scoring Settings
 
-`scoring_settings` is a flat map from stat abbreviation to point value. Commonly observed keys include `pass_yd`, `pass_td`, `pass_int`, `rush_yd`, `rush_td`, `rec`, `rec_yd`, `rec_td`, `fum_lost`, `fgm`, `xpm`, `def_td`, `def_sack`, and `st_td`, but this is not a documented, exhaustive list — leagues can and do carry additional or unusual keys reflecting custom scoring rules, bonus thresholds, or position-specific scoring not covered by the common set. Leagues with Individual Defensive Player (IDP) scoring enabled carry a materially larger and distinct key family (tackle, sack-yardage, QB-hit, and tackle-for-loss style keys among others) that is entirely absent from standard offense-only leagues — an integration that only recognizes standard-format keys will silently drop all scoring detail for an IDP league rather than erroring.
+`scoring_settings` is a flat map from stat abbreviation to point value. Commonly observed keys include `pass_yd`, `pass_td`, `pass_int`, `rush_yd`, `rush_td`, `rec`, `rec_yd`, `rec_td`, `fum_lost`, `fgm`, `xpm`, `def_td`, `def_sack`, and `st_td`, but this is not a documented, exhaustive list — leagues can and do carry additional or unusual keys reflecting custom scoring rules, bonus thresholds, or position-specific scoring not covered by the common set. Leagues with Individual Defensive Player (IDP) scoring enabled carry a materially larger and distinct key family (tackle, sack-yardage, QB-hit, and tackle-for-loss style keys among others) that is entirely absent from standard offense-only leagues — an integration that only recognizes standard-format keys will silently drop all scoring detail for an IDP league rather than erroring. The `def_*` and `st_*` family here is exactly what a team defense's fantasy score is computed from; the full treatment of DST identity and why its point value cannot be assumed from a universal formula lives on `sleeper-api/dst-and-free-agents`.
 
 A missing key generally means "not configured" rather than an explicit zero. For pure scoring-math purposes, treating an absent key as contributing zero points is safe and standard. That equivalence should not be extended to every purpose, however: "absent" and "explicitly configured to zero" are different facts about how a commissioner set up the league, even though they compute identically. A feature that displays or diffs a league's scoring configuration to a user needs to preserve that distinction rather than silently collapsing it during ingestion.
 
@@ -84,6 +85,10 @@ A handful of fields appear on league objects in some contexts without a well-est
 - **Decision:** The platform will key dynasty/keeper league history by walking the `previous_league_id` chain explicitly, and will never treat a single `league_id` as a stable identifier for a league across multiple seasons.
   **Reasoning:** Season renewal issues a brand-new `league_id`; caching or foreign-keying platform data against a single `league_id` for a multi-season league would silently break at every renewal.
   **Rejected alternative:** Treating `league_id` as a durable, season-independent key was rejected outright — it does not hold across renewals, and the failure mode (silently orphaned history) is difficult for a user to detect after the fact.
+
+- **Decision:** The platform will compute team-defense fantasy scores by applying that specific league's `def_*`/`st_*` keys from `scoring_settings` at calculation time, rather than assuming a fixed, universal DST scoring formula anywhere in the codebase.
+  **Reasoning:** DST scoring categories and point values are fully league-configurable and the specific key family varies by format; a hardcoded formula would misstate DST value in any league whose configuration diverges from an assumed default.
+  **Rejected alternative:** Hardcoding a single default DST scoring formula and only consulting `scoring_settings` for exceptions was rejected — it inverts the correct precedence and risks silently using the wrong formula for any non-default league.
 
 ---
 
