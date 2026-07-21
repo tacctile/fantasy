@@ -18,6 +18,7 @@ related:
   - sleeper-api/transactions-endpoint
   - sleeper-api/user-leagues-endpoint
   - sleeper-api/playoff-bracket-endpoint
+  - sleeper-api/players-endpoint
 ---
 
 ## Summary
@@ -40,7 +41,7 @@ Four separate arrays partition a roster's players by role. `players` holds the c
 
 An empty starting slot is not omitted from `starters` — it is represented in place, either as a null entry or as a placeholder value, depending on state. Code that walks `starters` positionally against `roster_positions` must handle these placeholder entries explicitly rather than assuming every element is a populated player ID.
 
-A team defense occupies a starter slot like any other position, but is represented by a team abbreviation — for example `"DET"` — rather than a numeric-style player identifier. Any code or logic that assumes every entry in `players`, `starters`, `reserve`, or `taxi` is a standard numeric-style player ID will mishandle defense entries; defense IDs need to be recognized and routed differently from ordinary player IDs during any lookup against the player directory.
+A team defense occupies a starter slot like any other position, but is represented by a team abbreviation — for example `"DET"` — rather than a numeric-style player identifier, consistent with how canonical player IDs are structured across the whole API (see `sleeper-api/players-endpoint` for the full ID scheme and its cross-provider crosswalk). Any code or logic that assumes every entry in `players`, `starters`, `reserve`, or `taxi` is a standard numeric-style player ID will mishandle defense entries; defense IDs need to be recognized and routed differently from ordinary player IDs during any lookup against the player directory.
 
 ### Bench Must Be Derived — There Is No Bench Array
 
@@ -60,7 +61,7 @@ Roster arrays reflect a point-in-time snapshot of the league's transaction state
 
 ### Distinguishing Roster IDs from Other Sleeper ID Domains
 
-Sleeper's data model uses several separate ID domains that all commonly appear as plain strings and are easy to conflate: a global user ID, a global league ID, a league-scoped roster ID, a global draft ID, and a Sleeper player ID. The roster endpoint specifically deals in `roster_id` and `owner_id` — a league-local team identifier and a global user identifier, respectively — and these must not be treated as interchangeable with each other or with identifiers returned by other Sleeper resources, such as draft-pick ownership fields that are also named with "owner"-style keys but refer to roster IDs rather than user IDs in that context. The global `user_id` used here is the identical identity key resolved and discovered via `sleeper-api/user-leagues-endpoint`.
+Sleeper's data model uses several separate ID domains that all commonly appear as plain strings and are easy to conflate: a global user ID, a global league ID, a league-scoped roster ID, a global draft ID, and a Sleeper player ID (documented in full, including its canonical numeric-vs-team-abbreviation scheme, on `sleeper-api/players-endpoint`). The roster endpoint specifically deals in `roster_id` and `owner_id` — a league-local team identifier and a global user identifier, respectively — and these must not be treated as interchangeable with each other or with identifiers returned by other Sleeper resources, such as draft-pick ownership fields that are also named with "owner"-style keys but refer to roster IDs rather than user IDs in that context. The global `user_id` used here is the identical identity key resolved and discovered via `sleeper-api/user-leagues-endpoint`.
 
 ---
 
