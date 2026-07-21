@@ -10,28 +10,28 @@
 
 ### 5.7 Sleeper Transactions Endpoint Structure
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: sleeper-api
 - Description: The structure of GET /league/{league_id}/transactions/{round}, and how waiver, free agency, and trade transaction types are differentiated.
-- Notes: (pending ingestion)
+- Notes: Ingested via cleanly-scoped 6-model panel, 2026-07-21. Created `sleeper-api/transactions-endpoint`. Strong convergence on type discriminator, uniform adds/drops/draft_picks/waiver_budget asset model, and failed-waiver-claims-pollute-counts pitfall. Reciprocal related links added to roster-endpoint, users-endpoint, league-endpoint, draft-endpoint.
 
 ---
 
 ### 5.8 Sleeper User and User-Leagues Endpoints
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: sleeper-api
 - Description: The structure of GET /user/{username or user_id} and GET /user/{user_id}/leagues/nfl/{season}.
-- Notes: (pending ingestion)
+- Notes: Ingested via cleanly-scoped 6-model panel, 2026-07-21. Created `sleeper-api/user-leagues-endpoint`. Strong convergence on user_id-as-durable-key and discovery-only (not ownership-source) framing. Reciprocal related links added to league-endpoint, roster-endpoint, users-endpoint. Co-manager visibility on this endpoint left as an open question (sources disagreed).
 
 ---
 
 ### 5.9 Sleeper Playoff Bracket Endpoints
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: sleeper-api
 - Description: What playoff bracket endpoints exist (winners_bracket / losers_bracket), and how bracket progression is encoded.
-- Notes: (pending ingestion)
+- Notes: Ingested via cleanly-scoped 6-model panel, 2026-07-21. Created `sleeper-api/playoff-bracket-endpoint` (confidence: medium, due to an unresolved cross-source contradiction on mid-playoff reseeding — logged in `wiki/verification-cache.md` Unresolved Conflicts). Reciprocal related links added to matchup-endpoint, roster-endpoint, league-endpoint.
 
 ---
 
