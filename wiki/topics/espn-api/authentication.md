@@ -10,8 +10,10 @@ tags:
   - cookie-auth
   - undocumented-endpoint
   - rest-api
+  - rate-limits
 related:
   - espn-api/format-requirements
+  - espn-api/data-completeness
   - sleeper-api/authentication
 ---
 
@@ -67,6 +69,32 @@ The only sound operational model is: attempt a low-cost read request, treat an a
 
 Because this is cookie-based session auth inherited from a general login system, not OAuth, there is nothing to refresh against programmatically. "Refreshing" means manually re-authenticating in a browser and re-extracting both values. Automating the ESPN login form itself (e.g. via Selenium/Playwright) is a known but fragile approach — it runs into ESPN's bot/anomaly detection (CAPTCHA challenges, blocked headless user agents) and should be treated as intermittent and maintenance-heavy, not a stable long-term solution.
 
+### Detecting Public vs. Private Leagues Programmatically
+
+There is no dedicated visibility-check endpoint or metadata flag ESPN exposes anonymously — the commissioner-controlled "viewable to public" setting lives inside the league `settings` payload itself, which is circular: reading it requires already passing the visibility check it would report on. The only reliable detection method is a **probe request**: issue a cookie-free, unauthenticated GET against the league read endpoint using a minimal view (`mSettings` is sufficient — no need for roster/matchup views) and classify by response:
+
+- **HTTP 200 with a valid JSON body echoing the requested league ID** → public.
+- **HTTP 401** → private or access-restricted, with an important caveat (see below).
+- **HTTP 404** → league does not exist for that combination of game code, season, and league ID — with the same caveat.
+
+The probe must be genuinely cookie-free. A request that silently carries stored ESPN cookies (shared cookie jar, browser automation, globally configured HTTP client) will return 200 regardless of the league's actual public/private setting, producing a false "public" classification.
+
+**Wrong-season or wrong-endpoint-era masquerading as a privacy failure.** ESPN's endpoint shape changed around the 2018 season cutover: modern seasons use `seasons/{year}/segments/0/leagues/{leagueId}`, while pre-2018 seasons generally require the separate `leagueHistory/{leagueId}?seasonId={year}` form. Querying a real, public league with the wrong endpoint form for its season commonly produces a 401 or 404 that has nothing to do with actual privacy. The community reference Python client (`espn-api`) handles this by retrying the alternate endpoint format before concluding a league is genuinely private — a detector that skips this retry will misclassify legitimate public legacy leagues as private. Classification should always be keyed on the composite of game code, season, and league ID together, never league ID alone, and cached per that composite key with a short TTL since commissioners can flip the setting mid-season.
+
+**404 is not proof of non-existence.** Consistent with common API design for preventing resource enumeration, some non-visible leagues may return 404 rather than 401. Treat a 404 as strong evidence of an invalid composite key, not a mathematical guarantee — this distinction is not documented or contractually guaranteed by ESPN.
+
+### Disambiguating Auth-Failure Error Responses
+
+A 401 on the league endpoint is a JSON error envelope, but the status code alone conflates several distinct underlying causes that cannot be told apart without a follow-up request:
+
+- No credentials supplied at all.
+- Credentials supplied but expired or otherwise invalid.
+- Credentials valid for an authenticated ESPN account, but that account is not a member of the target private league (an authorization failure, not an authentication failure — ESPN's API does not preserve this distinction at the status-code level).
+
+The only reliable way to disambiguate is a second, deliberate probe: retry the same request with credentials already confirmed valid against a *different*, known-accessible resource. If that retry succeeds, the original failure was privacy/membership-related; if it also fails, the credentials themselves are the problem (missing, expired, or malformed — see `espn-api/format-requirements` for the encoding pitfalls that commonly cause silent credential failures). A 200 response from an unrelated public league proves nothing about credential validity, since ESPN ignores cookies entirely on public leagues.
+
+`HTTP 404` on this same endpoint indicates the league does not exist for the requested game code, season, and league ID combination — not necessarily that the numeric ID has never existed (see the wrong-endpoint-era caveat above). Other status codes encountered on this endpoint are not privacy or validity signals and should be handled separately: `400` indicates a malformed request (bad view parameter, invalid ID format); `403` can indicate CDN/edge-layer bot defenses distinct from ESPN's own application-level 401; `429` indicates throttling; `5xx` indicates a transient ESPN-side failure. Reclassifying any of these as "private" or "invalid" is a common and avoidable failure pattern — redirects or HTML-shaped responses (login pages, bot-challenge interstitials) should likewise be treated as indeterminate and never parsed as if they were the expected JSON error body.
+
 ### Extraction Procedure
 
 The reliable extraction path is entirely browser-based:
@@ -100,3 +128,5 @@ The Network-tab method is more reliable specifically because storage-panel viewe
 
 - [ ] Whether ESPN enforces a strict server-side binding requirement between a specific SWID and a specific espn_s2 in all cases, or tolerates some mismatch, is not publicly documented. Operational guidance is to always extract both from the same authenticated browser session and treat any pairing from different sessions as unsupported. — needs direct experimentation or an ESPN-provided answer.
 - [ ] The exact conditions and timing of ESPN-side security-policy changes that have broken existing integrations historically are not predictable in advance. — no verification path exists beyond ongoing community-tooling monitoring; treat ESPN integration code as needing periodic revalidation regardless of whether errors have occurred recently.
+- [ ] Whether ESPN ever returns a response-level signal (header or body field) that deterministically distinguishes "private league" from "wrong endpoint era for this season" on a 401, which would eliminate the need for the alternate-endpoint retry heuristic — none is currently documented or reliably observed.
+- [ ] Whether 401-vs-404 masking behavior for non-visible leagues is applied consistently across all endpoint families and seasons, or varies by infrastructure layer — not established.
