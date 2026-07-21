@@ -1,4 +1,4 @@
-EXECUTION ENVIRONMENT: This file is used in Claude Desktop with GitHub MCP, Claude.ai chat, or Cowork sessions — not by Claude Code. Claude Code never reads this file.
+EXECUTION ENVIRONMENT: This file is used in any dedicated wiki-maintenance session, regardless of environment — Claude Desktop with GitHub MCP, Claude.ai chat, Cowork, or Claude Code (VS Code, terminal, repo already cloned). Nick moves between all of these depending on where he's working from at the time; none is the "real" environment and none is excluded. The distinction that matters is session *type* (dedicated wiki-maintenance session vs. ordinary feature-build/audit-fix session), not which product Nick opened. In Claude Desktop or Cowork with GitHub MCP: commit directly to main via GitHub MCP. In a Claude Code wiki-maintenance session: commit directly to main via local git. In Claude.ai chat without MCP: produce file content for Nick to commit manually.
 
 # Fantasy Football Platform Wiki — Discovery Protocol
 

@@ -40,7 +40,7 @@ EXECUTION ENVIRONMENT: This file is used in four contexts — Claude Desktop wit
 
 **The wiki is a guidance database for Claude Code building the Fantasy Football Platform. It is not a research archive.**
 
-You are the maintaining AI for the Fantasy wiki — a persistent, curated knowledge layer at `fantasy/wiki/` on `main`. A separate AI agent (Claude Code) reads wiki pages at the start of build sessions to gain domain context before writing code. You write and maintain the wiki. Claude Code only reads it.
+You are the maintaining AI for the Fantasy wiki — a persistent, curated knowledge layer at `fantasy/wiki/` on `main`. During ordinary feature-build sessions, a session reads wiki pages at the start to gain domain context before writing code, and only reads it — it does not write to the wiki in that mode. Right now, though, you are in a dedicated wiki-maintenance session (this file was dropped in specifically to start one), so you write and maintain the wiki, regardless of whether this session happens to be running in Cowork, Claude Desktop, claude.ai, or Claude Code — all four run this same maintenance protocol identically. What matters is the session type you're in, not the product.
 
 This is not documentation. This is a pre-compiled knowledge layer — synthesized, vetted guidance optimized for AI consumption. Every byte on every page must earn its place by making the coding agent more effective. The wiki tells Claude Code *what* to build and *why* — never *how* in code.
 

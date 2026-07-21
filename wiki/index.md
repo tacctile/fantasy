@@ -7,7 +7,7 @@
 > - Never read wiki pages blindly — always navigate via this index
 > - Maximum 3 wiki pages per Claude Code session
 > - This file is maintained automatically — updated on every page create or category add
-> - Claude Code never writes to, modifies, or deletes any wiki file
+> - Claude Code does not write to, modify, or delete any wiki file during an ordinary feature-build or audit-fix session. A dedicated wiki-maintenance session — run through Claude Code the same as through Cowork, Claude Desktop, or claude.ai, depending on which environment Nick is working from that day — does write to the wiki, following `wiki/DISCOVERY_PROTOCOL.md` and `wiki/MAINTAINER.md`.
 
 ---
 
@@ -20,7 +20,7 @@
 | League Mechanics | `wiki/topics/league-mechanics/` | Scoring formats, draft strategy, and league structure. PPR/half-PPR/standard, TE premium, Superflex/2QB, roster construction, positional scarcity, ADP, VBD, Zero-RB/Hero-RB, stacking, handcuffs, auction draft, FAAB, waiver strategy, breakout/bust modeling, dynasty vs. redraft vs. keeper, best ball, trade value, bye week management, and playoff schedule strength. |
 | In-Season Management | `wiki/topics/in-season-management/` | Weekly decisions, injury tracking, and situational data. Start/sit projections, ROS rankings, injury status, recovery timelines, age curves, workload risk, snap/target trend alerts, next-man-up value, game script sensitivity, strength of schedule, coaching changes, short-week effects, consistency scores, and ADP divergence. |
 | Sleeper API | `wiki/topics/sleeper-api/` | Sleeper platform integration reference: endpoint structure, rate limits, auth (none required), and data-shape quirks for player identity, stats, and league data. Complete — 18 of 18 planned subjects ingested (authentication, league endpoint, roster endpoint, matchup endpoint, draft endpoint, users endpoint, transactions endpoint, user/user-leagues endpoints, playoff bracket endpoint, NFL state endpoint, rate limits, players endpoint, player-ID crosswalk, trending endpoint, DST/free-agent representation, player data quirks). |
-| ESPN API | `wiki/topics/espn-api/` | ESPN platform integration reference: cookie-based auth (espn_s2/SWID), undocumented view parameters, rate limits, and endpoint structure for rosters, draft state, standings, and matchups. Queued — ACTIVE, ingestion beginning now that the Sleeper API notebook is complete. |
+| ESPN API | `wiki/topics/espn-api/` | ESPN platform integration reference: cookie-based auth (espn_s2/SWID), undocumented view parameters, rate limits, and endpoint structure for rosters, draft state, standings, and matchups. In progress — 3 of 19 subjects ingested (auth origin/mechanics, extraction/refresh, cookie/header format). |
 | Schema Reference | `wiki/topics/schema-reference/` | This platform's own internal data model: league scoping conventions, platform-agnostic player identity mapping (Sleeper-anchored), and the league configuration data model. Locked — no pages yet, runs in decision-record mode rather than panel synthesis, and begins only after both Sleeper and ESPN API notebooks are complete. |
 
 ---
@@ -44,15 +44,15 @@
 | League Mechanics | 25 |
 | In-Season Management | 23 |
 | Sleeper API | 16 |
-| ESPN API | 0 |
+| ESPN API | 2 |
 | Schema Reference | 0 |
-| **Total** | **114** |
+| **Total** | **116** |
 
 ---
 
 ## Governance Files
 
-System files that manage the wiki itself. Claude Code does not read these during feature build sessions.
+System files that manage the wiki itself. Not read during ordinary feature-build sessions — only read during a dedicated wiki-maintenance session, in whichever environment Nick is running that session from (Claude Code, Cowork, Claude Desktop, or claude.ai).
 
 | File | Purpose |
 | ---- | ------- |

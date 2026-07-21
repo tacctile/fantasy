@@ -1,14 +1,14 @@
 # wiki/MAINTAINER.md
 # Wiki ingestion and maintenance protocol
-# This file is for Nick and the wiki maintenance AI — not for Claude Code
+# This file is for Nick and whichever AI session is doing wiki maintenance work — including a Claude Code session run as a dedicated wiki-maintenance session, not just Desktop/Cowork/claude.ai
 
 ---
 
 ## What the Wiki Is
 
-A read-only, purpose-built knowledge base that Claude Code builds against. Every page contains synthesized, vetted guidance that informs architectural and feature decisions without requiring Nick to re-explain context in every build session.
+A purpose-built knowledge base that feature-build and audit-fix sessions build against, read-only during those sessions. Every page contains synthesized, vetted guidance that informs architectural and feature decisions without requiring Nick to re-explain context in every build session.
 
-The wiki is never built by Claude Code. It is built separately through a deliberate ingestion pipeline and committed via Claude Desktop, Claude.ai chat, or Cowork sessions.
+The wiki is never built as a side effect of an ordinary feature-build or audit-fix session. It is built separately through a deliberate ingestion pipeline, in a dedicated wiki-maintenance session, committed via whichever environment Nick is working from at the time — Claude Desktop with GitHub MCP, Claude.ai chat, Cowork, or Claude Code (VS Code/terminal, repo already cloned). Nick picks his environment per-session based on where he's at; none of the three is the primary or canonical one.
 
 ---
 

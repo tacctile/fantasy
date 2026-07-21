@@ -102,7 +102,7 @@ Reflects actual patterns as they're established in `src/`. Follow when adding or
 
 ## Wiki Protocol
 
-- `wiki/` is strictly read-only for Claude Code — never write, never modify, never delete, during feature-build and audit-fix sessions. Wiki governance file edits are only performed when explicitly directed by Nick in a prompt's REQUIREMENTS block (the "Rule 22 exception").
+- `wiki/` is read-only during ordinary feature-build and audit-fix sessions — never write, never modify, never delete. This restriction is about session *type* (feature-build/audit-fix vs. wiki-maintenance), not about environment. Nick works this project from three environments interchangeably — VS Code/Claude Code, Cowork, and Claude.ai in the browser — choosing whichever fits wherever he is at the time, with no fixed assignment of environment to task. A dedicated wiki-maintenance session run through Claude Code (this environment) follows `wiki/DISCOVERY_PROTOCOL.md` and `wiki/MAINTAINER.md` and writes to `wiki/` directly, the same as a Cowork or Claude Desktop session would. Wiki edits during a feature-build or audit-fix session are only performed when explicitly directed by Nick in a prompt's REQUIREMENTS block (the "Rule 22 exception").
 - If wiki content appears missing, outdated, or incorrect — surface it via `WIKI NOTE:` in the completion report. Never edit the wiki directly.
 - The wiki tells Claude Code *what* to build and *why* — never *how* in code. It holds synthesized guidance (API quirks, scoring methodology, schema documentation, format definitions), never live application data, rankings, or outputs — those belong in Supabase.
 

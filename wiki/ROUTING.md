@@ -112,7 +112,7 @@ If two wiki pages contradict each other:
 
 ---
 
-## What Claude Code Never Does With Wiki
+## What Claude Code Never Does With Wiki — During Feature-Build/Audit-Fix Sessions
 
 - Never writes to any wiki file
 - Never modifies any wiki file
@@ -122,9 +122,11 @@ If two wiki pages contradict each other:
 - Never updates _index.md files
 - Never updates wiki/index.md page counts
 
-All wiki maintenance happens through dedicated ingestion sessions run via Cowork or Claude Desktop with GitHub MCP — never through Claude Code feature build sessions.
+This restriction applies to ordinary feature-build and audit-fix sessions, regardless of environment. It is not an environment restriction — Nick runs feature-build/audit-fix sessions and wiki-maintenance sessions from the same three environments (VS Code/Claude Code, Cowork, claude.ai), picking whichever fits at the time. What distinguishes the two is session *type*, declared at the start of the session (per `MASTER_CONTEXT.md`'s SESSION TYPE field and Prompt Format), not which product happens to be open.
 
-If Claude Code identifies wiki content that appears missing, outdated, or incorrect, it notes this in its completion report under a `WIKI NOTE:` heading. It does not act on it directly.
+All wiki maintenance happens through a dedicated wiki-maintenance session following `wiki/DISCOVERY_PROTOCOL.md` and `wiki/MAINTAINER.md` — never as a side effect of a feature-build or audit-fix session. A dedicated wiki-maintenance session may be run through Cowork, Claude Desktop with GitHub MCP, claude.ai chat, or Claude Code — all four are valid.
+
+If a feature-build or audit-fix session identifies wiki content that appears missing, outdated, or incorrect, it notes this in its completion report under a `WIKI NOTE:` heading rather than acting on it directly. An explicit Rule 22 exception in the prompt's REQUIREMENTS block, or a dedicated wiki-maintenance session, are the only paths to an actual wiki edit.
 
 ---
 
@@ -132,20 +134,20 @@ If Claude Code identifies wiki content that appears missing, outdated, or incorr
 
 `wiki/_queue_master.md` is the navigation index for all planned wiki topics. It lists 16 batch queue files with their status (ACTIVE / LOCKED / COMPLETED). The ACTIVE batch file contains the current set of subjects being ingested. Claude Code may read `wiki/_queue_master.md` and the ACTIVE batch file to understand what wiki coverage exists or is planned for a given subject area.
 
-Claude Code never modifies `_queue_master.md` or any `_queue_nbN*.md` file — they are read-only for Claude Code like all other wiki files.
+Claude Code never modifies `_queue_master.md` or any `_queue_nbN*.md` file during a feature-build/audit-fix session — they are read-only in that mode like all other wiki files. During a dedicated wiki-maintenance session, these files are read and updated as part of the normal ingestion protocol, same as in Cowork/Desktop/claude.ai.
 
 ---
 
 ## Governance Files — For Wiki Maintenance Only
 
-These files govern how the wiki is built and maintained. Claude Code does not read them during feature build sessions:
+These files govern how the wiki is built and maintained. Not read during feature-build/audit-fix sessions, in any environment:
 
 - `wiki/WIKI_CHAT_CONTEXT.md` — drop-in context file for wiki maintenance sessions
 - `wiki/DISCOVERY_PROTOCOL.md` — primary ingestion workflow
 - `wiki/MAINTAINER.md` — maintainer reference and pre-commit checklist
 - `wiki/WIKI_ROADMAP.md` — living ingestion status dashboard
 
-These files contain protocols for the wiki maintenance AI, not guidance for Claude Code building features.
+These files contain protocols for whichever session is doing wiki maintenance — Claude Code included, when that's the session type in play — not guidance for building features.
 
 ---
 
