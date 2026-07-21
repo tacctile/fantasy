@@ -17,6 +17,8 @@ related:
   - espn-api/base-url-and-versioning
   - espn-api/player-endpoint-and-filtering
   - espn-api/historical-season-access
+  - espn-api/player-id-inconsistencies
+  - espn-api/team-owner-member-id-structure
 ---
 
 ## Summary

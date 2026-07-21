@@ -15,6 +15,7 @@ related:
   - espn-api/format-requirements
   - espn-api/data-completeness
   - espn-api/base-url-and-versioning
+  - espn-api/rate-limits-and-blocking
   - sleeper-api/authentication
 ---
 

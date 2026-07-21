@@ -12,6 +12,7 @@ tags:
   - undocumented-endpoint
 related:
   - espn-api/authentication
+  - espn-api/rate-limits-and-blocking
 ---
 
 ## Summary
