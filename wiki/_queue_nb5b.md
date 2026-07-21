@@ -10,7 +10,7 @@
 
 ### 5.7 Sleeper Transactions Endpoint Structure
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: sleeper-api
 - Description: The structure of GET /league/{league_id}/transactions/{round}, and how waiver, free agency, and trade transaction types are differentiated.
 - Notes: (pending ingestion)
@@ -19,7 +19,7 @@
 
 ### 5.8 Sleeper User and User-Leagues Endpoints
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: sleeper-api
 - Description: The structure of GET /user/{username or user_id} and GET /user/{user_id}/leagues/nfl/{season}.
 - Notes: (pending ingestion)
@@ -28,7 +28,7 @@
 
 ### 5.9 Sleeper Playoff Bracket Endpoints
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: sleeper-api
 - Description: What playoff bracket endpoints exist (winners_bracket / losers_bracket), and how bracket progression is encoded.
 - Notes: (pending ingestion)
