@@ -17,6 +17,8 @@ related:
   - sleeper-api/users-endpoint
   - sleeper-api/league-endpoint
   - sleeper-api/draft-endpoint
+  - sleeper-api/nfl-state-endpoint
+  - sleeper-api/players-endpoint
 ---
 
 ## Summary
@@ -29,7 +31,7 @@ related:
 
 ### Core Mechanics and the Weekly Grain
 
-The endpoint takes a single required path segment, `round`, which is the league's transaction week — for football, this lines up with the NFL week (1 through 17 or 18 depending on season length, plus playoff weeks). There is no bulk "all transactions" call and no documented pagination; a full-season transaction ledger is built by the caller, one request per week, concatenated and deduplicated. Pre-Week-1 and off-season activity is sometimes retrievable under low-numbered rounds, but this coverage is inconsistent and undocumented — treat it as unreliable rather than building a hard dependency on it.
+The endpoint takes a single required path segment, `round`, which is the league's transaction week — for football, this lines up with the NFL week (1 through 17 or 18 depending on season length, plus playoff weeks). `round` corresponds to the same regular-season week value exposed as `leg` on `sleeper-api/nfl-state-endpoint`; use that endpoint's `leg` field, gated by `season_type`, to determine which week's transactions round is currently relevant rather than computing it independently. There is no bulk "all transactions" call and no documented pagination; a full-season transaction ledger is built by the caller, one request per week, concatenated and deduplicated. Pre-Week-1 and off-season activity is sometimes retrievable under low-numbered rounds, but this coverage is inconsistent and undocumented — treat it as unreliable rather than building a hard dependency on it.
 
 Every transaction object shares a common envelope regardless of type: `transaction_id` (a snowflake-style string, time-sortable), `type`, `status`, `status_updated` and `created` (millisecond epoch timestamps), `leg` (the week the transaction belongs to, generally matching `round`), `roster_ids` (every roster involved), `creator` (the initiating `user_id`), `consenter_ids` (roster IDs that agreed to the transaction), `adds`, `drops`, `draft_picks`, `waiver_budget`, `settings`, and `metadata`.
 
@@ -39,7 +41,7 @@ Every transaction object shares a common envelope regardless of type: `transacti
 
 ### Asset Movement Is Uniform Across Types
 
-Regardless of `type`, the actual movement of assets is always expressed through the same four fields, and parsing logic should branch on `type` only for FAAB-bid interpretation and failure handling — never for asset extraction. `adds` and `drops` are maps of `player_id` to `roster_id`: a key in `adds` means that roster received that player; a key in `drops` means that roster gave it up. Both are `null` (not an empty object) when there is nothing to report, and code that assumes an object will always be present breaks on this distinction. `draft_picks` is an array populated only on trades that move future draft capital, with each entry carrying `season`, `round` (a genuine draft round, distinct from the URL's `round` week parameter), `roster_id` (the pick's original owner), `previous_owner_id` (holder immediately before this trade), and `owner_id` (the new holder after this trade). `waiver_budget` is an array populated only on trades that move FAAB dollars, with `sender`, `receiver`, and `amount` entries. A trade can combine player movement, pick movement, and FAAB movement in a single transaction object, and all three channels are independently nullable — a pick-only or FAAB-only trade has `adds`/`drops` as `null`, which breaks any pipeline keyed purely on player movement.
+Regardless of `type`, the actual movement of assets is always expressed through the same four fields, and parsing logic should branch on `type` only for FAAB-bid interpretation and failure handling — never for asset extraction. `adds` and `drops` are maps of `player_id` to `roster_id`: a key in `adds` means that roster received that player; a key in `drops` means that roster gave it up. Both are `null` (not an empty object) when there is nothing to report, and code that assumes an object will always be present breaks on this distinction. `draft_picks` is an array populated only on trades that move future draft capital, with each entry carrying `season`, `round` (a genuine draft round, distinct from the URL's `round` week parameter), `roster_id` (the pick's original owner), `previous_owner_id` (holder immediately before this trade), and `owner_id` (the new holder after this trade). `waiver_budget` is an array populated only on trades that move FAAB dollars, with `sender`, `receiver`, and `amount` entries. A trade can combine player movement, pick movement, and FAAB movement in a single transaction object, and all three channels are independently nullable — a pick-only or FAAB-only trade has `adds`/`drops` as `null`, which breaks any pipeline keyed purely on player movement. Every `player_id` referenced in `adds`/`drops` should be resolved against the local player directory described in `sleeper-api/players-endpoint`, including recognizing team-defense abbreviation IDs alongside ordinary numeric player IDs.
 
 ### Failed Waiver Claims Pollute Naive Aggregates
 
