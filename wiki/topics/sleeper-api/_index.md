@@ -17,4 +17,4 @@ Sleeper platform integration reference: endpoint structure, rate limits, auth (n
 | [rate-limits](rate-limits.md) | The ~1,000 requests/minute documented ceiling (with one contradicting lower-figure report), IP-block escalation beyond clean 429s, absence of standard rate-limit headers, and the players-dump once-daily rule as the most consequential specific guidance. | medium |
 | [players-endpoint](players-endpoint.md) | `GET /players/nfl`: the full player dump as a map keyed by canonical `player_id` (numeric for players, team abbreviation for defenses — unanimous across sources), the cross-provider ID crosswalk, and why name-based joins are unreliable. | high |
 
-_Notebook 5 (Sleeper API Integration) is complete — all 18 of 18 planned subjects ingested as of 2026-07-21 (subjects 5.1–5.12; note the queue's Wave 1 unblock scope covers 5.1–5.18, with 5.13–5.18 still queued in `wiki/_queue_nb5c.md`, now ACTIVE)._
+_Notebook 5 (Sleeper API Integration) — 12 of 18 planned subjects ingested as of 2026-07-21 (subjects 5.1–5.12 complete). `wiki/_queue_nb5c.md` is now ACTIVE for subjects 5.13–5.18._
