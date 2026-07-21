@@ -8,7 +8,7 @@
 > **Total slots:** 100 (16 files × 6-7 per file, Cycle 1) + 37 (6 files × 6-7 per file, Cycle 2) + 3 (1 file, Cycle 3)
 > **Cycle:** 1 (initial build) — COMPLETED · 2 (Wave 1 API unblock) — ACTIVE · 3 (Wave 1 schema unblock) — LOCKED
 > **Generated:** 2026-07-14 (Cycle 1) · 2026-07-21 (Cycle 2) · 2026-07-21 (Cycle 3)
-> **Updated:** 2026-07-21 — Subjects 5.16–5.18 (players payload/caching, player data quirks, live vs. finalized scoring) ingested via a cleanly-scoped 6-model panel. `_queue_nb5c.md` is now fully COMPLETED — Notebook 5 (Sleeper API Integration) is fully ingested (18 of 18 subjects). `_queue_nb6a.md` (Notebook 6 — ESPN API Integration) is now ACTIVE.
+> **Updated:** 2026-07-21 — Subjects 6.4–6.7 (public/private detection, auth-failure error responses, data completeness, base URL/versioning) ingested via cleanly-scoped 6-model panels. `_queue_nb6a.md` is now fully COMPLETED — all 7 of 7 subjects ingested. `_queue_nb6b.md` (subjects 6.8–6.13) is now ACTIVE.
 
 ---
 
@@ -55,8 +55,8 @@ Narrow-scope supplemental cycle. `sleeper-api` and `espn-api` were registered as
 | [_queue_nb5a.md](_queue_nb5a.md) | Sleeper API Integration | 5.1–5.6 (6) | sleeper-api | COMPLETED |
 | [_queue_nb5b.md](_queue_nb5b.md) | Sleeper API Integration | 5.7–5.12 (6) | sleeper-api | COMPLETED |
 | [_queue_nb5c.md](_queue_nb5c.md) | Sleeper API Integration | 5.13–5.18 (6) | sleeper-api | COMPLETED |
-| [_queue_nb6a.md](_queue_nb6a.md) | ESPN API Integration | 6.1–6.7 (7) | espn-api | ACTIVE |
-| [_queue_nb6b.md](_queue_nb6b.md) | ESPN API Integration | 6.8–6.13 (6) | espn-api | LOCKED |
+| [_queue_nb6a.md](_queue_nb6a.md) | ESPN API Integration | 6.1–6.7 (7) | espn-api | COMPLETED |
+| [_queue_nb6b.md](_queue_nb6b.md) | ESPN API Integration | 6.8–6.13 (6) | espn-api | ACTIVE |
 | [_queue_nb6c.md](_queue_nb6c.md) | ESPN API Integration | 6.14–6.19 (6) | espn-api | LOCKED |
 
 **Status values:** ACTIVE / LOCKED / COMPLETED

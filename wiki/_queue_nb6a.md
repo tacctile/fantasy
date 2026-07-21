@@ -64,13 +64,13 @@
 
 ### 6.7 ESPN Fantasy API Base URL and Versioning
 
-- Status: IN_PROGRESS
+- Status: COMPLETED
 - Wiki Category: espn-api
 - Description: The base URL structure and versioning for ESPN's Fantasy Football API (v3, games/ffl, seasons, leagueId).
-- Notes: (pending ingestion)
+- Notes: Ingested via cleanly-scoped 6-model panel. Created `espn-api/base-url-and-versioning.md`. One direct contradiction on exact host-migration and historical-purge dates was resolved by excluding uncorroborated single-model specific dates per the Convergence-Filtering Standard (see verification cache).
 
 ---
 
-This file covers entries 6.1–6.7. This file is LOCKED until all Notebook 5 (sleeper-api) queue files reach COMPLETED. When all entries in this file are COMPLETED or SKIPPED, update `wiki/_queue_master.md`: set this file → COMPLETED, `wiki/_queue_nb6b.md` → ACTIVE.
+All entries COMPLETED as of 2026-07-21. `wiki/_queue_master.md` updated: this file → COMPLETED, `wiki/_queue_nb6b.md` → ACTIVE.
 
 _End of wiki/_queue_nb6a.md_

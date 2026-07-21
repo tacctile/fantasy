@@ -62,6 +62,6 @@
 
 ---
 
-This file covers entries 6.8–6.13. This file is LOCKED until `wiki/_queue_nb6a.md` reaches COMPLETED. When all entries in this file are COMPLETED or SKIPPED, update `wiki/_queue_master.md`: set this file → COMPLETED, `wiki/_queue_nb6c.md` → ACTIVE.
+This file covers entries 6.8–6.13. `wiki/_queue_nb6a.md` reached COMPLETED 2026-07-21; this file is now ACTIVE. When all entries in this file are COMPLETED or SKIPPED, update `wiki/_queue_master.md`: set this file → COMPLETED, `wiki/_queue_nb6c.md` → ACTIVE.
 
 _End of wiki/_queue_nb6b.md_
