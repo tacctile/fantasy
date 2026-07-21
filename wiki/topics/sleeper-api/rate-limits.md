@@ -13,6 +13,7 @@ tags:
 related:
   - sleeper-api/authentication
   - sleeper-api/players-endpoint
+  - sleeper-api/trending-endpoint
 ---
 
 ## Summary
@@ -38,6 +39,10 @@ No standard rate-limit headers (`Retry-After`, `X-RateLimit-Remaining`, `X-RateL
 ### The Players Dump: A Separate, Stricter, and More Consequential Rule
 
 Independent of the general per-minute ceiling, Sleeper's own guidance for the full player dump (`GET /players/nfl`, documented further on `sleeper-api/players-endpoint`) is to call it at most once per day. This is a distinct, softer-sounding but more load-bearing contract than the general rate limit — an integration can be well under 1,000 requests/minute in aggregate and still be a genuinely abusive consumer by re-pulling this large, slow-changing payload on every request or every user action instead of caching it locally. Across available sources, this specific guidance is the single most consistently and explicitly stated rule in the entire rate-limit surface, and violating it is described as one of the most common real-world causes of throttling and blocks.
+
+### The Trending Endpoint Adds a Separate Polling Consideration
+
+`GET /players/nfl/trending/{add|drop}` (documented on `sleeper-api/trending-endpoint`) is lightweight per call but easy to over-poll precisely because its output is time-sensitive and its refresh cadence is undocumented — a caller chasing freshness with very frequent polling gains little real signal (the endpoint's own update cadence is unconfirmed and empirically on the order of minutes to tens of minutes) while adding avoidable request volume. This endpoint should be included in the same general per-minute budget as everything else rather than treated as a special case, and polled on a fixed, moderate interval rather than continuously.
 
 ### Edge Cases and Failure Patterns
 
@@ -74,6 +79,10 @@ High confidence: cache aggressively and differentially by how quickly each resou
 - **Decision:** The platform will run bulk or backfill jobs (multi-week historical syncs, full-league-list syncs) under their own conservative, separately-budgeted concurrency limit, isolated from interactive user-triggered requests, rather than sharing one undifferentiated request budget across both.
   **Reasoning:** Fan-out from syncing many leagues across many weeks and endpoint types is described as the most common real-world path to exceeding volume limits, and interactive requests need low, predictable latency that a shared, saturated budget would degrade during normal use.
   **Rejected alternative:** Sharing a single global limiter identically across bulk and interactive traffic was rejected — a large backfill job would starve interactive requests of budget and degrade user-facing responsiveness during ordinary use.
+
+- **Decision:** The platform will poll the trending endpoint on a fixed, moderate interval (on the order of every 15 to 60 minutes) as part of the same general request budget, rather than polling it continuously or treating it as exempt from standard rate-limit discipline.
+  **Reasoning:** The endpoint's own refresh cadence is undocumented and empirically no faster than minutes-to-tens-of-minutes, so continuous polling adds request volume without a corresponding freshness benefit.
+  **Rejected alternative:** Polling the trending endpoint as frequently as possible to maximize freshness was rejected — it consumes request budget disproportionately to any real gain in data freshness given the endpoint's own undocumented, non-real-time update behavior.
 
 ---
 
