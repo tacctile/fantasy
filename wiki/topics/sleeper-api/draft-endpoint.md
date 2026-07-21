@@ -14,6 +14,7 @@ related:
   - sleeper-api/roster-endpoint
   - sleeper-api/league-endpoint
   - sleeper-api/transactions-endpoint
+  - sleeper-api/players-endpoint
 ---
 
 ## Summary
@@ -38,7 +39,7 @@ A draft object carries `draft_id`, `league_id`, `season`, `sport`, `type` (`snak
 
 ### Pick Object Fields
 
-Each element of the picks array carries `pick_no` (the overall, 1-indexed pick number across the whole draft), `round`, `draft_slot` (the original board column associated with the pick), `roster_id` (the roster that actually receives the player, reflecting any in-draft pick trades), `picked_by` (the `user_id` of whoever physically made the selection — commonly an empty string for autopicks, commissioner-entered picks, or unclaimed slots), `player_id`, `is_keeper` (a boolean, though null or absent in many non-keeper contexts rather than a reliable explicit `false`), and `metadata` — a denormalized snapshot of the player at the moment of the pick, including name, position, team, and status, plus a string-typed `amount` field on auction picks representing the winning bid.
+Each element of the picks array carries `pick_no` (the overall, 1-indexed pick number across the whole draft), `round`, `draft_slot` (the original board column associated with the pick), `roster_id` (the roster that actually receives the player, reflecting any in-draft pick trades), `picked_by` (the `user_id` of whoever physically made the selection — commonly an empty string for autopicks, commissioner-entered picks, or unclaimed slots), `player_id` (resolved against the player directory documented in full on `sleeper-api/players-endpoint`, including its canonical numeric-vs-team-abbreviation ID scheme), `is_keeper` (a boolean, though null or absent in many non-keeper contexts rather than a reliable explicit `false`), and `metadata` — a denormalized snapshot of the player at the moment of the pick, including name, position, team, and status, plus a string-typed `amount` field on auction picks representing the winning bid.
 
 ### roster_id Is the Ownership Field — Not draft_slot, Not picked_by
 
@@ -58,7 +59,7 @@ Auction drafts populate the same top-level pick fields as snake or linear drafts
 
 ### Pick Metadata Is a Point-in-Time Snapshot, Not Current Player Data
 
-`metadata` on a pick object reflects the player's attributes — team, status, name — as they stood at the moment the pick was made, not as they stand now. A player's NFL team, injury status, or even name can change after the draft, and the pick's `metadata` does not update to reflect that. Any feature reasoning about a player's current state must join `player_id` to the live player directory rather than trusting pick metadata for anything beyond historical, draft-day display context.
+`metadata` on a pick object reflects the player's attributes — team, status, name — as they stood at the moment the pick was made, not as they stand now. A player's NFL team, injury status, or even name can change after the draft, and the pick's `metadata` does not update to reflect that. Any feature reasoning about a player's current state must join `player_id` to the live player directory (`sleeper-api/players-endpoint`) rather than trusting pick metadata for anything beyond historical, draft-day display context.
 
 ---
 
