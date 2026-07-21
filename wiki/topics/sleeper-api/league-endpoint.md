@@ -13,6 +13,7 @@ tags:
 related:
   - sleeper-api/roster-endpoint
   - sleeper-api/authentication
+  - sleeper-api/matchup-endpoint
 ---
 
 ## Summary

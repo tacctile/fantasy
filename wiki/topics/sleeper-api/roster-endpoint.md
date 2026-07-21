@@ -12,6 +12,7 @@ tags:
 related:
   - sleeper-api/authentication
   - sleeper-api/league-endpoint
+  - sleeper-api/matchup-endpoint
 ---
 
 ## Summary
