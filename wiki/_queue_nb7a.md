@@ -34,28 +34,28 @@ All three subjects below depend on facts from both API notebooks:
 
 ### 7.1 Multi-Platform League Identity and Scoping
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: schema-reference
 - Description: How the platform keys and scopes league records internally across multiple source platforms without collision — including how Sleeper's per-season `league_id` renewal/`previous_league_id` chaining and ESPN's season/versioning model are each mapped into one internal league-identity and season-history convention.
-- Notes: (locked — do not ingest until Notebook 6 completes)
+- Notes: (decision session in progress)
 
 ---
 
 ### 7.2 Platform-Agnostic Player Identity Mapping
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: schema-reference
 - Description: The platform's own canonical internal player ID scheme, anchored on Sleeper's `player_id` per existing crosswalk research (`sleeper-api/player-id-crosswalk.md`, `sleeper-api/dst-and-free-agents.md`), with defined join/fallback behavior once ESPN's proprietary player IDs are added as a second provider, including DST and free-agent edge cases.
-- Notes: (locked — do not ingest until Notebook 6 completes)
+- Notes: (decision session in progress)
 
 ---
 
 ### 7.3 League Configuration Data Model
 
-- Status: PENDING
+- Status: IN_PROGRESS
 - Wiki Category: schema-reference
 - Description: How to normalize each platform's league-settings shape (Sleeper's `settings`/`scoring_settings`/`roster_positions`, and ESPN's equivalent once researched) into one internal `league_config` schema flexible enough for platform-specific quirks without leaking provider-specific structure into the application layer.
-- Notes: (locked — do not ingest until Notebook 6 completes)
+- Notes: (decision session in progress)
 
 ---
 
