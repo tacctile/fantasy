@@ -1,13 +1,27 @@
-import { LayoutDashboard } from "lucide-react";
+import { LayoutDashboard } from 'lucide-react'
+import { redirect } from 'next/navigation'
 
-import { cn } from "@/lib/utils";
+import NotAuthorizedCard from '@/components/auth/not-authorized-card'
+import { getAdminAuthState } from '@/lib/supabase/auth'
+import { createClient } from '@/lib/supabase/server'
+import { listConnectedLeagues } from '@/services/draft-board'
 
 /**
- * Placeholder shell proving the Wave 1 scaffold: shadcn tokens, the `@/`
- * import alias, lucide-react, and tabular-nums on a data display.
- * Replaced by real surfaces in later waves.
+ * Root router for the owner surface (Nick-signed auto-land): unauthenticated
+ * → /login; admin with leagues → first connected league's draft board; admin
+ * with none → a minimal empty note (league sync is how leagues appear, per
+ * Wave 2's runners); non-admin session → not-authorized. Wave 4's
+ * command-center home replaces the empty note when it lands.
  */
-export default function Home() {
+export default async function Home() {
+  const db = await createClient()
+  const auth = await getAdminAuthState(db)
+  if (auth.state === 'unauthenticated') redirect('/login')
+  if (auth.state === 'not_admin') return <NotAuthorizedCard email={auth.email} />
+
+  const leagues = await listConnectedLeagues(db)
+  if (leagues.length > 0) redirect(`/leagues/${leagues[0].leagueId}/draft`)
+
   return (
     <main className="flex flex-1 flex-col items-center justify-center gap-4 bg-background p-8 text-foreground">
       <div className="flex items-center gap-2">
@@ -15,12 +29,9 @@ export default function Home() {
         <h1 className="text-2xl font-semibold tracking-tight">fantasy</h1>
       </div>
       <p className="max-w-md text-center text-muted-foreground">
-        Multi-league dashboard and draft assistant. Wave 1 scaffold — schema
-        and deploy plumbing land next.
-      </p>
-      <p className={cn("rounded-lg border bg-card px-4 py-2 text-sm text-card-foreground", "tabular-nums")}>
-        0 leagues connected
+        No leagues connected yet. Run a league sync (npm run sync:league --
+        &lt;league_id&gt;) and this will route straight to its draft board.
       </p>
     </main>
-  );
+  )
 }

@@ -9,6 +9,12 @@ Newest entry on top.
 
 ---
 
+## 2026-07-22 — First UI Surface + Owner Auth Live: Admin Draft-Board Route, Shell, and Real Sign-In (Route + Page Shell Sub-Section Done)
+
+Core infra activation — Supabase Auth exercised for the first time ever (Nick signed in live, landed on the real board, sign-out verified). Full owner path shipped in one fold: `src/proxy.ts` session-refresh/unauth wall (Next 16 proxy), `/login` + server actions, `(admin)` gate via `is_fantasy_admin` RPC, the admin-only RSC draft route → `DraftBoardShell` (header with league selector, platform badge, ADP freshness; table/sidebar regions placeholder until the player-list sub-section). Unauth responses asserted free of league/admin data. Flagged: dark-only Sleeper palette still unapplied (scaffold light tokens live) — next-fold candidate. Next: 03a player list.
+
+---
+
 ## 2026-07-22 — Wave 3a Begun: ADP Pipeline Live — Sleeper Undocumented Projections Endpoint Ingested
 
 First working Wave 3a feature — the full "ADP schema + ingestion" sub-section (9 items, one fold). `adp_rankings` live (long per-format rows, Nick-signed shape), quarantined `services/adp/` ingestion against `api.sleeper.com` (validate-before-swap, pattern-based `adp_*` extraction, 999-sentinel exclusion, positional-rank derivation), `sync_runs` extended, `/api/cron/sync-adp` + daily piggyback on the sync-leagues cron (Hobby slots full — Nick-signed). Live-verified: 2,946 rows / 10 formats / season 2026, idempotent re-run, 0 unmapped, Bijan ppr 1.4/RB1 matches the wiki sample. Next: draft-board data layer.
@@ -30,12 +36,6 @@ ESPN leagues are commissioner-locked until 2026 season setup (~2026-08-19 → 20
 ## 2026-07-22 — Sleeper Sync Surface Complete: Draft Ingestion + Per-League Orchestrator (Wave 2 Sub-Sections 1–2 Done)
 
 The whole Sleeper half of Wave 2's ingestion now runs as one command. `draft-state.ts` ingests the real league's full draft (170 picks, all matching Sleeper's wire exactly; first-write-wins verified — re-runs write 0); `sync-orchestrator.ts` chains config → rosters → matchups → draft per league with per-league failure isolation (verified live: a bad league fails cleanly, the next league syncs untouched). Client gained the deferred global rate-pacing gate (250ms). Next: ESPN sub-sections (blocked on Nick's public/private decisions) or cron sub-section.
-
----
-
-## 2026-07-22 — First Real League Connected: Sleeper League-Scoped Sync Live (Config, Rosters, Standings, Matchups, Player Scores)
-
-Nick's league "10 enter 1 Leaves" (2025, 10-team full-PPR) fully ingested end-to-end by three new services (`league-config`, `league-rosters`, `league-matchups` in `src/services/sleeper/` + `sync:league`/`sync:rosters`/`sync:matchups` runners): `leagues`+`league_config` (45 raw scoring keys, derived_config), 10 rosters/174 membership rows/10 standings, and 18 weeks of matchups (180 rows) + 3,152 player scores. Verified live: starter-sum vs. Sleeper's own totals matched on all 180 roster-weeks; standings and `derived_config` (with sign-off) folded in as build-file scope corrections. Next: Sleeper draft-state write path + per-league orchestrator.
 
 ---
 

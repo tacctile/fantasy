@@ -126,4 +126,10 @@ First working Wave 2 feature. The full "Sleeper — client + player catalog" sub
 
 ---
 
+## 2026-07-22 — First Real League Connected: Sleeper League-Scoped Sync Live (Config, Rosters, Standings, Matchups, Player Scores)
+
+Nick's league "10 enter 1 Leaves" (2025, 10-team full-PPR) fully ingested end-to-end by three new services (`league-config`, `league-rosters`, `league-matchups` in `src/services/sleeper/` + `sync:league`/`sync:rosters`/`sync:matchups` runners): `leagues`+`league_config` (45 raw scoring keys, derived_config), 10 rosters/174 membership rows/10 standings, and 18 weeks of matchups (180 rows) + 3,152 player scores. Verified live: starter-sum vs. Sleeper's own totals matched on all 180 roster-weeks; standings and `derived_config` (with sign-off) folded in as build-file scope corrections. Next: Sleeper draft-state write path + per-league orchestrator.
+
+---
+
 _End of PROGRESS_ARCHIVE.md_

@@ -104,6 +104,38 @@ export type DraftBoardResult =
   | { ok: true; data: DraftBoardData }
   | { ok: false; reason: 'league_not_found' }
 
+export type ConnectedLeague = {
+  /** platform_league_uuid — never a provider-native ID. */
+  leagueId: string
+  name: string | null
+  platform: Database['public']['Enums']['platform']
+  seasonYear: number
+}
+
+/**
+ * Every connected league, for the board's league selector and post-sign-in
+ * landing — no hardcoded league count, ever. Explicit columns only (the
+ * boundary discipline above applies to this list too). Ordering: newest
+ * season first, then name, then id as the deterministic tie-break.
+ */
+export async function listConnectedLeagues(
+  db: SupabaseClient<Database>
+): Promise<ConnectedLeague[]> {
+  const { data, error } = await db
+    .from('leagues')
+    .select('platform_league_uuid, name, platform, season_year')
+    .order('season_year', { ascending: false })
+    .order('name', { ascending: true })
+    .order('platform_league_uuid', { ascending: true })
+  if (error) throw new Error(`league list query failed: ${error.message}`)
+  return data.map((row) => ({
+    leagueId: row.platform_league_uuid,
+    name: row.name,
+    platform: row.platform,
+    seasonYear: row.season_year,
+  }))
+}
+
 /**
  * Map a league's derived_config to the adp_rankings scoring_format its board
  * reads. Returns null only for an unusable derived_config (defensive — the

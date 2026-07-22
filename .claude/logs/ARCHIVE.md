@@ -3,6 +3,13 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_17 — Wave 2 cron/polling sub-section (3-item fold; automated pipeline live)
+
+- Fold = full cron sub-section, built 1 → 3 → 2 (routes, sync_runs table, then vercel.json — the first-touch-of-Vercel-Cron hard stop last, nothing folded past it). Nick's Clarify decisions: Hobby plan with 2 daily crons (catalog 09:00 / league-state 10:00 UTC; 15-min cadence deferred to season start, item `[~]`), CRON_SECRET generated → `.env.local` + Vercel Production, scheduled league sync = current-week-only via `/state/nfl` (offseason skips matchups), draft route wired but unscheduled until 3b.
+- Shipped: `requireCronSecret` (Bearer, constant-time, fail-closed: missing env 500 / mismatch 401), three routes (`sync-players` with a sync_runs once-per-day guard — failure rows allow retry, guard read error fails closed; `sync-leagues`; `sync-draft` per-league isolated), `nfl-state.ts` (`resolveMatchupSyncWeek`: week iff `season_type='regular'`, never date arithmetic), migration `20260722160525` `sync_runs` (source/status checks incl. `skipped`; league_id nullable for global runs; no season_year — telemetry, not stat data; collision-checked against all 59 live tables), `services/sync-runs.ts` (start/finish, recordSafely, `hasRecentCatalogRun`), orchestrator additions (`discoverConnectedSleeperLeagueIds`, `skipMatchups`).
+- Verified in production post-deploy: 401s unauthenticated ×3, authorized catalog → guard skip (backfilled row for that day's real manual run makes the guard see reality), authorized league-state 200 from the deployed function; cron registration confirmed in dashboard. Known consequence: next-morning catalog cron correctly records `skipped`; first real scheduled fetch 2026-07-24.
+- Surfaced, not built: in-season finality-promotion gap (current-week-only sync means finished weeks keep `is_final=false`) — recorded in STATE.yml known_issues for a registered decision moment. WIKI NOTE: none (Vercel-cron/deploy silence is the established below-wiki-altitude category).
+
 ## 2026-07-22_16 — Wave 2 ESPN external-timing blocker recorded; build path re-routed (non-code)
 
 - BUILD_PROTOCOL self-location hit the ESPN sub-section opener; all three MANUAL_SETUP Wave 2 ESPN items `[ ]` → session halted per the Manual Setup Flag. Nick declared a genuine external-timing blocker: ESPN leagues commissioner-locked until 2026 season setup (est. ~2026-08-19 → 2026-09-02); directives: dated blocker (not just "open"), find ESPN-independent work respecting wave order, never guess visibility or fabricate placeholder league IDs.
