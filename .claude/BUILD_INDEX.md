@@ -49,10 +49,11 @@ Atomic, one task per fresh Claude Code session. No scope bleed across sessions.
 
 ## Build Files Registry
 
-No build files registered yet. Each feature gets a numbered file at `.claude/build/NN_FEATURE_NAME.md`, registered here with a status glyph, before any code is written.
+Each feature gets a numbered file at `.claude/build/NN_FEATURE_NAME.md`, registered here with a status glyph, before any code is written.
 
 | # | File | Wave | Status |
 | - | ---- | ---- | ------ |
+| 01 | [01_foundation.md](build/01_foundation.md) | 1 | ⬜ |
 
 ---
 

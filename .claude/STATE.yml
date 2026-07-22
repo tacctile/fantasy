@@ -2,18 +2,19 @@
 # Living "what happened last session" file. Overwritten completely at the end of every session — never patched.
 # Last Updated: 2026-07-21
 
-current_focus: "Wiki fully complete (132 pages, all 3 discovery cycles COMPLETED — see wiki/_queue_master.md). Scope corrections landed in MASTER_CONTEXT.md and BUILD_INDEX.md this session: league count is open-ended (not fixed at 4/5), owner-vs-read-only-share-link access model added, Wave 3 manual+automated draft entry now ship together (no manual-first staging). Awaiting Wave 1 (Foundation) kickoff."
+current_focus: "Wave 1 (Foundation) build file registered and scoped: .claude/build/01_foundation.md. Scoped by convergence-filtering 6 independent AI panel responses against BUILD_INDEX.md's Wave 1 bullet, same methodology as wiki ingestion. Ready to execute — next session should be a feature-build session against this build file."
 
 build_system:
   index: ".claude/BUILD_INDEX.md"
   files_location: ".claude/build/"
-  total_files: 0
-  next_build_file_number: 1
-  current_build_files: []
+  total_files: 1
+  next_build_file_number: 2
+  current_build_files:
+    - ".claude/build/01_foundation.md"
 
 nick_pending:
-  - "Decide Wave 1 kickoff timing and scope prompt."
-  - "Confirm ESPN league visibility (public vs. private) for each ESPN league being connected, before ESPN cookie-auth work begins for that league."
+  - "Kick off the Wave 1 (Foundation) feature-build session against .claude/build/01_foundation.md."
+  - "Confirm ESPN league visibility (public vs. private) for each ESPN league being connected, before ESPN cookie-auth work begins for that league (Wave 2, not a Wave 1 blocker)."
 
 blockers: []
 

@@ -7,6 +7,20 @@ Newest entry on top.
 
 ---
 
+## 2026-07-21 — Wave 1 Build File Registered (First Registered Build File)
+
+`.claude/build/01_foundation.md` created and registered in `BUILD_INDEX.md`'s Build Files Registry — the first entry in that table since the governance scaffold was established. This is the first concrete, executable scope for actual application code in this project.
+
+**How it was scoped:** the same 6-model convergence-filtering methodology used for `wiki/` discovery ingestion, applied to build planning instead of research. A single, fully self-contained panel prompt (project context + Wave 1's `BUILD_INDEX.md` scope bullet) was run against 6 independent AI models, each producing a 25-item atomic task breakdown for Wave 1. Responses were convergence-filtered — tasks appearing in 5-6 of 6 responses were treated as consensus and form the spine of the build file; low-corroboration items (env validation via Zod, Realtime publication, defensive raw-ingest snapshot tables) were noted but not adopted into this wave's scope.
+
+**What's in scope:** Next.js/Tailwind/shadcn scaffold, Supabase project + migration workflow, `platform` enum, Sleeper-anchored `players` table + ESPN crosswalk, `leagues` table with `share_token` generation, `league_config`, league-scoped rosters/matchups/standings/player_scores tables, shared `draft_state` table (schema only — write logic is Wave 3), RLS enabled with owner-only write policies (spectator read policies deferred to Wave 4), generated TypeScript types, env/secrets + Vercel deploy with a live connectivity smoke test as the completion gate.
+
+**Explicitly deferred out of Wave 1** (documented in the build file itself, not silently dropped): ESPN cookie-auth flow, any data ingestion/sync logic, share-token-gated spectator RLS policies and the spectator route surface, manual/automated draft-pick write logic.
+
+**Why this milestone matters:** per `BUILD_INDEX.md`'s own rule, nothing gets built without a registered build file — this is the moment the project becomes buildable, transitioning from pure planning/governance/wiki work to an executable build queue.
+
+---
+
 ## 2026-07-21 — Scope Corrections: Open-Ended League Count, Access Model, Draft-Entry Sequencing
 
 Three scope corrections landed in `MASTER_CONTEXT.md` and `BUILD_INDEX.md`, driven by a full extraction of Nick's prior conversation history on this project cross-checked against the committed repo state. This is a governance/scope change affecting all future build sessions.
