@@ -2,23 +2,24 @@
 # Living "what happened last session" file. Overwritten completely at the end of every session — never patched.
 # Last Updated: 2026-07-21
 
-current_focus: "Wave 1 (Foundation), Wave 2 (Data Pipeline), Wave 3a (Draft Assistant — Static Board), and Wave 3b (Draft Assistant — Live Draft) build files registered and scoped: .claude/build/01_foundation.md, .claude/build/02_data_pipeline.md, .claude/build/03a_draft_assistant_static_board.md, .claude/build/03b_draft_assistant_live_draft.md. All scoped by convergence-filtering 6 independent AI panel responses per wave against BUILD_INDEX.md's scope bullets, same methodology as wiki ingestion. Execution order: Wave 1 -> Wave 2 -> Wave 3a -> Wave 3b. None of the four registered waves have been executed yet — next session should be a feature-build session against 01_foundation.md."
+current_focus: "Wave 1 (Foundation), Wave 2 (Data Pipeline), Wave 3a (Draft Assistant — Static Board), Wave 3b (Draft Assistant — Live Draft), and Wave 4 (League Dashboard) build files registered and scoped: .claude/build/01_foundation.md, .claude/build/02_data_pipeline.md, .claude/build/03a_draft_assistant_static_board.md, .claude/build/03b_draft_assistant_live_draft.md, .claude/build/04_league_dashboard.md. All scoped by convergence-filtering 6 independent AI panel responses per wave against BUILD_INDEX.md's scope bullets, same methodology as wiki ingestion. Execution order: Wave 1 -> Wave 2 -> Wave 3a -> Wave 3b -> Wave 4. None of the five registered waves have been executed yet — next session should be a feature-build session against 01_foundation.md."
 
 build_system:
   index: ".claude/BUILD_INDEX.md"
   files_location: ".claude/build/"
-  total_files: 4
-  next_build_file_number: 5
+  total_files: 5
+  next_build_file_number: 6
   current_build_files:
     - ".claude/build/01_foundation.md"
     - ".claude/build/02_data_pipeline.md"
     - ".claude/build/03a_draft_assistant_static_board.md"
     - ".claude/build/03b_draft_assistant_live_draft.md"
+    - ".claude/build/04_league_dashboard.md"
 
 nick_pending:
   - "Kick off the Wave 1 (Foundation) feature-build session against .claude/build/01_foundation.md — every later wave depends on it and should not start first."
   - "Confirm ESPN league visibility (public vs. private) for each ESPN league being connected, before ESPN cookie-auth work begins for that league (Wave 2 build file already accounts for per-league detection either way, but manual confirmation still speeds validation)."
-  - "When ready, run the same 6-model panel process for Wave 4 (League Dashboard) — the next unscoped wave in the roadmap."
+  - "When ready, run the same 6-model panel process for Wave 5 (Eye Candy) — the next unscoped wave in the roadmap."
 
 blockers: []
 

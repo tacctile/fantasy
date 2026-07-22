@@ -7,6 +7,18 @@ Newest entry on top.
 
 ---
 
+## 2026-07-21 — Wave 4 Build File Registered
+
+`.claude/build/04_league_dashboard.md` created and registered in `BUILD_INDEX.md`, using the same 6-model convergence-filtering methodology as Waves 1, 2, 3a, and 3b.
+
+**What's in scope:** a new fantasy-scoring engine (pure `computeFantasyPoints` driven entirely by each league's `league_config`, wired into the existing Sleeper/ESPN sync cadence, idempotent and failure-isolated per league) since this is the first wave needing computed `player_scores` rather than raw stats; owner-authenticated standings/matchups/power-rankings/player-card query services and admin UI; and — built together in this same wave, not deferred — the read-only share-link spectator surface: `share_token`-gated RLS read policies (explicitly excluding `draft_state`), token regenerate/revoke, and a genuinely separate mobile-first spectator route/component tree sharing only data-access logic with the admin dashboard.
+
+**Explicitly deferred:** score charts, lucky/unlucky tracking, positional breakdowns, playoff picture (Wave 5); league report generator, free agent board, PWA manifest (Wave 6); any historical/season-over-season view (rejected for v1 project-wide, not just this wave).
+
+**Dependency:** requires Wave 1's schema and Wave 2's sync pipelines; does not depend on or touch the draft assistant (Wave 3a/3b).
+
+---
+
 ## 2026-07-21 — Wave 3b Build File Registered
 
 `.claude/build/03b_draft_assistant_live_draft.md` created and registered in `BUILD_INDEX.md`, using the same 6-model convergence-filtering methodology as Waves 1, 2, and 3a.
