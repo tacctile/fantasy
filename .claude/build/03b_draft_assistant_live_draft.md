@@ -81,8 +81,8 @@ Base mechanism is Value-Over-Replacement (VORP/VBD), computed dynamically, with 
 ### Draft queue and auto-pick
 - [ ] Build a user-ordered queue (priority list) per league/session, stored independently of and never silently reordered by the BPA/recommendation engine
 - [ ] When a queued player is drafted by anyone else (manual, Sleeper poll, or ESPN poll): remove from queue, promote the next queued player automatically, and surface a brief non-blocking notification
-- [ ] Build roster-construction-aware auto-pick: when the draft clock expires or the user is away, walk the queue top-to-bottom and skip any player who would violate a hard roster rule (e.g., a 3rd QB before the bench is otherwise full) rather than blindly taking queue position 1 — auto-pick must never draft a queue entry that breaks a hard roster constraint
-- [ ] Build directly against Sleeper's live draft API/WebSocket for this single Sleeper-hosted league — no generic multi-platform sync layer, no ESPN/Yahoo/other-platform fallback logic for queue or auto-pick
+- [ ] Build roster-construction-aware auto-pick as a purely local mechanism (amended 2026-07-22 per Nick's ruling — supersedes the original "build directly against Sleeper's live draft API" language, which contradicted MASTER_CONTEXT.md's read-only rule): when the draft clock expires or the user is away, walk the queue top-to-bottom and skip any player who would violate a hard roster rule (e.g., a 3rd QB before the bench is otherwise full) rather than blindly taking queue position 1 — auto-pick must never draft a queue entry that breaks a hard roster constraint. Auto-pick writes ONLY to this app's own `draft_state` table, through the same manual-pick write path (`source='manual'`, same first-write-wins conflict semantics as any manual pick, undoable via the same source='manual'-only undo action) — it never calls any Sleeper or ESPN write endpoint, under any circumstance. If Sleeper's own clock expires in a real Sleeper-hosted draft, Sleeper's own platform auto-pick makes the actual pick and the poller ingests that authoritative row; this tool's auto-pick exists to keep local draft_state/UI/recommendation state consistent, never to act on Nick's behalf on any external platform
+- [ ] Queue and auto-pick consume pick events from the shared `draft_state` table, fed by the existing manual/`sleeper_poll`/`espn_poll` write paths and the client-side live sync mechanism above — read-only against Sleeper and ESPN, no direct draft-API/WebSocket connection of their own (amended 2026-07-22 with the auto-pick ruling above). Queue/auto-pick scope stays single-Sleeper-hosted-league — no generic multi-platform sync layer, no ESPN/Yahoo/other-platform fallback logic for queue or auto-pick
 
 ### Resilience
 - [ ] Ensure the board remains usable read-only (falls back to Wave 3a's static behavior) if live polling, realtime, or BPA calculation degrades or errors
@@ -101,6 +101,7 @@ Base mechanism is Value-Over-Replacement (VORP/VBD), computed dynamically, with 
 - League report generation, free agent board, PWA manifest/service worker — Wave 6
 - Any staged "manual-first, then add polling later" sequencing — this was explicitly reversed by Nick; both ship together in this one wave
 - Multi-platform draft sync abstraction — this tool targets a single Sleeper-hosted league; no ESPN/Yahoo/other-platform draft queue or auto-pick fallback
+- Any write to Sleeper, ESPN, or any other external platform — including by auto-pick, which writes solely to this app's own `draft_state`; when Sleeper's clock expires in a real draft, Sleeper's own platform auto-pick makes the actual pick (read-only rule reaffirmed 2026-07-22 — this restates the existing MASTER_CONTEXT.md rule, it is not a new exception)
 
 ---
 

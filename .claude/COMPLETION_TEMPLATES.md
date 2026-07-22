@@ -41,7 +41,7 @@ Every completion report — all three templates — includes exactly one of thes
 
 ## Dual-Location Instruction Rule
 
-When a fix modifies a rule that is stated in multiple locations (e.g., both the Prompt Format SESSION END block and the Session-End Steps section of MASTER_CONTEXT.md), update ALL locations. Check `MASTER_CONTEXT.md` for dual-location patterns before committing. Common dual-location patterns: SESSION END block ↔ Session-End Steps, Absolute Rules ↔ MASTER_CONTEXT.md restatements elsewhere, ARCHITECTURE.md Code Conventions ↔ MASTER_CONTEXT.md Code Conventions.
+When a fix modifies a rule that is stated in multiple locations (e.g., both the Prompt Format SESSION END block and the Session-End Steps section of MASTER_CONTEXT.md), update ALL locations. Check `MASTER_CONTEXT.md` for dual-location patterns before committing. Common dual-location patterns: SESSION END block ↔ Session-End Steps, Absolute Rules ↔ MASTER_CONTEXT.md restatements elsewhere, ARCHITECTURE.md Code Conventions ↔ MASTER_CONTEXT.md Code Conventions, Folding Policy (BUILD_PROTOCOL.md canonical) ↔ MASTER_CONTEXT.md Absolute Rule 1 ↔ BUILD_INDEX.md atomicity line.
 
 ---
 

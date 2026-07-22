@@ -3,6 +3,13 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_02 — Wave 1 roster_players (league-scoped state, second item)
+
+- One migration applied + verified live: `roster_slot` enum + `roster_players` — composite PK `(league_id, native_roster_id, sleeper_player_id)`; FKs → leagues/rosters/players all cascade; `unique (league_id, sleeper_player_id)` so a double-rostered player fails loudly at sync; platform-scoped checks `starter_slot_index_starters_only` / `espn_lineup_slot_id_espn_only`; `platform`/`season_year` duplicated (N:1 precedent); RLS at creation; `set_updated_at`.
+- Clarify decisions (all recommended options): normalized slot enum (`starter`/`bench`/`reserve`/`taxi` — bench derived via the wiki's three-way subtraction once at Wave 2 ingestion) plus native detail columns (`starter_slot_index` for Sleeper starters[] order, `espn_lineup_slot_id` raw); ESPN acquisition metadata excluded (no registered v1 consumer); per-league player uniqueness enforced.
+- Current-snapshot semantics, no `week` column — history belongs to matchups (both roster wiki pages independently). Coverage map recorded pre-code; declared silence at decision time: exact DDL shape (second consecutive session — schema-reference has no league-scoped-state DDL ADR). Report: gap found and flagged.
+- Log cap: 2026-07-21_04 condensed here that session. WIKI NOTE standing (league-scoped state tables DDL addendum ADR suggestion).
+
 ## 2026-07-22_01 — Wave 1 rosters (league-scoped state section begun)
 
 - One migration applied + verified live: `rosters` — composite PK `(league_id, native_roster_id)` per the sleeper-api/espn-api identity-pair decisions (season carried by the parent leagues row); `native_roster_id integer` as-received (both platforms' wire integers — the strings-only ID rule doesn't apply); `owner_native_id text` nullable (orphaned rosters normal) + `co_owner_native_ids text[] not null default '{}'` (primary never by array position); nullable `team_name`/`owner_display_name` populated by Wave 2 sync; `platform`/`season_year` duplicated (N:1 with leagues, unlike league_config's 1:1); FK cascade, RLS at creation, `set_updated_at`.

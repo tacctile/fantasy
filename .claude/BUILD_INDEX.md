@@ -1,6 +1,6 @@
 # BUILD_INDEX.md
 **Master build router — tacctile/fantasy**
-**Last Updated:** 2026-07-21 (Wave 5 amended — trade evaluation and waiver/FAAB recommendations added; Wave 4 amended — admin navigation shell added)
+**Last Updated:** 2026-07-22 (Folding Policy adopted — session unit redefined, canonical text in `BUILD_PROTOCOL.md`; prior: Wave 5 amended — trade evaluation and waiver/FAAB recommendations added; Wave 4 amended — admin navigation shell added)
 
 Nothing gets built without a registered build file. No exceptions. Every new feature requires a registered build file in this index before a single line of code is written.
 
@@ -31,7 +31,7 @@ Checklist item states: `[ ]` not started · `[x]` complete · `[~]` in progress 
 
 ## Wave Roadmap
 
-Atomic, one task per fresh Claude Code session. No scope bleed across sessions.
+Atomic sessions per the Folding Policy (canonical text in `BUILD_PROTOCOL.md`): one folded unit per fresh Claude Code session — up to 3 decision-dense items, one mechanical sub-section, or one independently verifiable artifact's full item set, subject to that policy's hard stops and named singleton exceptions. No scope bleed beyond the declared fold.
 
 | Wave | Name | Status | Scope |
 | ---- | ---- | ------ | ----- |

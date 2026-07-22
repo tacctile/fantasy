@@ -1,6 +1,6 @@
 # MASTER_CONTEXT.md
 **Single source of truth — tacctile/fantasy**
-**Last Updated:** 2026-07-21
+**Last Updated:** 2026-07-22
 
 ---
 
@@ -149,7 +149,7 @@ Do not read files not listed above unless the prompt explicitly requires them.
 
 ## Absolute Rules
 
-1. **Atomic prompts** — one focused task per Claude Code session.
+1. **Atomic sessions** — one focused folded unit per Claude Code session, per the Folding Policy (canonical full text in `BUILD_PROTOCOL.md`): up to 3 decision-dense items, one mechanical sub-section, or one independently verifiable artifact's full item set from the current build file — whichever the section's items actually compose — subject to that policy's fold conditions, hard stops, and named singleton exceptions. Scope beyond the declared fold waits for the next session.
 2. **Read-only wiki** — see Wiki Protocol above.
 3. **Nothing gets built without a registered build file** in `BUILD_INDEX.md` — no exceptions.
 4. **`league_id` scoping is non-negotiable** — see Schema Rules above.
@@ -159,7 +159,7 @@ Do not read files not listed above unless the prompt explicitly requires them.
 8. **Never edit the baseline Supabase migration** — always `supabase migration new`.
 9. **60fps minimum** on all animations.
 10. **Tailwind default spacing scale only** — no arbitrary pixel values.
-11. **Dual-Location Instruction Rule** — when a fix modifies a rule stated in multiple locations (e.g. both this file's Session-End Steps section and the SESSION END block in Prompt Format below), update all locations. Known dual-location patterns to check: Session-End Steps ↔ Prompt Format's SESSION END block; the Session-Start Protocol, which is independently restated in this file, `BUILD_INDEX.md`, and `BUILD_PROTOCOL.md`; Absolute Rules ↔ restatements elsewhere in this file; `ARCHITECTURE.md`'s Code Conventions ↔ this file's Code Conventions. Check this file for dual-location patterns before committing a governance change.
+11. **Dual-Location Instruction Rule** — when a fix modifies a rule stated in multiple locations (e.g. both this file's Session-End Steps section and the SESSION END block in Prompt Format below), update all locations. Known dual-location patterns to check: Session-End Steps ↔ Prompt Format's SESSION END block; the Session-Start Protocol, which is independently restated in this file, `BUILD_INDEX.md`, and `BUILD_PROTOCOL.md`; Absolute Rules ↔ restatements elsewhere in this file; `ARCHITECTURE.md`'s Code Conventions ↔ this file's Code Conventions; the Folding Policy — canonical in `BUILD_PROTOCOL.md`, restated in this file's Absolute Rule 1 and `BUILD_INDEX.md`'s Wave Roadmap atomicity line. Check this file for dual-location patterns before committing a governance change.
 12. **Wiki Coverage Rule** — never invent a field name, value, shape, or any decision from general knowledge without first checking `wiki/ROUTING.md` and `wiki/index.md` for a covering page, regardless of remaining page budget, time pressure, or how "obvious" the answer seems. Pre-implementation coverage map required every build session; genuine wiki silence is declared explicitly at decision time, never in a post-hoc audit. Every completion report carries the `WIKI COVERAGE CHECK:` line. Canonical full text: `BUILD_PROTOCOL.md` → "Wiki Coverage Rule"; report line defined in `COMPLETION_TEMPLATES.md`.
 
 ---

@@ -60,4 +60,10 @@ Three scope corrections landed in `MASTER_CONTEXT.md` and `BUILD_INDEX.md`, driv
 
 ---
 
+## 2026-07-21 — Wave 6 Build File Registered (Build-Queue Scoping Complete)
+
+`.claude/build/06_report_and_tools.md` registered — the final wave in the v1 roadmap. All six waves (01–06) are now registered, convergence-filtered build files. Build-queue planning phase is complete; next session should begin execution with Wave 1.
+
+---
+
 _End of PROGRESS_ARCHIVE.md_

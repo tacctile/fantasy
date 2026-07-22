@@ -9,6 +9,12 @@ Newest entry on top.
 
 ---
 
+## 2026-07-22 — Governance: Folding Policy Replaces One-Item-Per-Session Cadence
+
+Session scope unit redefined for all future build sessions: up to 3 decision-dense items, one mechanical sub-section, or one independently verifiable artifact's full item set per session — with hard stops, a live-behavior ceiling (Wave 3b), and 5 named singleton exceptions. Canonical text in BUILD_PROTOCOL.md; restated in MASTER_CONTEXT.md (Rule 1) and BUILD_INDEX.md. Also resolved 03b's auto-pick contradiction per Nick's ruling: auto-pick is local-only, writing solely to this app's draft_state — never to Sleeper/ESPN (read-only rule reaffirmed, no exception created).
+
+---
+
 ## 2026-07-21 — Governance: Wiki Coverage Rule (Absolute Rule 12)
 
 New non-negotiable rule affecting all future build sessions, born from this session's provenance audit: a mandatory pre-implementation wiki coverage map (every decision → its covering wiki page, before code), ROUTING.md/index.md search before any general-knowledge fill regardless of page budget, explicit at-decision-time declaration of genuine wiki silence, and a mandatory `WIKI COVERAGE CHECK:` line on every completion report. Canonical text in BUILD_PROTOCOL.md; restated in MASTER_CONTEXT.md (Rule 12), BUILD_INDEX.md, COMPLETION_TEMPLATES.md.
@@ -30,12 +36,6 @@ Supabase project `tszssadgsxjoymcttlwd` credentialed, linked, and CLI-workflowed
 ## 2026-07-21 — Wave 1 Execution Started: First Working Application Code (Project Scaffold)
 
 First build session executed via `BUILD_PROTOCOL.md`. The Project scaffold section of `01_foundation.md` is complete: Next.js 16.2.11, shadcn/ui with CSS-variable theming, Tailwind v4 defaults. `npm run build`/`lint` pass. First working application code in the repo.
-
----
-
-## 2026-07-21 — Wave 6 Build File Registered (Build-Queue Scoping Complete)
-
-`.claude/build/06_report_and_tools.md` registered — the final wave in the v1 roadmap. All six waves (01–06) are now registered, convergence-filtered build files. Build-queue planning phase is complete; next session should begin execution with Wave 1.
 
 ---
 
