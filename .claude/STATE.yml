@@ -2,24 +2,20 @@
 # Living "what happened last session" file. Overwritten completely at the end of every session — never patched.
 # Last Updated: 2026-07-21
 
-current_focus: "All six waves of the v1 roadmap are now registered and scoped as build files: .claude/build/01_foundation.md, 02_data_pipeline.md, 03a_draft_assistant_static_board.md, 03b_draft_assistant_live_draft.md, 04_league_dashboard.md, 05_eye_candy.md, 06_report_and_tools.md. All scoped by convergence-filtering 6 independent AI panel responses per wave against BUILD_INDEX.md's scope bullets, same methodology as wiki ingestion. Execution order: Wave 1 -> Wave 2 -> Wave 3a -> Wave 3b -> Wave 4 -> Wave 5 -> Wave 6. None of the seven registered waves have been executed yet — next session should be a feature-build session against 01_foundation.md. Build-queue scoping phase is complete; the project moves to execution next."
+current_focus: "All six waves of the v1 roadmap are registered and scoped as build files (01 through 06) and a pre-flight governance audit has been completed and fixed (draft_state.source enum corrected to include sleeper_poll, platform_league_uuid/native_league_id/previous_platform_league_uuid schema columns added to Wave 1, player_id_crosswalk expanded to the full ADR shape, admin auth decided as Supabase email/password, is_draft_active moved off spectator-readable tables, ADP source flagged unconfirmed pending verification). MANUAL_SETUP_CHECKLIST.md now uses a three-state model ([ ] open / [~] ready-awaiting-handoff / [x] done) so a build session doesn't falsely halt on infrastructure that already exists (Supabase project) versus infrastructure that's genuinely not created yet (Vercel project). Next session should be a feature-build session against 01_foundation.md, started via BUILD_PROTOCOL.md."
 
 build_system:
   index: ".claude/BUILD_INDEX.md"
   files_location: ".claude/build/"
   total_files: 7
-  next_build_file_number: 7
   current_build_files:
     - ".claude/build/01_foundation.md"
-    - ".claude/build/02_data_pipeline.md"
-    - ".claude/build/03a_draft_assistant_static_board.md"
-    - ".claude/build/03b_draft_assistant_live_draft.md"
-    - ".claude/build/04_league_dashboard.md"
-    - ".claude/build/05_eye_candy.md"
-    - ".claude/build/06_report_and_tools.md"
 
 nick_pending:
-  - "Kick off the Wave 1 (Foundation) feature-build session against .claude/build/01_foundation.md — every later wave depends on it and should not start first. This is now the only remaining next step; all six waves are scoped."
+  - "Kick off the Wave 1 (Foundation) feature-build session against .claude/build/01_foundation.md via BUILD_PROTOCOL.md — every later wave depends on it."
+  - "Create the Vercel project and connect it to tacctile/fantasy (Supabase project already exists) — see MANUAL_SETUP_CHECKLIST.md Wave 1 section."
+  - "Have the admin auth email/password ready to hand to the Wave 1 build session when it reaches the RLS/auth step."
+  - "Before Wave 3a: verify whether Sleeper actually has a public ADP endpoint, or decide a real alternative source — see MANUAL_SETUP_CHECKLIST.md Wave 3a section."
 
 blockers: []
 

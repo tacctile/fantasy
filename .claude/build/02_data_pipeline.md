@@ -54,7 +54,7 @@ Consult additional `sleeper-api`/`espn-api` pages as needed per specific endpoin
 
 ### Cron / polling strategy
 - [ ] Add authenticated Vercel Cron route(s) — protected by a secret header/token, not publicly invokable
-- [ ] Configure `vercel.json` cron schedule: daily player-catalog refresh (low frequency, respects the once-per-day Sleeper guidance), regular league-state sync (rosters/matchups/config) at a reasonable cadence, and a separate faster cadence path reserved for active-draft polling (the polling frequency itself is tuned in Wave 3 once the draft UI consumes it — Wave 2 just needs the scheduling mechanism and route wired correctly)
+- [ ] Configure `vercel.json` cron schedule: daily player-catalog refresh (once per day, respects the once-per-day Sleeper guidance), league-state sync (rosters/matchups/config) every 15 minutes, and a separate faster cadence path reserved for active-draft polling (the polling frequency itself is tuned in Wave 3b once the draft UI consumes it — Wave 2 just needs the scheduling mechanism and route wired correctly)
 - [ ] Add a sync-run tracking table (source, league_id, platform, status, started_at/completed_at, record counts, error summary) so sync health is visible without digging through Vercel logs — this is what makes ESPN's isolated failures actually diagnosable rather than just silently swallowed
 
 ---

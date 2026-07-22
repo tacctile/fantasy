@@ -13,17 +13,21 @@
 ## How to use this
 
 - Nothing on this list blocks *starting* the build (Wave 1 can begin immediately). Items are ordered by when the wave that needs them is expected to run — work top to bottom, but it's fine to get ahead of the build if you want everything ready up front.
-- `[ ]` open, `[x]` done, `[>]` deferred until its wave is actually reached (fine to leave ESPN cookies for later, for instance, since real ESPN leagues may not exist yet).
-- When an item is done, note the credential/value name (not the secret itself) so a build session knows it's ready to ask for — never paste real secrets into this file.
+- Three states, not two — this distinction matters and a build session must treat them differently:
+  - `[ ]` **open** — the account/decision itself doesn't exist yet. A build session hitting this MUST stop and flag it per `BUILD_PROTOCOL.md`'s Manual Setup Flag.
+  - `[~]` **ready, awaiting handoff** — the account/project/decision already exists, but the actual credential/value hasn't been pasted into a build session yet. A build session hitting this should NOT stop — it asks for the value as one of its Clarify-step questions and proceeds once given.
+  - `[x]` **done** — the value has actually been handed to and used by a build session (or there's nothing left to hand off).
+- When an item reaches `[~]` or `[x]`, note the credential/value name (not the secret itself) so a build session knows what to ask for — never paste real secrets into this file.
 
 ---
 
 ## Wave 1 — Foundation
 
-- [ ] **Create a Supabase account + project.** Decide: org name, project name, region, database password, free vs. paid tier. Hand back to the build session: `SUPABASE_URL`, anon key, service-role key.
-- [ ] **Run `supabase login`** when the build session prompts for it — this opens a browser auth flow only you can complete. Confirm which Supabase project to `supabase link` to.
-- [ ] **Create a Vercel account + project**, authorize/connect it to the `tacctile/fantasy` GitHub repo. Decide: project name, team (if any).
-- [ ] **Paste Supabase secrets into Vercel's environment variables** (Production + Preview) — values come from the Supabase step above.
+- [~] **Supabase account + project already exist** (https://supabase.com/dashboard/project/tszssadgsxjoymcttlwd — org/project name/region/tier already decided). Still to hand to the Wave 1 build session, at the moment it asks: `SUPABASE_URL`, anon key, service-role key (inject live, not before).
+- [~] **Run `supabase login`** when the build session prompts for it — this opens a browser auth flow only you can complete. Confirm the project above is what gets `supabase link`ed.
+- [ ] **Create a Vercel project and connect it to `tacctile/fantasy`.** Vercel account already exists — only project creation + repo connection is open. Decide: project name, team (if any).
+- [ ] **Paste Supabase secrets into Vercel's environment variables** (Production + Preview) — values come from the Supabase step above; blocked on the Vercel project existing first.
+- [ ] **Decide the admin authentication mechanism.** Confirmed: Supabase Auth, email/password, one user (Nick), no signup flow. Still open: the actual email + password to create that one auth user — hand to the Wave 1 build session when it reaches the RLS/auth step.
 
 ## Wave 2 — Data Pipeline
 
@@ -35,7 +39,8 @@
 
 ## Wave 3a — Draft Assistant (Static Board)
 
-- [ ] No new accounts/credentials. Just confirm which of your real leagues (from Wave 2) and which ADP source (Sleeper ADP, ingested automatically) should populate the board.
+- [ ] **Confirm the real ADP source before ADP ingestion is built.** No Sleeper API wiki page documents a public ADP endpoint — verify one actually exists before the build session writes ingestion against it; if not, decide a real alternative source (e.g. FantasyPros) and obtain any API key it requires.
+- [ ] Confirm which of your real leagues (from Wave 2) should populate the board.
 
 ## Wave 3b — Draft Assistant (Live Draft)
 

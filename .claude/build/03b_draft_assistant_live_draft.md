@@ -32,7 +32,7 @@ Read these before starting, per Session-Start Protocol (max 3 unless the task ge
 - [ ] Add an admin-only "undo last manual pick" action that deletes only the highest `pick_number` row for the league where `source='manual'` — must never delete `sleeper_poll`/`espn_poll` rows
 
 ### Active-draft polling orchestration
-- [ ] Add an `is_draft_active` flag (per league, e.g. on `league_config` or `leagues`) with a start/stop control surfacing it — toggling this is what elevates polling cadence
+- [ ] Add an `is_draft_active` flag on a new admin-only table (e.g. `draft_sessions`, keyed by `league_id`) — NOT on `leagues` or `league_config`, since both of those tables receive `share_token`-gated spectator SELECT access in Wave 4, and draft state must never be spectator-reachable at any wave. Add a start/stop control surfacing it — toggling this is what elevates polling cadence
 - [ ] Tune the existing Wave 2 Sleeper draft-state poller to a high-frequency interval (e.g. every 5 seconds) while `is_draft_active` is true for that league, falling back to its normal cadence otherwise
 - [ ] Tune the existing Wave 2 ESPN draft-state poller to the same high-frequency cadence under the same flag, within ESPN's existing defensive isolation boundary — an ESPN polling failure must not affect the Sleeper poller, other ESPN leagues, or any Sleeper-sourced feature
 - [ ] Add backoff/retry handling in the ESPN live poller for rate-limit or transient failure responses, so aggressive polling cadence cannot invalidate cookies or trip rate limits

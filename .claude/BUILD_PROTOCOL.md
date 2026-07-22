@@ -49,10 +49,11 @@ Nick's job is reduced to: start a session, drop this file in (or just say "read 
 
 `.claude/MANUAL_SETUP_CHECKLIST.md` is the standing, exhaustive list of every account/credential/human-only decision across all six waves, pre-walked and written up in advance so Nick can work through it in a plain chat rather than a Fable build session.
 
-Before clarifying or building the current checklist item, check whether it depends on anything in `MANUAL_SETUP_CHECKLIST.md` that is still `[ ]` (open) for this item's wave:
+Before clarifying or building the current checklist item, check whether it depends on anything in `MANUAL_SETUP_CHECKLIST.md` for this item's wave, and read that item's state precisely — there are three, not two, and treating `[~]` as either extreme is the exact failure mode this section exists to prevent:
 
-- **If the needed item is already `[x]` (done):** proceed straight to Clarify below — the credential/decision exists, just ask for the actual value as one of the pointed questions.
-- **If the needed item is still `[ ]` (open) or doesn't exist on the list yet:** STOP before writing any code. Output a clearly labeled block:
+- **`[x]` (done):** proceed straight to Clarify below — nothing further needed.
+- **`[~]` (ready, awaiting handoff):** the account/project/decision already exists — only the actual credential/value hasn't been handed over yet. Do NOT stop the session. Proceed to Clarify and ask for the specific value as one of the pointed questions (e.g. "the Supabase project already exists — what's the service-role key?"). Update the item to `[x]` once the value is actually used.
+- **`[ ]` (open) or missing from the list entirely:** the account/decision itself doesn't exist yet — this is the only state that halts a session. STOP before writing any code. Output a clearly labeled block:
 
   ```
   MANUAL SETUP REQUIRED before this step can proceed:

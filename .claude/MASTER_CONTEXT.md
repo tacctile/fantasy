@@ -148,7 +148,7 @@ Do not read files not listed above unless the prompt explicitly requires them.
 8. **Never edit the baseline Supabase migration** — always `supabase migration new`.
 9. **60fps minimum** on all animations.
 10. **Tailwind default spacing scale only** — no arbitrary pixel values.
-11. **Dual-Location Instruction Rule** — when a fix modifies a rule stated in multiple locations (e.g. both `STATE.yml`'s session-end steps and this file's Session-Start Protocol), update all locations. Check this file for dual-location patterns before committing a governance change.
+11. **Dual-Location Instruction Rule** — when a fix modifies a rule stated in multiple locations (e.g. both this file's Session-End Steps section and the SESSION END block in Prompt Format below), update all locations. Known dual-location patterns to check: Session-End Steps ↔ Prompt Format's SESSION END block; the Session-Start Protocol, which is independently restated in this file, `BUILD_INDEX.md`, and `BUILD_PROTOCOL.md`; Absolute Rules ↔ restatements elsewhere in this file; `ARCHITECTURE.md`'s Code Conventions ↔ this file's Code Conventions. Check this file for dual-location patterns before committing a governance change.
 
 ---
 
