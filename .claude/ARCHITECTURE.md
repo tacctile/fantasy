@@ -9,7 +9,7 @@
 
 ## Status
 
-Wave 1 Project scaffold complete: Next.js app shell exists and builds. Supabase project + migration workflow section complete: project linked, credentials captured, `supabase/` workspace initialized. Schema — platform + identity foundation section complete: `platform` enum, `players`, and `player_id_crosswalk` are live in the database (verified 2026-07-21). Schema — league + config section complete: `leagues`, `generate_share_token()`, and `league_config` are live (verified 2026-07-21). Schema — league-scoped state section complete: `rosters`, `roster_players`, `matchups`, `standings`, and `player_scores` are live (verified 2026-07-22). Schema — draft state section complete: `draft_state` + `draft_pick_source` enum are live (verified 2026-07-22). Schema — integrity section complete (verified 2026-07-22): FK sweep confirmed all 18 FKs shipped at table creation (no migration), 17 integrity indexes live, and the RLS owner-policy layer live — `fantasy_owner_all` on all ten tables, full owner CRUD pinned to the admin `auth.uid()` via `is_fantasy_admin()`; the entire Wave 1 schema block is now built. Types + client wiring section complete (2026-07-22): generated `Database` types committed and the typed browser/server client utilities live in `src/lib/supabase/` (see Supabase Client Wiring below). Only the env/deploy section remains in Wave 1. Remaining inventory sections (Service API Reference, Type Definitions, CI/CD Pipeline, Testing Infrastructure) are populated as Wave 1's later items and subsequent waves actually build things — not fabricated in advance. Update this file at session end whenever structure changes, per `MASTER_CONTEXT.md`'s Session-End Steps.
+Wave 1 Project scaffold complete: Next.js app shell exists and builds. Supabase project + migration workflow section complete: project linked, credentials captured, `supabase/` workspace initialized. Schema — platform + identity foundation section complete: `platform` enum, `players`, and `player_id_crosswalk` are live in the database (verified 2026-07-21). Schema — league + config section complete: `leagues`, `generate_share_token()`, and `league_config` are live (verified 2026-07-21). Schema — league-scoped state section complete: `rosters`, `roster_players`, `matchups`, `standings`, and `player_scores` are live (verified 2026-07-22). Schema — draft state section complete: `draft_state` + `draft_pick_source` enum are live (verified 2026-07-22). Schema — integrity section complete (verified 2026-07-22): FK sweep confirmed all 18 FKs shipped at table creation (no migration), 17 integrity indexes live, and the RLS owner-policy layer live — `fantasy_owner_all` on all ten tables, full owner CRUD pinned to the admin `auth.uid()` via `is_fantasy_admin()`; the entire Wave 1 schema block is now built. Types + client wiring section complete (2026-07-22): generated `Database` types committed and the typed browser/server client utilities live in `src/lib/supabase/` (see Supabase Client Wiring below). Env/deploy section 4 of 5 complete (2026-07-22): `.env.example` contract committed, the Vercel project/repo-link and env-var items verified as pre-completed manual setup, and the initial deploy confirmed — GitHub→Vercel auto-deploy is live and production is READY (see Vercel Deployment below). Only the server-side health-check route — the wave's actual completion gate — remains in Wave 1. Remaining inventory sections (Service API Reference, Type Definitions, CI/CD Pipeline, Testing Infrastructure) are populated as Wave 1's later items and subsequent waves actually build things — not fabricated in advance. Update this file at session end whenever structure changes, per `MASTER_CONTEXT.md`'s Session-End Steps.
 
 ---
 
@@ -123,16 +123,25 @@ The database is shared with other live apps — ~49 non-fantasy tables (Elliott 
 - Owner-write RLS policies must match Nick's specific `auth.uid()` (via `is_fantasy_admin()`), never the blanket `authenticated` role — the auth namespace contains other apps' users.
 - **Every session that touches the live database reports its blast radius** — the mandatory `BLAST RADIUS:` completion-report line (defined in `COMPLETION_TEMPLATES.md`): "Blast radius confirmed: only fantasy-owned tables were touched this session", or an explicit account of what else was touched and why, with Nick's prior sign-off cited.
 
+## Vercel Deployment
+
+- **Project:** `fantasy` (`prj_SaeX3FOGNaO9X2AhQaNkOoKHippO`) on team "Nick's projects" (`team_qugPBspyTKnjNX5bHNAWwkCD`) — created manually 2026-07-21, connected to GitHub `tacctile/fantasy`, framework preset `nextjs`, Node 24.x, region `iad1`.
+- **Auto-deploy:** every push to `main` builds and deploys to production (`source: git`) — verified live 2026-07-22: the env-contract push triggered a production deployment that reached READY (~23s build). No `.vercel/` directory in the repo — the link lives in Vercel's GitHub integration, not local files.
+- **Domains:** `fantasy-virid-three.vercel.app` (primary), `fantasy-nicks-projects-e170820e.vercel.app`, `fantasy-git-main-nicks-projects-e170820e.vercel.app` (branch alias).
+- **Env vars:** `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY` set for Production + Preview (manually, 2026-07-21). Verification limit: the Vercel MCP toolset exposes no env-var listing, so the stored values are functionally proven by the health-check item — which fails loudly if any is missing or wrong.
+
 ## Environment Variables
 
-Live values in gitignored `.env.local`; the committed `.env.example` contract is a later Wave 1 checklist item (not yet created).
+Live values in gitignored `.env.local`; the committed `.env.example` documents the contract (created 2026-07-22 — placeholders only, never real secrets).
 
 | Variable | Exposure | Purpose |
 | -------- | -------- | ------- |
 | `NEXT_PUBLIC_SUPABASE_URL` | client + server | Supabase project API URL |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | client + server | modern publishable key (replaces legacy anon JWT) |
 | `SUPABASE_SECRET_KEY` | server only — never `NEXT_PUBLIC_` | modern secret key (replaces legacy service_role JWT) |
-| `SUPABASE_DB_PASSWORD` | CLI only — never shipped | database password for `supabase db push` (read by the Supabase CLI) |
+| `SUPABASE_DB_PASSWORD` | CLI only — never shipped, never set in Vercel | database password for `supabase db push` (read by the Supabase CLI) |
+| `ESPN_S2` | server only — Wave 2 consumer | ESPN `espn_s2` cookie for private leagues; stored exactly as extracted, one layer of URL-encoding, never re-encoded (`espn-api/format-requirements`) |
+| `ESPN_SWID` | server only — Wave 2 consumer | ESPN `SWID` cookie for private leagues; keeps its literal curly braces (`espn-api/format-requirements`) |
 
 ## Supabase Migration Rule
 

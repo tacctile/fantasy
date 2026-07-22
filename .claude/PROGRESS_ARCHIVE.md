@@ -78,4 +78,10 @@ Supabase project `tszssadgsxjoymcttlwd` credentialed, linked, and CLI-workflowed
 
 ---
 
+## 2026-07-21 — First Live Schema: Platform + Identity Foundation (Wave 1, Session 3)
+
+First schema migrations live in Supabase: `platform` enum, `players` (Sleeper-anchored identity), `player_id_crosswalk` — all verified against the live DB. Discovered the linked project is Nick's shared multi-app "prolabel" database (confirmed intentional); adopted the empty-stub migration pattern for its 23 foreign history versions, and `db reset`/`migration repair` are now permanently forbidden (see ARCHITECTURE.md Shared-Database Constraints).
+
+---
+
 _End of PROGRESS_ARCHIVE.md_
