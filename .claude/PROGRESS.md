@@ -9,6 +9,12 @@ Newest entry on top.
 
 ---
 
+## 2026-07-22 — Governance: Absolute Rule 13 — Non-Fantasy Data Is Untouchable
+
+Permanent, zero-exception protection for the shared prolabel database's ~49 non-fantasy tables (Elliott = live business production data) installed at Nick's direction: never `db reset`, never `migration repair` touching foreign history (stubs only), no raw SQL reaching non-fantasy tables (blast radius verified against ARCHITECTURE.md's live schema inventory per migration), collision check forever, any ambiguity → stop and ask. New mandatory `BLAST RADIUS:` line on every completion report. Canonical text in MASTER_CONTEXT.md; mirrored in COMPLETION_TEMPLATES.md, ARCHITECTURE.md, BUILD_PROTOCOL.md, STATE.yml.
+
+---
+
 ## 2026-07-22 — Wave 1 Schema Complete: Integrity Section + RLS Security Model Live
 
 The entire Wave 1 schema block is now built and verified live. The integrity fold (first session under the new Folding Policy: 3 items) confirmed all 18 FKs shipped at creation, added 17 integrity indexes, and activated the RLS owner-policy layer — `fantasy_owner_all` (full CRUD) on all ten tables, pinned to Nick's specific `auth.uid()` via `is_fantasy_admin()`. Admin identity: the pre-existing prolabel user nick@prolabelco.com, reused by Nick's ruling (duplicate emails impossible in the shared namespace) — no password handoff needed. Remaining Wave 1: types/client wiring, env/deploy.
@@ -30,12 +36,6 @@ New non-negotiable rule affecting all future build sessions, born from this sess
 ## 2026-07-21 — First Live Schema: Platform + Identity Foundation (Wave 1, Session 3)
 
 First schema migrations live in Supabase: `platform` enum, `players` (Sleeper-anchored identity), `player_id_crosswalk` — all verified against the live DB. Discovered the linked project is Nick's shared multi-app "prolabel" database (confirmed intentional); adopted the empty-stub migration pattern for its 23 foreign history versions, and `db reset`/`migration repair` are now permanently forbidden (see ARCHITECTURE.md Shared-Database Constraints).
-
----
-
-## 2026-07-21 — Supabase Infrastructure Activated (Wave 1, Session 2)
-
-Supabase project `tszssadgsxjoymcttlwd` credentialed, linked, and CLI-workflowed — the full "Supabase project + migration workflow" section of `01_foundation.md` is complete. Keys captured in gitignored `.env.local` and validated live; CLI installed and linked. No schema exists yet — next up is the platform + identity migrations.
 
 ---
 

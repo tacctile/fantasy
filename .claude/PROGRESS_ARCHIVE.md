@@ -72,4 +72,10 @@ Three scope corrections landed in `MASTER_CONTEXT.md` and `BUILD_INDEX.md`, driv
 
 ---
 
+## 2026-07-21 — Supabase Infrastructure Activated (Wave 1, Session 2)
+
+Supabase project `tszssadgsxjoymcttlwd` credentialed, linked, and CLI-workflowed — the full "Supabase project + migration workflow" section of `01_foundation.md` is complete. Keys captured in gitignored `.env.local` and validated live; CLI installed and linked. No schema exists yet — next up is the platform + identity migrations.
+
+---
+
 _End of PROGRESS_ARCHIVE.md_

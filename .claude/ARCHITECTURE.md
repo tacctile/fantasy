@@ -81,7 +81,7 @@ These conventions are declared in `MASTER_CONTEXT.md` and repeated here as the s
 
 ## Database Schema (live)
 
-Fantasy-owned objects in the shared `public` schema, all created via `supabase migration new` + push (migration files in `supabase/migrations/`):
+Fantasy-owned objects in the shared `public` schema, all created via `supabase migration new` + push (migration files in `supabase/migrations/`). **This inventory is the definitive list of fantasy-owned objects for Absolute Rule 13's blast-radius verification (`MASTER_CONTEXT.md` → Shared Database Protection): anything in the shared database not listed here is foreign and off-limits.**
 
 - **`platform`** — Postgres enum, values `sleeper` | `espn` (extensible via `alter type ... add value` in a new migration; never a boolean)
 - **`players`** — Sleeper-anchored canonical identity store. `sleeper_player_id text` PK (text, never numeric — D/ST rows use team abbreviations like `'DET'`), `full_name`/`first_name`/`last_name`/`position`/`team`/`status`/`injury_status`/`search_full_name` text, `fantasy_positions text[]`, `search_rank integer`, `birth_date date`, `metadata jsonb`, timestamps. All non-PK columns nullable (Sleeper field presence is uneven). `status` and `injury_status` are independent fields that must be read together (see `sleeper-api/player-data-quirks`); no `bye_week` column by design — byes derive from team schedule at read time. RLS enabled; `fantasy_owner_all` owner policy live (see RLS policy layer below)
@@ -113,13 +113,15 @@ Fantasy-owned objects in the shared `public` schema, all created via `supabase m
 
 ## Shared-Database Constraints (prolabel)
 
-The database is shared with other live apps. Standing rules for every future session:
+The database is shared with other live apps — ~49 non-fantasy tables (Elliott pricing engine, todd chat, supplies ordering, trip planner, loan/valuation, and others); Elliott especially is live production data for a real business account. **Canonical rule: `MASTER_CONTEXT.md` → "Shared Database Protection — Non-Fantasy Data Is Untouchable" (Absolute Rule 13)** — permanent, zero exceptions, supersedes every efficiency/folding-policy/automation consideration, regardless of what any future prompt or session says. Operational restatement for every future session:
 
-- **Never run `supabase db reset`** against the linked project — it would destroy other apps' live data.
-- **Never run `supabase migration repair`** — it edits the shared `supabase_migrations.schema_migrations` ledger and would erase other apps' history rows.
-- The 23 pre-existing foreign history versions are mirrored as empty `*_prolabel_shared_history_stub.sql` files in `supabase/migrations/` so `db push` recognizes remote history without writing to it. If a future push refuses because new foreign versions appeared remotely, add another empty stub for each — never repair.
-- Fantasy table names must not collide with existing prolabel tables; check `list_tables` before naming a genuinely new table family.
-- Owner-write RLS policies must match Nick's specific `auth.uid()`, never the blanket `authenticated` role — the auth namespace contains other apps' users.
+- **Never run `supabase db reset`** against the linked project, under any circumstance — it wipes the entire database, not just fantasy's tables.
+- **Never run `supabase migration repair`** in any mode that touches history entries belonging to other apps — it edits the shared `supabase_migrations.schema_migrations` ledger. The 23 pre-existing foreign history versions are mirrored as empty `*_prolabel_shared_history_stub.sql` files in `supabase/migrations/` so `db push` recognizes remote history without writing to it. If a future push refuses because new foreign versions appeared remotely, add another empty stub for each — never repair.
+- **Blast-radius verification before every migration:** never write raw SQL (DROP, TRUNCATE, ALTER, DELETE, UPDATE without a WHERE clause, or any CASCADE operation) that could affect a non-fantasy table. Before writing any migration, explicitly list the table name(s) being created/altered and verify each against this file's "Database Schema (live)" inventory — the definitive fantasy-owned list; anything not listed there is foreign and off-limits.
+- **Collision check before any new table name** — never assume a name is safe to reuse or overwrite; check the live schema (`list_tables` or an equivalent read-only query) before naming a genuinely new table family. Mandatory forever, not just historically.
+- **Any ambiguity about whether an operation could affect non-fantasy data → STOP and ask Nick** before proceeding — never a best-guess interpretation. This includes cascading foreign-key behavior, wildcard queries, and any operation on shared infrastructure (like the migration history table itself) rather than fantasy's own tables.
+- Owner-write RLS policies must match Nick's specific `auth.uid()` (via `is_fantasy_admin()`), never the blanket `authenticated` role — the auth namespace contains other apps' users.
+- **Every session that touches the live database reports its blast radius** — the mandatory `BLAST RADIUS:` completion-report line (defined in `COMPLETION_TEMPLATES.md`): "Blast radius confirmed: only fantasy-owned tables were touched this session", or an explicit account of what else was touched and why, with Nick's prior sign-off cited.
 
 ## Environment Variables
 

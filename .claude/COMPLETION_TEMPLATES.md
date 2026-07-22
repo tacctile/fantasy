@@ -39,9 +39,19 @@ Every completion report — all three templates — includes exactly one of thes
 
 ---
 
+## BLAST RADIUS Line (mandatory on every report, added 2026-07-22)
+
+Every completion report — all three templates — includes exactly one of these values (per Absolute Rule 13 in `MASTER_CONTEXT.md`, "Shared Database Protection — Non-Fantasy Data Is Untouchable": the shared prolabel database hosts ~49 non-fantasy tables belonging to Nick's other apps, including live business production data):
+
+- **`Blast radius confirmed: only fantasy-owned tables were touched this session`** — the session touched the live database, and every object created/altered/written is listed in `ARCHITECTURE.md`'s "Database Schema (live)" inventory. (Read-only queries against foreign tables — e.g. the mandatory pre-naming collision check — do not change this value.)
+- **`no live database operations this session`** — the session never touched the live database.
+- **`other objects touched: [what] — [why] — sign-off: [Nick's prior explicit approval, cited]`** — anything beyond fantasy-owned tables was modified. This value is only legal with citable prior sign-off from Nick; without it, the operation should never have happened and must be reported as an incident, not a line item.
+
+---
+
 ## Dual-Location Instruction Rule
 
-When a fix modifies a rule that is stated in multiple locations (e.g., both the Prompt Format SESSION END block and the Session-End Steps section of MASTER_CONTEXT.md), update ALL locations. Check `MASTER_CONTEXT.md` for dual-location patterns before committing. Common dual-location patterns: SESSION END block ↔ Session-End Steps, Absolute Rules ↔ MASTER_CONTEXT.md restatements elsewhere, ARCHITECTURE.md Code Conventions ↔ MASTER_CONTEXT.md Code Conventions, Folding Policy (BUILD_PROTOCOL.md canonical) ↔ MASTER_CONTEXT.md Absolute Rule 1 ↔ BUILD_INDEX.md atomicity line.
+When a fix modifies a rule that is stated in multiple locations (e.g., both the Prompt Format SESSION END block and the Session-End Steps section of MASTER_CONTEXT.md), update ALL locations. Check `MASTER_CONTEXT.md` for dual-location patterns before committing. Common dual-location patterns: SESSION END block ↔ Session-End Steps, Absolute Rules ↔ MASTER_CONTEXT.md restatements elsewhere, ARCHITECTURE.md Code Conventions ↔ MASTER_CONTEXT.md Code Conventions, Folding Policy (BUILD_PROTOCOL.md canonical) ↔ MASTER_CONTEXT.md Absolute Rule 1 ↔ BUILD_INDEX.md atomicity line, Shared Database Protection (MASTER_CONTEXT.md canonical, Absolute Rule 13) ↔ ARCHITECTURE.md Shared-Database Constraints ↔ this file's BLAST RADIUS line ↔ STATE.yml standing warning.
 
 ---
 
@@ -93,6 +103,8 @@ KNOWN ISSUES INTRODUCED:
 
 WIKI COVERAGE CHECK: [complete / gap found and flagged / gap found and NOT checked before writing code]
 
+BLAST RADIUS: [Blast radius confirmed: only fantasy-owned tables were touched this session / no live database operations this session / other objects touched: what — why — sign-off cited (see BLAST RADIUS Line section)]
+
 WIKI NOTE: [OPTIONAL — only include when Claude Code identifies wiki content that appears missing, outdated, or incorrect. Format: "WIKI NOTE: [description of what should change in the wiki]". Omit entirely if no wiki issues were observed.]
 
 STATE.yml: UPDATED (overwrite completely — no stale fields)
@@ -131,6 +143,8 @@ ISSUES DEFERRED:
 
 WIKI COVERAGE CHECK: [complete / gap found and flagged / gap found and NOT checked before writing code]
 
+BLAST RADIUS: [Blast radius confirmed: only fantasy-owned tables were touched this session / no live database operations this session / other objects touched: what — why — sign-off cited (see BLAST RADIUS Line section)]
+
 WIKI NOTE: [OPTIONAL — only include when Claude Code identifies wiki content that appears missing, outdated, or incorrect. Format: "WIKI NOTE: [description of what should change in the wiki]". Omit entirely if no wiki issues were observed.]
 
 STATE.yml: UPDATED (overwrite completely — no stale fields)
@@ -154,6 +168,8 @@ FILES CREATED OR MODIFIED:
 NOTES: [anything worth flagging, or NONE]
 
 WIKI COVERAGE CHECK: [complete / gap found and flagged / gap found and NOT checked before writing code]
+
+BLAST RADIUS: [Blast radius confirmed: only fantasy-owned tables were touched this session / no live database operations this session / other objects touched: what — why — sign-off cited (see BLAST RADIUS Line section)]
 
 WIKI NOTE: [OPTIONAL — only include when Claude Code identifies wiki content that appears missing, outdated, or incorrect. Format: "WIKI NOTE: [description of what should change in the wiki]". Omit entirely if no wiki issues were observed.]
 

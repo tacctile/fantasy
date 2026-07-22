@@ -139,7 +139,7 @@ This policy defines the atomic unit of a build session. It is restated as Absolu
 ## Build (after clarification)
 
 1. Build **only** the items in the fold declared at session start (Folding Policy above), one at a time in checklist order — Clarify → build → verify per item. Do not pull in items beyond the declared fold "while you're in there" — if the work naturally reveals what should come next, note it in the completion report's `NEXT LOGICAL TASK` field; the fold is never extended mid-session.
-2. Follow every applicable rule in `MASTER_CONTEXT.md` (Schema Rules, Code Conventions, Design Token Discipline, Data Source Architecture) and the build file's own scope/exclusions.
+2. Follow every applicable rule in `MASTER_CONTEXT.md` (Schema Rules, Shared Database Protection — Absolute Rule 13, Code Conventions, Design Token Discipline, Data Source Architecture) and the build file's own scope/exclusions. Any item touching the live database runs Rule 13's blast-radius verification before pushing: list the exact table name(s) being created/altered, verify each against `ARCHITECTURE.md`'s "Database Schema (live)" inventory, and STOP and ask Nick on any ambiguity — the rule supersedes the Folding Policy and every efficiency consideration.
 3. Check the item off (`[ ]` → `[x]`) in the build file. If the item was partially completed or blocked, use `[~]` (in-progress), `[!]` (blocked), or `[>]` (deferred) per the checklist item-state legend in `BUILD_INDEX.md` — never mark `[x]` unless it's genuinely done.
 4. If every item in the current build file is now checked, mark that file's `**Status:**` header 🟢 Complete and update its row in `BUILD_INDEX.md`'s Build Files Registry.
 
@@ -155,7 +155,7 @@ Follow `MASTER_CONTEXT.md`'s existing Session-End Steps in full:
 4. Update `ARCHITECTURE.md` / `DESIGN_SYSTEM.md` if structure or tokens changed.
 5. Update the build file's checklist item state (done in the Build step above, but confirm it's committed).
 6. Include a `WIKI NOTE:` in the completion report if wiki content appeared missing, outdated, or incorrect.
-7. Report using the `feature-build` template from `COMPLETION_TEMPLATES.md` (or `non-code` if the item was governance/config rather than app code).
+7. Report using the `feature-build` template from `COMPLETION_TEMPLATES.md` (or `non-code` if the item was governance/config rather than app code). Every report carries the mandatory `WIKI COVERAGE CHECK:` line (Absolute Rule 12) and the mandatory `BLAST RADIUS:` line (Absolute Rule 13).
 8. Commit and push to `main`. Unlike the wiki side (which batches pushes), build-side commits push every session — Nick is executing sequentially and wants GitHub current after each session's folded unit.
 
 ---

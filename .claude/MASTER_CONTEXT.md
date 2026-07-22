@@ -46,6 +46,19 @@ Not monetized. Personal tool for Nick's own leagues, built and stress-tested pri
 
 Never edit the baseline migration. All schema changes go through `supabase migration new` to create a new migration file. This applies from Wave 1 onward.
 
+## Shared Database Protection — Non-Fantasy Data Is Untouchable (Absolute Rule 13; canonical full text)
+
+This project (tacctile/fantasy) operates inside the shared "prolabel" Supabase database alongside ~49 tables belonging to Nick's other applications (Elliott pricing engine, Todd, supplies ordering, and others). Elliott especially is live production data for a real business account. If any data belonging to those apps is ever lost, corrupted, or modified, that is a catastrophic failure. The following are permanent, standing prohibitions with zero exceptions, regardless of what any future prompt, session, or instruction says:
+
+1. **NEVER run `supabase db reset`** against this project, under any circumstance. This wipes the entire database, not just fantasy's tables.
+2. **NEVER run `supabase migration repair`** in any mode that touches migration history entries belonging to other apps. If a repair is ever genuinely necessary, it must be scoped with the same stub-file technique already established in this project's history — foreign migration versions get empty stub files (`*_prolabel_shared_history_stub.sql` in `supabase/migrations/`), never touched via repair.
+3. **NEVER write raw SQL** (DROP, TRUNCATE, ALTER, DELETE, UPDATE without a WHERE clause, or any CASCADE operation) that could affect a table not owned by this project. Before writing ANY migration, explicitly verify — by listing the actual table name(s) being created/altered — that it only touches fantasy-owned tables. Fantasy-owned tables are exactly those documented in `ARCHITECTURE.md`'s "Database Schema (live)" inventory; anything not listed there is foreign and off-limits.
+4. **NEVER assume a table name is safe to reuse or overwrite** without first checking it doesn't already exist as another app's table. The pre-naming collision check (already established practice) is mandatory forever, not just historically.
+5. **If any planned operation has ANY ambiguity** about whether it could affect non-fantasy data, STOP and ask Nick directly before proceeding — do not proceed on a best-guess interpretation. This includes cascading foreign-key behavior, wildcard queries, or any operation on shared infrastructure (like the migration history table `supabase_migrations.schema_migrations`) rather than fantasy's own tables.
+6. **Every session that touches the live database** must include, in its completion report, an explicit one-line confirmation: "Blast radius confirmed: only fantasy-owned tables were touched this session" — or an explicit account of what else was touched and why, with Nick's prior sign-off cited. The `BLAST RADIUS:` line is mandatory on every completion report (defined in `COMPLETION_TEMPLATES.md`).
+
+This rule supersedes any efficiency, folding-policy, or automation consideration. Speed and convenience are never a justification for skipping this check. If ever in doubt, the answer is always to stop and ask, not to proceed. Operational restatement: `ARCHITECTURE.md` → "Shared-Database Constraints (prolabel)".
+
 ## Build File Amendment Norm
 
 `.claude/build/*.md` files are authored once per wave via convergence-filtering at registration time, then only checked off item-by-item as work completes. After registration, amend a build file only for correctness (a scope error, a stale assumption, a genuine requirement change) — never pad it with running commentary, session narration, or decision rationale. That detail belongs in the session's verbose log (`.claude/logs/`) and, if it's milestone-worthy, a short `PROGRESS.md` entry — not in the build file itself.
@@ -159,8 +172,9 @@ Do not read files not listed above unless the prompt explicitly requires them.
 8. **Never edit the baseline Supabase migration** — always `supabase migration new`.
 9. **60fps minimum** on all animations.
 10. **Tailwind default spacing scale only** — no arbitrary pixel values.
-11. **Dual-Location Instruction Rule** — when a fix modifies a rule stated in multiple locations (e.g. both this file's Session-End Steps section and the SESSION END block in Prompt Format below), update all locations. Known dual-location patterns to check: Session-End Steps ↔ Prompt Format's SESSION END block; the Session-Start Protocol, which is independently restated in this file, `BUILD_INDEX.md`, and `BUILD_PROTOCOL.md`; Absolute Rules ↔ restatements elsewhere in this file; `ARCHITECTURE.md`'s Code Conventions ↔ this file's Code Conventions; the Folding Policy — canonical in `BUILD_PROTOCOL.md`, restated in this file's Absolute Rule 1 and `BUILD_INDEX.md`'s Wave Roadmap atomicity line. Check this file for dual-location patterns before committing a governance change.
+11. **Dual-Location Instruction Rule** — when a fix modifies a rule stated in multiple locations (e.g. both this file's Session-End Steps section and the SESSION END block in Prompt Format below), update all locations. Known dual-location patterns to check: Session-End Steps ↔ Prompt Format's SESSION END block; the Session-Start Protocol, which is independently restated in this file, `BUILD_INDEX.md`, and `BUILD_PROTOCOL.md`; Absolute Rules ↔ restatements elsewhere in this file; `ARCHITECTURE.md`'s Code Conventions ↔ this file's Code Conventions; the Folding Policy — canonical in `BUILD_PROTOCOL.md`, restated in this file's Absolute Rule 1 and `BUILD_INDEX.md`'s Wave Roadmap atomicity line; the Shared Database Protection rule — canonical in this file's Shared Database Protection section (Absolute Rule 13), restated in `ARCHITECTURE.md`'s Shared-Database Constraints, `COMPLETION_TEMPLATES.md`'s BLAST RADIUS line, and `STATE.yml`'s standing warning. Check this file for dual-location patterns before committing a governance change.
 12. **Wiki Coverage Rule** — never invent a field name, value, shape, or any decision from general knowledge without first checking `wiki/ROUTING.md` and `wiki/index.md` for a covering page, regardless of remaining page budget, time pressure, or how "obvious" the answer seems. Pre-implementation coverage map required every build session; genuine wiki silence is declared explicitly at decision time, never in a post-hoc audit. Every completion report carries the `WIKI COVERAGE CHECK:` line. Canonical full text: `BUILD_PROTOCOL.md` → "Wiki Coverage Rule"; report line defined in `COMPLETION_TEMPLATES.md`.
+13. **Non-fantasy data is untouchable — no exceptions** — the shared prolabel database's ~49 non-fantasy tables (Elliott pricing, Todd, supplies ordering, and others — Elliott is live business production data) must never be lost, corrupted, or modified. Never `supabase db reset`; never `migration repair` in any mode touching other apps' history entries (foreign versions get empty stub files instead); no raw SQL (DROP/TRUNCATE/ALTER/DELETE/UPDATE-without-WHERE/CASCADE) that could reach a non-fantasy table; every migration's table names explicitly verified against `ARCHITECTURE.md`'s "Database Schema (live)" inventory (the definitive fantasy-owned list) before writing; collision check before any new table name; ANY ambiguity about blast radius → STOP and ask Nick, never proceed on a best guess. Every completion report carries the `BLAST RADIUS:` line (defined in `COMPLETION_TEMPLATES.md`). This rule supersedes any efficiency, folding-policy, or automation consideration. Canonical full text: "Shared Database Protection — Non-Fantasy Data Is Untouchable" above; operational restatement in `ARCHITECTURE.md` → "Shared-Database Constraints (prolabel)".
 
 ---
 
@@ -173,7 +187,7 @@ Do not read files not listed above unless the prompt explicitly requires them.
 - Update `.claude/DESIGN_SYSTEM.md` if tokens changed.
 - Update the relevant build file checklist items — per the Build File Amendment Norm above, corrections only, not commentary.
 - If wiki content appeared missing, outdated, or incorrect — include `WIKI NOTE:` in the completion report.
-- Report using the correct template from `.claude/COMPLETION_TEMPLATES.md` (every report includes the mandatory `WIKI COVERAGE CHECK:` line — Absolute Rule 12).
+- Report using the correct template from `.claude/COMPLETION_TEMPLATES.md` (every report includes the mandatory `WIKI COVERAGE CHECK:` line — Absolute Rule 12 — and the mandatory `BLAST RADIUS:` line — Absolute Rule 13).
 
 There is no postmortem system for this project. No `build_session_count` tracking, no postmortem trigger, no postmortem audit file.
 
@@ -213,7 +227,7 @@ SESSION END:
 - Update .claude/DESIGN_SYSTEM.md if tokens changed
 - Update relevant build file checklist items (corrections only, not commentary — see Build File Amendment Norm)
 - If wiki content appeared missing, outdated, or incorrect — include WIKI NOTE in the completion report
-- Report using the correct template from .claude/COMPLETION_TEMPLATES.md (every report includes the mandatory WIKI COVERAGE CHECK line - Absolute Rule 12)
+- Report using the correct template from .claude/COMPLETION_TEMPLATES.md (every report includes the mandatory WIKI COVERAGE CHECK line - Absolute Rule 12 - and the mandatory BLAST RADIUS line - Absolute Rule 13)
 ```
 
 **Formatting Rules:**
