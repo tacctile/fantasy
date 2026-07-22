@@ -9,7 +9,7 @@
 
 ## Status
 
-Wave 1 Project scaffold complete: Next.js app shell exists and builds. Supabase project + migration workflow section complete: project linked, credentials captured, `supabase/` workspace initialized. Schema — platform + identity foundation section complete: `platform` enum, `players`, and `player_id_crosswalk` are live in the database (verified 2026-07-21). Schema — league + config section complete: `leagues`, `generate_share_token()`, and `league_config` are live (verified 2026-07-21). Schema — league-scoped state section complete: `rosters`, `roster_players`, `matchups`, `standings`, and `player_scores` are live (verified 2026-07-22). Schema — draft state section complete: `draft_state` + `draft_pick_source` enum are live (verified 2026-07-22). Schema — integrity section complete (verified 2026-07-22): FK sweep confirmed all 18 FKs shipped at table creation (no migration), 17 integrity indexes live, and the RLS owner-policy layer live — `fantasy_owner_all` on all ten tables, full owner CRUD pinned to the admin `auth.uid()` via `is_fantasy_admin()`; the entire Wave 1 schema block is now built. Types/client wiring and env/deploy sections remain. Remaining inventory sections (Service API Reference, Type Definitions, CI/CD Pipeline, Testing Infrastructure) are populated as Wave 1's later items and subsequent waves actually build things — not fabricated in advance. Update this file at session end whenever structure changes, per `MASTER_CONTEXT.md`'s Session-End Steps.
+Wave 1 Project scaffold complete: Next.js app shell exists and builds. Supabase project + migration workflow section complete: project linked, credentials captured, `supabase/` workspace initialized. Schema — platform + identity foundation section complete: `platform` enum, `players`, and `player_id_crosswalk` are live in the database (verified 2026-07-21). Schema — league + config section complete: `leagues`, `generate_share_token()`, and `league_config` are live (verified 2026-07-21). Schema — league-scoped state section complete: `rosters`, `roster_players`, `matchups`, `standings`, and `player_scores` are live (verified 2026-07-22). Schema — draft state section complete: `draft_state` + `draft_pick_source` enum are live (verified 2026-07-22). Schema — integrity section complete (verified 2026-07-22): FK sweep confirmed all 18 FKs shipped at table creation (no migration), 17 integrity indexes live, and the RLS owner-policy layer live — `fantasy_owner_all` on all ten tables, full owner CRUD pinned to the admin `auth.uid()` via `is_fantasy_admin()`; the entire Wave 1 schema block is now built. Types + client wiring section complete (2026-07-22): generated `Database` types committed and the typed browser/server client utilities live in `src/lib/supabase/` (see Supabase Client Wiring below). Only the env/deploy section remains in Wave 1. Remaining inventory sections (Service API Reference, Type Definitions, CI/CD Pipeline, Testing Infrastructure) are populated as Wave 1's later items and subsequent waves actually build things — not fabricated in advance. Update this file at session end whenever structure changes, per `MASTER_CONTEXT.md`'s Session-End Steps.
 
 ---
 
@@ -26,6 +26,10 @@ src/
     ui/             — shadcn-generated components (button.tsx so far); never hand-edited casually
   lib/
     utils.ts        — cn() class-merge helper (shadcn), named export
+    supabase/
+      database.types.ts — generated (npm run gen:types) — never hand-edited; full public-schema types incl. foreign prolabel tables
+      client.ts     — createClient() for browser/Client Components (named export)
+      server.ts     — async createClient() for RSC/route handlers/Server Actions (named export)
 public/             — static assets (default scaffold SVGs, replaceable)
 ```
 
@@ -37,7 +41,7 @@ public/             — static assets (default scaffold SVGs, replaceable)
 - **shadcn/ui** — CLI 4.x, `components.json`: style `base-nova`, `cssVariables: true`, base color neutral, `iconLibrary: lucide`, aliases `@/components`, `@/components/ui`, `@/lib`, `@/lib/utils`, `@/hooks`
 - **ESLint** — flat config (`eslint.config.mjs`), `eslint-config-next`
 - **Package manager:** npm (package-lock.json committed). Node 24.x locally.
-- **Scripts:** `dev` (turbopack), `build`, `start`, `lint`
+- **Scripts:** `dev` (turbopack), `build`, `start`, `lint`, `gen:types` (regenerates `src/lib/supabase/database.types.ts` from the linked project — the canonical regeneration command after any schema migration)
 
 ---
 
@@ -97,6 +101,15 @@ Fantasy-owned objects in the shared `public` schema, all created via `supabase m
 - **`is_fantasy_admin()`** — stable, `search_path = ''`; true iff `auth.uid()` equals the fantasy admin's UUID (`1d5dab52-9b93-4544-a99b-6d4dc3c84a66` — the pre-existing prolabel auth user nick@prolabelco.com, created 2026-05-15 and reused as fantasy admin by Nick's 2026-07-22 ruling; a duplicate email cannot exist in the shared namespace). The single rotation point for admin identity — every fantasy policy calls it
 - **RLS policy layer** — one `fantasy_owner_all` policy per fantasy table (all ten): `FOR ALL TO authenticated`, `using`/`with check` = `(select public.is_fantasy_admin())` (InitPlan-wrapped, evaluated once per statement). Full owner CRUD pinned to Nick's specific `auth.uid()` — never the blanket `authenticated` role (Shared-Database Constraints). Everything else is deny-by-default; verified live: the other prolabel user and `anon` both rejected (42501). No spectator policies yet — share-token READ policies are Wave 4 scope
 - **Integrity indexes** — 17 single-column `idx_*` indexes: `leagues.previous_platform_league_uuid` (the one unindexed FK → `platform_league_uuid`), `sleeper_player_id` on `roster_players`/`player_scores`/`draft_state`, and `platform` + `season_year` on the six N:1 tables plus `season_year` on `leagues`. No duplicate index anywhere a PK/unique btree already leads with the column (Postgres prefix rule); `leagues.owner_id` deliberately unindexed (outside the item's list, trivial table)
+
+## Supabase Client Wiring (src/lib/supabase/)
+
+- **Packages:** `@supabase/ssr@0.12.3` + `@supabase/supabase-js@2.110.8` — the current Supabase App Router standard (the older auth-helpers package is deprecated).
+- **`database.types.ts`** — generated via `npm run gen:types` (`supabase gen types typescript --linked --schema public`); committed, never hand-edited. Contains the entire shared public schema by decision (2026-07-22): the CLI has no per-table filter, so the ~49 foreign prolabel tables appear as inert generated types alongside the ten fantasy tables — regenerated wholesale after every schema migration.
+- **`client.ts`** — `createClient()` (named export): `createBrowserClient<Database>` with the publishable key, for Client Components.
+- **`server.ts`** — `async createClient()` (named export): `createServerClient<Database>` with `await cookies()` (Next 15+ async API), getAll/setAll cookie bridge, and a no-op catch for Server Component set attempts (cookie writes happen in middleware/route handlers). For RSC, route handlers, and Server Actions.
+- **Naming convention (Nick's Clarify decision, 2026-07-22):** both factories export the same name `createClient`, disambiguated by import path (`@/lib/supabase/client` vs `@/lib/supabase/server`) — the Supabase-docs convention. No barrel `index.ts` in this directory (impossible under same-name exports; the path is the disambiguator).
+- **Deliberately absent:** a secret-key admin client (`SUPABASE_SECRET_KEY`) — deferred until Wave 2 registers a server-side consumer (sync jobs); the env/deploy health-check session decides its own auth approach.
 
 ## Shared-Database Constraints (prolabel)
 
