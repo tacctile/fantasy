@@ -84,7 +84,7 @@ KNOWN ISSUES INTRODUCED:
 WIKI NOTE: [OPTIONAL — only include when Claude Code identifies wiki content that appears missing, outdated, or incorrect. Format: "WIKI NOTE: [description of what should change in the wiki]". Omit entirely if no wiki issues were observed.]
 
 STATE.yml: UPDATED (overwrite completely — no stale fields)
-PROGRESS.md: [UPDATED / NOT UPDATED] — update only for: first working build feature, full checklist completion, governance change affecting all future sessions, or core infra activation
+PROGRESS.md: [UPDATED / NOT UPDATED] — update only for: first working build feature, full checklist completion, governance change affecting all future sessions, or core infra activation. Entries are short (2-4 lines); cap 5, oldest rolls into PROGRESS_ARCHIVE.md
 ARCHITECTURE.md: [UPDATED / NOT UPDATED]
 
 NEXT LOGICAL TASK: [one sentence describing what comes next]
@@ -120,7 +120,7 @@ ISSUES DEFERRED:
 WIKI NOTE: [OPTIONAL — only include when Claude Code identifies wiki content that appears missing, outdated, or incorrect. Format: "WIKI NOTE: [description of what should change in the wiki]". Omit entirely if no wiki issues were observed.]
 
 STATE.yml: UPDATED (overwrite completely — no stale fields)
-PROGRESS.md: [UPDATED / NOT UPDATED] — update only for: first working build feature, full checklist completion, governance change affecting all future sessions, or core infra activation
+PROGRESS.md: [UPDATED / NOT UPDATED] — update only for: first working build feature, full checklist completion, governance change affecting all future sessions, or core infra activation. Entries are short (2-4 lines); cap 5, oldest rolls into PROGRESS_ARCHIVE.md
 
 NEXT LOGICAL TASK: [one sentence]
 ```
@@ -142,7 +142,7 @@ NOTES: [anything worth flagging, or NONE]
 WIKI NOTE: [OPTIONAL — only include when Claude Code identifies wiki content that appears missing, outdated, or incorrect. Format: "WIKI NOTE: [description of what should change in the wiki]". Omit entirely if no wiki issues were observed.]
 
 STATE.yml: UPDATED (overwrite completely — no stale fields)
-PROGRESS.md: [UPDATED / NOT UPDATED] — update only for: first working build feature, full checklist completion, governance change affecting all future sessions, or core infra activation
+PROGRESS.md: [UPDATED / NOT UPDATED] — update only for: first working build feature, full checklist completion, governance change affecting all future sessions, or core infra activation. Entries are short (2-4 lines); cap 5, oldest rolls into PROGRESS_ARCHIVE.md
 ```
 
 ---

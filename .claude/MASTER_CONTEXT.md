@@ -4,6 +4,12 @@
 
 ---
 
+## System Goal — Portability
+
+This repo must remain fully self-contained and portable. A session started from any machine or environment (local VS Code, Claude Code web, Cowork, claude.ai) must be able to reconstruct full project state and recent history from the repo alone — no dependency on machine-local files outside git. This is why `.claude/logs/`, `PROGRESS.md`, and `STATE.yml` are committed rather than gitignored or left local-only: session history and state need to travel with the repo, not live only on whichever machine produced them. The corresponding growth-control rules (log cap, `PROGRESS.md` cap, pruned `STATE.yml` arrays) exist precisely so this portability doesn't come at the cost of unbounded repo growth — see Session-End Steps below.
+
+---
+
 ## What This Project Is
 
 tacctile/fantasy is a read-only fantasy football multi-league dashboard and draft assistant. It pulls data from Sleeper and ESPN, displays it, and helps Nick make decisions during drafts and in-season management. It never writes back to Sleeper, ESPN, or any external platform — no transactions, no lineup changes, no waiver claims, no trades executed through this app, ever.
@@ -39,6 +45,10 @@ Not monetized. Personal tool for Nick's own leagues, built and stress-tested pri
 ## Supabase Migration Rule
 
 Never edit the baseline migration. All schema changes go through `supabase migration new` to create a new migration file. This applies from Wave 1 onward.
+
+## Build File Amendment Norm
+
+`.claude/build/*.md` files are authored once per wave via convergence-filtering at registration time, then only checked off item-by-item as work completes. After registration, amend a build file only for correctness (a scope error, a stale assumption, a genuine requirement change) — never pad it with running commentary, session narration, or decision rationale. That detail belongs in the session's verbose log (`.claude/logs/`) and, if it's milestone-worthy, a short `PROGRESS.md` entry — not in the build file itself.
 
 ---
 
@@ -154,12 +164,12 @@ Do not read files not listed above unless the prompt explicitly requires them.
 
 ## Session-End Steps
 
-- Update `.claude/STATE.yml` completely (overwrite, never patch — no stale fields).
-- Write verbose internal log to `.claude/logs/YYYY-MM-DD_NN.md`. NN is zero-padded, two digits, monotonically increasing per calendar day, computed as (highest existing NN for today) + 1. Gaps are never backfilled.
-- Add an entry to `.claude/PROGRESS.md` only if a major milestone was reached: first working implementation of a registered build file feature, completion of a full build file checklist, a governance change affecting all future sessions, or activation of a core infrastructure service (Supabase, Vercel deploy, ESPN auth). Routine bug fixes, single-file edits, and partial progress are not milestones. `PROGRESS.md` is not a git log.
+- Update `.claude/STATE.yml` completely (overwrite, never patch — no stale fields). This is not just a mechanical overwrite: actively review `nick_pending`, `known_issues`, and any other array field before rewriting the file, and drop entries that are stale or resolved. Never carry an entry forward unexamined just because it was present last session — every array in `STATE.yml` must reflect only what is genuinely still true right now.
+- Write verbose internal log to `.claude/logs/YYYY-MM-DD_NN.md`. NN is zero-padded, two digits, monotonically increasing per calendar day, computed as (highest existing NN for today) + 1. Gaps are never backfilled. **Log cap:** keep only the 5 most recent individual log files in `.claude/logs/`. When a 6th would be created, concatenate the oldest log's key decisions and outcomes (not the full verbose content) into `.claude/logs/ARCHIVE.md` and delete the original file.
+- Add an entry to `.claude/PROGRESS.md` only if a major milestone was reached: first working implementation of a registered build file feature, completion of a full build file checklist, a governance change affecting all future sessions, or activation of a core infrastructure service (Supabase, Vercel deploy, ESPN auth). Routine bug fixes, single-file edits, and partial progress are not milestones. `PROGRESS.md` is not a git log. **Entries are short summaries (2-4 lines), not detailed paragraphs** — full session detail belongs in `.claude/logs/`, not `PROGRESS.md`. **Cap: 5 most recent entries only.** When a 6th entry would be added, move the oldest entry (verbatim) into `.claude/PROGRESS_ARCHIVE.md` before adding the new one.
 - Update `.claude/ARCHITECTURE.md` if structure changed.
 - Update `.claude/DESIGN_SYSTEM.md` if tokens changed.
-- Update the relevant build file checklist items.
+- Update the relevant build file checklist items — per the Build File Amendment Norm above, corrections only, not commentary.
 - If wiki content appeared missing, outdated, or incorrect — include `WIKI NOTE:` in the completion report.
 - Report using the correct template from `.claude/COMPLETION_TEMPLATES.md`.
 
@@ -194,12 +204,12 @@ DO NOT:
 - Change this behavior
 
 SESSION END:
-- Update .claude/STATE.yml (overwrite completely)
-- Write verbose internal log to .claude/logs/YYYY-MM-DD_NN.md
-- Add entry to .claude/PROGRESS.md if a major milestone was reached
+- Update .claude/STATE.yml (overwrite completely; actively prune stale/resolved entries from nick_pending, known_issues, and other arrays — never carry forward unexamined)
+- Write verbose internal log to .claude/logs/YYYY-MM-DD_NN.md (cap: 5 most recent files; 6th triggers archiving the oldest into .claude/logs/ARCHIVE.md)
+- Add entry to .claude/PROGRESS.md if a major milestone was reached (short summary, 2-4 lines; cap: 5 most recent entries, 6th rolls oldest into .claude/PROGRESS_ARCHIVE.md)
 - Update .claude/ARCHITECTURE.md if structure changed
 - Update .claude/DESIGN_SYSTEM.md if tokens changed
-- Update relevant build file checklist items
+- Update relevant build file checklist items (corrections only, not commentary — see Build File Amendment Norm)
 - If wiki content appeared missing, outdated, or incorrect — include WIKI NOTE in the completion report
 - Report using the correct template from .claude/COMPLETION_TEMPLATES.md
 ```
