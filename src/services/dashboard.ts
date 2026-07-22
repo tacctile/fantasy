@@ -351,6 +351,32 @@ const MAX_WEEK = 18
 const SELECT_CHUNK_SIZE = 500
 
 /**
+ * Weeks this league has any scored matchup row for (effective_points
+ * non-null), ascending. The dashboard page's week-selector range and
+ * default-week source: the max entry is the latest week the platform has
+ * scored — in-season that is the current synced week (the scheduled sync is
+ * current-week-only), for a complete season it's the final week. Returns []
+ * for an unknown league (the page's getters already resolve not-found) or a
+ * league with nothing scored yet — the honest empty state, not an error.
+ */
+export async function listScoredWeeks(
+  db: SupabaseClient<Database>,
+  leagueId: string
+): Promise<number[]> {
+  if (!UUID_PATTERN.test(leagueId)) return []
+  const { data, error } = await db
+    .from('matchups')
+    .select('week, effective_points')
+    .eq('league_id', leagueId)
+  if (error) throw new Error(`scored-weeks query failed: ${error.message}`)
+  const weeks = new Set<number>()
+  for (const row of data) {
+    if (row.effective_points !== null) weeks.add(row.week)
+  }
+  return [...weeks].sort((a, b) => a - b)
+}
+
+/**
  * One week's matchups for a connected league: head-to-head pairs
  * reconstructed by grouping on native_matchup_id (nulls = byes, returned
  * unpaired; non-two-sized groups degrade to unpaired + anomaly flag), each

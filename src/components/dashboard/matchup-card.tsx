@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 import { cn } from '@/lib/utils'
 import type { MatchupPlayerScore, MatchupSide } from '@/services/dashboard'
 
@@ -8,6 +10,9 @@ interface MatchupCardProps {
   /** Two sides for a head-to-head pair; one side renders the bye/no-opponent
    *  card (unpaired rows from the service, byes and anomaly fallout alike). */
   sides: [MatchupSide] | [MatchupSide, MatchupSide]
+  /** The rendered week — player-name links carry it (`?week=N&player=id`) so
+   *  opening a player card never loses the selected week. */
+  week: number
 }
 
 // Platform-scored values carry two decimals at the wire — displayed exactly.
@@ -71,9 +76,11 @@ function SideHeader({
 function PlayerLine({
   line,
   align,
+  week,
 }: {
   line: MatchupPlayerScore
   align: 'left' | 'right'
+  week: number
 }) {
   const right = align === 'right'
   return (
@@ -87,9 +94,15 @@ function PlayerLine({
         {line.points.toFixed(2)}
       </span>
       <span className="min-w-0 flex-1 truncate">
-        <span className={cn('text-sm', !line.wasStarter && 'text-secondary-foreground')}>
+        <Link
+          href={`?week=${week}&player=${line.sleeperPlayerId}`}
+          className={cn(
+            'text-sm transition-colors hover:underline',
+            !line.wasStarter && 'text-secondary-foreground'
+          )}
+        >
           {line.fullName ?? line.sleeperPlayerId}
-        </span>
+        </Link>
         {line.position !== null && (
           <span className="ml-1.5 text-xs text-muted-foreground">
             {line.position}
@@ -110,9 +123,11 @@ function PlayerLine({
 function MirroredLines({
   left,
   right,
+  week,
 }: {
   left: MatchupPlayerScore[]
   right: MatchupPlayerScore[]
+  week: number
 }) {
   const rowCount = Math.max(left.length, right.length)
   if (rowCount === 0) return null
@@ -124,12 +139,12 @@ function MirroredLines({
           className="grid grid-cols-2 items-baseline gap-x-4"
         >
           {left[index] !== undefined ? (
-            <PlayerLine line={left[index]} align="left" />
+            <PlayerLine line={left[index]} align="left" week={week} />
           ) : (
             <span />
           )}
           {right[index] !== undefined ? (
-            <PlayerLine line={right[index]} align="right" />
+            <PlayerLine line={right[index]} align="right" week={week} />
           ) : (
             <span />
           )}
@@ -147,7 +162,7 @@ function MirroredLines({
  * bye/no-opponent rendering — muted label, deliberately uncolored
  * (DESIGN_SYSTEM.md: absence of color = absence of urgency).
  */
-export default function MatchupCard({ sides }: MatchupCardProps) {
+export default function MatchupCard({ sides, week }: MatchupCardProps) {
   const [left, right] = sides
   const fetchedAt = latestFetchedAt(sides)
 
@@ -180,7 +195,7 @@ export default function MatchupCard({ sides }: MatchupCardProps) {
         <SideHeader side={right} align="right" />
       </div>
       <div className="mt-3 border-t border-border/50 pt-3">
-        <MirroredLines left={leftStarters} right={rightStarters} />
+        <MirroredLines left={leftStarters} right={rightStarters} week={week} />
       </div>
       {hasBench && (
         <details className="mt-2">
@@ -188,7 +203,7 @@ export default function MatchupCard({ sides }: MatchupCardProps) {
             Bench
           </summary>
           <div className="mt-2">
-            <MirroredLines left={leftBench} right={rightBench} />
+            <MirroredLines left={leftBench} right={rightBench} week={week} />
           </div>
         </details>
       )}

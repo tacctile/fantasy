@@ -34,7 +34,11 @@ export default function MatchupsGrid({ data, weeks }: MatchupsGridProps) {
         <>
           <div className="grid gap-3 lg:grid-cols-2">
             {data.pairs.map((pair) => (
-              <MatchupCard key={pair.nativeMatchupId} sides={pair.sides} />
+              <MatchupCard
+                key={pair.nativeMatchupId}
+                sides={pair.sides}
+                week={data.week}
+              />
             ))}
           </div>
           {data.hasPairingAnomaly && (
@@ -46,7 +50,11 @@ export default function MatchupsGrid({ data, weeks }: MatchupsGridProps) {
           {data.unpaired.length > 0 && (
             <div className="grid gap-3 lg:grid-cols-2">
               {data.unpaired.map((side) => (
-                <MatchupCard key={side.nativeRosterId} sides={[side]} />
+                <MatchupCard
+                  key={side.nativeRosterId}
+                  sides={[side]}
+                  week={data.week}
+                />
               ))}
             </div>
           )}

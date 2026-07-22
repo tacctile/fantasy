@@ -7,11 +7,13 @@ import { createClient } from '@/lib/supabase/server'
 import { listConnectedLeagues } from '@/services/draft-board'
 
 /**
- * Root router for the owner surface (Nick-signed auto-land): unauthenticated
- * → /login; admin with leagues → first connected league's draft board; admin
- * with none → a minimal empty note (league sync is how leagues appear, per
- * Wave 2's runners); non-admin session → not-authorized. Wave 4's
- * command-center home replaces the empty note when it lands.
+ * Root router for the owner surface (Nick-signed auto-land, re-signed
+ * 2026-07-22 for Wave 4): unauthenticated → /login; admin with leagues →
+ * first connected league's dashboard (the in-season default; the draft board
+ * is one click away from its header); admin with none → a minimal empty note
+ * (league sync is how leagues appear, per Wave 2's runners); non-admin
+ * session → not-authorized. Wave 4's command-center home replaces the empty
+ * note when it lands.
  */
 export default async function Home() {
   const db = await createClient()
@@ -20,7 +22,7 @@ export default async function Home() {
   if (auth.state === 'not_admin') return <NotAuthorizedCard email={auth.email} />
 
   const leagues = await listConnectedLeagues(db)
-  if (leagues.length > 0) redirect(`/leagues/${leagues[0].leagueId}/draft`)
+  if (leagues.length > 0) redirect(`/leagues/${leagues[0].leagueId}`)
 
   return (
     <main className="flex flex-1 flex-col items-center justify-center gap-4 bg-background p-8 text-foreground">
@@ -30,7 +32,7 @@ export default async function Home() {
       </div>
       <p className="max-w-md text-center text-muted-foreground">
         No leagues connected yet. Run a league sync (npm run sync:league --
-        &lt;league_id&gt;) and this will route straight to its draft board.
+        &lt;league_id&gt;) and this will route straight to its dashboard.
       </p>
     </main>
   )

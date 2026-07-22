@@ -3,6 +3,15 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_25 — Wave 3a states + resilience sub-section (3-item fold; buildable scope complete)
+
+- Fold = the full "States + resilience" sub-section: route-segment loading skeleton (mirrors live board density, shadcn `skeleton` primitive added via CLI, CSS `animate-pulse` only), honest empty states, route error boundary. Wiki read: league-mechanics/average-draft-position (format-leakage → a format with no rows is an explicit empty state); declared wiki silence on framework routing/UI-state mechanisms (established below-wiki-altitude category).
+- Clarify (Nick-signed): no-ADP notice = banner-over-rostered-list (full-region empty state only for a truly empty pool); next-action copy = command + schedule ("npm run sync:adp" / daily 10:00 UTC); per-surface degradation (no aggregate banner); fallback = retry + back-to-leagues escape.
+- Key shipped pieces: `adp-notice.tsx` with pure `deriveAdpNoticeKind` (no_adp_ingested / format_unresolved / format_empty; precedence = healing order, disclosed) — future surfaces reuse it, never re-derive; `board-empty-state.tsx` + `command-chip.tsx`; zero-filter-match state with "Clear filters" preserving sort; `error.tsx` with generic copy + digest ref only (Access Model posture), league selector dies with the page so the `/` escape link prevents dead-ending.
+- Load-bearing boundary line verified: data GAPS degrade to nulls/per-surface notices (never throw); only real query/render FAILURES reach the boundary. Zero platform branching in the board path.
+- Verified 14/14 (functional + live read-only harness, deleted after): notice branches/precedence, no-throw null paths, healthy league raises NO false notice, boundary fields absent, unknown UUID → not_found. lint/tsc/build clean. Authed surfaces not eyeballed (Rule 13, no session minted) — carried in nick_pending.
+- Session end: 03a all five sub-sections complete (sole remainder bye-week `[>]`; file stays 🟡); PROGRESS milestone entry; no DB writes (reads only, fantasy-owned tables). WIKI NOTE: none.
+
 ## 2026-07-22_24 — Wave 3a player-list sub-section (6-item fold) + ir_slot_count fix
 
 - Built the draft board's player-list surface as one 6-item fold: `position-badge`/`injury-chip`/`player-row`/`player-table`/`board-toolbar`/`player-board`/`use-player-list`/`roster-fill`/`roster-panel` in `src/components/draft-board/`, plus 6 net-new `--pos-*` tokens (Nick-signed Sleeper-convention hues, RB shifted off brand teal to green 140°; hue-collision-engineered vs destructive/warning/primary).

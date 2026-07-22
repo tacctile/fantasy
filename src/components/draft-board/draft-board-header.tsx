@@ -48,7 +48,11 @@ export default function DraftBoardHeader({
         </span>
       </div>
       <div className="ml-auto flex items-center gap-3">
-        <LeagueSelector leagues={leagues} activeLeagueId={context.leagueId} />
+        <LeagueSelector
+          leagues={leagues}
+          activeLeagueId={context.leagueId}
+          subPath="/draft"
+        />
         <Separator orientation="vertical" className="h-5" />
         <p className="text-sm text-muted-foreground">
           ADP: {context.adpSource}

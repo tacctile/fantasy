@@ -49,8 +49,8 @@ Registered 2026-07-21 on the premise that Wave 2 would sync raw per-player stat 
 - [x] Build `MatchupsGrid` (or cards) — current week's head-to-head pairs with a week selector, tabular-nums scores
 - [x] Build `PowerRankingsList` — ranked teams with rank-delta indicator, tabular-nums
 - [x] Build a `PlayerCard`/detail panel — identity, roster status, per-week score line for the current season, tabular-nums (no charts — Wave 5 scope)
-- [ ] Assemble the admin league dashboard page composing the four components above under owner auth, for any connected `league_id` (no hardcoded league count)
-- [ ] Add a league selector so Nick can switch between all connected Sleeper/ESPN leagues from this dashboard
+- [x] Assemble the admin league dashboard page composing the four components above under owner auth, for any connected `league_id` (no hardcoded league count) — shipped 2026-07-22 at `/leagues/[leagueId]` (Nick-signed: league root, not `/dashboard`; auto-land re-signed to land here; PlayerCard opens as a URL-driven `?player=` sheet; matchups full-width over standings+power 2-col)
+- [x] Add a league selector so Nick can switch between all connected Sleeper/ESPN leagues from this dashboard — shipped 2026-07-22 (Nick-signed: the draft board's LeagueSelector generalized with a `subPath` prop and reused, not duplicated)
 - [ ] Add a share-link settings panel (copyable spectator URL + a regenerate-token action) on the admin dashboard only
 
 ### Admin navigation shell and information architecture

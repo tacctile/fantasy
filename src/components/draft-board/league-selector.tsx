@@ -15,16 +15,24 @@ interface LeagueSelectorProps {
   /** Every connected league, either platform — never a hardcoded count. */
   leagues: ConnectedLeague[]
   activeLeagueId: string
+  /** Path under /leagues/<id> the switch lands on — '/draft' for the draft
+   *  board, '' for the dashboard (the league root). A string, not a
+   *  function: this is a client component, so a server caller can only pass
+   *  serializable props (generalized for Wave 4 reuse, Nick-signed). */
+  subPath: string
 }
 
 /**
- * Switches the board between connected leagues by league_id. Selection is a
- * route change, so the board re-fetches server-side for the chosen league —
- * no client-side cross-league state to leak between boards.
+ * Switches the active admin surface between connected leagues by league_id.
+ * Selection is a route change, so the surface re-fetches server-side for the
+ * chosen league — no client-side cross-league state to leak between leagues.
+ * Query params deliberately don't survive the switch (another league has its
+ * own week range and players).
  */
 export default function LeagueSelector({
   leagues,
   activeLeagueId,
+  subPath,
 }: LeagueSelectorProps) {
   const router = useRouter()
 
@@ -33,7 +41,7 @@ export default function LeagueSelector({
       value={activeLeagueId}
       onValueChange={(leagueId) => {
         if (typeof leagueId === 'string' && leagueId !== activeLeagueId) {
-          router.push(`/leagues/${leagueId}/draft`)
+          router.push(`/leagues/${leagueId}${subPath}`)
         }
       }}
     >

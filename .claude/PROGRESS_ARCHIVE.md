@@ -163,3 +163,7 @@ First working Wave 3a feature — the full "ADP schema + ingestion" sub-section 
 ---
 
 _End of PROGRESS_ARCHIVE.md_
+
+## 2026-07-22 — Design System Live: Dark-Only Sleeper Palette Applied App-Wide (Palette Reconciliation Fold)
+
+DESIGN_SYSTEM.md's final token set is now what the app actually renders — teal/tinted-dark values live in `globals.css` as a single always-on dark set (scaffold light + achromatic `.dark` blocks deleted; net-new `--well`/`--warning`/`--positive`; text tiers as alpha steps; permanent `dark` class). Nick-signed Clarify: `--radius` stays 0.625rem (containers hit 12–16px via Card's `rounded-xl` step) + pill-button/input-well pattern edits applied. Live-verified via `/login` screenshot (teal pill CTA, dark text, well inputs); auth walls re-verified. Every future UI session builds on the real palette. Next: 03a player list.

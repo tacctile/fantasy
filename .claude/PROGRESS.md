@@ -9,6 +9,12 @@ Newest entry on top.
 
 ---
 
+## 2026-07-22 — League Dashboard Is a Working Feature: Page Assembled + League Selector Live
+
+First browsable Wave 4 surface: the owner dashboard now mounts at `/leagues/[leagueId]` (Nick-signed league root; auto-land re-signed to land here), composing MatchupsGrid (URL-driven `?week=N`, default = latest scored week via new `listScoredWeeks`) over StandingsTable + PowerRankingsList, with the PlayerCard opening as a URL-driven `?player=` sheet from matchup player links. Draft board's LeagueSelector generalized (`subPath`) and reused. tsc/lint/build clean + 21/21 live render checks. Next: nav-shell sub-section (share-link panel rides the share-token singleton).
+
+---
+
 ## 2026-07-22 — Wave 4 Begun: League-Dashboard Data Layer Live (Admin Data-Access Sub-Section Done)
 
 First working Wave 4 feature: `src/services/dashboard.ts` shipped as one 5-item query-service fold — `getStandings` (Nick-signed wins→PF→roster-id ordering, flat), `getMatchups` (wiki-grounded pairing, byes as unpaired, full-roster lines + freshness pass-through), `getPowerRankings` (All-Play record per the wiki's decided measure; regular-season weeks via `playoff_week_start`; low-confidence flag <6 weeks), `getPlayerCard` (explicit `not_rostered` FA-gap entries, holding-team attribution), plus the scoping/security assurance (static audit + live anon-RLS zero-data proof). All live-verified against the real league incl. an exact independent all-play recomputation. Next: 04 admin UI sub-section (freshness item rides with it).
@@ -30,12 +36,6 @@ The board's final sub-section shipped in one fold: route-segment loading skeleto
 ## 2026-07-22 — Draft Board Is a Working Feature: Player List + Roster/Need Panel Live (Player-List Sub-Section Done)
 
 First working implementation of the board's core feature — the placeholder regions are gone. Rows (injury chips, six Nick-signed `--pos-*` position tokens — RB shifted off brand teal), debounced search + position/availability filters, header-click sorting (nulls-last, deterministic tie-break) via a pure memoized hook, and the roster/positional-need sidebar (need vs dedicated starter slots, flex honest). Companion Nick-signed fix: `ir_slot_count` = max(IR labels, `reserve_slots`) — re-synced, live-verified 0→1. Bye week deferred to a schedule-derived source (`[>]` item; wiki-mandated). 25/25 logic checks + live board query verified. Next: 03a "States + resilience" (final sub-section).
-
----
-
-## 2026-07-22 — Design System Live: Dark-Only Sleeper Palette Applied App-Wide (Palette Reconciliation Fold)
-
-DESIGN_SYSTEM.md's final token set is now what the app actually renders — teal/tinted-dark values live in `globals.css` as a single always-on dark set (scaffold light + achromatic `.dark` blocks deleted; net-new `--well`/`--warning`/`--positive`; text tiers as alpha steps; permanent `dark` class). Nick-signed Clarify: `--radius` stays 0.625rem (containers hit 12–16px via Card's `rounded-xl` step) + pill-button/input-well pattern edits applied. Live-verified via `/login` screenshot (teal pill CTA, dark text, well inputs); auth walls re-verified. Every future UI session builds on the real palette. Next: 03a player list.
 
 ---
 
