@@ -7,6 +7,18 @@ Newest entry on top.
 
 ---
 
+## 2026-07-21 — Wave 5 Build File Registered
+
+`.claude/build/05_eye_candy.md` created and registered in `BUILD_INDEX.md`, using the same 6-model convergence-filtering methodology as Waves 1, 2, 3a, 3b, and 4.
+
+**What's in scope:** current-season-only score charts (weekly team-score trends + distribution, built on a shared chart-primitives layer with CSS-variable colors and tabular-nums), a lucky/unlucky tracker (all-play expected-wins calculation driving a luck differential chart/table), positional breakdowns (scoring grouped by `league_config` roster slots, including flex/superflex attribution), and a playoff picture engine (clinch/eliminate/magic-number computation driven by `league_config` playoff settings, no hardcoded bracket size). Primarily an admin-surface feature set extending the Wave 4 dashboard — only the lucky/unlucky summary and playoff status get simplified, separately-built mobile spectator equivalents.
+
+**Explicitly deferred:** league report generator, free agent board, PWA manifest/service worker (Wave 6); rebuilding standings/matchups/power-rankings/player-cards (Wave 4, already built); any historical/year-over-year view (rejected for v1 project-wide); a spectator twin for every chart (only luck summary and playoff status get one).
+
+**Dependency:** requires Wave 4's computed `player_scores` and dashboard data layer; does not touch the draft assistant (Wave 3a/3b).
+
+---
+
 ## 2026-07-21 — Wave 4 Build File Registered
 
 `.claude/build/04_league_dashboard.md` created and registered in `BUILD_INDEX.md`, using the same 6-model convergence-filtering methodology as Waves 1, 2, 3a, and 3b.

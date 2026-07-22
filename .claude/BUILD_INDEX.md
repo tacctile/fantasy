@@ -1,6 +1,6 @@
 # BUILD_INDEX.md
 **Master build router — tacctile/fantasy**
-**Last Updated:** 2026-07-21 (Wave 4 registered)
+**Last Updated:** 2026-07-21 (Wave 5 registered)
 
 Nothing gets built without a registered build file. No exceptions. Every new feature requires a registered build file in this index before a single line of code is written.
 
@@ -58,6 +58,7 @@ Each feature gets a numbered file at `.claude/build/NN_FEATURE_NAME.md`, registe
 | 03a | [03a_draft_assistant_static_board.md](build/03a_draft_assistant_static_board.md) | 3a | ⬜ |
 | 03b | [03b_draft_assistant_live_draft.md](build/03b_draft_assistant_live_draft.md) | 3b | ⬜ |
 | 04 | [04_league_dashboard.md](build/04_league_dashboard.md) | 4 | ⬜ |
+| 05 | [05_eye_candy.md](build/05_eye_candy.md) | 5 | ⬜ |
 
 ---
 
