@@ -11,6 +11,8 @@ Standings, matchups, power rankings, player cards — for both the admin (owner)
 
 This build file was scoped by convergence-filtering 6 independent AI panel responses against `BUILD_INDEX.md`'s Wave 4 bullet, same methodology used for Waves 1, 2, 3a, and 3b.
 
+Admin navigation shell (persistent sidebar, command-center home, sticky context) added to this wave's scope on 2026-07-21 via a cross-cutting reconciliation pass — previously undocumented anywhere. Assigned to Wave 4 rather than Wave 5 because it is the foundational IA layer the admin surface needs regardless of which analysis features exist yet, and Wave 5's sections are designed to mount into it rather than build their own frame. Made before any Wave 4 work started, consistent with the Build File Amendment Norm.
+
 ---
 
 ## WIKI PAGES TO CONSULT
@@ -48,6 +50,15 @@ Read these before starting, per Session-Start Protocol (max 3 unless the task ge
 - [ ] Add a league selector so Nick can switch between all connected Sleeper/ESPN leagues from this dashboard
 - [ ] Add a share-link settings panel (copyable spectator URL + a regenerate-token action) on the admin dashboard only
 
+### Admin navigation shell and information architecture
+
+This is the persistent admin shell that Wave 3a/3b's draft-day surface and Wave 5's analytics sections mount into — build it once here, as the foundational IA layer for the whole admin surface, not per-feature. Scoped from a cross-cutting reconciliation pass covering both draft-day and in-season-analytics research.
+
+- [ ] Build a persistent sidebar navigation component for the admin surface (not top tabs) — scales better than tabs past ~5 sections for a power user who wants constant-time access to any section
+- [ ] Build a dashboard/command-center home view: one summary card per major feature area (standings/power-rank snapshot now; luck rank, top waiver add, playoff status, and trade alerts once Wave 5 exists), each card a deep-link into its full feature page — this is what makes a 2-minute "quick check" session work without forcing full navigation
+- [ ] Build global sticky context (selected league and, where applicable, selected team/week persists across sections as the user navigates) to eliminate re-selection friction between sections
+- [ ] Leave explicit mount points/route slots in the sidebar for Wave 5's sections (Score Trends, Luck, Positional, Playoff Picture, Trade Evaluator, Waiver Recommendations) and Wave 6's report/free-agent-board sections, so those waves extend this shell rather than each building their own navigation frame
+
 ### Share-token infrastructure
 - [ ] Add RLS `SELECT` policies on `leagues`, `league_config`, `rosters`, `matchups`, `standings`, and `player_scores` granting read access when a valid, matching `share_token` is presented — writes remain owner-only on every table
 - [ ] Explicitly do NOT add any spectator read policy on `draft_state` — it must remain inaccessible via `share_token` entirely
@@ -82,4 +93,4 @@ Read these before starting, per Session-Start Protocol (max 3 unless the task ge
 
 ## Session-End requirements (per COMPLETION_TEMPLATES.md)
 
-Use the `feature-build` report template. Update `STATE.yml` completely, log to `.claude/logs/`, update this file's checklist items, update `ARCHITECTURE.md`'s Service API Reference section (adds the scoring engine and dashboard query services) and note the new spectator route surface.
+Use the `feature-build` report template. Update `STATE.yml` completely, log to `.claude/logs/`, update this file's checklist items, update `ARCHITECTURE.md`'s Service API Reference section (adds the scoring engine and dashboard query services) and note the new spectator route surface and the admin sidebar navigation shell/command-center home (which Wave 5 and Wave 6 mount into rather than rebuilding).

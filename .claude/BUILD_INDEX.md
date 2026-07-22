@@ -1,6 +1,6 @@
 # BUILD_INDEX.md
 **Master build router — tacctile/fantasy**
-**Last Updated:** 2026-07-21 (Wave 6 registered — all 6 waves now scoped)
+**Last Updated:** 2026-07-21 (Wave 5 amended — trade evaluation and waiver/FAAB recommendations added; Wave 4 amended — admin navigation shell added)
 
 Nothing gets built without a registered build file. No exceptions. Every new feature requires a registered build file in this index before a single line of code is written.
 
@@ -39,8 +39,8 @@ Atomic, one task per fresh Claude Code session. No scope bleed across sessions.
 | 2 | Data Pipeline | ⬜ | Sleeper sync (build/validate first — no-auth, trivial case), then ESPN cookie-auth integration (harder, isolate failures defensively), cron/polling strategy |
 | 3a | Draft Assistant — Static Board | ⬜ | Static draft board UI, ADP ingestion, no live polling |
 | 3b | Draft Assistant — Live Draft | ⬜ | Manual click-to-draft AND live ESPN draft polling ship together — both write to the same shared `draft_state` table, first-write-wins, no staged manual-first/poller-later sequencing. BPA recommendation engine. Depends on 3a and Wave 2 (ESPN integration) |
-| 4 | League Dashboard | ⬜ | Standings, matchups, power rankings, player cards. Includes the read-only share-link surface (per `MASTER_CONTEXT.md` Access Model) — same dashboard data, gated by `share_token` instead of owner auth, not a separate later build |
-| 5 | Eye Candy | ⬜ | Score charts, lucky/unlucky tracker, positional breakdowns, playoff picture |
+| 4 | League Dashboard | ⬜ | Standings, matchups, power rankings, player cards. Includes the read-only share-link surface (per `MASTER_CONTEXT.md` Access Model) — same dashboard data, gated by `share_token` instead of owner auth, not a separate later build. Also owns the admin surface's persistent sidebar navigation shell and command-center home, which Wave 5 and Wave 6 mount into |
+| 5 | Eye Candy | ⬜ | Score charts, lucky/unlucky tracker, positional breakdowns, playoff picture, trade evaluation, waiver/FAAB recommendations (trade + waiver amended into scope 2026-07-21 — see 05_eye_candy.md scope note; waiver scoring formula itself deferred to a follow-up session) |
 | 6 | Report + Tools | ⬜ | League report generator, free agent board, PWA manifest/service worker |
 
 **Dependency notes:** Wave 3b depends on Wave 2's ESPN integration being live and isolated (its failure must not break Wave 3a's static board or Sleeper-sourced features). Wave 3a can start once Wave 1's schema and Wave 2's Sleeper sync are done — it does not need ESPN.
