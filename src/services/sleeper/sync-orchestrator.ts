@@ -55,15 +55,32 @@ export type SleeperSyncRunResult = {
   failedCount: number
 }
 
+/** Native league IDs of every connected Sleeper league, in deterministic order. */
+export async function discoverConnectedSleeperLeagueIds(
+  db: SupabaseClient<Database>
+): Promise<string[]> {
+  const { data, error } = await db
+    .from('leagues')
+    .select('native_league_id')
+    .eq('platform', 'sleeper')
+    .order('native_league_id')
+  if (error) {
+    throw new Error(`connected-league discovery failed: ${error.message}`)
+  }
+  return data.map((row) => row.native_league_id)
+}
+
 /**
  * Sync all connected Sleeper leagues (or an explicit subset) in dependency
  * order with per-league failure isolation. `week` is passed through to the
- * matchups sync for the future in-season cron cadence; omitting it sweeps
- * the full season.
+ * matchups sync for the in-season cron cadence; omitting it sweeps the full
+ * season. `skipMatchups` drops the matchups step entirely — the scheduled
+ * sync uses it when `/state/nfl` reports no scoreable fantasy week
+ * (`pre`/`post`/`off`), where a sweep would only re-fetch immutable data.
  */
 export async function syncAllSleeperLeagues(
   db: SupabaseClient<Database>,
-  options?: { leagueIds?: string[]; week?: number }
+  options?: { leagueIds?: string[]; week?: number; skipMatchups?: boolean }
 ): Promise<SleeperSyncRunResult> {
   const startedAt = new Date().toISOString()
 
@@ -71,20 +88,14 @@ export async function syncAllSleeperLeagues(
   if (options?.leagueIds !== undefined && options.leagueIds.length > 0) {
     leagueIds = options.leagueIds
   } else {
-    const { data, error } = await db
-      .from('leagues')
-      .select('native_league_id')
-      .eq('platform', 'sleeper')
-      .order('native_league_id')
-    if (error) {
-      throw new Error(`connected-league discovery failed: ${error.message}`)
-    }
-    leagueIds = data.map((row) => row.native_league_id)
+    leagueIds = await discoverConnectedSleeperLeagueIds(db)
   }
 
   const leagues: LeagueSyncOutcome[] = []
   for (const nativeLeagueId of leagueIds) {
-    leagues.push(await syncOneLeague(db, nativeLeagueId, options?.week))
+    leagues.push(
+      await syncOneLeague(db, nativeLeagueId, options?.week, options?.skipMatchups === true)
+    )
   }
 
   const okCount = leagues.filter((outcome) => outcome.ok).length
@@ -103,7 +114,8 @@ const CHAIN: LeagueSyncStep[] = ['league_config', 'rosters', 'matchups', 'draft'
 async function syncOneLeague(
   db: SupabaseClient<Database>,
   nativeLeagueId: string,
-  week: number | undefined
+  week: number | undefined,
+  skipMatchups: boolean
 ): Promise<LeagueSyncOutcome> {
   const outcome: LeagueSyncOutcome = {
     nativeLeagueId,
@@ -111,7 +123,9 @@ async function syncOneLeague(
     skippedSteps: [],
   }
 
-  for (const step of CHAIN) {
+  const chain = skipMatchups ? CHAIN.filter((step) => step !== 'matchups') : CHAIN
+
+  for (const step of chain) {
     try {
       switch (step) {
         case 'league_config':
@@ -130,7 +144,7 @@ async function syncOneLeague(
     } catch (error) {
       outcome.failedStep = step
       outcome.error = error instanceof Error ? error.message : String(error)
-      outcome.skippedSteps = CHAIN.slice(CHAIN.indexOf(step) + 1)
+      outcome.skippedSteps = chain.slice(chain.indexOf(step) + 1)
       return outcome
     }
   }

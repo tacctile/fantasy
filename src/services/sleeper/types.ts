@@ -162,3 +162,25 @@ export type SleeperDraftPick = {
   metadata?: Record<string, unknown> | null
   [key: string]: unknown
 }
+
+/**
+ * `GET /state/nfl` (per wiki/topics/sleeper-api/nfl-state-endpoint.md) —
+ * Sleeper's own source of truth for the current NFL calendar position.
+ * `season_type` has three documented values (`pre` | `regular` | `post`) plus
+ * the empirically real but undocumented `off`, so it stays an open string.
+ * Season fields are strings on the wire; week fields are integers. `week` is
+ * only a scoreable fantasy week when `season_type` is `regular` — it counts
+ * preseason weeks during `pre` and keeps incrementing past 18 during `post`.
+ */
+export type SleeperNflState = {
+  season?: string | null
+  season_type?: string | null
+  week?: number | null
+  leg?: number | null
+  league_season?: string | null
+  league_create_season?: string | null
+  display_week?: number | null
+  previous_season?: string | null
+  season_start_date?: string | null
+  [key: string]: unknown
+}

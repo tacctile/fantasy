@@ -1798,6 +1798,56 @@ export type Database = {
         }
         Relationships: []
       }
+      sync_runs: {
+        Row: {
+          completed_at: string | null
+          counts: Json | null
+          created_at: string
+          error_summary: string | null
+          id: number
+          league_id: string | null
+          platform: Database["public"]["Enums"]["platform"]
+          source: string
+          started_at: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          completed_at?: string | null
+          counts?: Json | null
+          created_at?: string
+          error_summary?: string | null
+          id?: never
+          league_id?: string | null
+          platform: Database["public"]["Enums"]["platform"]
+          source: string
+          started_at: string
+          status: string
+          updated_at?: string
+        }
+        Update: {
+          completed_at?: string | null
+          counts?: Json | null
+          created_at?: string
+          error_summary?: string | null
+          id?: never
+          league_id?: string | null
+          platform?: Database["public"]["Enums"]["platform"]
+          source?: string
+          started_at?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sync_runs_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "leagues"
+            referencedColumns: ["platform_league_uuid"]
+          },
+        ]
+      }
       todd_conversations: {
         Row: {
           archived_at: string | null
