@@ -3,6 +3,12 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_16 — Wave 2 ESPN external-timing blocker recorded; build path re-routed (non-code)
+
+- BUILD_PROTOCOL self-location hit the ESPN sub-section opener; all three MANUAL_SETUP Wave 2 ESPN items `[ ]` → session halted per the Manual Setup Flag. Nick declared a genuine external-timing blocker: ESPN leagues commissioner-locked until 2026 season setup (est. ~2026-08-19 → 2026-09-02); directives: dated blocker (not just "open"), find ESPN-independent work respecting wave order, never guess visibility or fabricate placeholder league IDs.
+- Blocker recorded in MANUAL_SETUP_CHECKLIST (⛔ note + decision of record), 02_data_pipeline.md (9 ESPN items `[ ]`→`[!]`), STATE.yml (focus/pending/blockers). Buildability finding: roadmap NOT stalled — cron sub-section buildable now (ESPN-independent), then Wave 3a (ESPN-independent per BUILD_INDEX, gated only on its two plain-chat items); 3b genuinely blocked; Wave 4+ boundary decision deliberately left to Nick.
+- Judgment calls: ESPN items kept `[ ]` in MANUAL_SETUP (three-state semantics load-bearing; `[!]` lives in the build file whose legend defines it); cron-secret item reclassified `[ ]`→`[~]` (nothing for Nick to pre-create); fold note left for the next session re first-Vercel-Cron touch. Pattern worth reusing: `[!]` + `[ ]`-based self-location composes "skip blocked, preserve order" with zero governance surgery. WIKI NOTE: none.
+
 ## 2026-07-22_15 — Wave 2 Sleeper sync surface complete: draft-state + orchestrator (2-item fold)
 
 - Draft ingestion `draft-state.ts`: walks `/league/{id}/drafts` (array — league's single `draft_id` never trusted), selection policy per Nick's Clarify: prefer `drafting` > `complete`, ambiguity errors explicitly naming candidates, all-`pre_draft` seasons succeed with zero picks; ownership always `roster_id` (never draft_slot/picked_by); pick_no/round as-received (snake arithmetic never used); auction `amount` string-coerced; first-write-wins as ON CONFLICT DO NOTHING. Live-verified: 170/170 picks written then 0/170 on re-run; all 170 match Sleeper's wire exactly; pick/round/roster distributions exact.
