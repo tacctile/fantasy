@@ -22,10 +22,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // `dark` is permanent — dark-mode-only app (DESIGN_SYSTEM.md, Theme Mode);
+  // it keeps vendored `dark:`-variant tunings active and is never toggled.
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`dark ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

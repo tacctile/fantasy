@@ -27,6 +27,9 @@
   --color-input: var(--input);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
+  --color-warning: var(--warning);
+  --color-positive: var(--positive);
+  --color-well: var(--well);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -48,73 +51,57 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/*
+ * Dark mode only (DESIGN_SYSTEM.md, Theme Mode — final): this is the app's
+ * single always-on token set. There is no light block, no theme toggle, and
+ * none may be added. The permanent `dark` class on <html> (layout.tsx) exists
+ * so vendored shadcn `dark:`-variant tunings stay active — it is a marker,
+ * never a switch.
+ *
+ * Values: DESIGN_SYSTEM.md "Color System (final)" — Sleeper-derived tinted
+ * dark (hue ~273.8°), teal accent, text tiers as alpha steps of one off-white.
+ */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
+  --background: oklch(0.193 0.017 273.8);
+  --foreground: oklch(0.96 0.005 273.8 / 96%);
+  --card: oklch(0.245 0.02 273.8);
+  --card-foreground: var(--foreground);
+  --popover: oklch(0.29 0.022 273.8);
+  --popover-foreground: var(--foreground);
+  --primary: oklch(0.759 0.147 168.6);
+  --primary-foreground: oklch(0.193 0.017 273.8);
+  --secondary: oklch(0.96 0.005 273.8 / 10%);
+  --secondary-foreground: oklch(0.96 0.005 273.8 / 65%);
+  --muted: oklch(0.96 0.005 273.8 / 8%);
+  --muted-foreground: oklch(0.96 0.005 273.8 / 45%);
+  --accent: oklch(0.96 0.005 273.8 / 10%);
+  --accent-foreground: var(--foreground);
+  --destructive: oklch(0.689 0.201 20.4);
+  --warning: oklch(0.824 0.15 73.7);
+  --positive: var(--primary);
+  --well: oklch(0.155 0.015 273.8);
+  --border: oklch(0.96 0.005 273.8 / 10%);
+  --input: oklch(0.96 0.005 273.8 / 12%);
+  --ring: var(--primary);
+  --chart-1: var(--primary);
+  --chart-2: var(--destructive);
+  /* --chart-3..5 are unspecified by DESIGN_SYSTEM.md (open until a chart
+     needs more than two series) — scaffold grays kept as inert placeholders. */
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
+  /* Nick-signed (palette reconciliation Clarify, 2026-07-22): base stays
+     0.625rem — containers reach the 12–16px band via the --radius-xl step
+     (14px) that Card uses; buttons/chips are pills and never consume it. */
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
-
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar: var(--card);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
 }
 
 @layer base {

@@ -3,13 +3,13 @@
 
 **Parent:** `.claude/MASTER_CONTEXT.md`
 
-**Last Updated:** 2026-07-21 (Sleeper-derived color system, typography, layout, and component patterns locked — replaces generic "modern live-score app" placeholder framing)
+**Last Updated:** 2026-07-22 (palette reconciliation fold: the Color System's values are now LIVE in `src/app/globals.css` — single always-on dark token set applied, `--radius` resolved via Nick-signed Clarify, pill-button and input-well component patterns applied to the vendored primitives)
 
 ---
 
 ## Status
 
-Wave 1 scaffold landed the shadcn default token set (neutral base, oklch color space) in `src/app/globals.css`. Actual color values are still the working shadcn starting point and get tuned against real UI as Wave 1+ builds actual surfaces — but the mechanism, the dark-mode-only decision, and the aesthetic direction below are final, not placeholders. Update this file at session end whenever tokens change, per `MASTER_CONTEXT.md`'s Session-End Steps.
+`src/app/globals.css` now carries the final Sleeper-derived values below — applied 2026-07-22 by the palette reconciliation fold. The scaffold's light `:root` block and achromatic `.dark` block are deleted; the single always-on dark token set lives in `:root`, and a permanent `dark` class on `<html>` (see `layout.tsx`) keeps the vendored shadcn `dark:`-variant tunings active — it is a marker, never a toggle. Live-verified on `/login` (teal pill CTA with dark text, well-filled inputs, tinted card over `#12141c`). Update this file at session end whenever tokens change, per `MASTER_CONTEXT.md`'s Session-End Steps.
 
 ---
 
@@ -24,16 +24,16 @@ This app ships **dark mode only**. There is no light theme, now or planned — t
 ## Live Token Set (src/app/globals.css)
 
 - **Mechanism:** Tailwind v4 CSS-first theming — no `tailwind.config.*` file exists. `@theme inline` in `globals.css` maps Tailwind color/radius utilities onto shadcn CSS variables; values are defined once (all oklch, zero hex) as the single dark theme — no separate light block. (Mechanism unchanged by the color decisions below — only the token *values* change.)
-- **Color tokens:** `--background`, `--foreground`, `--card`, `--card-foreground`, `--popover`, `--popover-foreground`, `--primary`, `--primary-foreground`, `--secondary`, `--secondary-foreground`, `--muted`, `--muted-foreground`, `--accent`, `--accent-foreground`, `--destructive`, `--border`, `--input`, `--ring`, `--chart-1`..`--chart-5`, `--sidebar` family
-- **Base palette:** Sleeper-derived tinted-dark palette — see "Color System (final)" below. Replaces the earlier shadcn achromatic-neutral placeholder.
-- **Radius:** `--radius: 0.625rem`; derived `--radius-sm`..`--radius-4xl` computed as multiples of `--radius`. Superseded in practice by the Layout & Density radius rule below (12–16px containers, pill buttons/chips) — reconcile `--radius`'s base value against that rule when tokens are next touched in code (see Reconciliation Notes).
+- **Color tokens:** `--background`, `--foreground`, `--card`, `--card-foreground`, `--popover`, `--popover-foreground`, `--primary`, `--primary-foreground`, `--secondary`, `--secondary-foreground`, `--muted`, `--muted-foreground`, `--accent`, `--accent-foreground`, `--destructive`, `--warning`, `--positive`, `--well`, `--border`, `--input`, `--ring`, `--chart-1`..`--chart-5`, `--sidebar` family (the last three net-new tokens landed 2026-07-22 with `@theme inline` mappings `--color-warning`/`--color-positive`/`--color-well`)
+- **Base palette:** Sleeper-derived tinted-dark palette — see "Color System (final)" below. Applied in code 2026-07-22; the shadcn achromatic-neutral placeholder is gone.
+- **Radius (resolved — Nick-signed Clarify, 2026-07-22):** `--radius: 0.625rem` stays. Containers reach the 12–16px band via the derived `--radius-xl` step (base × 1.4 = 14px) that shadcn's Card already uses; buttons and chips are fully-rounded pills (`rounded-full` in `button.tsx`; badges were already pill) and never consume the base value. Derived `--radius-sm`..`--radius-4xl` remain multiples of the base.
 - **Fonts:** Geist on `--font-sans` (registered in `layout.tsx` via `next/font`), Geist Mono on `--font-geist-mono` (mapped to `--font-mono`)
 
 ---
 
 ## Color System (final — Sleeper-derived, replaces shadcn neutral placeholder)
 
-Synthesized from a 6-model research pass on Sleeper's UI/UX mechanics. These are concrete token values, not a placeholder palette — apply directly to `.dark` in `globals.css` next time tokens are touched in code. Oklch values below are direct conversions of the researched hex approximations (Tailwind/shadcn mechanism unchanged — only these values are new).
+Synthesized from a 6-model research pass on Sleeper's UI/UX mechanics. These are concrete token values, not a placeholder palette — live in `globals.css`'s single `:root` set as of 2026-07-22. Oklch values below are direct conversions of the researched hex approximations; the compiler's hex serialization confirms them (`--background: #12141c`, `--primary: #21cea0`, `--destructive: #ff5964`, `--warning: #ffb545`).
 
 ### Base surfaces — tinted dark, never neutral black
 
@@ -74,6 +74,20 @@ Replaces `--foreground`/`--muted-foreground` being two unrelated grays — both 
 | `--muted-foreground` | `oklch(0.96 0.005 273.8 / 45%)` | Tertiary/meta/labels — same off-white, ~40–50% opacity |
 
 `--card-foreground` and `--popover-foreground` map to `--foreground` (same primary-text tier, different surface).
+
+### Supporting tokens (derived 2026-07-22 — values the tables above don't name, declared per Rule 12 and recorded here as the decision of record)
+
+The shadcn token surface is wider than the researched palette. These derivations follow the documented principles (white-at-low-opacity secondary treatment; no/minimal hairline strokes; teal = interactive):
+
+| Token | Value | Derivation |
+|---|---|---|
+| `--secondary` | `oklch(0.96 0.005 273.8 / 10%)` | "White-at-low-opacity fill" per the secondary-button pattern; also the platform badge fill |
+| `--muted` | `oklch(0.96 0.005 273.8 / 8%)` | Hover/skeleton surface — one step subtler than `--secondary` |
+| `--accent` / `--accent-foreground` | `oklch(0.96 0.005 273.8 / 10%)` / `var(--foreground)` | shadcn hover/highlight surface (select items) — low-opacity white, never teal (teal = active/live only) |
+| `--border` | `oklch(0.96 0.005 273.8 / 10%)` | Hairline, off-white hue (the "minimal" in no/minimal strokes) |
+| `--input` | `oklch(0.96 0.005 273.8 / 12%)` | Input hairline border + disabled fill; the input *fill* itself is `--well` (see Reconciliation Notes) |
+| `--ring` | `var(--primary)` | Focus rings are interactive state → teal (components apply it at `/50`) |
+| `--sidebar` family | aliases: `--card`/`--foreground`/`--primary`/`--accent`/`--border`/`--ring` equivalents | Nothing consumes them yet; 1:1 aliases prevent drift when a sidebar ships (Wave 4) |
 
 ### Charts
 
@@ -185,19 +199,16 @@ Mirrored two-column layout with a center spine. This is the spectator surface's 
 - No unlabeled icons for anything roster-affecting.
 - No sharp corners anywhere — cards/containers 12–16px radius, buttons/chips fully pill-shaped.
 
-## Reconciliation Notes — existing token values vs. these decisions
+## Reconciliation Notes — APPLIED 2026-07-22 (palette reconciliation fold)
 
-The Wave 1 scaffold's `globals.css` still holds shadcn's default achromatic `.dark` values (e.g. `--background: oklch(0.145 0 0)`, `--primary: oklch(0.922 0 0)` — a near-white primary with dark text, not teal). These conflict directly with the Color System above and need explicit reconciliation the next time tokens are touched in code, not just in this doc:
+Every delta this section previously listed is now applied in `src/app/globals.css`; this is the record of how each resolved:
 
-- `--background`, `--card`, `--popover` are currently achromatic grays (`oklch(x 0 0)`) — must become the tinted blue-black values above (hue ~273.8°, chroma 0.017–0.022).
-- `--primary` is currently `oklch(0.922 0 0)` (near-white) with dark `--primary-foreground` — coincidentally already "dark text on light fill," but the *hue* is wrong (achromatic, not teal) and must become `oklch(0.759 0.147 168.6)`.
-- `--destructive` is currently `oklch(0.704 0.191 22.216)` — already close in hue/lightness to the coral-red target (`oklch(0.689 0.201 20.4)`); minor tune, not a conflict.
-- `--muted-foreground`/`--secondary-foreground` are currently distinct achromatic grays (`oklch(0.708 0 0)`, `oklch(0.985 0 0)`) rather than alpha-varied steps of one off-white — must be re-derived as opacity tiers of `--foreground`'s hue, per the Text Hierarchy table above.
-- No existing token for `--well` (deepest inset surfaces), `--warning` (amber/gold), or `--positive` (if kept distinct from `--primary`) — these are net-new additions to `globals.css`'s `.dark` block and `@theme inline` mapping, not renames of existing tokens.
-- `--radius: 0.625rem` (~10px) sits inside the target 12–16px card-container band but is below it — confirm whether `--radius` itself should move up, or whether cards should use one of the larger derived steps (`--radius-lg`/`--radius-xl`) instead of the base value.
-- `--chart-1`..`--chart-5` are currently an achromatic gray ramp — only `--chart-1`/`--chart-2` are respecified here (teal/coral); `--chart-3`–`--chart-5` are unaddressed by this decision set and remain open for whenever a chart needs more than two series.
-
-This is a documentation-only session — none of the above `globals.css` values were changed; this table exists so the next code-touching session applies these deltas deliberately rather than rediscovering them.
+- `--background`/`--card`/`--popover` → the tinted blue-black values above (hue ~273.8°). Scaffold light `:root` block and achromatic `.dark` block deleted; the single always-on set lives in `:root`, with a permanent `dark` class on `<html>` keeping vendored `dark:`-variant tunings active.
+- `--primary`/`--primary-foreground` → teal with dark-navy text, per spec. `--destructive` → `oklch(0.689 0.201 20.4)`.
+- Text tiers re-derived as alpha steps of one off-white (96% / 65% / 45%), per the Text Hierarchy table.
+- Net-new `--well`/`--warning`/`--positive` added with `@theme inline` mappings; supporting tokens derived and recorded in the Supporting Tokens table above.
+- **`--radius` resolved (Nick-signed Clarify, 2026-07-22): base stays `0.625rem`.** Containers reach the 12–16px band via the `--radius-xl` step (14px) shadcn's Card already uses; buttons/chips are pills and never consume the base. The companion pattern edits were signed in the same Clarify: `button.tsx` base `rounded-lg` → `rounded-full` (per-size radius overrides removed), `input.tsx` fill → `bg-well` (the old `dark:bg-input/30` tint mathematically could never render darker than the card it sits on).
+- **Still open (unchanged by this fold):** `--chart-3`..`--chart-5` remain the scaffold's achromatic grays — unspecified by the decision set, inert until a chart needs more than two series (Wave 5).
 
 ## New Component Checklist
 

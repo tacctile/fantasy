@@ -9,6 +9,12 @@ Newest entry on top.
 
 ---
 
+## 2026-07-22 — Design System Live: Dark-Only Sleeper Palette Applied App-Wide (Palette Reconciliation Fold)
+
+DESIGN_SYSTEM.md's final token set is now what the app actually renders — teal/tinted-dark values live in `globals.css` as a single always-on dark set (scaffold light + achromatic `.dark` blocks deleted; net-new `--well`/`--warning`/`--positive`; text tiers as alpha steps; permanent `dark` class). Nick-signed Clarify: `--radius` stays 0.625rem (containers hit 12–16px via Card's `rounded-xl` step) + pill-button/input-well pattern edits applied. Live-verified via `/login` screenshot (teal pill CTA, dark text, well inputs); auth walls re-verified. Every future UI session builds on the real palette. Next: 03a player list.
+
+---
+
 ## 2026-07-22 — First UI Surface + Owner Auth Live: Admin Draft-Board Route, Shell, and Real Sign-In (Route + Page Shell Sub-Section Done)
 
 Core infra activation — Supabase Auth exercised for the first time ever (Nick signed in live, landed on the real board, sign-out verified). Full owner path shipped in one fold: `src/proxy.ts` session-refresh/unauth wall (Next 16 proxy), `/login` + server actions, `(admin)` gate via `is_fantasy_admin` RPC, the admin-only RSC draft route → `DraftBoardShell` (header with league selector, platform badge, ADP freshness; table/sidebar regions placeholder until the player-list sub-section). Unauth responses asserted free of league/admin data. Flagged: dark-only Sleeper palette still unapplied (scaffold light tokens live) — next-fold candidate. Next: 03a player list.
@@ -30,12 +36,6 @@ Core infra activation — the data pipeline now runs itself. Three secret-gated 
 ## 2026-07-22 — Governance: Wave 2 ESPN Blocked on External Timing; Build Path Re-Routed
 
 ESPN leagues are commissioner-locked until 2026 season setup (~2026-08-19 → 2026-09-02) — the Wave 2 ESPN manual items can't exist until then. Dated blocker recorded (MANUAL_SETUP_CHECKLIST, STATE.yml); all 9 ESPN items in `02_data_pipeline.md` flipped `[!]`; no guessed/placeholder ESPN data ever (Nick's instruction). Build sessions now self-locate to the cron sub-section, then Wave 3a (ESPN-independent per BUILD_INDEX — gated on Nick's plain-chat ADP-source + board-league items). Wave 3b inherits the blocker.
-
----
-
-## 2026-07-22 — Sleeper Sync Surface Complete: Draft Ingestion + Per-League Orchestrator (Wave 2 Sub-Sections 1–2 Done)
-
-The whole Sleeper half of Wave 2's ingestion now runs as one command. `draft-state.ts` ingests the real league's full draft (170 picks, all matching Sleeper's wire exactly; first-write-wins verified — re-runs write 0); `sync-orchestrator.ts` chains config → rosters → matchups → draft per league with per-league failure isolation (verified live: a bad league fails cleanly, the next league syncs untouched). Client gained the deferred global rate-pacing gate (250ms). Next: ESPN sub-sections (blocked on Nick's public/private decisions) or cron sub-section.
 
 ---
 

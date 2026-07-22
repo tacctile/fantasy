@@ -3,6 +3,11 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_18 — Finality-promotion gap: investigated, designed, registered (non-code) + ADP source verified and picked
+
+- Finality gap confirmed exactly as recorded (current-week-only cron + lifecycle-status-only `is_final` writer; no reader exists in src). Wiki verdict: unbuilt, not undesigned — matchup-endpoint Key Decision #3 is the ADR; only the operational vehicle was missing. Two genuine-silence sub-decisions Nick-signed: week-advance as games-complete proxy; Friday-or-later UTC stable-read match as the promotion trigger. Registered as the `[>]` item in 02_data_pipeline.md's cron sub-section (deferred-not-unchecked encodes Wave-3a-first sequencing); hard deadline ~2026-09-15/18; not urgent now (offseason, zero affected rows, retroactively fixable).
+- Addendum turns: Wave 3a's two manual items ruled NOT season-gated. ADP source verification live-tested: Sleeper's undocumented `api.sleeper.com/projections/nfl/{year}` carries per-format `adp_*` fields keyed by native player_id (no auth); FantasyFootballCalculator and FantasyPros verified as alternates with identity-mapping costs; Underdog/ESPN rejected with wiki grounding. **Nick picked Sleeper** — MANUAL_SETUP items closed, Wave 3a fully unblocked. WIKI NOTE: projections endpoint is wiki-silent (postdates the notebook) — ingestion suggested before/alongside the ADP build session.
+
 ## 2026-07-22_17 — Wave 2 cron/polling sub-section (3-item fold; automated pipeline live)
 
 - Fold = full cron sub-section, built 1 → 3 → 2 (routes, sync_runs table, then vercel.json — the first-touch-of-Vercel-Cron hard stop last, nothing folded past it). Nick's Clarify decisions: Hobby plan with 2 daily crons (catalog 09:00 / league-state 10:00 UTC; 15-min cadence deferred to season start, item `[~]`), CRON_SECRET generated → `.env.local` + Vercel Production, scheduled league sync = current-week-only via `/state/nfl` (offseason skips matchups), draft route wired but unscheduled until 3b.
