@@ -3,6 +3,14 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-21_03 — Manual-setup walkthrough (non-code, all five Wave 1 items cleared)
+
+- Walked Nick through every open Wave 1 manual item one at a time: DB password reset + saved (`[~]`), Vercel project `fantasy` created and connected (`[x]`), Supabase env vars added to Vercel Production+Preview (`[x]`), admin auth decided — real email + Nick's own password, user not yet created (`[~]`), `.claude/logs/` gitignore negation approved (decision-only, applied later).
+- `[x]` vs `[~]` reasoning: `[x]` when nothing is left to hand a future session; `[~]` when a real secret string exists but hasn't been consumed yet.
+- Added "Decisions of record" section to MANUAL_SETUP_CHECKLIST.md for cross-cutting non-wave decisions.
+- Lesson: lead credential walkthroughs with the exact page/button path, not "do you have this" — Nick had never been shown the DB password.
+- PROGRESS.md not updated (no milestone). WIKI NOTE: none.
+
 ## 2026-07-21_02 — Wave 1 Supabase project + migration workflow (4 items, folded with Nick's approval)
 
 - Credentials pulled via Supabase MCP connector (URL + publishable key); only the secret key needed a paste from Nick. Captured in gitignored `.env.local`.
