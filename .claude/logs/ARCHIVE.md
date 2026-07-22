@@ -3,6 +3,15 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-21_04 — Build-file reconciliation vs external research (non-code; 03b/04/05 amendments)
+
+- Trades/waivers amended into Wave 5, not a new build file: read-only analysis surfaces over data Wave 5 already assembles, reusing its positional-breakdown component; Wave 5 unstarted so zero rework. Matches Amendment Norm's "genuine requirement change" exception.
+- Cross-cutting nav/IA split: Wave 4 owns the persistent sidebar shell + command-center home (new "Admin navigation shell" section); Wave 5 mounts into it and carries the cross-feature contextual-link guidance.
+- 03b BPA section rewritten to the full VORP/VBD mechanism with a hard constraint: need stays a separate signal, never blended/multiplied into base value. Tier-cliff, run-detection, and queue/auto-pick added as net-new sections (queue Sleeper-only per instruction).
+- Wave 5: presentation-layer edits only (luck/playoff calc logic untouched); playoff visuals explicitly non-probability-shaped (deterministic clinch/eliminate); unanimous chart anti-pattern list added as a standing constraint for the whole wave.
+- Waiver/FAAB scoring formula NOT invented — marked DEFERRED in the checklist itself + nick_pending entry.
+- PROGRESS.md not updated (scope amendment ≠ milestone). WIKI NOTE: none.
+
 ## 2026-07-21_03 — Manual-setup walkthrough (non-code, all five Wave 1 items cleared)
 
 - Walked Nick through every open Wave 1 manual item one at a time: DB password reset + saved (`[~]`), Vercel project `fantasy` created and connected (`[x]`), Supabase env vars added to Vercel Production+Preview (`[x]`), admin auth decided — real email + Nick's own password, user not yet created (`[~]`), `.claude/logs/` gitignore negation approved (decision-only, applied later).
