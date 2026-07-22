@@ -7,6 +7,18 @@ Newest entry on top.
 
 ---
 
+## 2026-07-21 — Wave 3b Build File Registered
+
+`.claude/build/03b_draft_assistant_live_draft.md` created and registered in `BUILD_INDEX.md`, using the same 6-model convergence-filtering methodology as Waves 1, 2, and 3a.
+
+**What's in scope:** manual click-to-draft write path (first-write-wins via the existing `(league_id, pick_number)` unique constraint, admin-only, with a manual-only undo action) shipped together with tuned high-frequency Sleeper and ESPN draft-state polling gated by an `is_draft_active` flag, both writing into the same shared `draft_state` table established in Wave 1 — no staged manual-first/poller-later sequencing, per the earlier scope reversal. Also includes client-side live sync (optimistic UI, conflict rollback, dedup), live extensions to the Wave 3a board (current-pick indicator, live roster/positional-need panel, recent-picks feed), and a BPA recommendation engine (ADP + positional scarcity + league_config scoring weights) wired into one-click draft actions.
+
+**Explicitly deferred:** rebuilding Wave 3a's static display primitives (extended, not replaced); scoring computation, standings/matchups, and the spectator surface remain Wave 4+.
+
+**Dependency:** requires Wave 3a (static board) and Wave 2's ESPN integration to be live.
+
+---
+
 ## 2026-07-21 — Wave 3a Build File Registered
 
 `.claude/build/03a_draft_assistant_static_board.md` created and registered in `BUILD_INDEX.md`, using the same 6-model convergence-filtering methodology as Waves 1 and 2.
