@@ -3,6 +3,13 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_01 — Wave 1 rosters (league-scoped state section begun)
+
+- One migration applied + verified live: `rosters` — composite PK `(league_id, native_roster_id)` per the sleeper-api/espn-api identity-pair decisions (season carried by the parent leagues row); `native_roster_id integer` as-received (both platforms' wire integers — the strings-only ID rule doesn't apply); `owner_native_id text` nullable (orphaned rosters normal) + `co_owner_native_ids text[] not null default '{}'` (primary never by array position); nullable `team_name`/`owner_display_name` populated by Wave 2 sync; `platform`/`season_year` duplicated (N:1 with leagues, unlike league_config's 1:1); FK cascade, RLS at creation, `set_updated_at`.
+- All four Clarify questions answered with the recommended options. Coverage map recorded pre-code; declared silence: schema-reference has no league-scoped-state DDL ADR — literal PK shape, native-ID type, owner-column shape, display columns resolved via Clarify. Report: gap found and flagged.
+- Log cap triggered: 2026-07-21_03 condensed here, deleted.
+- WIKI NOTE (standing, first raised here): suggest a schema-reference "league-scoped state tables" DDL addendum ADR so the remaining state-table sessions and Wave 2 ingestion read decisions instead of reconstructing them.
+
 ## 2026-07-21_07 — Wave 1 league_config (league + config section complete)
 
 - One migration applied + verified live: `league_config` — `league_id uuid` PK doubling as FK → `leagues.platform_league_uuid` on delete cascade (1:1 extension); three NOT NULL jsonb columns (`scoring_settings_raw`, `roster_settings_raw`, `derived_config`); timestamps + `set_updated_at`; RLS at creation.
