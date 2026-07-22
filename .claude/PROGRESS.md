@@ -7,6 +7,20 @@ Newest entry on top.
 
 ---
 
+## 2026-07-21 — Wave 6 Build File Registered (Build-Queue Scoping Complete)
+
+`.claude/build/06_report_and_tools.md` created and registered in `BUILD_INDEX.md`, using the same 6-model convergence-filtering methodology as Waves 1, 2, 3a, 3b, 4, and 5. This is the final wave in the v1 roadmap — all six waves are now registered, scoped build files.
+
+**What's in scope:** a league report generator that composes existing Wave 4/5 data (standings, matchups, power rankings, luck summary, playoff status) into a stored, versioned DTO and renders it as a mobile-first artifact through the existing share-token-gated spectator path, with an admin-side generate/regenerate action; a read-only, admin-only free agent board (Sleeper catalog minus rostered players, ESPN resolved through the crosswalk, filter/sort/search, never a waiver write); and app-shell-only PWA installability (manifest, icons, a service worker caching only static shell assets, offline fallback, production-only registration) that does not blur the admin/spectator access boundary.
+
+**Explicitly deferred/excluded:** recomputing any Wave 4/5 data (report only composes it); executing any waiver claim/add/drop; any historical/multi-season report; push notifications or background sync.
+
+**Dependency:** requires Wave 4 (dashboard data) and Wave 5 (eye-candy data) to be live; requires Wave 2's Sleeper/ESPN sync and crosswalk for free-agent availability.
+
+**Why this milestone matters:** with all six waves scoped, the project's build-queue planning phase is complete. Every wave from `BUILD_INDEX.md`'s roadmap now has a registered, convergence-filtered build file (01 through 06). None have been executed yet — the next session should begin execution with Wave 1 (Foundation), in dependency order.
+
+---
+
 ## 2026-07-21 — Wave 5 Build File Registered
 
 `.claude/build/05_eye_candy.md` created and registered in `BUILD_INDEX.md`, using the same 6-model convergence-filtering methodology as Waves 1, 2, 3a, 3b, and 4.
