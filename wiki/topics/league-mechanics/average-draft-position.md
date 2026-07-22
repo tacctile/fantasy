@@ -24,6 +24,7 @@ related:
   - league-mechanics/breakout-candidate-modeling
   - in-season-management/reach-vs-value-detection-draft-day
   - league-mechanics/multi-platform-adp-divergence
+  - sleeper-api/projections-endpoint
 ---
 
 ## Summary

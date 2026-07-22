@@ -19,6 +19,7 @@ related:
   - sleeper-api/trending-endpoint
   - sleeper-api/dst-and-free-agents
   - sleeper-api/player-data-quirks
+  - sleeper-api/projections-endpoint
 ---
 
 ## Summary

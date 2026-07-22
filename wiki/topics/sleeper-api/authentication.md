@@ -17,6 +17,7 @@ related:
   - sleeper-api/roster-endpoint
   - sleeper-api/league-endpoint
   - sleeper-api/rate-limits
+  - sleeper-api/projections-endpoint
 ---
 
 ## Summary
