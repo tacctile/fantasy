@@ -7,6 +7,18 @@ Newest entry on top.
 
 ---
 
+## 2026-07-21 — Wave 2 Build File Registered
+
+`.claude/build/02_data_pipeline.md` created and registered in `BUILD_INDEX.md`, using the same 6-model convergence-filtering methodology as Wave 1.
+
+**What's in scope:** Sleeper client + player-catalog sync (validated first, no-auth), Sleeper league-config/rosters/matchups sync, Sleeper draft-state write path into the Wave-1-created shared `draft_state` table; isolated ESPN client with per-league public/private detection (never assumed), encrypted cookie storage, ESPN↔Sleeper crosswalk resolution, ESPN league-config/rosters sync, ESPN draft-state polling into the same shared `draft_state` table; explicit error isolation on every ESPN operation so its fragile, unversioned API can never cascade failures into Sleeper-sourced features; Vercel Cron scheduling plus a sync-run tracking table for pipeline health visibility.
+
+**Explicitly deferred:** applying league scoring rules to compute `player_scores` (Wave 4), the manual click-to-draft write path (Wave 3 — this wave only builds the two automated write paths into the shared table), any client-side polling/UI (Wave 3/4), live-draft-day polling cadence tuning (Wave 3).
+
+**Dependency:** Wave 2 requires Wave 1's schema (`players`, `leagues`, `league_config`, `rosters`, `matchups`, `draft_state`, ESPN crosswalk table) to already be live — must execute after Wave 1, not in parallel.
+
+---
+
 ## 2026-07-21 — Wave 1 Build File Registered (First Registered Build File)
 
 `.claude/build/01_foundation.md` created and registered in `BUILD_INDEX.md`'s Build Files Registry — the first entry in that table since the governance scaffold was established. This is the first concrete, executable scope for actual application code in this project.

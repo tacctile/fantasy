@@ -54,6 +54,7 @@ Each feature gets a numbered file at `.claude/build/NN_FEATURE_NAME.md`, registe
 | # | File | Wave | Status |
 | - | ---- | ---- | ------ |
 | 01 | [01_foundation.md](build/01_foundation.md) | 1 | ⬜ |
+| 02 | [02_data_pipeline.md](build/02_data_pipeline.md) | 2 | ⬜ |
 
 ---
 

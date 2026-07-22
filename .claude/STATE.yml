@@ -2,19 +2,20 @@
 # Living "what happened last session" file. Overwritten completely at the end of every session — never patched.
 # Last Updated: 2026-07-21
 
-current_focus: "Wave 1 (Foundation) build file registered and scoped: .claude/build/01_foundation.md. Scoped by convergence-filtering 6 independent AI panel responses against BUILD_INDEX.md's Wave 1 bullet, same methodology as wiki ingestion. Ready to execute — next session should be a feature-build session against this build file."
+current_focus: "Wave 1 (Foundation) and Wave 2 (Data Pipeline) build files registered and scoped: .claude/build/01_foundation.md and .claude/build/02_data_pipeline.md. Both scoped by convergence-filtering 6 independent AI panel responses per wave against BUILD_INDEX.md's scope bullets, same methodology as wiki ingestion. Wave 2 depends on Wave 1's schema being live — execute in order. Ready to execute — next session should be a feature-build session against 01_foundation.md."
 
 build_system:
   index: ".claude/BUILD_INDEX.md"
   files_location: ".claude/build/"
-  total_files: 1
-  next_build_file_number: 2
+  total_files: 2
+  next_build_file_number: 3
   current_build_files:
     - ".claude/build/01_foundation.md"
+    - ".claude/build/02_data_pipeline.md"
 
 nick_pending:
-  - "Kick off the Wave 1 (Foundation) feature-build session against .claude/build/01_foundation.md."
-  - "Confirm ESPN league visibility (public vs. private) for each ESPN league being connected, before ESPN cookie-auth work begins for that league (Wave 2, not a Wave 1 blocker)."
+  - "Kick off the Wave 1 (Foundation) feature-build session against .claude/build/01_foundation.md — Wave 2 depends on it and should not start first."
+  - "Confirm ESPN league visibility (public vs. private) for each ESPN league being connected, before ESPN cookie-auth work begins for that league (Wave 2 build file already accounts for per-league detection either way, but manual confirmation still speeds validation)."
 
 blockers: []
 

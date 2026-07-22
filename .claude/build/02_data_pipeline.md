@@ -1,0 +1,73 @@
+# 02_data_pipeline.md
+**Wave 2 — Data Pipeline**
+**Status:** ⬜ Not started
+**Registered:** 2026-07-21
+
+---
+
+## Scope
+
+Sleeper sync built and validated first (no-auth, trivial case), then ESPN cookie-auth integration (harder, isolated defensively so its failures never cascade to Sleeper-sourced features), plus the cron/polling strategy that keeps both current. Depends on Wave 1's schema being live (`players`, `leagues`, `league_config`, `rosters`, `matchups`, `draft_state`, ESPN crosswalk table all already exist per `01_foundation.md`). Scoring calculation (applying league rules to raw stats) and any client-facing UI/polling hooks are explicitly out of scope — this wave is server-side ingestion only.
+
+This build file was scoped by convergence-filtering 6 independent AI panel responses against `BUILD_INDEX.md`'s Wave 2 bullet, same methodology used for Wave 1 and for `wiki/` discovery ingestion.
+
+---
+
+## WIKI PAGES TO CONSULT
+
+Read these before starting, per Session-Start Protocol (max 3 unless the task genuinely needs more):
+
+- `wiki/topics/sleeper-api/players-endpoint.md` — bulk player fetch shape, caching/freshness cadence
+- `wiki/topics/espn-api/authentication.md` — cookie model, public/private detection, validation-driven refresh
+- `wiki/topics/espn-api/rate-limits-and-blocking.md` — silent-degradation failure pattern, caching as mitigation
+
+Consult additional `sleeper-api`/`espn-api` pages as needed per specific endpoint (roster, matchup, draft-detail response-structure pages) — the three above are the mandatory minimum.
+
+---
+
+## Checklist
+
+### Sleeper — client + player catalog (build and validate first, no auth required)
+- [ ] Build a typed, server-only Sleeper HTTP client (no auth headers, request timeout, structured error translation) — isolated module, reusable across all Sleeper endpoints
+- [ ] Implement full player-catalog fetch (`/players/nfl`) and bulk upsert into `players`, keyed on `sleeper_player_id` — per `sleeper-api/players-endpoint.md`, this is a large (~5MB+) payload; must be fetched at most once per day, never more often
+- [ ] Handle players no longer present in a completed catalog response — mark inactive, never delete (preserves historical roster/draft references)
+
+### Sleeper — league-scoped sync
+- [ ] Implement Sleeper league metadata fetch (`/league/{league_id}`) → transform and upsert into `league_config` (scoring settings, roster slots as JSONB data, never hardcoded)
+- [ ] Implement Sleeper rosters + users fetch → upsert into `rosters`/roster-players tables, scoped by `league_id` + `platform` + `season_year`
+- [ ] Implement Sleeper weekly matchups fetch → upsert into `matchups`, scoped by `league_id` + `season_year` + week
+- [ ] Implement Sleeper draft-state fetch (`/draft/{draft_id}/picks`) → write into the shared `draft_state` table (schema from Wave 1) using `source='sleeper_poll'`; this write path shares the same first-write-wins unique constraint that manual entry and ESPN polling will also use in Wave 3 — Wave 2 only needs the Sleeper write path working correctly against that shared table, not the manual/ESPN paths themselves
+- [ ] Build a per-league Sleeper sync orchestrator that runs the above in dependency order (league config → rosters → matchups) and isolates a single bad league response from blocking sync of the other connected Sleeper leagues
+
+### ESPN — isolated client + per-league access detection
+- [ ] Build a dedicated, server-only ESPN HTTP client, structurally separate from the Sleeper client (no shared code path) — accepts `espn_s2`/`SWID` cookies only when actually needed
+- [ ] Implement per-league public/private detection: attempt an unauthenticated request first; only fall back to cookie-authenticated request if that fails — per `espn-api/authentication.md`, never assume private/cookie-auth is required without checking
+- [ ] Implement encrypted storage/retrieval for `espn_s2`/`SWID` per private league — cookies never reach the browser, never stored plaintext
+- [ ] Implement cookie validation (a minimal authenticated test call) so an expired/invalid cookie pair degrades only that specific league's ESPN sync, not the whole ESPN pipeline
+
+### ESPN — player identity + league-scoped sync
+- [ ] Implement ESPN↔Sleeper player crosswalk resolution using the Wave 1 crosswalk table — every ESPN player reference must resolve to a `sleeper_player_id` before being persisted; unresolved mappings are recorded explicitly, never silently dropped, never used to create a parallel identity row
+- [ ] Implement ESPN league metadata sync → `league_config`, using the same JSONB-as-data pattern as the Sleeper path (no hardcoded scoring assumptions, no ESPN-specific special-casing in application logic beyond the sync layer itself)
+- [ ] Implement ESPN rosters sync → `rosters`, resolving every roster player through the crosswalk before insert
+- [ ] Implement ESPN draft-state polling → same shared `draft_state` table, `source='espn_poll'`, same first-write-wins constraint as the Sleeper path
+- [ ] Wrap every ESPN fetch/parse/upsert operation in explicit error isolation (try/catch → log → skip that league → continue) — this is the single most-corroborated requirement across the panel: ESPN's fragile, unversioned API must never take down Sleeper-sourced features or other ESPN leagues' sync
+
+### Cron / polling strategy
+- [ ] Add authenticated Vercel Cron route(s) — protected by a secret header/token, not publicly invokable
+- [ ] Configure `vercel.json` cron schedule: daily player-catalog refresh (low frequency, respects the once-per-day Sleeper guidance), regular league-state sync (rosters/matchups/config) at a reasonable cadence, and a separate faster cadence path reserved for active-draft polling (the polling frequency itself is tuned in Wave 3 once the draft UI consumes it — Wave 2 just needs the scheduling mechanism and route wired correctly)
+- [ ] Add a sync-run tracking table (source, league_id, platform, status, started_at/completed_at, record counts, error summary) so sync health is visible without digging through Vercel logs — this is what makes ESPN's isolated failures actually diagnosable rather than just silently swallowed
+
+---
+
+## Explicitly NOT in this wave
+
+- Applying league scoring rules to raw stats to compute `player_scores` (Wave 4 — dashboard/scoring display consumes this)
+- Manual click-to-draft write path (Wave 3 — this wave only builds the Sleeper and ESPN automated write paths into the already-shared `draft_state` table)
+- Any client-side polling hooks, Realtime subscriptions, or UI of any kind (Wave 3/4)
+- Live/aggressive draft-day polling cadence tuning (Wave 3, once the draft board actually needs it)
+
+---
+
+## Session-End requirements (per COMPLETION_TEMPLATES.md)
+
+Use the `feature-build` report template. Update `STATE.yml` completely, log to `.claude/logs/`, update this file's checklist items, update `ARCHITECTURE.md`'s Service API Reference section (this wave is the first to populate real service/sync-layer code).
