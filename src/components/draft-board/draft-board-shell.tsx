@@ -34,7 +34,7 @@ export default function DraftBoardShell({
       <DraftBoardHeader context={context} leagues={leagues} />
       <div className="flex min-h-0 flex-1">
         <section aria-label="Player board" className="min-w-0 flex-1 p-4">
-          <PlayerBoard players={players} />
+          <PlayerBoard players={players} context={context} />
         </section>
         <aside
           aria-label="Roster panel"

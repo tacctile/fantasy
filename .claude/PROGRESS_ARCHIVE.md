@@ -144,4 +144,10 @@ ESPN leagues are commissioner-locked until 2026 season setup (~2026-08-19 → 20
 
 ---
 
+## 2026-07-22 — Automated Pipeline Live: Vercel Cron Surface + sync_runs Telemetry (Cron Sub-Section Done)
+
+Core infra activation — the data pipeline now runs itself. Three secret-gated cron routes (`/api/cron/sync-players|sync-leagues|sync-draft`), `sync_runs` telemetry table (migration `20260722160525`) with a once-per-day catalog guard, and two daily Vercel crons (Hobby cap — 15-min league cadence deferred to season start, item `[~]`; draft route unscheduled until 3b). Verified live in production: 401s unauthenticated, guard skip, full league-state run, cron registration confirmed. Next: Wave 3a, gated on its two plain-chat MANUAL_SETUP items (ADP source, board leagues).
+
+---
+
 _End of PROGRESS_ARCHIVE.md_

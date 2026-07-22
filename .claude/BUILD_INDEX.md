@@ -1,6 +1,6 @@
 # BUILD_INDEX.md
 **Master build router — tacctile/fantasy**
-**Last Updated:** 2026-07-22 (Wave 3a 🟡, 4 of 5 sub-sections done — `03a_draft_assistant_static_board.md`: ADP schema + ingestion, draft-board data layer, route + page shell, and player list (the board is a working feature; bye week `[>]` pending a schedule-derived source) complete; states + resilience next. `02_data_pipeline.md` stays 🟡: 9 ESPN items `[!]` external-timing, cron cadence `[~]`, finality promotion `[>]`. Prior: Wave 1 complete — `01_foundation.md` 🟢)
+**Last Updated:** 2026-07-22 (Wave 3a 🟡 — ALL FIVE sub-sections of `03a_draft_assistant_static_board.md` complete (states + resilience shipped: loading skeleton, empty states, route error boundary); sole remainder is the bye-week `[>]` deferral, schedule-source-gated. No `[ ]` item exists in 02 or 03a — the next self-locatable item sits in 03b, which is ESPN-blocked; Wave-4-ahead-of-3b is Nick's call (see STATE.yml nick_pending). `02_data_pipeline.md` stays 🟡: 9 ESPN items `[!]` external-timing, cron cadence `[~]`, finality promotion `[>]`. Prior: Wave 1 complete — `01_foundation.md` 🟢)
 
 Nothing gets built without a registered build file. No exceptions. Every new feature requires a registered build file in this index before a single line of code is written.
 
@@ -37,7 +37,7 @@ Atomic sessions per the Folding Policy (canonical text in `BUILD_PROTOCOL.md`): 
 | ---- | ---- | ------ | ----- |
 | 1 | Foundation | 🟢 | Supabase schema (with `league_id`, `platform`, `season_year`, player-identity mapping, `league_config` per MASTER_CONTEXT.md Schema Rules), env/secrets setup, initial Vercel deploy — complete 2026-07-22, deployed health-check gate passed |
 | 2 | Data Pipeline | 🟡 | Sleeper sync (build/validate first — no-auth, trivial case), then ESPN cookie-auth integration (harder, isolate failures defensively), cron/polling strategy |
-| 3a | Draft Assistant — Static Board | ⬜ | Static draft board UI, ADP ingestion, no live polling |
+| 3a | Draft Assistant — Static Board | 🟡 | Static draft board UI, ADP ingestion, no live polling — all five sub-sections complete 2026-07-22; only the bye-week `[>]` deferral remains |
 | 3b | Draft Assistant — Live Draft | ⬜ | Manual click-to-draft AND live ESPN draft polling ship together — both write to the same shared `draft_state` table, first-write-wins, no staged manual-first/poller-later sequencing. BPA recommendation engine. Depends on 3a and Wave 2 (ESPN integration) |
 | 4 | League Dashboard | ⬜ | Standings, matchups, power rankings, player cards. Includes the read-only share-link surface (per `MASTER_CONTEXT.md` Access Model) — same dashboard data, gated by `share_token` instead of owner auth, not a separate later build. Also owns the admin surface's persistent sidebar navigation shell and command-center home, which Wave 5 and Wave 6 mount into |
 | 5 | Eye Candy | ⬜ | Score charts, lucky/unlucky tracker, positional breakdowns, playoff picture, trade evaluation, waiver/FAAB recommendations (trade + waiver amended into scope 2026-07-21 — see 05_eye_candy.md scope note; waiver scoring formula itself deferred to a follow-up session) |

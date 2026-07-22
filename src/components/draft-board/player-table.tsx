@@ -2,9 +2,11 @@
 
 import { ChevronDown, ChevronUp } from 'lucide-react'
 
+import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import type { DraftBoardPlayer } from '@/services/draft-board'
 
+import BoardEmptyState from './board-empty-state'
 import PlayerRow from './player-row'
 import type { SortDirection, SortKey } from './use-player-list'
 
@@ -13,6 +15,11 @@ interface PlayerTableProps {
   sortKey: SortKey
   sortDirection: SortDirection
   onSortChange: (key: SortKey) => void
+  /** Full pool size, for honest context in the zero-match empty state. */
+  totalCount: number
+  /** Whether any filter is narrowing the pool (drives the clear action). */
+  hasActiveFilters: boolean
+  onClearFilters: () => void
 }
 
 const SORTABLE_COLUMNS: Array<{
@@ -83,6 +90,9 @@ export default function PlayerTable({
   sortKey,
   sortDirection,
   onSortChange,
+  totalCount,
+  hasActiveFilters,
+  onClearFilters,
 }: PlayerTableProps) {
   const [nameColumn, adpColumn, posRankColumn] = SORTABLE_COLUMNS
   return (
@@ -130,15 +140,28 @@ export default function PlayerTable({
         </thead>
         <tbody>
           {players.length === 0 ? (
-            // Minimal functional fallback only — the designed zero-match
-            // empty state (with a clear next action) is the next
-            // sub-section's registered item.
+            // Zero-match empty state: the header row stays visible for
+            // column context; the clear action resets filters only, never
+            // the chosen sort. hasActiveFilters is defensively checked —
+            // zero matches with no active filter means an empty pool, which
+            // PlayerBoard renders as its own full-region state before the
+            // table ever mounts.
             <tr>
-              <td
-                colSpan={6}
-                className="px-3 py-8 text-center text-sm text-muted-foreground"
-              >
-                No players match the active filters.
+              <td colSpan={6} className="p-0">
+                <BoardEmptyState
+                  title="No players match the active filters"
+                  detail={`${totalCount} players are on the board.`}
+                >
+                  {hasActiveFilters && (
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={onClearFilters}
+                    >
+                      Clear filters
+                    </Button>
+                  )}
+                </BoardEmptyState>
               </td>
             </tr>
           ) : (
