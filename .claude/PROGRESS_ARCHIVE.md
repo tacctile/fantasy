@@ -84,4 +84,10 @@ First schema migrations live in Supabase: `platform` enum, `players` (Sleeper-an
 
 ---
 
+## 2026-07-21 — Governance: Wiki Coverage Rule (Absolute Rule 12)
+
+New non-negotiable rule affecting all future build sessions, born from this session's provenance audit: a mandatory pre-implementation wiki coverage map (every decision → its covering wiki page, before code), ROUTING.md/index.md search before any general-knowledge fill regardless of page budget, explicit at-decision-time declaration of genuine wiki silence, and a mandatory `WIKI COVERAGE CHECK:` line on every completion report. Canonical text in BUILD_PROTOCOL.md; restated in MASTER_CONTEXT.md (Rule 12), BUILD_INDEX.md, COMPLETION_TEMPLATES.md.
+
+---
+
 _End of PROGRESS_ARCHIVE.md_

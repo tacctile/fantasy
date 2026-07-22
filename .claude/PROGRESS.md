@@ -9,6 +9,12 @@ Newest entry on top.
 
 ---
 
+## 2026-07-22 — WAVE 1 COMPLETE: Deployed Health-Check Gate Passed, `01_foundation.md` 🟢
+
+Full checklist completion — the first build file finished. The final item shipped `/api/health` (public, minimal `{ ok }`) plus the deferred secret-key admin client; deployed production returned 200 `{"ok":true}` on a real authenticated read, functionally proving the Vercel env vars and end-to-end DB reachability. Registry + roadmap rows flipped 🟢. Next in roadmap order: `02_data_pipeline.md` (Wave 2 — all its MANUAL_SETUP items still open: Sleeper league ID, ESPN public/private decisions, cookies).
+
+---
+
 ## 2026-07-22 — Vercel Deploy Pipeline Verified Live + Env Contract Committed (Wave 1)
 
 Core infra activation: the GitHub→Vercel pipeline is confirmed working end-to-end — this session's env-contract push auto-deployed to production and reached READY (~23s build; project `fantasy`, nextjs preset; Supabase env vars in place from the manual setup). Committed `.env.example` documents the full contract: modern Supabase key pair, CLI-only DB password, and Wave 2 ESPN cookie placeholders carrying the wiki's wire-format rules. One Wave 1 item remains: the deployed health-check read — the wave's completion gate.
@@ -30,12 +36,6 @@ The entire Wave 1 schema block is now built and verified live. The integrity fol
 ## 2026-07-22 — Governance: Folding Policy Replaces One-Item-Per-Session Cadence
 
 Session scope unit redefined for all future build sessions: up to 3 decision-dense items, one mechanical sub-section, or one independently verifiable artifact's full item set per session — with hard stops, a live-behavior ceiling (Wave 3b), and 5 named singleton exceptions. Canonical text in BUILD_PROTOCOL.md; restated in MASTER_CONTEXT.md (Rule 1) and BUILD_INDEX.md. Also resolved 03b's auto-pick contradiction per Nick's ruling: auto-pick is local-only, writing solely to this app's draft_state — never to Sleeper/ESPN (read-only rule reaffirmed, no exception created).
-
----
-
-## 2026-07-21 — Governance: Wiki Coverage Rule (Absolute Rule 12)
-
-New non-negotiable rule affecting all future build sessions, born from this session's provenance audit: a mandatory pre-implementation wiki coverage map (every decision → its covering wiki page, before code), ROUTING.md/index.md search before any general-knowledge fill regardless of page budget, explicit at-decision-time declaration of genuine wiki silence, and a mandatory `WIKI COVERAGE CHECK:` line on every completion report. Canonical text in BUILD_PROTOCOL.md; restated in MASTER_CONTEXT.md (Rule 12), BUILD_INDEX.md, COMPLETION_TEMPLATES.md.
 
 ---
 

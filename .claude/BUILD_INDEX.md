@@ -1,6 +1,6 @@
 # BUILD_INDEX.md
 **Master build router — tacctile/fantasy**
-**Last Updated:** 2026-07-22 (Folding Policy adopted — session unit redefined, canonical text in `BUILD_PROTOCOL.md`; prior: Wave 5 amended — trade evaluation and waiver/FAAB recommendations added; Wave 4 amended — admin navigation shell added)
+**Last Updated:** 2026-07-22 (Wave 1 complete — `01_foundation.md` 🟢, deployed health-check gate passed; next in roadmap order: `02_data_pipeline.md`. Prior: Folding Policy adopted — session unit redefined, canonical text in `BUILD_PROTOCOL.md`)
 
 Nothing gets built without a registered build file. No exceptions. Every new feature requires a registered build file in this index before a single line of code is written.
 
@@ -35,7 +35,7 @@ Atomic sessions per the Folding Policy (canonical text in `BUILD_PROTOCOL.md`): 
 
 | Wave | Name | Status | Scope |
 | ---- | ---- | ------ | ----- |
-| 1 | Foundation | 🟡 | Supabase schema (with `league_id`, `platform`, `season_year`, player-identity mapping, `league_config` per MASTER_CONTEXT.md Schema Rules), env/secrets setup, initial Vercel deploy |
+| 1 | Foundation | 🟢 | Supabase schema (with `league_id`, `platform`, `season_year`, player-identity mapping, `league_config` per MASTER_CONTEXT.md Schema Rules), env/secrets setup, initial Vercel deploy — complete 2026-07-22, deployed health-check gate passed |
 | 2 | Data Pipeline | ⬜ | Sleeper sync (build/validate first — no-auth, trivial case), then ESPN cookie-auth integration (harder, isolate failures defensively), cron/polling strategy |
 | 3a | Draft Assistant — Static Board | ⬜ | Static draft board UI, ADP ingestion, no live polling |
 | 3b | Draft Assistant — Live Draft | ⬜ | Manual click-to-draft AND live ESPN draft polling ship together — both write to the same shared `draft_state` table, first-write-wins, no staged manual-first/poller-later sequencing. BPA recommendation engine. Depends on 3a and Wave 2 (ESPN integration) |
@@ -53,7 +53,7 @@ Each feature gets a numbered file at `.claude/build/NN_FEATURE_NAME.md`, registe
 
 | # | File | Wave | Status |
 | - | ---- | ---- | ------ |
-| 01 | [01_foundation.md](build/01_foundation.md) | 1 | 🟡 |
+| 01 | [01_foundation.md](build/01_foundation.md) | 1 | 🟢 |
 | 02 | [02_data_pipeline.md](build/02_data_pipeline.md) | 2 | ⬜ |
 | 03a | [03a_draft_assistant_static_board.md](build/03a_draft_assistant_static_board.md) | 3a | ⬜ |
 | 03b | [03b_draft_assistant_live_draft.md](build/03b_draft_assistant_live_draft.md) | 3b | ⬜ |
