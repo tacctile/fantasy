@@ -9,6 +9,12 @@ Newest entry on top.
 
 ---
 
+## 2026-07-22 — Automated Pipeline Live: Vercel Cron Surface + sync_runs Telemetry (Cron Sub-Section Done)
+
+Core infra activation — the data pipeline now runs itself. Three secret-gated cron routes (`/api/cron/sync-players|sync-leagues|sync-draft`), `sync_runs` telemetry table (migration `20260722160525`) with a once-per-day catalog guard, and two daily Vercel crons (Hobby cap — 15-min league cadence deferred to season start, item `[~]`; draft route unscheduled until 3b). Verified live in production: 401s unauthenticated, guard skip, full league-state run, cron registration confirmed. Next: Wave 3a, gated on its two plain-chat MANUAL_SETUP items (ADP source, board leagues).
+
+---
+
 ## 2026-07-22 — Governance: Wave 2 ESPN Blocked on External Timing; Build Path Re-Routed
 
 ESPN leagues are commissioner-locked until 2026 season setup (~2026-08-19 → 2026-09-02) — the Wave 2 ESPN manual items can't exist until then. Dated blocker recorded (MANUAL_SETUP_CHECKLIST, STATE.yml); all 9 ESPN items in `02_data_pipeline.md` flipped `[!]`; no guessed/placeholder ESPN data ever (Nick's instruction). Build sessions now self-locate to the cron sub-section, then Wave 3a (ESPN-independent per BUILD_INDEX — gated on Nick's plain-chat ADP-source + board-league items). Wave 3b inherits the blocker.
@@ -30,12 +36,6 @@ Nick's league "10 enter 1 Leaves" (2025, 10-team full-PPR) fully ingested end-to
 ## 2026-07-22 — Wave 2 Begun: First Live Data Ingestion — Sleeper Player Catalog Synced (12,200 Players)
 
 First working Wave 2 feature. The full "Sleeper — client + player catalog" sub-section shipped as one fold: typed server-only Sleeper client (`src/services/sleeper/`), validate-before-persist catalog sync, and catalog-presence inactive marking (two new `players` columns, migration `20260722134911`). Live verification: 12,200 players fetched and upserted into production `players` in ~33s via `npm run sync:players`; D/ST abbreviation IDs and metadata's cross-provider ID block confirmed intact. Next: Sleeper league-scoped sync (needs a real league ID — open MANUAL_SETUP item).
-
----
-
-## 2026-07-22 — WAVE 1 COMPLETE: Deployed Health-Check Gate Passed, `01_foundation.md` 🟢
-
-Full checklist completion — the first build file finished. The final item shipped `/api/health` (public, minimal `{ ok }`) plus the deferred secret-key admin client; deployed production returned 200 `{"ok":true}` on a real authenticated read, functionally proving the Vercel env vars and end-to-end DB reachability. Registry + roadmap rows flipped 🟢. Next in roadmap order: `02_data_pipeline.md` (Wave 2 — all its MANUAL_SETUP items still open: Sleeper league ID, ESPN public/private decisions, cookies).
 
 ---
 

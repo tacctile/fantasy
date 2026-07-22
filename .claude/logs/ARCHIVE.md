@@ -3,6 +3,12 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_12 — Wave 1 health-check gate (WAVE 1 COMPLETE)
+
+- Final Wave 1 item as a single-item fold: `/api/health` (public, force-dynamic, minimal `{ ok }`, real error server-logged only) + the deferred secret-key admin client `src/lib/supabase/admin.ts` (same-name `createClient` convention; non-`NEXT_PUBLIC_` secret fails loudly if client-bundled). All three Clarify recommendations accepted: secret-key path (no password handoff ever needed), public exposure, minimal response.
+- Declared silence: no wiki category for deploy/route tooling (continuing trail — deliberately below-wiki-altitude). Blast radius: read-only head-count on `leagues` only.
+- Completion gate passed live: local 200 → push `2e44b40` → auto-deploy READY ~22s → production `GET /api/health` **200 `{"ok":true}`**, functionally proving Vercel env vars + end-to-end DB reachability. `01_foundation.md` → 🟢; BUILD_INDEX registry + roadmap flipped. Session-end: log cap rotated _07 into ARCHIVE; PROGRESS cap rolled the Wiki-Coverage-Rule entry to archive; STATE.yml pointer moved to `02_data_pipeline.md`. WIKI NOTE: tooling silence only, no action urged.
+
 ## 2026-07-22_11 — Wave 1 env/secrets/deploy fold (items 1–4; hard stop before health check)
 
 - `.env.example` contract committed (`0f94ac4`): modern Supabase key pair + CLI-only `SUPABASE_DB_PASSWORD` (Nick: include, marked never-set-in-Vercel) + Wave 2 ESPN placeholders named `ESPN_S2`/`ESPN_SWID` (Nick's Clarify choice) carrying `espn-api/format-requirements.md`'s wire rules (SWID literal braces, single-layer encoding, never re-encode). Contract documents actual var names, not the item's stale anon/service-role wording — handled by annotation, not amendment.

@@ -1,4 +1,4 @@
-# PROGRESS_ARCHIVE.md
+﻿# PROGRESS_ARCHIVE.md
 **Archive for entries rolled off PROGRESS.md — tacctile/fantasy**
 
 Entries move here when PROGRESS.md exceeds its 5-entry cap (oldest rolls off first). This file is append-only and not read as part of the standard Session-Start Protocol — consult it only when researching project history predating the 5 most recent milestones.
@@ -111,6 +111,12 @@ Permanent, zero-exception protection for the shared prolabel database's ~49 non-
 ## 2026-07-22 — Vercel Deploy Pipeline Verified Live + Env Contract Committed (Wave 1)
 
 Core infra activation: the GitHub→Vercel pipeline is confirmed working end-to-end — this session's env-contract push auto-deployed to production and reached READY (~23s build; project `fantasy`, nextjs preset; Supabase env vars in place from the manual setup). Committed `.env.example` documents the full contract: modern Supabase key pair, CLI-only DB password, and Wave 2 ESPN cookie placeholders carrying the wiki's wire-format rules. One Wave 1 item remains: the deployed health-check read — the wave's completion gate.
+
+---
+
+## 2026-07-22 — WAVE 1 COMPLETE: Deployed Health-Check Gate Passed, `01_foundation.md` 🟢
+
+Full checklist completion — the first build file finished. The final item shipped `/api/health` (public, minimal `{ ok }`) plus the deferred secret-key admin client; deployed production returned 200 `{"ok":true}` on a real authenticated read, functionally proving the Vercel env vars and end-to-end DB reachability. Registry + roadmap rows flipped 🟢. Next in roadmap order: `02_data_pipeline.md` (Wave 2 — all its MANUAL_SETUP items still open: Sleeper league ID, ESPN public/private decisions, cookies).
 
 ---
 
