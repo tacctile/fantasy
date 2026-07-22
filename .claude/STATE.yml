@@ -2,7 +2,7 @@
 # Living "what happened last session" file. Overwritten completely at the end of every session — never patched.
 # Last Updated: 2026-07-21
 
-current_focus: "All six waves of the v1 roadmap are registered and scoped as build files (01 through 06) and a pre-flight governance audit has been completed and fixed (draft_state.source enum corrected to include sleeper_poll, platform_league_uuid/native_league_id/previous_platform_league_uuid schema columns added to Wave 1, player_id_crosswalk expanded to the full ADR shape, admin auth decided as Supabase email/password, is_draft_active moved off spectator-readable tables, ADP source flagged unconfirmed pending verification). MANUAL_SETUP_CHECKLIST.md now uses a three-state model ([ ] open / [~] ready-awaiting-handoff / [x] done) so a build session doesn't falsely halt on infrastructure that already exists (Supabase project) versus infrastructure that's genuinely not created yet (Vercel project). Next session should be a feature-build session against 01_foundation.md, started via BUILD_PROTOCOL.md."
+current_focus: "Wave 1 (Foundation) execution started via BUILD_PROTOCOL.md. The entire Project scaffold section of 01_foundation.md (items 1-6) was completed in one session with Nick's explicit approval to fold the six tightly-coupled scaffold items: Next.js 16.2.11 (App Router, TypeScript strict, src/, npm) scaffolded and merged into the repo root; @/* → src/* alias verified via a real cross-directory import (@/lib/utils in page.tsx); shadcn/ui initialized (components.json, cssVariables: true, base-nova style, neutral base color); globals.css carries the full shadcn oklch token set with zero inline hex; lucide-react installed as the sole icon library; Tailwind v4 default spacing scale and tabular-nums confirmed in use on the placeholder shell. npm run build and npm run lint both pass. Next unchecked item: 'Create the Supabase project; capture SUPABASE_URL, anon key, service-role key' — the Supabase project already exists per MANUAL_SETUP_CHECKLIST.md ([~] ready-awaiting-handoff), so the next session asks Nick for the URL/keys in its Clarify step rather than halting."
 
 build_system:
   index: ".claude/BUILD_INDEX.md"
@@ -12,15 +12,17 @@ build_system:
     - ".claude/build/01_foundation.md"
 
 nick_pending:
-  - "Kick off the Wave 1 (Foundation) feature-build session against .claude/build/01_foundation.md via BUILD_PROTOCOL.md — every later wave depends on it."
-  - "Create the Vercel project and connect it to tacctile/fantasy (Supabase project already exists) — see MANUAL_SETUP_CHECKLIST.md Wave 1 section."
-  - "Have the admin auth email/password ready to hand to the Wave 1 build session when it reaches the RLS/auth step."
+  - "Next session (Supabase section of 01_foundation.md) will ask for: SUPABASE_URL, anon key, service-role key (project already exists — tszssadgsxjoymcttlwd), and will prompt you to run 'supabase login' interactively."
+  - "Create the Vercel project and connect it to tacctile/fantasy — still open ([ ]) in MANUAL_SETUP_CHECKLIST.md Wave 1; blocks the 'Create Vercel project' checklist item later in Wave 1, not the Supabase/schema items."
+  - "Have the admin auth email/password ready for the Wave 1 RLS/auth checklist item."
   - "Before Wave 3a: verify whether Sleeper actually has a public ADP endpoint, or decide a real alternative source — see MANUAL_SETUP_CHECKLIST.md Wave 3a section."
 
 blockers: []
 
-known_issues: []
+known_issues:
+  - "npm audit reports 3 vulns (1 moderate postcss, 2 high sharp) — all transitive inside next@16.2.11's own pinned deps; the only 'fix' npm offers is downgrading next to 9.x, which is wrong. Wait for upstream Next.js releases; re-check npm audit in later sessions."
 
-warnings: []
+warnings:
+  - "The repo-root .gitignore contains a bare 'logs' pattern (line 2, from the generic Node template) that ignores .claude/logs/ — session logs are written but never committed/pushed. Governance decision needed: add '!.claude/logs/' negation (making verbose logs part of the repo, visible cross-environment) or explicitly bless local-only logs. Not changed unilaterally this session — scaffold scope only."
 
 health: "clean"

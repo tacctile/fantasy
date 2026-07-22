@@ -3,19 +3,27 @@
 
 **Parent:** `.claude/MASTER_CONTEXT.md`
 
-**Last Updated:** 2026-07-18
+**Last Updated:** 2026-07-21
 
 ---
 
 ## Status
 
-Actual color/token values are decided in Wave 1 against a real UI, not fabricated here in advance. This file documents the *mechanism* fantasy's token system follows; the token set itself gets filled in as Wave 1+ builds components. Update this file at session end whenever tokens change, per `MASTER_CONTEXT.md`'s Session-End Steps.
+Wave 1 scaffold landed the shadcn default token set (neutral base, oklch color space) in `src/app/globals.css`. These are the working starting values — they get tuned against real UI as Wave 1+ builds actual surfaces, but the mechanism and names below are now live, not placeholders. Update this file at session end whenever tokens change, per `MASTER_CONTEXT.md`'s Session-End Steps.
 
 ---
 
+## Live Token Set (src/app/globals.css)
+
+- **Mechanism:** Tailwind v4 CSS-first theming — no `tailwind.config.*` file exists. `@theme inline` in `globals.css` maps Tailwind color/radius utilities onto shadcn CSS variables; `:root` and `.dark` blocks define the values (all oklch, zero hex).
+- **Color tokens (light + dark variants):** `--background`, `--foreground`, `--card`, `--card-foreground`, `--popover`, `--popover-foreground`, `--primary`, `--primary-foreground`, `--secondary`, `--secondary-foreground`, `--muted`, `--muted-foreground`, `--accent`, `--accent-foreground`, `--destructive`, `--border`, `--input`, `--ring`, `--chart-1`..`--chart-5`, `--sidebar` family
+- **Base palette:** shadcn neutral (achromatic oklch), dark mode via `.dark` class (`@custom-variant dark`)
+- **Radius:** `--radius: 0.625rem`; derived `--radius-sm`..`--radius-4xl` computed as multiples of `--radius`
+- **Fonts:** Geist on `--font-sans` (registered in `layout.tsx` via `next/font`), Geist Mono on `--font-geist-mono` (mapped to `--font-mono`)
+
 ## Token Discipline
 
-- Reference CSS variables per shadcn convention (`--background`, `--foreground`, `--radius`, etc.), defined in `globals.css` and extended via `tailwind.config`.
+- Reference CSS variables per shadcn convention (`--background`, `--foreground`, `--radius`, etc.), defined in `globals.css` (`@theme inline` — Tailwind v4 has no `tailwind.config` here).
 - Zero inline hex values in new components. If a color isn't available as a token, add it to the token set first.
 
 ## Scale Discipline

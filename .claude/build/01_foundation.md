@@ -1,6 +1,6 @@
 # 01_foundation.md
 **Wave 1 — Foundation**
-**Status:** ⬜ Not started
+**Status:** 🟡 In progress
 **Registered:** 2026-07-21
 
 ---
@@ -26,12 +26,12 @@ Read these before starting, per Session-Start Protocol (max 3 unless the task ge
 ## Checklist
 
 ### Project scaffold
-- [ ] Initialize Next.js (App Router, TypeScript strict, `src/` directory) via `create-next-app`
-- [ ] Configure `tsconfig.json` so `@/*` resolves to `src/*` — verify with one trivial cross-directory import
-- [ ] Install and initialize shadcn/ui; configure `components.json` for CSS-variable theming
-- [ ] Configure `globals.css` with shadcn token set (`--background`, `--foreground`, `--radius`, `--card`, `--border`, etc.) — zero inline hex anywhere
-- [ ] Install `lucide-react` as the sole icon library
-- [ ] Confirm Tailwind default spacing scale only (no arbitrary pixel values) and `font-variant-numeric: tabular-nums` available for data displays
+- [x] Initialize Next.js (App Router, TypeScript strict, `src/` directory) via `create-next-app`
+- [x] Configure `tsconfig.json` so `@/*` resolves to `src/*` — verify with one trivial cross-directory import
+- [x] Install and initialize shadcn/ui; configure `components.json` for CSS-variable theming
+- [x] Configure `globals.css` with shadcn token set (`--background`, `--foreground`, `--radius`, `--card`, `--border`, etc.) — zero inline hex anywhere
+- [x] Install `lucide-react` as the sole icon library
+- [x] Confirm Tailwind default spacing scale only (no arbitrary pixel values) and `font-variant-numeric: tabular-nums` available for data displays
 
 ### Supabase project + migration workflow
 - [ ] Create the Supabase project; capture `SUPABASE_URL`, anon key, service-role key

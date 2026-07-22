@@ -35,7 +35,7 @@ Atomic, one task per fresh Claude Code session. No scope bleed across sessions.
 
 | Wave | Name | Status | Scope |
 | ---- | ---- | ------ | ----- |
-| 1 | Foundation | ⬜ | Supabase schema (with `league_id`, `platform`, `season_year`, player-identity mapping, `league_config` per MASTER_CONTEXT.md Schema Rules), env/secrets setup, initial Vercel deploy |
+| 1 | Foundation | 🟡 | Supabase schema (with `league_id`, `platform`, `season_year`, player-identity mapping, `league_config` per MASTER_CONTEXT.md Schema Rules), env/secrets setup, initial Vercel deploy |
 | 2 | Data Pipeline | ⬜ | Sleeper sync (build/validate first — no-auth, trivial case), then ESPN cookie-auth integration (harder, isolate failures defensively), cron/polling strategy |
 | 3a | Draft Assistant — Static Board | ⬜ | Static draft board UI, ADP ingestion, no live polling |
 | 3b | Draft Assistant — Live Draft | ⬜ | Manual click-to-draft AND live ESPN draft polling ship together — both write to the same shared `draft_state` table, first-write-wins, no staged manual-first/poller-later sequencing. BPA recommendation engine. Depends on 3a and Wave 2 (ESPN integration) |
@@ -53,7 +53,7 @@ Each feature gets a numbered file at `.claude/build/NN_FEATURE_NAME.md`, registe
 
 | # | File | Wave | Status |
 | - | ---- | ---- | ------ |
-| 01 | [01_foundation.md](build/01_foundation.md) | 1 | ⬜ |
+| 01 | [01_foundation.md](build/01_foundation.md) | 1 | 🟡 |
 | 02 | [02_data_pipeline.md](build/02_data_pipeline.md) | 2 | ⬜ |
 | 03a | [03a_draft_assistant_static_board.md](build/03a_draft_assistant_static_board.md) | 3a | ⬜ |
 | 03b | [03b_draft_assistant_live_draft.md](build/03b_draft_assistant_live_draft.md) | 3b | ⬜ |

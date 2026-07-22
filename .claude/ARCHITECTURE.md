@@ -3,13 +3,41 @@
 
 **Parent:** `.claude/MASTER_CONTEXT.md`
 
-**Last Updated:** 2026-07-18
+**Last Updated:** 2026-07-21
 
 ---
 
 ## Status
 
-No application code exists yet. This file's inventory sections (Source Directory Structure, Service API Reference, Type Definitions, Build Configuration, CI/CD Pipeline, Testing Infrastructure, Supabase Infrastructure, Environment Variables) are populated as Wave 1 and later waves actually build things — not fabricated in advance. Update this file at session end whenever structure changes, per `MASTER_CONTEXT.md`'s Session-End Steps.
+Wave 1 Project scaffold complete: Next.js app shell exists and builds. Remaining inventory sections (Service API Reference, Type Definitions, Supabase Infrastructure, Environment Variables, CI/CD Pipeline, Testing Infrastructure) are populated as Wave 1's later items and subsequent waves actually build things — not fabricated in advance. Update this file at session end whenever structure changes, per `MASTER_CONTEXT.md`'s Session-End Steps.
+
+---
+
+## Source Directory Structure
+
+```
+src/
+  app/
+    layout.tsx      — root layout; registers Geist (--font-sans) + Geist Mono (--font-geist-mono), imports globals.css
+    page.tsx        — placeholder shell proving tokens/@-alias/lucide/tabular-nums; replaced by real surfaces in later waves
+    globals.css     — Tailwind v4 entry + full shadcn token set (see DESIGN_SYSTEM.md)
+    favicon.ico
+  components/
+    ui/             — shadcn-generated components (button.tsx so far); never hand-edited casually
+  lib/
+    utils.ts        — cn() class-merge helper (shadcn), named export
+public/             — static assets (default scaffold SVGs, replaceable)
+```
+
+## Build Configuration
+
+- **Next.js 16.2.11** — App Router, `src/` directory, Turbopack (default), TypeScript strict (`tsconfig.json`: `strict: true`, `isolatedModules: true`)
+- **Path alias:** `@/*` → `./src/*` (tsconfig `paths`; verified by real cross-directory import)
+- **Tailwind CSS v4** (`@tailwindcss/postcss`) — CSS-first config: no `tailwind.config.*` file; theme lives in `globals.css` via `@theme inline`. Default spacing scale only.
+- **shadcn/ui** — CLI 4.x, `components.json`: style `base-nova`, `cssVariables: true`, base color neutral, `iconLibrary: lucide`, aliases `@/components`, `@/components/ui`, `@/lib`, `@/lib/utils`, `@/hooks`
+- **ESLint** — flat config (`eslint.config.mjs`), `eslint-config-next`
+- **Package manager:** npm (package-lock.json committed). Node 24.x locally.
+- **Scripts:** `dev` (turbopack), `build`, `start`, `lint`
 
 ---
 

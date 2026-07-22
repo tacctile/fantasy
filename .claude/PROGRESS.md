@@ -7,6 +7,12 @@ Newest entry on top.
 
 ---
 
+## 2026-07-21 — Wave 1 Execution Started: First Working Application Code (Project Scaffold)
+
+First build session executed via `BUILD_PROTOCOL.md`. The entire Project scaffold section of `01_foundation.md` (six items, folded into one session with Nick's explicit approval) is complete: Next.js 16.2.11 (App Router, TypeScript strict, `src/`, npm), verified `@/*` alias, shadcn/ui with CSS-variable theming (neutral base, oklch, zero hex), lucide-react, Tailwind v4 default spacing + tabular-nums. `npm run build` and `npm run lint` pass. This is the repo's transition from pure governance/planning to working application code — the first working build of a registered build file's scope. Next: the Supabase project + migration workflow section of Wave 1.
+
+---
+
 ## 2026-07-21 — Wave 6 Build File Registered (Build-Queue Scoping Complete)
 
 `.claude/build/06_report_and_tools.md` created and registered in `BUILD_INDEX.md`, using the same 6-model convergence-filtering methodology as Waves 1, 2, 3a, 3b, 4, and 5. This is the final wave in the v1 roadmap — all six waves are now registered, scoped build files.
