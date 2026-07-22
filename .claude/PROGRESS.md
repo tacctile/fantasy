@@ -9,6 +9,12 @@ Newest entry on top.
 
 ---
 
+## 2026-07-22 — Governance: Wave 2 ESPN Blocked on External Timing; Build Path Re-Routed
+
+ESPN leagues are commissioner-locked until 2026 season setup (~2026-08-19 → 2026-09-02) — the Wave 2 ESPN manual items can't exist until then. Dated blocker recorded (MANUAL_SETUP_CHECKLIST, STATE.yml); all 9 ESPN items in `02_data_pipeline.md` flipped `[!]`; no guessed/placeholder ESPN data ever (Nick's instruction). Build sessions now self-locate to the cron sub-section, then Wave 3a (ESPN-independent per BUILD_INDEX — gated on Nick's plain-chat ADP-source + board-league items). Wave 3b inherits the blocker.
+
+---
+
 ## 2026-07-22 — Sleeper Sync Surface Complete: Draft Ingestion + Per-League Orchestrator (Wave 2 Sub-Sections 1–2 Done)
 
 The whole Sleeper half of Wave 2's ingestion now runs as one command. `draft-state.ts` ingests the real league's full draft (170 picks, all matching Sleeper's wire exactly; first-write-wins verified — re-runs write 0); `sync-orchestrator.ts` chains config → rosters → matchups → draft per league with per-league failure isolation (verified live: a bad league fails cleanly, the next league syncs untouched). Client gained the deferred global rate-pacing gate (250ms). Next: ESPN sub-sections (blocked on Nick's public/private decisions) or cron sub-section.
@@ -30,12 +36,6 @@ First working Wave 2 feature. The full "Sleeper — client + player catalog" sub
 ## 2026-07-22 — WAVE 1 COMPLETE: Deployed Health-Check Gate Passed, `01_foundation.md` 🟢
 
 Full checklist completion — the first build file finished. The final item shipped `/api/health` (public, minimal `{ ok }`) plus the deferred secret-key admin client; deployed production returned 200 `{"ok":true}` on a real authenticated read, functionally proving the Vercel env vars and end-to-end DB reachability. Registry + roadmap rows flipped 🟢. Next in roadmap order: `02_data_pipeline.md` (Wave 2 — all its MANUAL_SETUP items still open: Sleeper league ID, ESPN public/private decisions, cookies).
-
----
-
-## 2026-07-22 — Vercel Deploy Pipeline Verified Live + Env Contract Committed (Wave 1)
-
-Core infra activation: the GitHub→Vercel pipeline is confirmed working end-to-end — this session's env-contract push auto-deployed to production and reached READY (~23s build; project `fantasy`, nextjs preset; Supabase env vars in place from the manual setup). Committed `.env.example` documents the full contract: modern Supabase key pair, CLI-only DB password, and Wave 2 ESPN cookie placeholders carrying the wiki's wire-format rules. One Wave 1 item remains: the deployed health-check read — the wave's completion gate.
 
 ---
 

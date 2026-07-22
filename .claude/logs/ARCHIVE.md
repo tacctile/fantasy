@@ -3,6 +3,12 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_11 — Wave 1 env/secrets/deploy fold (items 1–4; hard stop before health check)
+
+- `.env.example` contract committed (`0f94ac4`): modern Supabase key pair + CLI-only `SUPABASE_DB_PASSWORD` (Nick: include, marked never-set-in-Vercel) + Wave 2 ESPN placeholders named `ESPN_S2`/`ESPN_SWID` (Nick's Clarify choice) carrying `espn-api/format-requirements.md`'s wire rules (SWID literal braces, single-layer encoding, never re-encode). Contract documents actual var names, not the item's stale anon/service-role wording — handled by annotation, not amendment.
+- Vercel verified live via MCP: project `fantasy` (`prj_SaeX3FOGNaO9X2AhQaNkOoKHippO`), team `nicks-projects-e170820e`, nextjs preset; repo link proven by deployment metadata (`source: git`, `tacctile/fantasy@bf858b9`). Env-var presence verified by MANUAL_SETUP record only (Vercel MCP has no env-listing tool) — functional proof deliberately deferred to the health-check gate. Item 4 satisfied via push-triggered auto-deploy (the actual production path, not CLI): `dpl_MfH3Xeic9XU1WFCzzjSvwph2QYsU` reached READY on the exact pushed SHA.
+- Fold terminated at item 4 by the first-external-service hard stop; health check (the wave completion gate) reserved for the next session. No live DB ops. WIKI NOTE: none.
+
 ## 2026-07-22_10 — Governance: Absolute Rule 13 installed (non-fantasy data untouchable)
 
 - Nick's six prohibitions installed substantially verbatim as MASTER_CONTEXT.md's "Shared Database Protection" canonical section + Absolute Rule 13 pointer: never `db reset`; never `migration repair` touching foreign history (stub files only); no raw SQL reaching non-fantasy tables with explicit pre-migration table-name verification against ARCHITECTURE.md's live inventory (declared the definitive fantasy-owned list); collision check forever; any ambiguity → stop and ask; mandatory blast-radius confirmation per live-DB session. Supersedes efficiency/folding/automation considerations.

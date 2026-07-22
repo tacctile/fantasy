@@ -108,4 +108,10 @@ Permanent, zero-exception protection for the shared prolabel database's ~49 non-
 
 ---
 
+## 2026-07-22 — Vercel Deploy Pipeline Verified Live + Env Contract Committed (Wave 1)
+
+Core infra activation: the GitHub→Vercel pipeline is confirmed working end-to-end — this session's env-contract push auto-deployed to production and reached READY (~23s build; project `fantasy`, nextjs preset; Supabase env vars in place from the manual setup). Committed `.env.example` documents the full contract: modern Supabase key pair, CLI-only DB password, and Wave 2 ESPN cookie placeholders carrying the wiki's wire-format rules. One Wave 1 item remains: the deployed health-check read — the wave's completion gate.
+
+---
+
 _End of PROGRESS_ARCHIVE.md_
