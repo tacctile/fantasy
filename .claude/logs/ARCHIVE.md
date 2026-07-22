@@ -3,6 +3,12 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_26 — Wave 4 scoring-engine correctness amendment + wave-order ruling (non-code)
+
+- Self-located via BUILD_PROTOCOL; found Wave 4's registered scoring-engine sub-section presumed a compute-from-raw-stats pipeline that Wave 2's shipped ingestion (player_scores as platform-scored, ingested as-received) directly contradicted — a one-day-old registration gap the backsweep practice hadn't caught since its own trigger predated the practice.
+- Nick-signed Clarify: amended the engine to platform-scored canon (items 1-4 cut with dated rationale, item 5 re-worded to freshness-surfacing only); FA-week gap (no score rows for weeks a player was on no roster) accepted for v1 as an honest not-rostered render, never invented. Also ruled Wave 4 authorized to run ahead of ESPN-blocked 3b (options: 4-ahead / close 03a's bye-week fold / hold ~4 weeks — Nick picked 4-ahead).
+- Files changed: 04_league_dashboard.md (ruling note, items 1-4 cut, item 5 reworded), 02_data_pipeline.md (exclusions superseded), BUILD_INDEX.md (wave order + roadmap), MANUAL_SETUP_CHECKLIST.md (decision of record), STATE.yml full overwrite, PROGRESS.md milestone entry. WIKI NOTE: sleeper-api has no page covering raw per-player weekly stats surfaces (not blocking — the amendment removed the only would-be consumer).
+
 ## 2026-07-22_25 — Wave 3a states + resilience sub-section (3-item fold; buildable scope complete)
 
 - Fold = the full "States + resilience" sub-section: route-segment loading skeleton (mirrors live board density, shadcn `skeleton` primitive added via CLI, CSS `animate-pulse` only), honest empty states, route error boundary. Wiki read: league-mechanics/average-draft-position (format-leakage → a format with no rows is an explicit empty state); declared wiki silence on framework routing/UI-state mechanisms (established below-wiki-altitude category).

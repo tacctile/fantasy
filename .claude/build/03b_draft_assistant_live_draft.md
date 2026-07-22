@@ -1,15 +1,22 @@
 # 03b_draft_assistant_live_draft.md
-**Wave 3b — Draft Assistant — Live Draft**
+**Wave 3b — Draft Assistant — Live Draft (Sleeper Snake)**
 **Status:** ⬜ Not started
 **Registered:** 2026-07-21
+**Restructured:** 2026-07-22 (split from the original combined Sleeper+ESPN+auction file — see `03c_draft_assistant_espn_and_auction.md`)
 
 ---
 
 ## Scope
 
-Manual click-to-draft AND live ESPN/Sleeper draft polling ship together in this single wave — both write to the same shared `draft_state` table (schema from Wave 1; poll write paths for `source='sleeper_poll'`/`source='espn_poll'` already built in Wave 2), enforcing first-write-wins via the existing `(league_id, pick_number)` unique constraint. No staged manual-first/poller-later sequencing. Also includes the BPA (best-player-available) recommendation engine. Depends on Wave 3a (static board UI/data layer) and Wave 2 (ESPN integration must be live). This wave extends and makes live the Wave 3a board — it does not rebuild the player table, row component, or filter/search/sort toolbar from scratch.
+Sleeper snake-draft live mechanics only: manual click-to-draft write path, Sleeper live-draft polling orchestration, client-side live sync, live board UI extensions, the BPA/VORP recommendation engine, tier-cliff detection, positional run detection, draft queue/auto-pick, and resilience — all scoped to Sleeper snake/linear drafts. No ESPN references, no auction mechanics (Sleeper does not support auction drafts on this platform per Nick's decision — see Restructure Note below). Both write to the same shared `draft_state` table (schema from Wave 1; the Sleeper poll write path for `source='sleeper_poll'` was already built in Wave 2), enforcing first-write-wins via the existing `(league_id, pick_number)` unique constraint. No staged manual-first/poller-later sequencing. Depends on Wave 3a (static board UI/data layer) and Wave 2's Sleeper sync (already live). This wave extends and makes live the Wave 3a board — it does not rebuild the player table, row component, or filter/search/sort toolbar from scratch.
 
-This build file was scoped by convergence-filtering 6 independent AI panel responses against `BUILD_INDEX.md`'s Wave 3b bullet, same methodology used for Waves 1, 2, and 3a.
+This build file was scoped by convergence-filtering 6 independent AI panel responses against `BUILD_INDEX.md`'s Wave 3b bullet, same methodology used for Waves 1, 2, and 3a; restructured 2026-07-22 to separate buildable Sleeper-snake scope from ESPN-blocked/auction scope.
+
+### Restructure Note (2026-07-22)
+
+ESPN leagues are commissioner-locked until ESPN's 2026 season setup opens (~mid-August 2026) — a hard external blocker unrelated to build sequencing, already recorded in `02_data_pipeline.md`'s ESPN sub-sections (`[!]`). The original version of this file bundled Sleeper snake, ESPN snake, and no auction support into one wave, which meant the entire wave was blocked on ESPN even though Sleeper snake mechanics have zero ESPN dependency and are buildable today. Nick's decision of record: Sleeper supports snake draft only (no auction on this platform); ESPN will support both snake and auction once unblocked. This file now scopes Sleeper snake only, so a build session can self-locate here immediately. All ESPN and auction items were moved to `03c_draft_assistant_espn_and_auction.md`, which is registered but blocked.
+
+The manual-pick write path below accepts an optional `amount` field in its mutation signature (unused for Sleeper snake, since Sleeper does not support auction) so that when `03c`'s auction work lands later, the shared mutation does not need a breaking signature change — the `draft_state.amount` column already exists from Wave 1.
 
 ---
 
@@ -17,25 +24,21 @@ This build file was scoped by convergence-filtering 6 independent AI panel respo
 
 Read these before starting, per Session-Start Protocol (max 3 unless the task genuinely needs more):
 
-- `wiki/topics/sleeper-api/draft-endpoint.md` — draft pick response shape, polling considerations
-- `wiki/topics/espn-api/draft-detail-response-structure.md` — ESPN draft pick response shape and quirks
-- `wiki/topics/espn-api/rate-limits-and-blocking.md` — constraints on raising ESPN polling frequency during a live draft
+- `wiki/topics/sleeper-api/draft-endpoint.md` — draft pick response shape, `roster_id` as the ownership field, polling considerations, snake-draft ordering rules
 
 ---
 
 ## Checklist
 
 ### Manual click-to-draft write path
-- [ ] Add a server-side manual-pick mutation (Route Handler or server action) that validates `league_id`, `pick_number`, `round`, `sleeper_player_id`, and target roster, then inserts into `draft_state` with `source='manual'`
+- [ ] Add a server-side manual-pick mutation (Route Handler or server action) that validates `league_id`, `pick_number`, `round`, `sleeper_player_id`, and target roster, then inserts into `draft_state` with `source='manual'`. Mutation signature accepts an optional `amount` field (nullable, unused for Sleeper snake) so the shared signature does not change when `03c`'s auction path lands
 - [ ] Rely solely on the existing `(league_id, pick_number)` unique constraint for conflict detection (`INSERT ... ON CONFLICT DO NOTHING` or equivalent) — return a typed result discriminating `accepted` vs. `conflict` (a poller already won that pick) vs. `validation_error`
 - [ ] Restrict the manual-pick endpoint to Nick's authenticated admin session only — never reachable from the spectator/share-token surface
-- [ ] Add an admin-only "undo last manual pick" action that deletes only the highest `pick_number` row for the league where `source='manual'` — must never delete `sleeper_poll`/`espn_poll` rows
+- [ ] Add an admin-only "undo last manual pick" action that deletes only the highest `pick_number` row for the league where `source='manual'` — must never delete `sleeper_poll` rows
 
-### Active-draft polling orchestration
+### Active-draft polling orchestration (Sleeper)
 - [ ] Add an `is_draft_active` flag on a new admin-only table (e.g. `draft_sessions`, keyed by `league_id`) — NOT on `leagues` or `league_config`, since both of those tables receive `share_token`-gated spectator SELECT access in Wave 4, and draft state must never be spectator-reachable at any wave. Add a start/stop control surfacing it — toggling this is what elevates polling cadence
 - [ ] Tune the existing Wave 2 Sleeper draft-state poller to a high-frequency interval (e.g. every 5 seconds) while `is_draft_active` is true for that league, falling back to its normal cadence otherwise
-- [ ] Tune the existing Wave 2 ESPN draft-state poller to the same high-frequency cadence under the same flag, within ESPN's existing defensive isolation boundary — an ESPN polling failure must not affect the Sleeper poller, other ESPN leagues, or any Sleeper-sourced feature
-- [ ] Add backoff/retry handling in the ESPN live poller for rate-limit or transient failure responses, so aggressive polling cadence cannot invalidate cookies or trip rate limits
 - [ ] Record every active-draft poll run (source, league, status, timestamps, accepted/rejected counts, error summary) in the existing sync-run tracking table
 
 ### Client-side live sync
@@ -48,8 +51,8 @@ Read these before starting, per Session-Start Protocol (max 3 unless the task ge
 ### Live board UI extensions (built on top of Wave 3a, not replacing it)
 - [ ] Add a "Draft" action to the existing player row, visible only when `is_draft_active` is true and the player is available, disabled while its own request is in flight
 - [ ] Derive and display the current pick number, round, and team on the clock from `draft_state` count plus snake-draft order from `league_config`
-- [ ] Extend the existing static roster/positional-need panel from Wave 3a to update live as picks land from any source (manual, Sleeper poll, ESPN poll)
-- [ ] Add a compact recent-picks feed (pick number, round, player, roster, source badge distinguishing manual/sleeper_poll/espn_poll)
+- [ ] Extend the existing static roster/positional-need panel from Wave 3a to update live as picks land from any source (manual, Sleeper poll)
+- [ ] Add a compact recent-picks feed (pick number, round, player, roster, source badge distinguishing manual/sleeper_poll)
 - [ ] Ensure the drafted-player set continues to correctly drive the existing filter/search/sort toolbar's "available only" behavior live
 
 ### BPA recommendation engine
@@ -80,13 +83,13 @@ Base mechanism is Value-Over-Replacement (VORP/VBD), computed dynamically, with 
 
 ### Draft queue and auto-pick
 - [ ] Build a user-ordered queue (priority list) per league/session, stored independently of and never silently reordered by the BPA/recommendation engine
-- [ ] When a queued player is drafted by anyone else (manual, Sleeper poll, or ESPN poll): remove from queue, promote the next queued player automatically, and surface a brief non-blocking notification
-- [ ] Build roster-construction-aware auto-pick as a purely local mechanism (amended 2026-07-22 per Nick's ruling — supersedes the original "build directly against Sleeper's live draft API" language, which contradicted MASTER_CONTEXT.md's read-only rule): when the draft clock expires or the user is away, walk the queue top-to-bottom and skip any player who would violate a hard roster rule (e.g., a 3rd QB before the bench is otherwise full) rather than blindly taking queue position 1 — auto-pick must never draft a queue entry that breaks a hard roster constraint. Auto-pick writes ONLY to this app's own `draft_state` table, through the same manual-pick write path (`source='manual'`, same first-write-wins conflict semantics as any manual pick, undoable via the same source='manual'-only undo action) — it never calls any Sleeper or ESPN write endpoint, under any circumstance. If Sleeper's own clock expires in a real Sleeper-hosted draft, Sleeper's own platform auto-pick makes the actual pick and the poller ingests that authoritative row; this tool's auto-pick exists to keep local draft_state/UI/recommendation state consistent, never to act on Nick's behalf on any external platform
-- [ ] Queue and auto-pick consume pick events from the shared `draft_state` table, fed by the existing manual/`sleeper_poll`/`espn_poll` write paths and the client-side live sync mechanism above — read-only against Sleeper and ESPN, no direct draft-API/WebSocket connection of their own (amended 2026-07-22 with the auto-pick ruling above). Queue/auto-pick scope stays single-Sleeper-hosted-league — no generic multi-platform sync layer, no ESPN/Yahoo/other-platform fallback logic for queue or auto-pick
+- [ ] When a queued player is drafted by anyone else (manual or Sleeper poll): remove from queue, promote the next queued player automatically, and surface a brief non-blocking notification
+- [ ] Build roster-construction-aware auto-pick as a purely local mechanism: when the draft clock expires or the user is away, walk the queue top-to-bottom and skip any player who would violate a hard roster rule (e.g., a 3rd QB before the bench is otherwise full) rather than blindly taking queue position 1 — auto-pick must never draft a queue entry that breaks a hard roster constraint. Auto-pick writes ONLY to this app's own `draft_state` table, through the same manual-pick write path (`source='manual'`, same first-write-wins conflict semantics as any manual pick, undoable via the same source='manual'-only undo action) — it never calls any Sleeper write endpoint, under any circumstance. If Sleeper's own clock expires in a real Sleeper-hosted draft, Sleeper's own platform auto-pick makes the actual pick and the poller ingests that authoritative row; this tool's auto-pick exists to keep local draft_state/UI/recommendation state consistent, never to act on Nick's behalf on any external platform
+- [ ] Queue and auto-pick consume pick events from the shared `draft_state` table, fed by the existing manual/`sleeper_poll` write paths and the client-side live sync mechanism above — read-only against Sleeper, no direct draft-API/WebSocket connection of their own. Queue/auto-pick scope stays single-Sleeper-hosted-league — no generic multi-platform sync layer
 
 ### Resilience
 - [ ] Ensure the board remains usable read-only (falls back to Wave 3a's static behavior) if live polling, realtime, or BPA calculation degrades or errors
-- [ ] Add tests covering: concurrent manual + poll writes racing on `(league_id, pick_number)` with only one accepted, ESPN poll failure isolation from Sleeper/other leagues, BPA/replacement-level recompute after a pick is recorded, tier-boundary recompute after a pick shifts the pool, run-detection triggering/resetting across a sliding window, and auto-pick skipping a queue entry that violates a hard roster rule
+- [ ] Add tests covering: concurrent manual + poll writes racing on `(league_id, pick_number)` with only one accepted, BPA/replacement-level recompute after a pick is recorded, tier-boundary recompute after a pick shifts the pool, run-detection triggering/resetting across a sliding window, and auto-pick skipping a queue entry that violates a hard roster rule
 
 ---
 
@@ -94,17 +97,18 @@ Base mechanism is Value-Over-Replacement (VORP/VBD), computed dynamically, with 
 
 - Rebuilding the static board's core display primitives (player table, row component, filter/search/sort toolbar) from scratch — extended and made live, not replaced
 - ADP ingestion, ADP schema, or ADP source management (Wave 3a, already built)
+- Any ESPN draft mechanics (client, auth, crosswalk sync, polling, draft-state writes) — `03c_draft_assistant_espn_and_auction.md`, blocked pending ESPN commissioner unlock
+- Any auction-draft mechanics (nomination/bid state, budget tracking, auction-specific valuation) — Sleeper does not support auction on this platform; auction support lands with ESPN in `03c_draft_assistant_espn_and_auction.md`
 - Applying league scoring rules to compute live `player_scores` — Wave 4
 - Standings, matchups, power rankings, or any in-season dashboard content — Wave 4
 - The mobile-first read-only spectator/share-link surface — no live draft data or draft-board markup may ever reach that surface, at any wave
 - Score charts, lucky/unlucky tracking, positional breakdowns, playoff picture, trade evaluation, waiver/FAAB recommendations — Wave 5
 - League report generation, free agent board, PWA manifest/service worker — Wave 6
-- Any staged "manual-first, then add polling later" sequencing — this was explicitly reversed by Nick; both ship together in this one wave
-- Multi-platform draft sync abstraction — this tool targets a single Sleeper-hosted league; no ESPN/Yahoo/other-platform draft queue or auto-pick fallback
-- Any write to Sleeper, ESPN, or any other external platform — including by auto-pick, which writes solely to this app's own `draft_state`; when Sleeper's clock expires in a real draft, Sleeper's own platform auto-pick makes the actual pick (read-only rule reaffirmed 2026-07-22 — this restates the existing MASTER_CONTEXT.md rule, it is not a new exception)
+- Any staged "manual-first, then add polling later" sequencing — both ship together in this one wave
+- Any write to Sleeper or any other external platform — including by auto-pick, which writes solely to this app's own `draft_state`; when Sleeper's clock expires in a real draft, Sleeper's own platform auto-pick makes the actual pick (read-only rule reaffirmed — this restates the existing MASTER_CONTEXT.md rule, it is not a new exception)
 
 ---
 
 ## Session-End requirements (per COMPLETION_TEMPLATES.md)
 
-Use the `feature-build` report template. Update `STATE.yml` completely, log to `.claude/logs/`, update this file's checklist items, update `ARCHITECTURE.md`'s Service API Reference section (adds the manual-pick mutation, active-draft poll orchestration, BPA/replacement-level scoring service, tier-boundary service, run-detection service, and queue/auto-pick service).
+Use the `feature-build` report template. Update `STATE.yml` completely, log to `.claude/logs/`, update this file's checklist items, update `ARCHITECTURE.md`'s Service API Reference section (adds the manual-pick mutation, Sleeper active-draft poll orchestration, BPA/replacement-level scoring service, tier-boundary service, run-detection service, and queue/auto-pick service).
