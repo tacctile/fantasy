@@ -36,6 +36,7 @@ Nick's job is reduced to: start a session, drop this file in (or just say "read 
 1. Read `.claude/MASTER_CONTEXT.md` — rules, stack, constraints (already required by the project's own Session-Start Protocol)
 2. Read `.claude/STATE.yml` — find `current_build_files` and the last-known progress
 3. Read `.claude/BUILD_INDEX.md` — confirm the wave roadmap and registry haven't changed since `STATE.yml` was last written
+3a. Read `.claude/MANUAL_SETUP_CHECKLIST.md` — know what's already done and what's still open before reaching the Manual Setup Flag check below
 4. Read `wiki/index.md` and `wiki/ROUTING.md` — identify the relevant wiki category for the current wave (per existing Session-Start Protocol)
 5. Open the build file for the **first wave, in roadmap order (01 → 02 → 03a → 03b → 04 → 05 → 06), that is not fully checked off.** Do not skip ahead even if a later wave's file exists and looks tempting — dependency order is load-bearing (Wave 2 needs Wave 1's schema live, Wave 3b needs Wave 3a + Wave 2's ESPN integration, etc.)
 6. Within that build file, find the **first unchecked `[ ]` item, in the order it's listed in the file.** That is this session's entire scope. Nothing else in the file, nothing from a later wave.
@@ -44,11 +45,34 @@ Nick's job is reduced to: start a session, drop this file in (or just say "read 
 
 ---
 
+## Manual Setup Flag — check this BEFORE the Clarify step
+
+`.claude/MANUAL_SETUP_CHECKLIST.md` is the standing, exhaustive list of every account/credential/human-only decision across all six waves, pre-walked and written up in advance so Nick can work through it in a plain chat rather than a Fable build session.
+
+Before clarifying or building the current checklist item, check whether it depends on anything in `MANUAL_SETUP_CHECKLIST.md` that is still `[ ]` (open) for this item's wave:
+
+- **If the needed item is already `[x]` (done):** proceed straight to Clarify below — the credential/decision exists, just ask for the actual value as one of the pointed questions.
+- **If the needed item is still `[ ]` (open) or doesn't exist on the list yet:** STOP before writing any code. Output a clearly labeled block:
+
+  ```
+  MANUAL SETUP REQUIRED before this step can proceed:
+  - [exactly what needs to be created/decided]
+  - [exactly what value/credential to hand back, and where it plugs in]
+
+  This does not need Claude Code — handle it in a plain chat, then bring the result back here.
+  ```
+
+  Then add the item to `MANUAL_SETUP_CHECKLIST.md` under its wave (if it wasn't already listed) and stop the session — do not proceed to Clarify or Build until Nick confirms the manual step is done.
+
+This keeps every "go create an account / go copy a cookie" moment out of the build session entirely, so Nick only spends Fable usage on sessions that are actually building something.
+
+---
+
 ## Clarify (3–5 pointed questions, every session)
 
-Before writing any code, ask Nick 3–5 questions **specific to this one checklist item** — never generic, never a restatement of the item itself. Good questions are things the build file could not have predicted at scoping time:
+Once any Manual Setup Flag is cleared (or none applies), ask Nick 3–5 questions **specific to this one checklist item** — never generic, never a restatement of the item itself. Good questions are things the build file could not have predicted at scoping time:
 
-- Environment/account specifics (e.g. "What should the Supabase project be named?" "Is a Vercel project already linked, or does this session create one?")
+- Values/credentials confirmed as ready in `MANUAL_SETUP_CHECKLIST.md` (e.g. "What's the Supabase project URL now that it's created?")
 - Judgment calls the checklist item leaves open (e.g. "The item says 'confirm ESPN league visibility' — do you have the league ID(s) ready, or should I ask you per-league as I reach each one?")
 - Anything in `nick_pending` in `STATE.yml` that blocks or informs this specific item
 - Naming/config preferences not dictated by `MASTER_CONTEXT.md` (file/table names it doesn't already fix, env var values, etc.)
