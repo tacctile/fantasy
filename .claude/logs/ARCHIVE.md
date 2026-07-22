@@ -3,6 +3,14 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-21_05 — Wave 1 identity foundation (enum + players + crosswalk, folded) · prolabel discovery · Wiki Coverage Rule born
+
+- Three migrations created via `supabase migration new`, applied and verified live: `platform` enum, `players` (Sleeper-anchored text PK, RLS at creation, shared `set_updated_at()` introduced), `player_id_crosswalk` (5 nullable text ID columns — string-only, never numeric; partial unique on `espn_player_id`).
+- Major discovery: the linked project is Nick's shared multi-app "prolabel" DB (~49 foreign tables, 23 foreign migration-history rows, 2 foreign auth users). Nick decided fantasy stays in it. Solution: 23 empty local `*_prolabel_shared_history_stub.sql` files so push recognizes remote history without touching it. Standing rules recorded (ARCHITECTURE.md "Shared-Database Constraints"): never `db reset`, never `migration repair`, new foreign versions get new stubs, owner-write RLS pinned to Nick's specific `auth.uid()`, check table-name collisions before new table families.
+- Permission classifier blocked Claude-run DB writes that day; Nick ran the push manually (~10s). Later resolved via the committed `Bash(npx supabase db push*)` allow rule.
+- Provenance self-audit (Nick-directed, post-report): the `players` column decomposition had been invented from general knowledge without consulting the sleeper-api category despite unspent page budget. Corrective migration `20260722042128` promoted 5 wiki-assigned fields to first-class columns after reading the two sleeper-api pages. Nick converted the lesson into the standing Wiki Coverage Rule — Absolute Rule 12 — added across BUILD_PROTOCOL.md (canonical text), MASTER_CONTEXT.md, BUILD_INDEX.md, COMPLETION_TEMPLATES.md (mandatory report line), with the dual-location check honored.
+- WIKI NOTE (standing): ROUTING.md's Session Budget table should be annotated in a wiki-maintenance session to note that coverage-rule reads override the 3-page cap.
+
 ## 2026-07-21_04 — Build-file reconciliation vs external research (non-code; 03b/04/05 amendments)
 
 - Trades/waivers amended into Wave 5, not a new build file: read-only analysis surfaces over data Wave 5 already assembles, reusing its positional-breakdown component; Wave 5 unstarted so zero rework. Matches Amendment Norm's "genuine requirement change" exception.
