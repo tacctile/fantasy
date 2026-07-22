@@ -23,8 +23,9 @@
 
 ## Wave 1 — Foundation
 
-- [~] **Supabase account + project already exist** (https://supabase.com/dashboard/project/tszssadgsxjoymcttlwd — org/project name/region/tier already decided). Still to hand to the Wave 1 build session, at the moment it asks: `SUPABASE_URL`, anon key, service-role key (inject live, not before).
-- [~] **Run `supabase login`** when the build session prompts for it — this opens a browser auth flow only you can complete. Confirm the project above is what gets `supabase link`ed.
+- [x] **Supabase account + project already exist** (https://supabase.com/dashboard/project/tszssadgsxjoymcttlwd). Handed over 2026-07-21: `SUPABASE_URL` + publishable key pulled via the Supabase connector, secret key pasted by Nick — all captured in gitignored `.env.local` (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`).
+- [x] **Run `supabase login`** — done 2026-07-21; project `tszssadgsxjoymcttlwd` is what got `supabase link`ed (verified via `supabase/.temp/project-ref`).
+- [ ] **Have the database password ready for the first `supabase db push`.** Link was performed without it (deliberate skip); the first schema-migration session that pushes to the remote will ask for it. It's the password set at project creation — resettable in the dashboard under Project Settings → Database if lost.
 - [ ] **Create a Vercel project and connect it to `tacctile/fantasy`.** Vercel account already exists — only project creation + repo connection is open. Decide: project name, team (if any).
 - [ ] **Paste Supabase secrets into Vercel's environment variables** (Production + Preview) — values come from the Supabase step above; blocked on the Vercel project existing first.
 - [ ] **Decide the admin authentication mechanism.** Confirmed: Supabase Auth, email/password, one user (Nick), no signup flow. Still open: the actual email + password to create that one auth user — hand to the Wave 1 build session when it reaches the RLS/auth step.

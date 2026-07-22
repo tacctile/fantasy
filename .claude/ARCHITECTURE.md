@@ -9,7 +9,7 @@
 
 ## Status
 
-Wave 1 Project scaffold complete: Next.js app shell exists and builds. Remaining inventory sections (Service API Reference, Type Definitions, Supabase Infrastructure, Environment Variables, CI/CD Pipeline, Testing Infrastructure) are populated as Wave 1's later items and subsequent waves actually build things — not fabricated in advance. Update this file at session end whenever structure changes, per `MASTER_CONTEXT.md`'s Session-End Steps.
+Wave 1 Project scaffold complete: Next.js app shell exists and builds. Supabase project + migration workflow section complete: project linked, credentials captured, `supabase/` workspace initialized. Remaining inventory sections (Service API Reference, Type Definitions, CI/CD Pipeline, Testing Infrastructure) are populated as Wave 1's later items and subsequent waves actually build things — not fabricated in advance. Update this file at session end whenever structure changes, per `MASTER_CONTEXT.md`'s Session-End Steps.
 
 ---
 
@@ -66,6 +66,24 @@ These conventions are declared in `MASTER_CONTEXT.md` and repeated here as the s
 **JSX runtime:** default React JSX runtime (Next.js standard, no custom pragma).
 
 ---
+
+## Supabase Infrastructure
+
+- **Project:** `tszssadgsxjoymcttlwd` — `https://tszssadgsxjoymcttlwd.supabase.co` (pre-existing per `MANUAL_SETUP_CHECKLIST.md`; linked 2026-07-21)
+- **CLI:** `supabase@2.109.1` as npm dev dependency — invoked via `npx supabase`, version pinned in `package.json` so all three of Nick's environments resolve the same CLI
+- **Local workspace:** `supabase/` (created by `supabase init`) — `config.toml` committed; `supabase/migrations/` is the canonical schema-change path once the first migration exists; `supabase/.temp/` (holds the linked project-ref) is gitignored by Supabase's own `supabase/.gitignore`
+- **Link state:** linked to `tszssadgsxjoymcttlwd`; database password was deliberately not provided at link time — the first `supabase db push` session must ask Nick for it (tracked in `MANUAL_SETUP_CHECKLIST.md` Wave 1)
+- **API keys:** standardized on the modern key pair — publishable (`sb_publishable_...`) for client-side, secret (`sb_secret_...`) for server-side — not the legacy anon/service_role JWTs. Both validated live against `rest/v1/` (secret key returns 200 with a non-browser client; Supabase actively rejects secret keys sent from browser-like user agents). No schema, tables, or migrations exist yet.
+
+## Environment Variables
+
+Live values in gitignored `.env.local`; the committed `.env.example` contract is a later Wave 1 checklist item (not yet created).
+
+| Variable | Exposure | Purpose |
+| -------- | -------- | ------- |
+| `NEXT_PUBLIC_SUPABASE_URL` | client + server | Supabase project API URL |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | client + server | modern publishable key (replaces legacy anon JWT) |
+| `SUPABASE_SECRET_KEY` | server only — never `NEXT_PUBLIC_` | modern secret key (replaces legacy service_role JWT) |
 
 ## Supabase Migration Rule
 

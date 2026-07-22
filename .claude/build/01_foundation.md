@@ -34,10 +34,10 @@ Read these before starting, per Session-Start Protocol (max 3 unless the task ge
 - [x] Confirm Tailwind default spacing scale only (no arbitrary pixel values) and `font-variant-numeric: tabular-nums` available for data displays
 
 ### Supabase project + migration workflow
-- [ ] Create the Supabase project; capture `SUPABASE_URL`, anon key, service-role key
-- [ ] Install Supabase CLI, `supabase login`, `supabase link` to the project
-- [ ] `supabase init` to establish the local `supabase/migrations/` directory as the canonical schema-change path
-- [ ] Confirm the baseline-migration rule is understood: never edit the baseline directly, always `supabase migration new` for every subsequent change (this applies from Wave 1 onward, permanently)
+- [x] Create the Supabase project; capture `SUPABASE_URL`, anon key, service-role key — project `tszssadgsxjoymcttlwd` pre-existed per MANUAL_SETUP_CHECKLIST; URL + publishable key pulled via Supabase connector, secret key handed over by Nick; all three captured in gitignored `.env.local`. Standardized on the modern key pair (`sb_publishable_...` as `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `sb_secret_...` as `SUPABASE_SECRET_KEY`) rather than legacy anon/service_role JWTs, per Nick's Clarify-step decision
+- [x] Install Supabase CLI, `supabase login`, `supabase link` to the project — CLI 2.109.1 as npm dev dependency (version pinned in `package.json`, invoked via `npx supabase`); Nick ran the interactive `supabase login`; linked to `tszssadgsxjoymcttlwd` (db password deliberately skipped at link — needed later at first `supabase db push`, tracked in MANUAL_SETUP_CHECKLIST)
+- [x] `supabase init` to establish the local `supabase/migrations/` directory as the canonical schema-change path — `supabase/config.toml` committed; `migrations/` appears with the first migration
+- [x] Confirm the baseline-migration rule is understood: never edit the baseline directly, always `supabase migration new` for every subsequent change (this applies from Wave 1 onward, permanently) — confirmed; no migrations exist yet, so the first schema item creates the baseline via `supabase migration new` and every change after that gets its own new migration file
 
 ### Schema — platform + identity foundation
 - [ ] Migration: `platform` Postgres enum type, values `sleeper` and `espn` (extensible enum, never a boolean)

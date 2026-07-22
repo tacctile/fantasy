@@ -7,6 +7,12 @@ Newest entry on top.
 
 ---
 
+## 2026-07-21 — Supabase Infrastructure Activated (Wave 1, Session 2)
+
+Core infrastructure activation milestone: the Supabase project (`tszssadgsxjoymcttlwd`) is now credentialed, linked, and CLI-workflowed. The entire Supabase project + migration workflow section of `01_foundation.md` (four items, folded with Nick's approval per the same pattern as the scaffold session) is complete: credentials captured into gitignored `.env.local` (URL + publishable key pulled via the Supabase connector, secret key handed over live per `MANUAL_SETUP_CHECKLIST.md`'s `[~]` handoff flow — its first real use, working as designed); Supabase CLI 2.109.1 installed as a pinned npm dev dependency; Nick completed the interactive `supabase login`; `supabase link` verified against the project ref; `supabase init` established `supabase/` with the committed `config.toml`. Both API keys validated live against the REST endpoint. Decisions of record: modern publishable/secret key pair over legacy anon/service_role JWTs; db password deliberately deferred to the first `supabase db push` session (appended to `MANUAL_SETUP_CHECKLIST.md`). No schema exists yet — next section is the platform + identity migrations, which create the baseline via `supabase migration new`.
+
+---
+
 ## 2026-07-21 — Wave 1 Execution Started: First Working Application Code (Project Scaffold)
 
 First build session executed via `BUILD_PROTOCOL.md`. The entire Project scaffold section of `01_foundation.md` (six items, folded into one session with Nick's explicit approval) is complete: Next.js 16.2.11 (App Router, TypeScript strict, `src/`, npm), verified `@/*` alias, shadcn/ui with CSS-variable theming (neutral base, oklch, zero hex), lucide-react, Tailwind v4 default spacing + tabular-nums. `npm run build` and `npm run lint` pass. This is the repo's transition from pure governance/planning to working application code — the first working build of a registered build file's scope. Next: the Supabase project + migration workflow section of Wave 1.
