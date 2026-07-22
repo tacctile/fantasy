@@ -38,6 +38,12 @@ First build session executed via `BUILD_PROTOCOL.md`. The Project scaffold secti
 
 ---
 
+## 2026-07-22 — First UI Surface + Owner Auth Live: Admin Draft-Board Route, Shell, and Real Sign-In (Route + Page Shell Sub-Section Done)
+
+Core infra activation — Supabase Auth exercised for the first time ever (Nick signed in live, landed on the real board, sign-out verified). Full owner path shipped in one fold: `src/proxy.ts` session-refresh/unauth wall (Next 16 proxy), `/login` + server actions, `(admin)` gate via `is_fantasy_admin` RPC, the admin-only RSC draft route → `DraftBoardShell` (header with league selector, platform badge, ADP freshness; table/sidebar regions placeholder until the player-list sub-section). Unauth responses asserted free of league/admin data. Flagged: dark-only Sleeper palette still unapplied (scaffold light tokens live) — next-fold candidate. Next: 03a player list.
+
+---
+
 ## 2026-07-21 — Scope Corrections: Open-Ended League Count, Access Model, Draft-Entry Sequencing
 
 Three scope corrections landed in `MASTER_CONTEXT.md` and `BUILD_INDEX.md`, driven by a full extraction of Nick's prior conversation history on this project cross-checked against the committed repo state. This is a governance/scope change affecting all future build sessions.

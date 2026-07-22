@@ -3,6 +3,13 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_22 — Wave 3a draft-board route + page shell (4-item fold; first UI surface + owner auth live)
+
+- Fold = full route + page shell sub-section as one verifiable artifact (the admin draft-board page). Nick's Clarify decisions: real sign-in now (not an interim gate), unauth → redirect to `/login`, path `app/(admin)/leagues/[leagueId]/draft/` + auto-land on the first connected league (no interstitial list).
+- Shipped the three-wall owner auth surface: `src/proxy.ts` (Next 16 proxy convention, verified against the installed package — session refresh per matched request, unauth `/leagues/*` → 307 `/login`, matcher excludes `/api` so the cron Bearer surface stays isolated), `/login` page + `signIn`/`signOut` server actions (generic errors only), `(admin)` layout gate via `getAdminAuthState` → `is_fantasy_admin` RPC (non-admin shared-namespace sessions get the zero-data NotAuthorizedCard), per-table RLS as wall three. Route reads through the RLS server client; root `page.tsx` became the auth-aware router. `listConnectedLeagues()` added to draft-board service (explicit columns; season desc/name/id order). Components: DraftBoardShell/Header/LeagueSelector + NotAuthorizedCard/SignOutButton; shadcn input/label/card/badge/select/separator added.
+- Coverage map declared app-auth/UI-layout as the established below-wiki-altitude silence (ROUTING/index checked). Live-verified: unauth 307s, `/login` asserted free of league/admin data, and **the first real Supabase Auth sign-in in the app's history** (Nick, landed on the real board via auto-land, sign-out verified — "All verified").
+- Flagged at session end, deliberately not built (Folding Policy bars mid-session extension): DESIGN_SYSTEM's final dark-only Sleeper palette still unapplied — surfaces rendered on scaffold light tokens; recorded as the next-fold candidate (resolved same day by the palette reconciliation fold). WIKI NOTE: none.
+
 ## 2026-07-22_21 — Wave 3a draft-board data layer (6-item one-query-service fold) + Amendment Hygiene governance
 
 - Governance first (Nick-directed): BUILD_PROTOCOL gained "Amendment Hygiene — Standing Practices": (1) confirmed-decision backsweep — confirmations recorded after related items were registered must be swept back against those items for staleness at confirmation time, before the next build session reaches them; (2) capacity-collision annotation — capacity-limited-resource constraints (cron slots, plan caps, rate-limited keys) carried in item text so they surface at Clarify, never mid-build. Operationalizes the Build File Amendment Norm; origins: ADP constraint staleness + Hobby cron-cap surprise.

@@ -38,11 +38,11 @@ Registered 2026-07-21 on the premise that Wave 2 would sync raw per-player stat 
 - [ ] Surface the existing score freshness machinery (`fetched_at`/`is_final` on `player_scores`/`matchups`) in the dashboard UI so stale or non-final scores are never silently presented as current — re-worded 2026-07-22 (the schema machinery shipped in Wave 1/2; surfacing is the remaining work; belongs with the admin UI sub-section's fold)
 
 ### Admin data-access layer (owner-authenticated, server-side)
-- [ ] Build `getStandings(leagueId)` — team records, wins/losses/ties, points-for/against, ordered per league rules, scoped to current `season_year`
-- [ ] Build `getMatchups(leagueId, week)` — head-to-head pairs with rosters/starters and both teams' computed scores from `player_scores`
-- [ ] Build `getPowerRankings(leagueId)` — a single deterministic current-season formula (no historical/cross-season inputs) producing ordered teams with rank and rank-delta vs. standings
-- [ ] Build `getPlayerCard(sleeperPlayerId, leagueId)` — Sleeper-anchored identity, roster/availability status in that league, and per-week scores from `player_scores` for the current season, resolving ESPN players through the existing crosswalk (scope note, Nick-signed 2026-07-22: weeks a player was on no roster have no score row on any platform payload — render honestly as not-rostered, never invented)
-- [ ] Ensure every admin query is scoped to leagues Nick owns and never selects `share_token` or `draft_state`
+- [x] Build `getStandings(leagueId)` — team records, wins/losses/ties, points-for/against, ordered per league rules, scoped to current `season_year`
+- [x] Build `getMatchups(leagueId, week)` — head-to-head pairs with rosters/starters and both teams' computed scores from `player_scores`
+- [x] Build `getPowerRankings(leagueId)` — a single deterministic current-season formula (no historical/cross-season inputs) producing ordered teams with rank and rank-delta vs. standings
+- [x] Build `getPlayerCard(sleeperPlayerId, leagueId)` — Sleeper-anchored identity, roster/availability status in that league, and per-week scores from `player_scores` for the current season, resolving ESPN players through the existing crosswalk (scope note, Nick-signed 2026-07-22: weeks a player was on no roster have no score row on any platform payload — render honestly as not-rostered, never invented)
+- [x] Ensure every admin query is scoped to leagues Nick owns and never selects `share_token` or `draft_state`
 
 ### Admin UI (tablet/PC-first, extends existing admin route conventions)
 - [ ] Build `StandingsTable` — dense table, tabular-nums, rank/team/record/PF/PA columns
