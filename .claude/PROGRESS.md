@@ -9,6 +9,12 @@ Newest entry on top.
 
 ---
 
+## 2026-07-22 — Wave 1 Schema Complete: Integrity Section + RLS Security Model Live
+
+The entire Wave 1 schema block is now built and verified live. The integrity fold (first session under the new Folding Policy: 3 items) confirmed all 18 FKs shipped at creation, added 17 integrity indexes, and activated the RLS owner-policy layer — `fantasy_owner_all` (full CRUD) on all ten tables, pinned to Nick's specific `auth.uid()` via `is_fantasy_admin()`. Admin identity: the pre-existing prolabel user nick@prolabelco.com, reused by Nick's ruling (duplicate emails impossible in the shared namespace) — no password handoff needed. Remaining Wave 1: types/client wiring, env/deploy.
+
+---
+
 ## 2026-07-22 — Governance: Folding Policy Replaces One-Item-Per-Session Cadence
 
 Session scope unit redefined for all future build sessions: up to 3 decision-dense items, one mechanical sub-section, or one independently verifiable artifact's full item set per session — with hard stops, a live-behavior ceiling (Wave 3b), and 5 named singleton exceptions. Canonical text in BUILD_PROTOCOL.md; restated in MASTER_CONTEXT.md (Rule 1) and BUILD_INDEX.md. Also resolved 03b's auto-pick contradiction per Nick's ruling: auto-pick is local-only, writing solely to this app's draft_state — never to Sleeper/ESPN (read-only rule reaffirmed, no exception created).
@@ -30,12 +36,6 @@ First schema migrations live in Supabase: `platform` enum, `players` (Sleeper-an
 ## 2026-07-21 — Supabase Infrastructure Activated (Wave 1, Session 2)
 
 Supabase project `tszssadgsxjoymcttlwd` credentialed, linked, and CLI-workflowed — the full "Supabase project + migration workflow" section of `01_foundation.md` is complete. Keys captured in gitignored `.env.local` and validated live; CLI installed and linked. No schema exists yet — next up is the platform + identity migrations.
-
----
-
-## 2026-07-21 — Wave 1 Execution Started: First Working Application Code (Project Scaffold)
-
-First build session executed via `BUILD_PROTOCOL.md`. The Project scaffold section of `01_foundation.md` is complete: Next.js 16.2.11, shadcn/ui with CSS-variable theming, Tailwind v4 defaults. `npm run build`/`lint` pass. First working application code in the repo.
 
 ---
 

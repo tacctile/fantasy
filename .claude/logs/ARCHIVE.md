@@ -3,6 +3,12 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_03 — Wave 1 matchups (league-scoped state, third item)
+
+- One migration applied + verified live: `matchups` — per-roster weekly grain (Sleeper's native grain; ESPN schedule entries split into two rows per side at ingestion; pairings reconstructed by grouping `(league_id, week, native_matchup_id)` with size validation, null = bye — never forced home/away pairs); PK `(league_id, week, native_roster_id)`; dual period columns `week` + `matchup_period` (check-enforced `= week` on Sleeper rows); scores `points` nullable as-received + `custom_points` (sleeper-only check) + stored generated `effective_points = coalesce(custom_points, points)`; finality `fetched_at` + `is_final` promoted only by our own sync policy; `is_home` ESPN-only check; ESPN `winner` and live/projected columns excluded (provisional/open wiki question); RLS at creation, `set_updated_at`.
+- All 4 Clarify questions answered with recommended options (grain, scores, finality, native detail). Coverage map recorded pre-code; declared silence: concrete DDL — third consecutive session with no schema-reference league-scoped-state DDL ADR. Report: gap found and flagged; standing WIKI NOTE repeated.
+- Log cap: 2026-07-21_05 condensed here that session. Pushed via the allowed `npx supabase db push` rule; same cosmetic Docker warning; remote apply clean.
+
 ## 2026-07-22_02 — Wave 1 roster_players (league-scoped state, second item)
 
 - One migration applied + verified live: `roster_slot` enum + `roster_players` — composite PK `(league_id, native_roster_id, sleeper_player_id)`; FKs → leagues/rosters/players all cascade; `unique (league_id, sleeper_player_id)` so a double-rostered player fails loudly at sync; platform-scoped checks `starter_slot_index_starters_only` / `espn_lineup_slot_id_espn_only`; `platform`/`season_year` duplicated (N:1 precedent); RLS at creation; `set_updated_at`.

@@ -28,6 +28,12 @@ Committed the full `.claude/` build-governance system for tacctile/fantasy, adap
 
 **Not yet resolved:** none — all open items from the prior extraction series (category taxonomy, branch name, design token mechanism) were decided this session.
 
+---
+
+## 2026-07-21 — Wave 1 Execution Started: First Working Application Code (Project Scaffold)
+
+First build session executed via `BUILD_PROTOCOL.md`. The Project scaffold section of `01_foundation.md` is complete: Next.js 16.2.11, shadcn/ui with CSS-variable theming, Tailwind v4 defaults. `npm run build`/`lint` pass. First working application code in the repo.
+
 **Next:** Wave 1 (Foundation) — Supabase schema, env/secrets setup, initial Vercel deploy. Not started.
 
 ---
