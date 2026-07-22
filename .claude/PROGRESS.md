@@ -9,6 +9,12 @@ Newest entry on top.
 
 ---
 
+## 2026-07-22 — Wave 2 Begun: First Live Data Ingestion — Sleeper Player Catalog Synced (12,200 Players)
+
+First working Wave 2 feature. The full "Sleeper — client + player catalog" sub-section shipped as one fold: typed server-only Sleeper client (`src/services/sleeper/`), validate-before-persist catalog sync, and catalog-presence inactive marking (two new `players` columns, migration `20260722134911`). Live verification: 12,200 players fetched and upserted into production `players` in ~33s via `npm run sync:players`; D/ST abbreviation IDs and metadata's cross-provider ID block confirmed intact. Next: Sleeper league-scoped sync (needs a real league ID — open MANUAL_SETUP item).
+
+---
+
 ## 2026-07-22 — WAVE 1 COMPLETE: Deployed Health-Check Gate Passed, `01_foundation.md` 🟢
 
 Full checklist completion — the first build file finished. The final item shipped `/api/health` (public, minimal `{ ok }`) plus the deferred secret-key admin client; deployed production returned 200 `{"ok":true}` on a real authenticated read, functionally proving the Vercel env vars and end-to-end DB reachability. Registry + roadmap rows flipped 🟢. Next in roadmap order: `02_data_pipeline.md` (Wave 2 — all its MANUAL_SETUP items still open: Sleeper league ID, ESPN public/private decisions, cookies).
@@ -30,12 +36,6 @@ Permanent, zero-exception protection for the shared prolabel database's ~49 non-
 ## 2026-07-22 — Wave 1 Schema Complete: Integrity Section + RLS Security Model Live
 
 The entire Wave 1 schema block is now built and verified live. The integrity fold (first session under the new Folding Policy: 3 items) confirmed all 18 FKs shipped at creation, added 17 integrity indexes, and activated the RLS owner-policy layer — `fantasy_owner_all` (full CRUD) on all ten tables, pinned to Nick's specific `auth.uid()` via `is_fantasy_admin()`. Admin identity: the pre-existing prolabel user nick@prolabelco.com, reused by Nick's ruling (duplicate emails impossible in the shared namespace) — no password handoff needed. Remaining Wave 1: types/client wiring, env/deploy.
-
----
-
-## 2026-07-22 — Governance: Folding Policy Replaces One-Item-Per-Session Cadence
-
-Session scope unit redefined for all future build sessions: up to 3 decision-dense items, one mechanical sub-section, or one independently verifiable artifact's full item set per session — with hard stops, a live-behavior ceiling (Wave 3b), and 5 named singleton exceptions. Canonical text in BUILD_PROTOCOL.md; restated in MASTER_CONTEXT.md (Rule 1) and BUILD_INDEX.md. Also resolved 03b's auto-pick contradiction per Nick's ruling: auto-pick is local-only, writing solely to this app's draft_state — never to Sleeper/ESPN (read-only rule reaffirmed, no exception created).
 
 ---
 

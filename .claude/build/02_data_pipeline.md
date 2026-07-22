@@ -1,6 +1,6 @@
 # 02_data_pipeline.md
 **Wave 2 — Data Pipeline**
-**Status:** ⬜ Not started
+**Status:** 🟡 In progress
 **Registered:** 2026-07-21
 
 ---
@@ -28,9 +28,9 @@ Consult additional `sleeper-api`/`espn-api` pages as needed per specific endpoin
 ## Checklist
 
 ### Sleeper — client + player catalog (build and validate first, no auth required)
-- [ ] Build a typed, server-only Sleeper HTTP client (no auth headers, request timeout, structured error translation) — isolated module, reusable across all Sleeper endpoints
-- [ ] Implement full player-catalog fetch (`/players/nfl`) and bulk upsert into `players`, keyed on `sleeper_player_id` — per `sleeper-api/players-endpoint.md`, this is a large (~5MB+) payload; must be fetched at most once per day, never more often
-- [ ] Handle players no longer present in a completed catalog response — mark inactive, never delete (preserves historical roster/draft references)
+- [x] Build a typed, server-only Sleeper HTTP client (no auth headers, request timeout, structured error translation) — isolated module, reusable across all Sleeper endpoints
+- [x] Implement full player-catalog fetch (`/players/nfl`) and bulk upsert into `players`, keyed on `sleeper_player_id` — per `sleeper-api/players-endpoint.md`, this is a large (~5MB+) payload; must be fetched at most once per day, never more often
+- [x] Handle players no longer present in a completed catalog response — mark inactive, never delete (preserves historical roster/draft references)
 
 ### Sleeper — league-scoped sync
 - [ ] Implement Sleeper league metadata fetch (`/league/{league_id}`) → transform and upsert into `league_config` (scoring settings, roster slots as JSONB data, never hardcoded)

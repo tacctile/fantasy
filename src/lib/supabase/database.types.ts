@@ -1448,11 +1448,13 @@ export type Database = {
       players: {
         Row: {
           birth_date: string | null
+          catalog_last_seen_at: string | null
           created_at: string
           fantasy_positions: string[] | null
           first_name: string | null
           full_name: string | null
           injury_status: string | null
+          is_active_in_catalog: boolean
           last_name: string | null
           metadata: Json
           position: string | null
@@ -1465,11 +1467,13 @@ export type Database = {
         }
         Insert: {
           birth_date?: string | null
+          catalog_last_seen_at?: string | null
           created_at?: string
           fantasy_positions?: string[] | null
           first_name?: string | null
           full_name?: string | null
           injury_status?: string | null
+          is_active_in_catalog?: boolean
           last_name?: string | null
           metadata?: Json
           position?: string | null
@@ -1482,11 +1486,13 @@ export type Database = {
         }
         Update: {
           birth_date?: string | null
+          catalog_last_seen_at?: string | null
           created_at?: string
           fantasy_positions?: string[] | null
           first_name?: string | null
           full_name?: string | null
           injury_status?: string | null
+          is_active_in_catalog?: boolean
           last_name?: string | null
           metadata?: Json
           position?: string | null

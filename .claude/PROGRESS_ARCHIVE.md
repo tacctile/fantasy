@@ -90,4 +90,10 @@ New non-negotiable rule affecting all future build sessions, born from this sess
 
 ---
 
+## 2026-07-22 — Governance: Folding Policy Replaces One-Item-Per-Session Cadence
+
+Session scope unit redefined for all future build sessions: up to 3 decision-dense items, one mechanical sub-section, or one independently verifiable artifact's full item set per session — with hard stops, a live-behavior ceiling (Wave 3b), and 5 named singleton exceptions. Canonical text in BUILD_PROTOCOL.md; restated in MASTER_CONTEXT.md (Rule 1) and BUILD_INDEX.md. Also resolved 03b's auto-pick contradiction per Nick's ruling: auto-pick is local-only, writing solely to this app's draft_state — never to Sleeper/ESPN (read-only rule reaffirmed, no exception created).
+
+---
+
 _End of PROGRESS_ARCHIVE.md_
