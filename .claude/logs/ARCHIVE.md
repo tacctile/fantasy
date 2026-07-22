@@ -3,6 +3,12 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_14 — Wave 2 Sleeper league-scoped sync (3-item fold; first real league fully ingested)
+
+- League metadata → leagues/league_config (validate → previous_league_id chain against existing rows only → upsert; derived_config re-derived in full; `te_premium = bonus_rec_te > 0` filled under declared wiki silence); rosters+users → rosters/roster_players/standings (slot classification incl. three-way bench subtraction, delete-stale-before-upsert, split-fpts recombination; standings folded in as a Nick-signed scope correction); matchups → matchups/player_scores (18-week sweep; players_points as the league-scored source — Nick-signed scope correction; finality slice: lifecycle `complete` → all is_final=true, promotion machinery deferred to the cron sub-section).
+- Nick handed over league `1257464256710856704` ("10 enter 1 Leaves", season-2025, complete) at Clarify; runners scripts/sync-league|rosters|matchups.ts + npm scripts. Live verification end-to-end: 10 rosters / 174 membership / 10 standings; 180 matchup rows, 3,152 player_scores; 0 starter-sum mismatches against Sleeper's own weekly totals (was_starter + score ingestion proven consistent).
+- Live finding (WIKI NOTE evidence): 4 reserve players despite zero IR labels in roster_positions — IR capacity expressible solely via `settings.reserve_slots`; the ir_slot_count label-count derivation understates such leagues. Second WIKI NOTE: no wiki page documents Sleeper's TE-premium wire key (`bonus_rec_te`).
+
 ## 2026-07-22_13 — Wave 2 begun: Sleeper client + player catalog (3-item fold; first live ingestion)
 
 - First Wave 2 session: typed server-only Sleeper client (`sleeperGet` + `SleeperApiError`; 3 attempts, exponential backoff + full jitter, 404 never retried, throttle taxonomy per rate-limits page), catalog sync `syncPlayersCatalog` (validate-before-persist: ≥5,000 records, ≥80% of existing count, core-field sample; chunked upsert 500/batch; set-based mark-inactive only after all chunks succeed), and catalog-presence columns via migration `20260722134911` (additive ALTER on `players` only: `is_active_in_catalog` + `catalog_last_seen_at` — Nick's Clarify choice on declared wiki silence).
