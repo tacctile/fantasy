@@ -40,7 +40,7 @@ Nick's job is reduced to: start a session, drop this file in (or just say "read 
 4. Read `wiki/index.md` and `wiki/ROUTING.md` — identify the relevant wiki category for the current wave (per existing Session-Start Protocol)
 5. Open the build file for the **first wave, in roadmap order (01 → 02 → 03a → 03b → 04 → 05 → 06), that is not fully checked off.** Do not skip ahead even if a later wave's file exists and looks tempting — dependency order is load-bearing (Wave 2 needs Wave 1's schema live, Wave 3b needs Wave 3a + Wave 2's ESPN integration, etc.)
 6. Within that build file, find the **first unchecked `[ ]` item, in the order it's listed in the file.** That is this session's entire scope. Nothing else in the file, nothing from a later wave.
-7. Read that item's referenced wiki pages (each build file's own `WIKI PAGES TO CONSULT` section, max 3 unless the item genuinely needs more).
+7. Read that item's referenced wiki pages (each build file's own `WIKI PAGES TO CONSULT` section, max 3 unless the item genuinely needs more — and the Wiki Coverage Rule below always overrides any budget for coverage-check reads).
 8. Proceed to the Clarify step below.
 
 ---
@@ -81,6 +81,20 @@ Once any Manual Setup Flag is cleared (or none applies), ask Nick 3–5 question
 Do not ask questions the build file, `MASTER_CONTEXT.md`, or the wiki already answer — re-asking settled context wastes Nick's time and is itself a prompt-quality failure (see PROMPT SCORE rubric in `COMPLETION_TEMPLATES.md`). If a genuinely atomic item has zero open questions, say so plainly and proceed straight to building rather than manufacturing filler questions.
 
 Wait for Nick's answers before writing any code.
+
+---
+
+## Wiki Coverage Rule — non-negotiable (added 2026-07-21)
+
+This is a standing constraint, not a suggestion. It is Absolute Rule 12 in `MASTER_CONTEXT.md`; this section is the canonical full text.
+
+**Pre-implementation coverage map — before any code, every build session.** After Clarify and before implementation begins, explicitly enumerate every decision the current checklist item requires (field names, values, shapes, constraints, logic), and for EACH one state which wiki page covers it. Record this map in the session log (summarized in the completion report) BEFORE beginning implementation — never reconstructed retroactively. If any decision has no identified wiki page, search `wiki/ROUTING.md` and `wiki/index.md` for a matching category at that point — not after the code is written.
+
+**The rule.** Before writing any schema, logic, or decision that isn't explicitly and fully specified by an already-read wiki page, you MUST check `wiki/ROUTING.md` and `wiki/index.md` for a more specific category that might cover it — even if it means exceeding the build file's listed pages or the standard page budget. A build file's WIKI PAGES list is a starting point, not a ceiling. If you find yourself inventing a field name, a value, a shape, or any decision not explicitly stated in an already-read wiki page, that is the signal to go find the correct wiki page BEFORE writing code — not after. This applies with no exceptions: not remaining page budget, not session time pressure, not how "obvious" the missing decision seems from general/training knowledge.
+
+**Genuine silence.** Only proceed on general knowledge if a genuine ROUTING.md/index.md search comes up empty — and say so explicitly at decision time (in the session log as the decision is made, and in the completion report), not at the end. Never silently fill a gap with general knowledge and disclose it only in a post-hoc audit.
+
+**Report line.** Every completion report must include the line `WIKI COVERAGE CHECK: [complete / gap found and flagged / gap found and NOT checked before writing code]` (defined in `COMPLETION_TEMPLATES.md`). The third value is a standing failure and must never appear in any report after 2026-07-21.
 
 ---
 

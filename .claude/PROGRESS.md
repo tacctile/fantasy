@@ -9,6 +9,12 @@ Newest entry on top.
 
 ---
 
+## 2026-07-21 — Governance: Wiki Coverage Rule (Absolute Rule 12)
+
+New non-negotiable rule affecting all future build sessions, born from this session's provenance audit: a mandatory pre-implementation wiki coverage map (every decision → its covering wiki page, before code), ROUTING.md/index.md search before any general-knowledge fill regardless of page budget, explicit at-decision-time declaration of genuine wiki silence, and a mandatory `WIKI COVERAGE CHECK:` line on every completion report. Canonical text in BUILD_PROTOCOL.md; restated in MASTER_CONTEXT.md (Rule 12), BUILD_INDEX.md, COMPLETION_TEMPLATES.md.
+
+---
+
 ## 2026-07-21 — First Live Schema: Platform + Identity Foundation (Wave 1, Session 3)
 
 First schema migrations live in Supabase: `platform` enum, `players` (Sleeper-anchored identity), `player_id_crosswalk` — all verified against the live DB. Discovered the linked project is Nick's shared multi-app "prolabel" database (confirmed intentional); adopted the empty-stub migration pattern for its 23 foreign history versions, and `db reset`/`migration repair` are now permanently forbidden (see ARCHITECTURE.md Shared-Database Constraints).
@@ -30,12 +36,6 @@ First build session executed via `BUILD_PROTOCOL.md`. The Project scaffold secti
 ## 2026-07-21 — Wave 6 Build File Registered (Build-Queue Scoping Complete)
 
 `.claude/build/06_report_and_tools.md` registered — the final wave in the v1 roadmap. All six waves (01–06) are now registered, convergence-filtered build files. Build-queue planning phase is complete; next session should begin execution with Wave 1.
-
----
-
-## 2026-07-21 — Wave 5 Build File Registered
-
-`.claude/build/05_eye_candy.md` registered: score charts, lucky/unlucky tracker, positional breakdowns, playoff picture engine. Extends the Wave 4 admin dashboard; only luck summary and playoff status get spectator equivalents.
 
 ---
 

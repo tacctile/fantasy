@@ -126,6 +126,7 @@ Reflects actual patterns as they're established in `src/`. Follow when adding or
 - `wiki/` is read-only during ordinary feature-build and audit-fix sessions — never write, never modify, never delete. This restriction is about session *type* (feature-build/audit-fix vs. wiki-maintenance), not about environment. Nick works this project from three environments interchangeably — VS Code/Claude Code, Cowork, and Claude.ai in the browser — choosing whichever fits wherever he is at the time, with no fixed assignment of environment to task. A dedicated wiki-maintenance session run through Claude Code (this environment) follows `wiki/DISCOVERY_PROTOCOL.md` and `wiki/MAINTAINER.md` and writes to `wiki/` directly, the same as a Cowork or Claude Desktop session would. Wiki edits during a feature-build or audit-fix session are only performed when explicitly directed by Nick in a prompt's REQUIREMENTS block (the "Rule 22 exception").
 - If wiki content appears missing, outdated, or incorrect — surface it via `WIKI NOTE:` in the completion report. Never edit the wiki directly.
 - The wiki tells Claude Code *what* to build and *why* — never *how* in code. It holds synthesized guidance (API quirks, scoring methodology, schema documentation, format definitions), never live application data, rankings, or outputs — those belong in Supabase.
+- **Wiki Coverage Rule (Absolute Rule 12; canonical full text in `BUILD_PROTOCOL.md`).** The wiki is the source of truth for every build decision it covers. Before writing any schema, logic, or decision not explicitly and fully specified by an already-read wiki page, check `wiki/ROUTING.md` and `wiki/index.md` for a covering category — the page budget never blocks this check. A build file's WIKI PAGES list is a starting point, not a ceiling; inventing a field name, value, or shape from general knowledge is the signal to go find the covering wiki page BEFORE writing code. If the wiki is genuinely silent after a real search, declare that explicitly at decision time — never silently fill the gap and disclose it only in a post-hoc audit.
 
 ---
 
@@ -136,7 +137,7 @@ Every Claude Code session reads files in this exact order:
 1. `.claude/MASTER_CONTEXT.md` — this file: rules, stack, constraints
 2. `.claude/STATE.yml` — what happened last session
 3. `.claude/BUILD_INDEX.md` — build registry and wiki category map
-4. `wiki/index.md` and `wiki/ROUTING.md` — identify relevant wiki category, then read up to 3 pages from that category before beginning work (mandatory for any task touching product, architecture, domain, or UX logic; if no pages exist yet for the category, note this and proceed)
+4. `wiki/index.md` and `wiki/ROUTING.md` — identify relevant wiki category, then read up to 3 pages from that category before beginning work (mandatory for any task touching product, architecture, domain, or UX logic; if no pages exist yet for the category, note this and proceed). The Wiki Coverage Rule (Absolute Rule 12) overrides this cap whenever a decision isn't fully specified by pages already read
 5. Only the build file(s) listed in `STATE.yml → current_build_files`
 6. Only the source files listed in the prompt
 
@@ -159,6 +160,7 @@ Do not read files not listed above unless the prompt explicitly requires them.
 9. **60fps minimum** on all animations.
 10. **Tailwind default spacing scale only** — no arbitrary pixel values.
 11. **Dual-Location Instruction Rule** — when a fix modifies a rule stated in multiple locations (e.g. both this file's Session-End Steps section and the SESSION END block in Prompt Format below), update all locations. Known dual-location patterns to check: Session-End Steps ↔ Prompt Format's SESSION END block; the Session-Start Protocol, which is independently restated in this file, `BUILD_INDEX.md`, and `BUILD_PROTOCOL.md`; Absolute Rules ↔ restatements elsewhere in this file; `ARCHITECTURE.md`'s Code Conventions ↔ this file's Code Conventions. Check this file for dual-location patterns before committing a governance change.
+12. **Wiki Coverage Rule** — never invent a field name, value, shape, or any decision from general knowledge without first checking `wiki/ROUTING.md` and `wiki/index.md` for a covering page, regardless of remaining page budget, time pressure, or how "obvious" the answer seems. Pre-implementation coverage map required every build session; genuine wiki silence is declared explicitly at decision time, never in a post-hoc audit. Every completion report carries the `WIKI COVERAGE CHECK:` line. Canonical full text: `BUILD_PROTOCOL.md` → "Wiki Coverage Rule"; report line defined in `COMPLETION_TEMPLATES.md`.
 
 ---
 
@@ -171,7 +173,7 @@ Do not read files not listed above unless the prompt explicitly requires them.
 - Update `.claude/DESIGN_SYSTEM.md` if tokens changed.
 - Update the relevant build file checklist items — per the Build File Amendment Norm above, corrections only, not commentary.
 - If wiki content appeared missing, outdated, or incorrect — include `WIKI NOTE:` in the completion report.
-- Report using the correct template from `.claude/COMPLETION_TEMPLATES.md`.
+- Report using the correct template from `.claude/COMPLETION_TEMPLATES.md` (every report includes the mandatory `WIKI COVERAGE CHECK:` line — Absolute Rule 12).
 
 There is no postmortem system for this project. No `build_session_count` tracking, no postmortem trigger, no postmortem audit file.
 
@@ -211,7 +213,7 @@ SESSION END:
 - Update .claude/DESIGN_SYSTEM.md if tokens changed
 - Update relevant build file checklist items (corrections only, not commentary — see Build File Amendment Norm)
 - If wiki content appeared missing, outdated, or incorrect — include WIKI NOTE in the completion report
-- Report using the correct template from .claude/COMPLETION_TEMPLATES.md
+- Report using the correct template from .claude/COMPLETION_TEMPLATES.md (every report includes the mandatory WIKI COVERAGE CHECK line - Absolute Rule 12)
 ```
 
 **Formatting Rules:**

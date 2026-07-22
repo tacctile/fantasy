@@ -29,6 +29,16 @@ Always pair the score with the SUGGESTED PROMPT IMPROVEMENTS field — naming th
 
 ---
 
+## WIKI COVERAGE CHECK Line (mandatory on every report, added 2026-07-21)
+
+Every completion report — all three templates — includes exactly one of these values (per the Wiki Coverage Rule, Absolute Rule 12 in `MASTER_CONTEXT.md`, canonical text in `BUILD_PROTOCOL.md`):
+
+- **`complete`** — every decision made this session was either explicitly specified by a read wiki page, or required no wiki grounding (pure governance/mechanical work).
+- **`gap found and flagged`** — the wiki was genuinely silent on something after a real `wiki/ROUTING.md`/`wiki/index.md` search; the gap was declared explicitly at decision time and appears as a `WIKI NOTE`.
+- **`gap found and NOT checked before writing code`** — a decision was filled from general knowledge without searching the wiki first. This is a standing failure and must never appear in any report after 2026-07-21.
+
+---
+
 ## Dual-Location Instruction Rule
 
 When a fix modifies a rule that is stated in multiple locations (e.g., both the Prompt Format SESSION END block and the Session-End Steps section of MASTER_CONTEXT.md), update ALL locations. Check `MASTER_CONTEXT.md` for dual-location patterns before committing. Common dual-location patterns: SESSION END block ↔ Session-End Steps, Absolute Rules ↔ MASTER_CONTEXT.md restatements elsewhere, ARCHITECTURE.md Code Conventions ↔ MASTER_CONTEXT.md Code Conventions.
@@ -81,6 +91,8 @@ CONSOLE LOGS: [0 / N remaining]
 KNOWN ISSUES INTRODUCED:
 * [issue] — [why it was left, what fixes it]
 
+WIKI COVERAGE CHECK: [complete / gap found and flagged / gap found and NOT checked before writing code]
+
 WIKI NOTE: [OPTIONAL — only include when Claude Code identifies wiki content that appears missing, outdated, or incorrect. Format: "WIKI NOTE: [description of what should change in the wiki]". Omit entirely if no wiki issues were observed.]
 
 STATE.yml: UPDATED (overwrite completely — no stale fields)
@@ -117,6 +129,8 @@ TYPE CHECK: [PASSED / FAILED — error count]
 ISSUES DEFERRED:
 * [issue] — [why deferred, what resolves it]
 
+WIKI COVERAGE CHECK: [complete / gap found and flagged / gap found and NOT checked before writing code]
+
 WIKI NOTE: [OPTIONAL — only include when Claude Code identifies wiki content that appears missing, outdated, or incorrect. Format: "WIKI NOTE: [description of what should change in the wiki]". Omit entirely if no wiki issues were observed.]
 
 STATE.yml: UPDATED (overwrite completely — no stale fields)
@@ -138,6 +152,8 @@ FILES CREATED OR MODIFIED:
 * [path] — [what changed]
 
 NOTES: [anything worth flagging, or NONE]
+
+WIKI COVERAGE CHECK: [complete / gap found and flagged / gap found and NOT checked before writing code]
 
 WIKI NOTE: [OPTIONAL — only include when Claude Code identifies wiki content that appears missing, outdated, or incorrect. Format: "WIKI NOTE: [description of what should change in the wiki]". Omit entirely if no wiki issues were observed.]
 

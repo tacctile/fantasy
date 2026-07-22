@@ -13,7 +13,7 @@ Every Claude Code session reads files in this exact order:
 1. `.claude/MASTER_CONTEXT.md` — rules, stack, constraints
 2. `.claude/STATE.yml` — what happened last session
 3. `.claude/BUILD_INDEX.md` — this file, build registry and wiki category map
-4. `wiki/index.md` and `wiki/ROUTING.md` — identify relevant wiki category, then read up to 3 pages from that category before beginning work
+4. `wiki/index.md` and `wiki/ROUTING.md` — identify relevant wiki category, then read up to 3 pages from that category before beginning work (the Wiki Coverage Rule — Absolute Rule 12, canonical text in `BUILD_PROTOCOL.md` — overrides this cap whenever a decision isn't fully specified by pages already read)
 5. Only the build file(s) listed in `STATE.yml → current_build_files` — each build file lists the specific wiki pages to consult in its own WIKI PAGES section
 6. Only the source files listed in the prompt
 

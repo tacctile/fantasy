@@ -54,4 +54,10 @@ Three scope corrections landed in `MASTER_CONTEXT.md` and `BUILD_INDEX.md`, driv
 
 ---
 
+## 2026-07-21 — Wave 5 Build File Registered
+
+`.claude/build/05_eye_candy.md` registered: score charts, lucky/unlucky tracker, positional breakdowns, playoff picture engine. Extends the Wave 4 admin dashboard; only luck summary and playoff status get spectator equivalents.
+
+---
+
 _End of PROGRESS_ARCHIVE.md_
