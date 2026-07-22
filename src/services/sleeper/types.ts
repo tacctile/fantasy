@@ -117,3 +117,48 @@ export type SleeperLeague = {
   roster_positions?: string[] | null
   [key: string]: unknown
 }
+
+/**
+ * One draft object from `GET /league/{league_id}/drafts` (per
+ * wiki/topics/sleeper-api/draft-endpoint.md). The endpoint returns an array —
+ * a league can carry multiple drafts, including aborted/restarted ones that
+ * are never deleted, so selection filters on `season`/`status` and never
+ * trusts array order or the league object's single `draft_id`. `status`
+ * values observed: `pre_draft`, `drafting`, `paused`, `complete`. `type` is
+ * `snake`, `linear`, or `auction` (open set). `season` is a string on the
+ * wire, like the league object's.
+ */
+export type SleeperDraft = {
+  draft_id?: string | null
+  league_id?: string | null
+  season?: string | null
+  type?: string | null
+  status?: string | null
+  settings?: Record<string, unknown> | null
+  metadata?: Record<string, unknown> | null
+  slot_to_roster_id?: Record<string, number | null> | null
+  draft_order?: Record<string, number | null> | null
+  [key: string]: unknown
+}
+
+/**
+ * One pick from `GET /draft/{draft_id}/picks` (per
+ * wiki/topics/sleeper-api/draft-endpoint.md). `roster_id` is the ownership
+ * field — the roster that actually receives the player, reflecting in-draft
+ * pick trades; `draft_slot` is the original board column and `picked_by` the
+ * clicking human (empty string for autopicks/commissioner picks), and the
+ * three are never interchangeable. `metadata` is a point-in-time snapshot of
+ * the player at pick time — stale immediately for current-state use; its
+ * `amount` (auction winning bid) arrives as a string.
+ */
+export type SleeperDraftPick = {
+  pick_no?: number | null
+  round?: number | null
+  draft_slot?: number | null
+  roster_id?: number | null
+  picked_by?: string | null
+  player_id?: string | null
+  is_keeper?: boolean | null
+  metadata?: Record<string, unknown> | null
+  [key: string]: unknown
+}

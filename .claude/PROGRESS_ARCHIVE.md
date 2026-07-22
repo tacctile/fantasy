@@ -102,4 +102,10 @@ The entire Wave 1 schema block is now built and verified live. The integrity fol
 
 ---
 
+## 2026-07-22 — Governance: Absolute Rule 13 — Non-Fantasy Data Is Untouchable
+
+Permanent, zero-exception protection for the shared prolabel database's ~49 non-fantasy tables (Elliott = live business production data) installed at Nick's direction: never `db reset`, never `migration repair` touching foreign history (stubs only), no raw SQL reaching non-fantasy tables (blast radius verified against ARCHITECTURE.md's live schema inventory per migration), collision check forever, any ambiguity → stop and ask. New mandatory `BLAST RADIUS:` line on every completion report. Canonical text in MASTER_CONTEXT.md; mirrored in COMPLETION_TEMPLATES.md, ARCHITECTURE.md, BUILD_PROTOCOL.md, STATE.yml.
+
+---
+
 _End of PROGRESS_ARCHIVE.md_

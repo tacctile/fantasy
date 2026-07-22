@@ -16,6 +16,13 @@
  * connections, so all three retry under the same exponential-backoff-with-
  * jitter policy, with a bounded attempt count and no reliance on Retry-After
  * (not reliably present).
+ *
+ * Pacing: a module-global gate spaces physical request starts at least
+ * MIN_REQUEST_GAP_MS apart (retries included) — per rate-limits.md the
+ * limiter must run with substantial headroom below the ~1,000 req/min
+ * documented ceiling (an isolated report puts the practical ceiling far
+ * lower) and must bound short-window burstiness, not just the per-minute
+ * average. 250ms caps the worst case at ~240/min for the whole process.
  */
 
 const SLEEPER_BASE_URL = 'https://api.sleeper.app/v1'
@@ -23,6 +30,7 @@ const SLEEPER_BASE_URL = 'https://api.sleeper.app/v1'
 const DEFAULT_TIMEOUT_MS = 10_000
 const MAX_ATTEMPTS = 3
 const BACKOFF_BASE_MS = 1_000
+const MIN_REQUEST_GAP_MS = 250
 
 export type SleeperErrorKind =
   | 'timeout' // request or body read exceeded its deadline
@@ -87,7 +95,20 @@ function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
+// Next timestamp at which a request may start. The slot is reserved
+// synchronously before any await, so concurrent callers serialize correctly
+// on the single-threaded event loop.
+let nextRequestAt = 0
+
+async function paceRequest(): Promise<void> {
+  const now = Date.now()
+  const waitMs = nextRequestAt - now
+  nextRequestAt = Math.max(now, nextRequestAt) + MIN_REQUEST_GAP_MS
+  if (waitMs > 0) await sleep(waitMs)
+}
+
 async function requestOnce<T>(path: string, timeoutMs: number): Promise<T> {
+  await paceRequest()
   const signal = AbortSignal.timeout(timeoutMs)
 
   let response: Response

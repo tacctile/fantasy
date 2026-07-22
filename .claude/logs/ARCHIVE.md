@@ -3,6 +3,12 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_10 — Governance: Absolute Rule 13 installed (non-fantasy data untouchable)
+
+- Nick's six prohibitions installed substantially verbatim as MASTER_CONTEXT.md's "Shared Database Protection" canonical section + Absolute Rule 13 pointer: never `db reset`; never `migration repair` touching foreign history (stub files only); no raw SQL reaching non-fantasy tables with explicit pre-migration table-name verification against ARCHITECTURE.md's live inventory (declared the definitive fantasy-owned list); collision check forever; any ambiguity → stop and ask; mandatory blast-radius confirmation per live-DB session. Supersedes efficiency/folding/automation considerations.
+- `BLAST RADIUS:` line made mandatory on EVERY report (not just live-DB sessions) — three legal values (confirmed fantasy-only / no live DB ops / other-objects-with-cited-sign-off); a missing line is always a visible violation. Read-only queries against foreign tables explicitly carved out (the collision check requires them). Templates, BUILD_PROTOCOL build step 2 + session-end step 7, ARCHITECTURE.md Shared-Database Constraints, STATE.yml warnings[0], and Rule 11's dual-location pattern list all updated in one sweep.
+- Deliberately untouched: migration stub comments (editing migrations is itself forbidden), MANUAL_SETUP_CHECKLIST decision-of-record, historical PROGRESS entries, BUILD_INDEX (no restatement exists there). WIKI NOTE: none.
+
 ## 2026-07-22_09 — Wave 1 types + client wiring (both items folded)
 
 - Generated `src/lib/supabase/database.types.ts` via new canonical `gen:types` npm script (`supabase gen types typescript --linked --schema public`) — full shared public schema committed as-is by Nick's Clarify ruling (CLI has no per-table filter; ~49 foreign prolabel tables are inert generated types, never imported). All 10 fantasy tables, 3 enums, both functions verified present; regenerate wholesale after every migration.
