@@ -1,6 +1,6 @@
 # BUILD_INDEX.md
 **Master build router — tacctile/fantasy**
-**Last Updated:** 2026-07-22 (Wave 3a 🟡, 3 of 5 sub-sections done — `03a_draft_assistant_static_board.md`: ADP schema + ingestion, draft-board data layer, and route + page shell (first real UI surface + owner auth path — real sign-in live-verified) complete; player list next. `02_data_pipeline.md` stays 🟡: 9 ESPN items `[!]` external-timing, cron cadence `[~]`, finality promotion `[>]`. Prior: Wave 1 complete — `01_foundation.md` 🟢)
+**Last Updated:** 2026-07-22 (Wave 3a 🟡, 4 of 5 sub-sections done — `03a_draft_assistant_static_board.md`: ADP schema + ingestion, draft-board data layer, route + page shell, and player list (the board is a working feature; bye week `[>]` pending a schedule-derived source) complete; states + resilience next. `02_data_pipeline.md` stays 🟡: 9 ESPN items `[!]` external-timing, cron cadence `[~]`, finality promotion `[>]`. Prior: Wave 1 complete — `01_foundation.md` 🟢)
 
 Nothing gets built without a registered build file. No exceptions. Every new feature requires a registered build file in this index before a single line of code is written.
 

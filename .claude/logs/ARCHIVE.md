@@ -3,6 +3,11 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_19 — Wiki maintenance: projections-endpoint page ingested (non-code, single-source)
+
+- Dedicated wiki-maintenance session (session-type-gated, Claude Code environment): created `wiki/topics/sleeper-api/projections-endpoint.md` (23.4KB, confidence medium — no official spec exists for an undocumented surface) via the Single-Source Ingest Protocol; the endpoint postdates Notebook 5's subject list, so no queue entry. Live re-verification within the 5-minute cap sharpened the recorded knowledge: response is a JSON ARRAY (not an ID-keyed map), ADP fields live inside `stats`, a 12th field `adp_dynasty_2qb` exists (field set proven open → pattern-ingestion Key Decision), `999.0` = not-ranked sentinel (treat as null), `company: "rotowire"` provenance caveat recorded as an Open Question.
+- Housekeeping: sleeper-api/_index + wiki/index counts (Sleeper API 17, total 133), verification-cache rows (2 verified + 3 pending), MAINTAINER.md stale notebook-status fix. Commits `15f4625` + `d9d275a`, pushed (portability: the page gates the next build session's wiki reads). STATE.yml wiki-silence known_issue pruned as resolved; MANUAL_SETUP Wave 3a ADP constraint note rewritten to point at the page as source of record. Reciprocal-link edits did not bump `last_updated` (content currency untouched).
+
 ## 2026-07-22_18 — Finality-promotion gap: investigated, designed, registered (non-code) + ADP source verified and picked
 
 - Finality gap confirmed exactly as recorded (current-week-only cron + lifecycle-status-only `is_final` writer; no reader exists in src). Wiki verdict: unbuilt, not undesigned — matchup-endpoint Key Decision #3 is the ADR; only the operational vehicle was missing. Two genuine-silence sub-decisions Nick-signed: week-advance as games-complete proxy; Friday-or-later UTC stable-read match as the promotion trigger. Registered as the `[>]` item in 02_data_pipeline.md's cron sub-section (deferred-not-unchecked encodes Wave-3a-first sequencing); hard deadline ~2026-09-15/18; not urgent now (offseason, zero affected rows, retroactively fixable).

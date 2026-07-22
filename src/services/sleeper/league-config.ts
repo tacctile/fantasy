@@ -229,11 +229,21 @@ function validateLeague(league: SleeperLeague, requestedId: string): ValidatedLe
  * TE premium: no wiki page documents Sleeper's TE-premium wire key (declared
  * silence, 2026-07-22) — `bonus_rec_te` (per-reception TE bonus) > 0 is the
  * general-knowledge derivation, correctable by re-derivation on any refresh.
+ *
+ * IR capacity (fixed 2026-07-22, Nick-signed): Sleeper expresses it two ways —
+ * `IR` labels in roster_positions AND/OR `settings.reserve_slots`
+ * (league-endpoint: settings is the roster-mechanics control; its open
+ * question #4 describes the count-only shape, and Nick's own league proves it
+ * live: reserve_slots 4, zero IR labels). The derivation takes the max of
+ * both so capacity is never understated whichever representation a league
+ * uses.
  */
 function deriveConfig(validated: ValidatedLeague): DerivedLeagueConfig {
-  const { scoringSettings, rosterPositions } = validated
+  const { scoringSettings, settings, rosterPositions } = validated
 
   const qbSlotCount = rosterPositions.filter((slot) => slot === 'QB').length
+  const irLabelCount = rosterPositions.filter((slot) => slot === 'IR').length
+  const reserveSlots = asNumber(settings.reserve_slots) ?? 0
 
   return {
     ppr: asNumber(scoringSettings.rec) ?? 0,
@@ -242,7 +252,7 @@ function deriveConfig(validated: ValidatedLeague): DerivedLeagueConfig {
     active_slot_count: rosterPositions.filter((slot) => !NON_ACTIVE_SLOT_LABELS.has(slot))
       .length,
     bench_slot_count: rosterPositions.filter((slot) => slot === 'BN').length,
-    ir_slot_count: rosterPositions.filter((slot) => slot === 'IR').length,
+    ir_slot_count: Math.max(irLabelCount, reserveSlots),
     league_size: validated.leagueSize,
   }
 }

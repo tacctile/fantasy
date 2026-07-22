@@ -71,6 +71,25 @@ export type DraftBoardPlayer = {
   rosteredByNativeRosterId: number | null
   rosteredByTeamName: string | null
   rosteredByOwnerDisplayName: string | null
+  /** Roster slot classification when rostered (starter/bench/reserve/taxi). */
+  rosteredSlot: Database['public']['Enums']['roster_slot'] | null
+}
+
+/**
+ * The league's lineup-slot layout, parsed from `roster_settings_raw`'s
+ * `roster_positions` array (the raw-column escape hatch per the
+ * league-configuration-data-model ADR — derived_config carries only totals).
+ * `ir` here is the raw IR-label count; display capacity should prefer
+ * `derived_config`'s ir_slot_count, which also honors `settings.reserve_slots`.
+ */
+export type RosterSlotLayout = {
+  /** Dedicated single-position starting slots, keyed by label, layout order. */
+  dedicated: Record<string, number>
+  /** Flex-family starting slots (any label containing FLEX), keyed by label. */
+  flex: Record<string, number>
+  bench: number
+  ir: number
+  taxi: number
 }
 
 export type DraftBoardLeagueContext = {
@@ -88,6 +107,9 @@ export type DraftBoardLeagueContext = {
   benchSlotCount: number | null
   irSlotCount: number | null
   leagueSize: number | null
+  /** Null when roster_settings_raw is absent or not the Sleeper shape (an
+   *  ESPN league's native shape parses here once ESPN sync lands). */
+  slotLayout: RosterSlotLayout | null
   adpSource: string
   /** Latest ingested ADP season, or null when nothing is ingested yet. */
   adpSeasonYear: number | null
@@ -153,6 +175,47 @@ export function resolveAdpScoringFormat(derived: {
   return 'std'
 }
 
+/**
+ * Parse a `roster_settings_raw` payload into the lineup-slot layout. Shape-
+ * tolerant, never throws: anything other than the Sleeper raw shape (an
+ * object carrying a non-empty `roster_positions` string array) returns null
+ * and the consumer degrades gracefully. Labels classify pattern-based — the
+ * full label inventory is unpublished (wiki: sleeper-api/league-endpoint), so
+ * BN/IR/TAXI are structural, any label containing FLEX is flex-family, and
+ * everything else is a dedicated position slot (IDP labels land there
+ * naturally, no closed list anywhere).
+ */
+export function parseRosterSlotLayout(raw: unknown): RosterSlotLayout | null {
+  const record = asRecord(raw)
+  if (record === null) return null
+  const positions = record.roster_positions
+  if (
+    !Array.isArray(positions) ||
+    positions.length === 0 ||
+    !positions.every((slot): slot is string => typeof slot === 'string')
+  ) {
+    return null
+  }
+  const layout: RosterSlotLayout = {
+    dedicated: {},
+    flex: {},
+    bench: 0,
+    ir: 0,
+    taxi: 0,
+  }
+  for (const label of positions) {
+    if (label === 'BN') layout.bench += 1
+    else if (label === 'IR') layout.ir += 1
+    else if (label === 'TAXI') layout.taxi += 1
+    else if (label.includes('FLEX')) {
+      layout.flex[label] = (layout.flex[label] ?? 0) + 1
+    } else {
+      layout.dedicated[label] = (layout.dedicated[label] ?? 0) + 1
+    }
+  }
+  return layout
+}
+
 /** Fetch the merged draft-board dataset for one league Nick owns. */
 export async function getDraftBoardData(
   db: SupabaseClient<Database>,
@@ -174,13 +237,14 @@ export async function getDraftBoardData(
 
   const { data: config, error: configError } = await db
     .from('league_config')
-    .select('derived_config')
+    .select('derived_config, roster_settings_raw')
     .eq('league_id', leagueId)
     .maybeSingle()
   if (configError) throw new Error(`draft-board config query failed: ${configError.message}`)
 
   const derived = asRecord(config?.derived_config)
   const scoringFormat = derived === null ? null : resolveAdpScoringFormat(derived)
+  const slotLayout = parseRosterSlotLayout(config?.roster_settings_raw)
 
   // Latest ingested ADP season for the source (current-market snapshot).
   const { data: seasonRow, error: seasonError } = await db
@@ -223,13 +287,16 @@ export async function getDraftBoardData(
   // League roster membership — explicit availability, never inferred.
   const { data: membershipRows, error: membershipError } = await db
     .from('roster_players')
-    .select('sleeper_player_id, native_roster_id')
+    .select('sleeper_player_id, native_roster_id, slot')
     .eq('league_id', leagueId)
   if (membershipError) {
     throw new Error(`draft-board membership query failed: ${membershipError.message}`)
   }
   const rosterByPlayerId = new Map(
-    membershipRows.map((row) => [row.sleeper_player_id, row.native_roster_id])
+    membershipRows.map((row) => [
+      row.sleeper_player_id,
+      { nativeRosterId: row.native_roster_id, slot: row.slot },
+    ])
   )
 
   const { data: rosterRows, error: rosterError } = await db
@@ -278,9 +345,9 @@ export async function getDraftBoardData(
   const players: DraftBoardPlayer[] = poolIds.map((playerId) => {
     const identity = playersById.get(playerId)
     const adp = adpByPlayerId.get(playerId)
-    const nativeRosterId = rosterByPlayerId.get(playerId)
-    const rostered = nativeRosterId !== undefined
-    const names = rostered ? rosterNames.get(nativeRosterId) : undefined
+    const membership = rosterByPlayerId.get(playerId)
+    const rostered = membership !== undefined
+    const names = rostered ? rosterNames.get(membership.nativeRosterId) : undefined
     return {
       sleeperPlayerId: playerId,
       fullName: identity?.full_name ?? null,
@@ -291,9 +358,10 @@ export async function getDraftBoardData(
       adpOverall: adp?.adp_overall ?? null,
       positionalRank: adp?.positional_rank ?? null,
       availability: rostered ? 'rostered' : 'available',
-      rosteredByNativeRosterId: rostered ? nativeRosterId : null,
+      rosteredByNativeRosterId: rostered ? membership.nativeRosterId : null,
       rosteredByTeamName: names?.teamName ?? null,
       rosteredByOwnerDisplayName: names?.ownerDisplayName ?? null,
+      rosteredSlot: rostered ? membership.slot : null,
     }
   })
 
@@ -325,6 +393,7 @@ export async function getDraftBoardData(
         benchSlotCount: asNumber(derived?.bench_slot_count),
         irSlotCount: asNumber(derived?.ir_slot_count),
         leagueSize: asNumber(derived?.league_size),
+        slotLayout,
         adpSource: ADP_SOURCE,
         adpSeasonYear,
         adpIngestedAt,

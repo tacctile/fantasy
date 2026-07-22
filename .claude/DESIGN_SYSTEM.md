@@ -3,7 +3,7 @@
 
 **Parent:** `.claude/MASTER_CONTEXT.md`
 
-**Last Updated:** 2026-07-22 (palette reconciliation fold: the Color System's values are now LIVE in `src/app/globals.css` — single always-on dark token set applied, `--radius` resolved via Nick-signed Clarify, pill-button and input-well component patterns applied to the vendored primitives)
+**Last Updated:** 2026-07-22 (player-list fold: six net-new position identity tokens `--pos-qb/rb/wr/te/k/def` added — Nick-signed Sleeper-convention hues with RB shifted off the brand teal; badges only, never row tints. Prior same-day: palette reconciliation fold applied the full Color System live in `src/app/globals.css`)
 
 ---
 
@@ -24,7 +24,7 @@ This app ships **dark mode only**. There is no light theme, now or planned — t
 ## Live Token Set (src/app/globals.css)
 
 - **Mechanism:** Tailwind v4 CSS-first theming — no `tailwind.config.*` file exists. `@theme inline` in `globals.css` maps Tailwind color/radius utilities onto shadcn CSS variables; values are defined once (all oklch, zero hex) as the single dark theme — no separate light block. (Mechanism unchanged by the color decisions below — only the token *values* change.)
-- **Color tokens:** `--background`, `--foreground`, `--card`, `--card-foreground`, `--popover`, `--popover-foreground`, `--primary`, `--primary-foreground`, `--secondary`, `--secondary-foreground`, `--muted`, `--muted-foreground`, `--accent`, `--accent-foreground`, `--destructive`, `--warning`, `--positive`, `--well`, `--border`, `--input`, `--ring`, `--chart-1`..`--chart-5`, `--sidebar` family (the last three net-new tokens landed 2026-07-22 with `@theme inline` mappings `--color-warning`/`--color-positive`/`--color-well`)
+- **Color tokens:** `--background`, `--foreground`, `--card`, `--card-foreground`, `--popover`, `--popover-foreground`, `--primary`, `--primary-foreground`, `--secondary`, `--secondary-foreground`, `--muted`, `--muted-foreground`, `--accent`, `--accent-foreground`, `--destructive`, `--warning`, `--positive`, `--well`, `--border`, `--input`, `--ring`, `--chart-1`..`--chart-5`, `--sidebar` family (net-new 2026-07-22 with `@theme inline` mappings: `--color-warning`/`--color-positive`/`--color-well`), and the position identity family `--pos-qb`/`--pos-rb`/`--pos-wr`/`--pos-te`/`--pos-k`/`--pos-def` (net-new 2026-07-22, player-list fold — see "Position identity colors" below)
 - **Base palette:** Sleeper-derived tinted-dark palette — see "Color System (final)" below. Applied in code 2026-07-22; the shadcn achromatic-neutral placeholder is gone.
 - **Radius (resolved — Nick-signed Clarify, 2026-07-22):** `--radius: 0.625rem` stays. Containers reach the 12–16px band via the derived `--radius-xl` step (base × 1.4 = 14px) that shadcn's Card already uses; buttons and chips are fully-rounded pills (`rounded-full` in `button.tsx`; badges were already pill) and never consume the base value. Derived `--radius-sm`..`--radius-4xl` remain multiples of the base.
 - **Fonts:** Geist on `--font-sans` (registered in `layout.tsx` via `next/font`), Geist Mono on `--font-geist-mono` (mapped to `--font-mono`)
@@ -62,6 +62,21 @@ Elevation expressed via lightness steps only. **No drop shadows. No/minimal bord
 | *(new token)* `--positive` | same as `--primary`, `oklch(0.759 0.147 168.6)` | Win/live/positive-delta — green-teal family, shares the accent hue rather than a separate green |
 | Bye week | no token — muted text only | Deliberately uncolored. Rule: color = live/actionable information; absence of color = absence of urgency. Render in `--muted-foreground`, never a status color. |
 | Injury chip (Q/D/O/IR) | small colored letter/chip inline with player name, severity-scaled (`--warning` → `--destructive` as severity increases) | Never a full-row tint — the chip carries the color, not the row background. |
+
+### Position identity colors (added 2026-07-22, player-list fold — Nick-signed)
+
+Six net-new tokens for player-position identity on badges/chips. Direction signed via Clarify: Sleeper-convention hues, with **RB deliberately shifted off the brand teal** (green, hue 140 vs. teal 168.6) so the "teal = interactive/live only" rule survives; QB sits at magenta-pink clear of destructive coral (20.4°); TE orange sits clear of warning amber (73.7°). Exact values are this platform's own design decision (recorded here as the decision of record):
+
+| Token | Value | Position |
+|---|---|---|
+| `--pos-qb` | `oklch(0.67 0.20 345)` | QB — magenta-pink |
+| `--pos-rb` | `oklch(0.72 0.17 140)` | RB — green (shifted off brand teal) |
+| `--pos-wr` | `oklch(0.70 0.14 250)` | WR — blue |
+| `--pos-te` | `oklch(0.74 0.15 55)` | TE — orange |
+| `--pos-k` | `oklch(0.68 0.17 305)` | K — purple |
+| `--pos-def` | `oklch(0.65 0.02 273.8)` | DEF — desaturated slate (background hue family) |
+
+Usage rules: **badges/chips only — never row backgrounds or tints** (same chip-carries-color rule as injury status); rendered as low-opacity fill + full-strength text (`bg-pos-*/15` + `text-pos-*`, see `position-badge.tsx`); positions outside the canonical six fall back to the neutral `--secondary` treatment rather than inventing a color.
 
 ### Text hierarchy — opacity tiers of one color, not a gray palette
 
