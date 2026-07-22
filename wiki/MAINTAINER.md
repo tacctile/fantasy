@@ -134,8 +134,8 @@ Build top-down. The notebook priority and current status is defined in `wiki/WIK
 | 2 | Team & Scheme Context | team-scheme | ✅ COMPLETED |
 | 3 | League Mechanics, Scoring & Draft Strategy | league-mechanics | ✅ COMPLETED |
 | 4 | In-Season Management, Injury/Availability & Situational Data | in-season-management | ✅ COMPLETED |
-| 5 | Sleeper API Integration | sleeper-api | 🔄 ACTIVE — nb5a queue ready, 5.1–5.3 IN_PROGRESS |
-| 6 | ESPN API Integration | espn-api | 🔒 LOCKED |
+| 5 | Sleeper API Integration | sleeper-api | ✅ COMPLETED |
+| 6 | ESPN API Integration | espn-api | ✅ COMPLETED |
 
 ---
 
