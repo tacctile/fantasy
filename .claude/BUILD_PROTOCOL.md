@@ -69,6 +69,16 @@ This keeps every "go create an account / go copy a cookie" moment out of the bui
 
 ---
 
+## Amendment Hygiene — Standing Practices (added 2026-07-22, Nick-directed)
+
+Two standing practices governing how confirmed decisions and known constraints propagate into already-registered build files. Both operationalize the Build File Amendment Norm (`MASTER_CONTEXT.md`) — they define *when* a correctness amendment is triggered, not a new kind of amendment.
+
+**1. Confirmed-decision backsweep.** When a `MANUAL_SETUP_CHECKLIST.md` item, a Clarify answer, or a plain-chat decision of record confirms something AFTER related build-file items were already registered, the session recording that confirmation must explicitly sweep it back against the already-registered items for staleness — schema constraints, field shapes, source assumptions, anything baked into checklist text before the confirmation existed — and amend affected items (correctness amendments, Nick-signed where they change registered scope) BEFORE the next build session reaches them. Confirmed decisions apply backward as well as forward; "applied forward only" is the failure mode. *Origin: 2026-07-22 — the ADP source confirmation (multi-format endpoint) left 03a's migration item carrying its pre-confirmation single-row unique constraint, forcing a correction at build time instead of at confirmation time.*
+
+**2. Capacity-collision annotation.** When a registered build-file item implies adding a new instance of a capacity-limited resource whose constraint is already documented elsewhere in the repo (Vercel cron slots and plan-tier caps, rate-limited API hosts/keys, service quotas — e.g. in `ARCHITECTURE.md` or a `MANUAL_SETUP_CHECKLIST.md` decision of record), the item's own text must carry that constraint note up front — added at registration when the constraint is already known, or by backsweep (practice 1) when the constraint becomes documented later — so it surfaces during Clarify as a known constraint with options, never as a surprise scheduling/capacity decision mid-build. *Origin: 2026-07-22 — 03a's ADP cron item collided at build time with the Hobby 2-cron-slot cap that had been documented since the Wave 2 cron session's decision of record.*
+
+---
+
 ## Clarify (3–5 pointed questions, every session)
 
 Once any Manual Setup Flag is cleared (or none applies), ask Nick 3–5 questions **specific to the current checklist item** — never generic, never a restatement of the item itself. In a folded session (see Folding Policy below), Clarify runs per item: each decision-dense item gets its own batch, asked immediately before that item is built — never one compressed mega-batch covering the whole fold upfront. Good questions are things the build file could not have predicted at scoping time:
