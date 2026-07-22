@@ -3,6 +3,13 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_13 — Wave 2 begun: Sleeper client + player catalog (3-item fold; first live ingestion)
+
+- First Wave 2 session: typed server-only Sleeper client (`sleeperGet` + `SleeperApiError`; 3 attempts, exponential backoff + full jitter, 404 never retried, throttle taxonomy per rate-limits page), catalog sync `syncPlayersCatalog` (validate-before-persist: ≥5,000 records, ≥80% of existing count, core-field sample; chunked upsert 500/batch; set-based mark-inactive only after all chunks succeed), and catalog-presence columns via migration `20260722134911` (additive ALTER on `players` only: `is_active_in_catalog` + `catalog_last_seen_at` — Nick's Clarify choice on declared wiki silence).
+- Judgment call disclosed at fold declaration: the first-ever live Sleeper call inside a fold read as compatible with the first-touch hard stop (it bars extending past a new-service boundary, not the deliberately scoped first-touch unit); Nick was offered the shrink-to-one-item alternative and didn't take it. Module home `src/services/sleeper/` + tsx runner `npm run sync:players` (Clarify decisions). Snapshot-retention wiki conflict ruled: build-file scope wins — no snapshot/diff table; full raw record still lands in `players.metadata` per sync.
+- Live verification passed: 12,200 fetched/upserted in ~33s; 32 non-numeric IDs = exactly the 32 DEF team defenses (wiki quirk confirmed end-to-end); `espn_id`/`gsis_id` present in metadata for later crosswalk work. Non-zero mark-inactive path not exercised (a second same-day fetch would violate the once-per-day rule) — disclosed, exercised naturally by future daily runs.
+- WIKI NOTE (carried): players-endpoint's snapshot-retention Key Decision conflicts with v1's rejected historical views (Nick's ruling should be recorded there or the dependency claim softened); standing players-table DDL addendum suggestion extended with the presence-column semantics.
+
 ## 2026-07-22_12 — Wave 1 health-check gate (WAVE 1 COMPLETE)
 
 - Final Wave 1 item as a single-item fold: `/api/health` (public, force-dynamic, minimal `{ ok }`, real error server-logged only) + the deferred secret-key admin client `src/lib/supabase/admin.ts` (same-name `createClient` convention; non-`NEXT_PUBLIC_` secret fails loudly if client-bundled). All three Clarify recommendations accepted: secret-key path (no password handoff ever needed), public exposure, minimal response.
