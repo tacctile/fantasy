@@ -3,6 +3,12 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_09 — Wave 1 types + client wiring (both items folded)
+
+- Generated `src/lib/supabase/database.types.ts` via new canonical `gen:types` npm script (`supabase gen types typescript --linked --schema public`) — full shared public schema committed as-is by Nick's Clarify ruling (CLI has no per-table filter; ~49 foreign prolabel tables are inert generated types, never imported). All 10 fantasy tables, 3 enums, both functions verified present; regenerate wholesale after every migration.
+- `@supabase/ssr@0.12.3` + `@supabase/supabase-js@2.110.8` installed (auth-helpers deprecated). `client.ts`/`server.ts` factories both export the same name `createClient`, disambiguated by import path (Supabase-docs convention, Nick's ruling); no barrel `index.ts` (impossible under same-name exports); server factory uses Next async `cookies()` + getAll/setAll bridge + RSC set-cookie no-op catch. Secret-key admin client deliberately deferred to the env/deploy session.
+- Verification: `tsc --noEmit` + `npm run build` passed; temporary type probe proved both clients resolve exact row shapes and enum unions through the `Database` generic. WIKI COVERAGE CHECK: complete (no wiki category covers app tooling — searched and declared; no domain/schema decision invented). WIKI NOTE: none.
+
 ## 2026-07-22_08 — Wave 1 integrity section (FK sweep, indexes, admin auth + RLS) — folded
 
 - First session run under the Folding Policy: 3-item integrity fold. FK sweep verified live with no DDL (18/18 FKs, cascade/set-null rules exact). `20260722063616_add_integrity_indexes.sql`: 17 single-column `idx_*` (prefix-covered columns skipped; `leagues.owner_id` deliberately unindexed). `20260722064037_add_owner_rls_policies.sql`: `public.is_fantasy_admin()` (stable, `search_path=''`, the single admin-rotation point) + `fantasy_owner_all` × 10 tables (`FOR ALL TO authenticated`, InitPlan-wrapped, pinned to the admin UUID — never blanket `authenticated`).

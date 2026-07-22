@@ -32,7 +32,7 @@
 
 ## Wave 2 — Data Pipeline
 
-- [ ] **Have at least one real (or throwaway test) Sleeper league ID ready.** No account/auth needed for Sleeper — just the league ID itself, so the sync has something real to pull.
+- [x] **Have at least one real (or throwaway test) Sleeper league ID ready.** No account/auth needed for Sleeper — just the league ID itself, so the sync has something real to pull. Handed over and used live 2026-07-22: `1257464256710856704` ("10 enter 1 Leaves" — Nick's season-2025, status-complete league; fully ingested). Note: Sleeper mints a new league ID per season renewal — when the 2026 renewal exists, connect it by running the same sync runners with the new ID (no new manual setup needed).
 - [ ] **Decide whether an ESPN league is public or private** for each ESPN league you plan to connect (public leagues skip cookie auth entirely — check this before assuming you need cookies).
 - [ ] **For any private ESPN league: generate `espn_s2` and `SWID` cookies.** Log into ESPN Fantasy in a browser, open dev tools → cookies, copy both values. Hand back per private league.
 - [ ] **Have the real ESPN league ID(s) + season year ready** for any ESPN league you're connecting.

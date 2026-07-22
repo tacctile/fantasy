@@ -96,4 +96,10 @@ Session scope unit redefined for all future build sessions: up to 3 decision-den
 
 ---
 
+## 2026-07-22 — Wave 1 Schema Complete: Integrity Section + RLS Security Model Live
+
+The entire Wave 1 schema block is now built and verified live. The integrity fold (first session under the new Folding Policy: 3 items) confirmed all 18 FKs shipped at creation, added 17 integrity indexes, and activated the RLS owner-policy layer — `fantasy_owner_all` (full CRUD) on all ten tables, pinned to Nick's specific `auth.uid()` via `is_fantasy_admin()`. Admin identity: the pre-existing prolabel user nick@prolabelco.com, reused by Nick's ruling (duplicate emails impossible in the shared namespace) — no password handoff needed. Remaining Wave 1: types/client wiring, env/deploy.
+
+---
+
 _End of PROGRESS_ARCHIVE.md_

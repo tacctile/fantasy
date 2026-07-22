@@ -9,6 +9,12 @@ Newest entry on top.
 
 ---
 
+## 2026-07-22 — First Real League Connected: Sleeper League-Scoped Sync Live (Config, Rosters, Standings, Matchups, Player Scores)
+
+Nick's league "10 enter 1 Leaves" (2025, 10-team full-PPR) fully ingested end-to-end by three new services (`league-config`, `league-rosters`, `league-matchups` in `src/services/sleeper/` + `sync:league`/`sync:rosters`/`sync:matchups` runners): `leagues`+`league_config` (45 raw scoring keys, derived_config), 10 rosters/174 membership rows/10 standings, and 18 weeks of matchups (180 rows) + 3,152 player scores. Verified live: starter-sum vs. Sleeper's own totals matched on all 180 roster-weeks; standings and `derived_config` (with sign-off) folded in as build-file scope corrections. Next: Sleeper draft-state write path + per-league orchestrator.
+
+---
+
 ## 2026-07-22 — Wave 2 Begun: First Live Data Ingestion — Sleeper Player Catalog Synced (12,200 Players)
 
 First working Wave 2 feature. The full "Sleeper — client + player catalog" sub-section shipped as one fold: typed server-only Sleeper client (`src/services/sleeper/`), validate-before-persist catalog sync, and catalog-presence inactive marking (two new `players` columns, migration `20260722134911`). Live verification: 12,200 players fetched and upserted into production `players` in ~33s via `npm run sync:players`; D/ST abbreviation IDs and metadata's cross-provider ID block confirmed intact. Next: Sleeper league-scoped sync (needs a real league ID — open MANUAL_SETUP item).
@@ -30,12 +36,6 @@ Core infra activation: the GitHub→Vercel pipeline is confirmed working end-to-
 ## 2026-07-22 — Governance: Absolute Rule 13 — Non-Fantasy Data Is Untouchable
 
 Permanent, zero-exception protection for the shared prolabel database's ~49 non-fantasy tables (Elliott = live business production data) installed at Nick's direction: never `db reset`, never `migration repair` touching foreign history (stubs only), no raw SQL reaching non-fantasy tables (blast radius verified against ARCHITECTURE.md's live schema inventory per migration), collision check forever, any ambiguity → stop and ask. New mandatory `BLAST RADIUS:` line on every completion report. Canonical text in MASTER_CONTEXT.md; mirrored in COMPLETION_TEMPLATES.md, ARCHITECTURE.md, BUILD_PROTOCOL.md, STATE.yml.
-
----
-
-## 2026-07-22 — Wave 1 Schema Complete: Integrity Section + RLS Security Model Live
-
-The entire Wave 1 schema block is now built and verified live. The integrity fold (first session under the new Folding Policy: 3 items) confirmed all 18 FKs shipped at creation, added 17 integrity indexes, and activated the RLS owner-policy layer — `fantasy_owner_all` (full CRUD) on all ten tables, pinned to Nick's specific `auth.uid()` via `is_fantasy_admin()`. Admin identity: the pre-existing prolabel user nick@prolabelco.com, reused by Nick's ruling (duplicate emails impossible in the shared namespace) — no password handoff needed. Remaining Wave 1: types/client wiring, env/deploy.
 
 ---
 
