@@ -3,6 +3,22 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_24 — Wave 3a player-list sub-section (6-item fold) + ir_slot_count fix
+
+- Built the draft board's player-list surface as one 6-item fold: `position-badge`/`injury-chip`/`player-row`/`player-table`/`board-toolbar`/`player-board`/`use-player-list`/`roster-fill`/`roster-panel` in `src/components/draft-board/`, plus 6 net-new `--pos-*` tokens (Nick-signed Sleeper-convention hues, RB shifted off brand teal to green 140°; hue-collision-engineered vs destructive/warning/primary).
+- Clarify (Nick-signed ×5): bye week DEFERRED as a `[>]` item — no bye data exists anywhere; schedule-derived byes only per player-data-quirks (never from the player object). Slot layout read from `roster_settings_raw` via the ADR escape hatch — `parseRosterSlotLayout` exported for 3b BPA reuse. `ir_slot_count` derivation fixed NOW (first consumer): `max(IR-label count, settings.reserve_slots)` — live re-derivation flipped 0→1 and exposed that known_issues' "reserve_slots=4" was a misreading (4 reserve players were league-wide, 1/team).
+- Key judgment calls: nulls sort last in BOTH directions; rostered rows dim via opacity (never a tint); filter chips fixed to the canonical six positions; ADP displayed at source precision (1 decimal); table markup hand-written with tokens (no shadcn table primitive).
+- Verified: lint/build clean, 25/25 functional harness checks, live `getDraftBoardData` run (slotLayout arithmetic ✓, 174 rostered ✓, boundary fields absent). Authed surfaces not eyeballed (Rule 13 — no session minted); added to nick_pending visual check.
+- WIKI NOTE filed: league-endpoint open question #4 has decisive live evidence — count-only IR representation is real (0 `IR` labels, `reserve_slots=1` governing an occupied slot); page's majority framing should soften for IR and record the shipped max() derivation rule.
+
+## 2026-07-22_23 — Wave 3a supplemental: dark-only Sleeper palette applied app-wide (palette reconciliation fold)
+
+- Applied DESIGN_SYSTEM.md's final dark-only Sleeper palette to `globals.css`, replacing the scaffold shadcn placeholder tokens; resolved the open `--radius` question via Clarify. Pure token/styling fold — no logic/data-layer changes.
+- Clarify decisions (Nick-signed): `--radius` stays `0.625rem` (Card's derived `--radius-xl` step = 14px already mid-band of the 12–16px container rule; buttons/chips are pills and never consume the base). Approved two pattern-edit ride-alongs token values alone couldn't realize: `button.tsx` `rounded-lg`→`rounded-full` (per-size overrides removed), `input.tsx` fill →`bg-well` (the old `dark:bg-input/30` tint could mathematically never render darker than the card it sits on).
+- Single always-on token set in `:root`; scaffold light block AND achromatic `.dark` block both deleted; permanent `dark` class on `<html>` keeps vendored `dark:`-variant tunings active. New Supporting Tokens table recorded derivations for values DESIGN_SYSTEM's own tables didn't name (`--secondary`/`--muted`/`--accent`/`--border`/`--input`/`--ring`/sidebar family). `--chart-3..5` deliberately left as scaffold grays (open until Wave 5).
+- Verified: lint/build clean; compiled CSS hex values exactly on spec; auth walls re-verified (307 redirects unaffected); live headless-browser screenshot of `/login` confirmed the palette rendered correctly (teal pill CTA w/ dark-navy text, well-filled inputs, tinted card, no shadow). Authed surfaces (board/header/selector/NotAuthorizedCard) verified structurally only — not eyeballed (behind the auth wall; minting a session via the shared-namespace service key was considered and rejected as a Rule 13 risk). Nick asked to eyeball on next real sign-in.
+- Files changed: `globals.css`, `layout.tsx` (permanent dark class), `button.tsx`, `input.tsx`, plus DESIGN_SYSTEM.md/STATE.yml/PROGRESS.md bookkeeping. WIKI NOTE: none (design-token decisions live in DESIGN_SYSTEM.md by design, not the wiki — declared structural silence, not a gap).
+
 ## 2026-07-22_22 — Wave 3a draft-board route + page shell (4-item fold; first UI surface + owner auth live)
 
 - Fold = full route + page shell sub-section as one verifiable artifact (the admin draft-board page). Nick's Clarify decisions: real sign-in now (not an interim gate), unauth → redirect to `/login`, path `app/(admin)/leagues/[leagueId]/draft/` + auto-land on the first connected league (no interstitial list).

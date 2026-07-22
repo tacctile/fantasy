@@ -35,7 +35,7 @@ Registered 2026-07-21 on the premise that Wave 2 would sync raw per-player stat 
 - [-] Add unit tests covering standard/PPR/half-PPR/TE-premium variants, fractional values, missing stats, and zero scores — cut with the engine
 - [-] Implement an idempotent batch job that computes and upserts `player_scores` rows — cut 2026-07-22: `syncLeagueMatchups` already upserts `player_scores` idempotently at ingestion
 - [-] Wire this computation into the existing Sleeper and ESPN sync pipelines — cut 2026-07-22: ingestion already writes `player_scores` in the same sync pass, per-league isolated via the orchestrator
-- [ ] Surface the existing score freshness machinery (`fetched_at`/`is_final` on `player_scores`/`matchups`) in the dashboard UI so stale or non-final scores are never silently presented as current — re-worded 2026-07-22 (the schema machinery shipped in Wave 1/2; surfacing is the remaining work; belongs with the admin UI sub-section's fold)
+- [x] Surface the existing score freshness machinery (`fetched_at`/`is_final` on `player_scores`/`matchups`) in the dashboard UI so stale or non-final scores are never silently presented as current — re-worded 2026-07-22 (the schema machinery shipped in Wave 1/2; surfacing is the remaining work; belongs with the admin UI sub-section's fold)
 
 ### Admin data-access layer (owner-authenticated, server-side)
 - [x] Build `getStandings(leagueId)` — team records, wins/losses/ties, points-for/against, ordered per league rules, scoped to current `season_year`
@@ -45,10 +45,10 @@ Registered 2026-07-21 on the premise that Wave 2 would sync raw per-player stat 
 - [x] Ensure every admin query is scoped to leagues Nick owns and never selects `share_token` or `draft_state`
 
 ### Admin UI (tablet/PC-first, extends existing admin route conventions)
-- [ ] Build `StandingsTable` — dense table, tabular-nums, rank/team/record/PF/PA columns
-- [ ] Build `MatchupsGrid` (or cards) — current week's head-to-head pairs with a week selector, tabular-nums scores
-- [ ] Build `PowerRankingsList` — ranked teams with rank-delta indicator, tabular-nums
-- [ ] Build a `PlayerCard`/detail panel — identity, roster status, per-week score line for the current season, tabular-nums (no charts — Wave 5 scope)
+- [x] Build `StandingsTable` — dense table, tabular-nums, rank/team/record/PF/PA columns
+- [x] Build `MatchupsGrid` (or cards) — current week's head-to-head pairs with a week selector, tabular-nums scores
+- [x] Build `PowerRankingsList` — ranked teams with rank-delta indicator, tabular-nums
+- [x] Build a `PlayerCard`/detail panel — identity, roster status, per-week score line for the current season, tabular-nums (no charts — Wave 5 scope)
 - [ ] Assemble the admin league dashboard page composing the four components above under owner auth, for any connected `league_id` (no hardcoded league count)
 - [ ] Add a league selector so Nick can switch between all connected Sleeper/ESPN leagues from this dashboard
 - [ ] Add a share-link settings panel (copyable spectator URL + a regenerate-token action) on the admin dashboard only

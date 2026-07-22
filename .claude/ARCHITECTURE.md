@@ -61,6 +61,15 @@ src/
       use-player-list.ts     — pure filterAndSortPlayers (nulls last both directions, sleeper_player_id tie-break) + usePlayerList memo hook + useDebouncedValue (named exports)
       roster-fill.ts         — pure computeRosterFill: per-team slot-group totals + per-position fill vs dedicated starter slots (need = count < slots; flex never force-assigned)
       roster-panel.tsx       — roster/positional-need sidebar (static snapshot): slot-group totals vs derived_config capacities, position fill with --warning need flags, flex slots as their own line
+    dashboard/      — admin league-dashboard UI (Wave 4 display layer, 2026-07-22); server components over services/dashboard.ts results; page assembly + league selector are the next fold; NEVER imported by the spectator surface (separate rendering path)
+      standings-table.tsx    — dense standings (the second sanctioned tabular surface): rank/team(two-line)/record(W-L, ties column only when a tie exists)/PF/PA (2-dec); renders the service's order as-is, never re-derives
+      matchups-grid.tsx      — one week's matchups: URL-driven WeekSelector (?week=N), mirrored pair cards, unpaired (bye/anomaly) singles + muted anomaly notice, honest empty week
+      matchup-card.tsx       — mirrored H2H card: team headers with bold totals on outer edges + UnofficialChip, starters index-paired points-desc (slot-by-slot pairing impossible — was_starter only, no historical slot attribution), bench behind native <details>, AsOfTime from freshest side
+      week-selector.tsx      — query-only ?week=N pill links (teal active state); page decides the offered range
+      power-rankings-list.tsx — all-play rankings as hybrid row-in-card list: rank/team/all-play record+win%(.xxx)/PF/rank-delta (positive teal up, destructive down); low-confidence (<6 wks) + unofficial-weeks captions per wiki luck-analysis rules
+      player-card.tsx        — player detail panel (presentational; open mechanism = page-assembly scope): identity (status + injury chip as independent fields), roster/availability, per-week lines with holding-team attribution + honest not_rostered FA-gap rows; reuses draft-board PositionBadge/InjuryChip
+      unofficial-chip.tsx    — muted "unofficial" marker for is_final=false scores (Nick-signed: muted tier, never a status color — most rows read non-final until finality promotion ships)
+      as-of-time.tsx         — deterministic "as of <time> UTC" caption from fetched_at (the freshness pairing: caption = when fetched, chip = whether final)
   lib/
     utils.ts        — cn() class-merge helper (shadcn), named export
     supabase/
