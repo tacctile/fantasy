@@ -3,6 +3,13 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-21_06 — Wave 1 leagues + share_token generation (folded) · db-push allow rule live
+
+- Two migrations applied + verified live: `leagues` (PK `platform_league_uuid` via `gen_random_uuid()`; `platform`/`season_year integer`/`native_league_id text` as-received; nullable self-FK `previous_platform_league_uuid` on delete set null; `name text not null`; `share_token text not null unique` defaulted to `generate_share_token()`; `owner_id uuid` nullable FK → auth.users on delete set null, backfilled at the integrity item; unique `(platform, native_league_id, season_year)`; RLS + trigger) and `generate_share_token()` (32 random bytes hex-encoded = 64 chars via `extensions.gen_random_bytes` — pgcrypto v1.3 verified pre-installed live before writing; `search_path = ''`; revocation is a plain UPDATE, no immutability constraint).
+- Clarify decisions: project-level Bash allow rule `Bash(npx supabase db push*)` committed in `.claude/settings.json` — Claude pushes migrations directly from this session onward, `SUPABASE_DB_PASSWORD` sourced from `.env.local` in-shell, never echoed; `owner_id` nullable-now/backfill-later; leagues + token fold approved; display-name column named `name`.
+- Coverage map recorded pre-code. Declared genuine silences (searched ROUTING.md/index.md at decision time): UUID generation mechanism, `season_year` type, FK on-delete behaviors, token length/encoding. Report initially drafted "complete", corrected to "gap found and flagged" per COMPLETION_TEMPLATES definitions — declared silence-fills mean the second value.
+- WIKI NOTE (standing): the league-identity ADR is silent on implementation-level schema mechanics (UUID mechanism, column types, on-delete rules, token format) — either a small ADR addendum records them, or they're deliberately treated as below-wiki-altitude.
+
 ## 2026-07-21_05 — Wave 1 identity foundation (enum + players + crosswalk, folded) · prolabel discovery · Wiki Coverage Rule born
 
 - Three migrations created via `supabase migration new`, applied and verified live: `platform` enum, `players` (Sleeper-anchored text PK, RLS at creation, shared `set_updated_at()` introduced), `player_id_crosswalk` (5 nullable text ID columns — string-only, never numeric; partial unique on `espn_player_id`).
