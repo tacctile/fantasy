@@ -9,7 +9,7 @@
 
 ## Status
 
-Wave 1 Project scaffold complete: Next.js app shell exists and builds. Supabase project + migration workflow section complete: project linked, credentials captured, `supabase/` workspace initialized. Remaining inventory sections (Service API Reference, Type Definitions, CI/CD Pipeline, Testing Infrastructure) are populated as Wave 1's later items and subsequent waves actually build things — not fabricated in advance. Update this file at session end whenever structure changes, per `MASTER_CONTEXT.md`'s Session-End Steps.
+Wave 1 Project scaffold complete: Next.js app shell exists and builds. Supabase project + migration workflow section complete: project linked, credentials captured, `supabase/` workspace initialized. Schema — platform + identity foundation section complete: `platform` enum, `players`, and `player_id_crosswalk` are live in the database (verified 2026-07-21). Remaining inventory sections (Service API Reference, Type Definitions, CI/CD Pipeline, Testing Infrastructure) are populated as Wave 1's later items and subsequent waves actually build things — not fabricated in advance. Update this file at session end whenever structure changes, per `MASTER_CONTEXT.md`'s Session-End Steps.
 
 ---
 
@@ -69,11 +69,30 @@ These conventions are declared in `MASTER_CONTEXT.md` and repeated here as the s
 
 ## Supabase Infrastructure
 
-- **Project:** `tszssadgsxjoymcttlwd` — `https://tszssadgsxjoymcttlwd.supabase.co` (pre-existing per `MANUAL_SETUP_CHECKLIST.md`; linked 2026-07-21)
+- **Project:** `tszssadgsxjoymcttlwd` — `https://tszssadgsxjoymcttlwd.supabase.co` (linked 2026-07-21). **This is Nick's shared multi-app "prolabel" project, not a fantasy-dedicated one** — it hosts live tables and data from several other apps (todd chat, elliott pricing, trip planner, loan/valuation) plus 2 pre-existing auth users. Confirmed intentional by Nick 2026-07-21; see Shared-Database Constraints below and the decision of record in `MANUAL_SETUP_CHECKLIST.md`.
 - **CLI:** `supabase@2.109.1` as npm dev dependency — invoked via `npx supabase`, version pinned in `package.json` so all three of Nick's environments resolve the same CLI
 - **Local workspace:** `supabase/` (created by `supabase init`) — `config.toml` committed; `supabase/migrations/` is the canonical schema-change path once the first migration exists; `supabase/.temp/` (holds the linked project-ref) is gitignored by Supabase's own `supabase/.gitignore`
-- **Link state:** linked to `tszssadgsxjoymcttlwd`; database password was deliberately not provided at link time — the first `supabase db push` session must ask Nick for it (tracked in `MANUAL_SETUP_CHECKLIST.md` Wave 1)
-- **API keys:** standardized on the modern key pair — publishable (`sb_publishable_...`) for client-side, secret (`sb_secret_...`) for server-side — not the legacy anon/service_role JWTs. Both validated live against `rest/v1/` (secret key returns 200 with a non-browser client; Supabase actively rejects secret keys sent from browser-like user agents). No schema, tables, or migrations exist yet.
+- **Link state:** linked to `tszssadgsxjoymcttlwd`; database password handed over 2026-07-21 as `SUPABASE_DB_PASSWORD` in gitignored `.env.local`. Note: the auto-permission classifier blocks Claude-executed DB writes (CLI push and connector `apply_migration`) — pushes are run by Nick in a terminal unless a Bash allow rule is added.
+- **API keys:** standardized on the modern key pair — publishable (`sb_publishable_...`) for client-side, secret (`sb_secret_...`) for server-side — not the legacy anon/service_role JWTs. Both validated live against `rest/v1/` (secret key returns 200 with a non-browser client; Supabase actively rejects secret keys sent from browser-like user agents).
+
+## Database Schema (live)
+
+Fantasy-owned objects in the shared `public` schema, all created via `supabase migration new` + push (migration files in `supabase/migrations/`):
+
+- **`platform`** — Postgres enum, values `sleeper` | `espn` (extensible via `alter type ... add value` in a new migration; never a boolean)
+- **`players`** — Sleeper-anchored canonical identity store. `sleeper_player_id text` PK (text, never numeric — D/ST rows use team abbreviations like `'DET'`), `full_name`/`first_name`/`last_name`/`position`/`team`/`status` text, `metadata jsonb`, timestamps. RLS enabled (deny-by-default; policies come with the Wave 1 integrity item)
+- **`player_id_crosswalk`** — mapping layer keyed on `sleeper_player_id` (PK, FK → `players` on delete cascade); nullable text columns `espn_player_id`, `gsis_id`, `yahoo_id`, `sportradar_id`, `pfr_id`; partial unique index on `espn_player_id` where not null. RLS enabled. Population pipeline is Wave 2
+- **`set_updated_at()`** — shared trigger function (`search_path = ''`), `before update` trigger on both tables
+
+## Shared-Database Constraints (prolabel)
+
+The database is shared with other live apps. Standing rules for every future session:
+
+- **Never run `supabase db reset`** against the linked project — it would destroy other apps' live data.
+- **Never run `supabase migration repair`** — it edits the shared `supabase_migrations.schema_migrations` ledger and would erase other apps' history rows.
+- The 23 pre-existing foreign history versions are mirrored as empty `*_prolabel_shared_history_stub.sql` files in `supabase/migrations/` so `db push` recognizes remote history without writing to it. If a future push refuses because new foreign versions appeared remotely, add another empty stub for each — never repair.
+- Fantasy table names must not collide with existing prolabel tables; check `list_tables` before naming a genuinely new table family.
+- Owner-write RLS policies must match Nick's specific `auth.uid()`, never the blanket `authenticated` role — the auth namespace contains other apps' users.
 
 ## Environment Variables
 
@@ -84,6 +103,7 @@ Live values in gitignored `.env.local`; the committed `.env.example` contract is
 | `NEXT_PUBLIC_SUPABASE_URL` | client + server | Supabase project API URL |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | client + server | modern publishable key (replaces legacy anon JWT) |
 | `SUPABASE_SECRET_KEY` | server only — never `NEXT_PUBLIC_` | modern secret key (replaces legacy service_role JWT) |
+| `SUPABASE_DB_PASSWORD` | CLI only — never shipped | database password for `supabase db push` (read by the Supabase CLI) |
 
 ## Supabase Migration Rule
 

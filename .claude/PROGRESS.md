@@ -9,6 +9,12 @@ Newest entry on top.
 
 ---
 
+## 2026-07-21 — First Live Schema: Platform + Identity Foundation (Wave 1, Session 3)
+
+First schema migrations live in Supabase: `platform` enum, `players` (Sleeper-anchored identity), `player_id_crosswalk` — all verified against the live DB. Discovered the linked project is Nick's shared multi-app "prolabel" database (confirmed intentional); adopted the empty-stub migration pattern for its 23 foreign history versions, and `db reset`/`migration repair` are now permanently forbidden (see ARCHITECTURE.md Shared-Database Constraints).
+
+---
+
 ## 2026-07-21 — Supabase Infrastructure Activated (Wave 1, Session 2)
 
 Supabase project `tszssadgsxjoymcttlwd` credentialed, linked, and CLI-workflowed — the full "Supabase project + migration workflow" section of `01_foundation.md` is complete. Keys captured in gitignored `.env.local` and validated live; CLI installed and linked. No schema exists yet — next up is the platform + identity migrations.
@@ -30,12 +36,6 @@ First build session executed via `BUILD_PROTOCOL.md`. The Project scaffold secti
 ## 2026-07-21 — Wave 5 Build File Registered
 
 `.claude/build/05_eye_candy.md` registered: score charts, lucky/unlucky tracker, positional breakdowns, playoff picture engine. Extends the Wave 4 admin dashboard; only luck summary and playoff status get spectator equivalents.
-
----
-
-## 2026-07-21 — Wave 4 Build File Registered
-
-`.claude/build/04_league_dashboard.md` registered: fantasy-scoring engine, owner-authenticated standings/matchups/power-rankings, and the `share_token`-gated read-only spectator surface — built together, not staged separately.
 
 ---
 

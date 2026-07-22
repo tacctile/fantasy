@@ -1,0 +1,4 @@
+-- Stub: this version pre-exists in the shared 'prolabel' Supabase project's
+-- migration history (other apps: todd/elliott/trip/loan). It is NOT a fantasy
+-- migration. Empty on purpose so `supabase db push` recognizes remote history
+-- without ever modifying it. Do not edit, do not delete, never `migration repair`.

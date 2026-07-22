@@ -48,4 +48,10 @@ Three scope corrections landed in `MASTER_CONTEXT.md` and `BUILD_INDEX.md`, driv
 
 ---
 
+## 2026-07-21 — Wave 4 Build File Registered
+
+`.claude/build/04_league_dashboard.md` registered: fantasy-scoring engine, owner-authenticated standings/matchups/power-rankings, and the `share_token`-gated read-only spectator surface — built together, not staged separately.
+
+---
+
 _End of PROGRESS_ARCHIVE.md_
