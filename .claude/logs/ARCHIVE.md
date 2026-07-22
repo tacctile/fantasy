@@ -3,6 +3,15 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-21_02 — Wave 1 Supabase project + migration workflow (4 items, folded with Nick's approval)
+
+- Credentials pulled via Supabase MCP connector (URL + publishable key); only the secret key needed a paste from Nick. Captured in gitignored `.env.local`.
+- Modern publishable/secret key pair chosen over legacy anon/service_role JWTs (Nick's Clarify decision); env names `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` / `SUPABASE_SECRET_KEY`.
+- Supabase CLI pinned as npm dev dep (supabase@2.109.1), invoked via `npx supabase`; Nick ran interactive `supabase login`; linked to `tszssadgsxjoymcttlwd`. DB password deliberately skipped at link (appended to MANUAL_SETUP_CHECKLIST as a new [ ] item; later handed over).
+- Key validation quirk: Supabase rejects secret keys from browser-like user agents — Invoke-WebRequest got "Forbidden use of secret API key in browser"; curl.exe returned 200.
+- Baseline-migration rule confirmed: first schema item creates the baseline via `supabase migration new`; nothing ever edits it after.
+- PROGRESS.md updated (core infra activation milestone). WIKI NOTE: none.
+
 ## 2026-07-21_01 — Wave 1 scaffold (01_foundation.md items 1–6, folded with Nick's approval)
 
 - Folded all six scaffold items into one session (Nick approved via AskUserQuestion); npm chosen as package manager.
