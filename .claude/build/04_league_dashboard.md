@@ -1,13 +1,13 @@
 # 04_league_dashboard.md
 **Wave 4 — League Dashboard**
-**Status:** ⬜ Not started
+**Status:** 🟡 In progress (2026-07-22: Nick authorized Wave 4 ahead of ESPN-blocked 3b; scoring-engine sub-section resolved by Nick-signed correctness amendment — see sub-section note)
 **Registered:** 2026-07-21
 
 ---
 
 ## Scope
 
-Standings, matchups, power rankings, player cards — for both the admin (owner) surface and the read-only share-link spectator surface, built together in this one wave per `MASTER_CONTEXT.md`'s Access Model (the spectator surface is explicitly not a separate later build). This is the first wave that needs computed fantasy points, so it also builds the scoring engine that turns raw synced stats into `player_scores`, driven entirely by each league's `league_config` — no hardcoded scoring assumptions. The spectator surface is a genuinely separate rendering path sharing only data-access logic with the admin surface, gated by `share_token` instead of owner auth, and must never expose draft-board, admin, or `draft_state` data or markup. Depends on Wave 1's schema, Wave 2's sync pipelines (raw stats/rosters/matchups), and Wave 3's admin route conventions — does not depend on or touch the draft assistant itself.
+Standings, matchups, power rankings, player cards — for both the admin (owner) surface and the read-only share-link spectator surface, built together in this one wave per `MASTER_CONTEXT.md`'s Access Model (the spectator surface is explicitly not a separate later build). Fantasy points are platform-scored and ingested as-received into `player_scores` by Wave 2's sync — no scoring computation happens in this wave (correctness amendment 2026-07-22, Nick-signed: the original "scoring engine turning raw synced stats into `player_scores`" premise predated Wave 2's shipped ingestion decision; see the amended sub-section below). The spectator surface is a genuinely separate rendering path sharing only data-access logic with the admin surface, gated by `share_token` instead of owner auth, and must never expose draft-board, admin, or `draft_state` data or markup. Depends on Wave 1's schema, Wave 2's sync pipelines (scored points/rosters/matchups), and Wave 3's admin route conventions — does not depend on or touch the draft assistant itself.
 
 This build file was scoped by convergence-filtering 6 independent AI panel responses against `BUILD_INDEX.md`'s Wave 4 bullet, same methodology used for Waves 1, 2, 3a, and 3b.
 
@@ -27,18 +27,21 @@ Read these before starting, per Session-Start Protocol (max 3 unless the task ge
 
 ## Checklist
 
-### Fantasy scoring engine (new — required by every other item in this wave)
-- [ ] Implement a pure `computeFantasyPoints(rawStats, scoringRules)` function that applies a league's `league_config` scoring rules (PPR/half-PPR/TE-premium and all stat weights) to raw per-player stats — no hardcoded league assumptions, fully unit-testable
-- [ ] Add unit tests covering standard/PPR/half-PPR/TE-premium variants, fractional values, missing stats, and zero scores
-- [ ] Implement an idempotent batch job that computes and upserts `player_scores` rows keyed by `(player_id, league_id, season_year, week)` for a given league, safe to re-run without duplicating
-- [ ] Wire this computation into the existing Sleeper and ESPN sync pipelines (Wave 2) so scores recompute immediately after raw stats/rosters are synced, isolated per league so one league's bad config/data can't block others
-- [ ] Represent score freshness/computation status explicitly (e.g. last-computed timestamp) so stale or partially computed scores are never silently presented as current
+### Fantasy scoring engine — sub-section resolved by correctness amendment (Nick-signed, 2026-07-22)
+
+Registered 2026-07-21 on the premise that Wave 2 would sync raw per-player stat lines. Wave 2 as shipped (2026-07-22, one day later) made the opposite, Nick-signed decision: `player_scores` is ingested as-received from platform-scored values (Sleeper's `players_points` map, league-scored by Sleeper per each league's own settings — pure ingestion, never computation; ESPN equivalents land the same way at ingestion when unblocked). No raw-stats table, sync, or wiki-covered source exists. Platform-scored ingestion is the source of record; a compute-from-raw-stats engine would require a new undocumented data source and is not v1 scope. The confirmation was never backswept against this file until now (Amendment Hygiene practice 1).
+
+- [-] Implement a pure `computeFantasyPoints(rawStats, scoringRules)` function — cut 2026-07-22: no raw-stats source exists in the pipeline; `player_scores` is platform-scored at ingestion (Wave 2 decision of record)
+- [-] Add unit tests covering standard/PPR/half-PPR/TE-premium variants, fractional values, missing stats, and zero scores — cut with the engine
+- [-] Implement an idempotent batch job that computes and upserts `player_scores` rows — cut 2026-07-22: `syncLeagueMatchups` already upserts `player_scores` idempotently at ingestion
+- [-] Wire this computation into the existing Sleeper and ESPN sync pipelines — cut 2026-07-22: ingestion already writes `player_scores` in the same sync pass, per-league isolated via the orchestrator
+- [ ] Surface the existing score freshness machinery (`fetched_at`/`is_final` on `player_scores`/`matchups`) in the dashboard UI so stale or non-final scores are never silently presented as current — re-worded 2026-07-22 (the schema machinery shipped in Wave 1/2; surfacing is the remaining work; belongs with the admin UI sub-section's fold)
 
 ### Admin data-access layer (owner-authenticated, server-side)
 - [ ] Build `getStandings(leagueId)` — team records, wins/losses/ties, points-for/against, ordered per league rules, scoped to current `season_year`
 - [ ] Build `getMatchups(leagueId, week)` — head-to-head pairs with rosters/starters and both teams' computed scores from `player_scores`
 - [ ] Build `getPowerRankings(leagueId)` — a single deterministic current-season formula (no historical/cross-season inputs) producing ordered teams with rank and rank-delta vs. standings
-- [ ] Build `getPlayerCard(sleeperPlayerId, leagueId)` — Sleeper-anchored identity, roster/availability status in that league, and per-week computed scores for the current season, resolving ESPN players through the existing crosswalk
+- [ ] Build `getPlayerCard(sleeperPlayerId, leagueId)` — Sleeper-anchored identity, roster/availability status in that league, and per-week scores from `player_scores` for the current season, resolving ESPN players through the existing crosswalk (scope note, Nick-signed 2026-07-22: weeks a player was on no roster have no score row on any platform payload — render honestly as not-rostered, never invented)
 - [ ] Ensure every admin query is scoped to leagues Nick owns and never selects `share_token` or `draft_state`
 
 ### Admin UI (tablet/PC-first, extends existing admin route conventions)
@@ -93,4 +96,4 @@ This is the persistent admin shell that Wave 3a/3b's draft-day surface and Wave 
 
 ## Session-End requirements (per COMPLETION_TEMPLATES.md)
 
-Use the `feature-build` report template. Update `STATE.yml` completely, log to `.claude/logs/`, update this file's checklist items, update `ARCHITECTURE.md`'s Service API Reference section (adds the scoring engine and dashboard query services) and note the new spectator route surface and the admin sidebar navigation shell/command-center home (which Wave 5 and Wave 6 mount into rather than rebuilding).
+Use the `feature-build` report template. Update `STATE.yml` completely, log to `.claude/logs/`, update this file's checklist items, update `ARCHITECTURE.md`'s Service API Reference section (adds the dashboard query services) and note the new spectator route surface and the admin sidebar navigation shell/command-center home (which Wave 5 and Wave 6 mount into rather than rebuilding).

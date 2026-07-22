@@ -68,7 +68,7 @@ Consult additional `sleeper-api`/`espn-api` pages as needed per specific endpoin
 
 ## Explicitly NOT in this wave
 
-- Applying league scoring rules to raw stats to compute `player_scores` (Wave 4 — dashboard/scoring display consumes this)
+- ~~Applying league scoring rules to raw stats to compute `player_scores` (Wave 4)~~ — superseded 2026-07-22 (Nick-signed backsweep): no compute-from-raw-stats path exists in v1 anywhere; `player_scores` is ingested platform-scored by this wave's own matchup sync, and Wave 4's scoring-engine sub-section was cut accordingly (see `04_league_dashboard.md`)
 - Manual click-to-draft write path (Wave 3 — this wave only builds the Sleeper and ESPN automated write paths into the already-shared `draft_state` table)
 - Any client-side polling hooks, Realtime subscriptions, or UI of any kind (Wave 3/4)
 - Live/aggressive draft-day polling cadence tuning (Wave 3, once the draft board actually needs it)
