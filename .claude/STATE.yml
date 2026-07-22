@@ -2,7 +2,7 @@
 # Living "what happened last session" file. Overwritten completely at the end of every session — never patched.
 # Last Updated: 2026-07-21
 
-current_focus: "Wave 1 (Foundation) — Supabase project + migration workflow section of 01_foundation.md completed in full (4 items folded into one session with Nick's approval, same pattern as the scaffold fold): credentials captured into gitignored .env.local (NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY, SUPABASE_SECRET_KEY — standardized on modern sb_publishable_/sb_secret_ keys over legacy anon/service_role JWTs, Nick's Clarify-step decision); Supabase CLI 2.109.1 installed as npm dev dependency (npx supabase); Nick ran interactive supabase login; linked to project tszssadgsxjoymcttlwd (verified via supabase/.temp/project-ref); supabase init created supabase/ with committed config.toml; both keys validated live against rest/v1/ (secret key 200 via non-browser client). No migrations exist yet. Next unchecked item: 'Migration: platform Postgres enum type, values sleeper and espn' — first item of the 'Schema — platform + identity foundation' section; it creates the baseline migration via supabase migration new."
+current_focus: "Wave 1 (Foundation) — Supabase project + migration workflow section of 01_foundation.md remains the last completed build work (schema migrations not yet started). This session (guided walkthrough, non-code) cleared all four open Wave 1 manual-setup items plus one cross-cutting governance decision, so no manual-setup item will halt an upcoming build session: (1) Supabase DB password reset via dashboard and saved to Nick's password manager — ready for the first 'supabase db push' session to request live; (2) Vercel project 'fantasy' created and connected to tacctile/fantasy on GitHub, Next.js framework preset auto-detected; (3) the three Supabase env vars (NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY, SUPABASE_SECRET_KEY) added to Vercel for Production + Preview; (4) admin Supabase Auth credentials decided — real email (nick@prolabelco.com) + a password Nick chose and saved, ready for the Wave 1 RLS/auth build session to request live; (5) Nick authorized adding '!.claude/logs/' to the repo-root .gitignore so session logs get committed and are visible across his VS Code/Cowork/claude.ai environments — decision recorded in MANUAL_SETUP_CHECKLIST.md's new 'Decisions of record' section, but the .gitignore edit itself was NOT applied this session (out of scope for this non-code session) and is now open work for the next session that touches governance/build files. Next unchecked build item remains: 'Migration: platform Postgres enum type, values sleeper and espn' — first item of the 'Schema — platform + identity foundation' section of 01_foundation.md."
 
 build_system:
   index: ".claude/BUILD_INDEX.md"
@@ -12,17 +12,14 @@ build_system:
     - ".claude/build/01_foundation.md"
 
 nick_pending:
-  - "Have the database password ready for the first session that runs 'supabase db push' (link was done without it — deliberate skip; tracked in MANUAL_SETUP_CHECKLIST.md Wave 1). Resettable in dashboard under Project Settings → Database if lost."
-  - "Create the Vercel project and connect it to tacctile/fantasy — still open ([ ]) in MANUAL_SETUP_CHECKLIST.md Wave 1; blocks the 'Create Vercel project' checklist item later in Wave 1, not the schema items."
-  - "Have the admin auth email/password ready for the Wave 1 RLS/auth checklist item."
+  - "Apply the '!.claude/logs/' negation to the repo-root .gitignore — Nick authorized this 2026-07-21 (see MANUAL_SETUP_CHECKLIST.md Decisions of record); not yet applied, needs a session that touches .gitignore to actually make the edit and commit it."
   - "Before Wave 3a: verify whether Sleeper actually has a public ADP endpoint, or decide a real alternative source — see MANUAL_SETUP_CHECKLIST.md Wave 3a section."
 
 blockers: []
 
 known_issues:
-  - "npm audit reports 6 vulns (4 moderate, 2 high) — was 3 before this session; installing the supabase dev dependency added transitive moderates. The pre-existing 1 moderate postcss + 2 high sharp remain transitive inside next@16.2.11's pinned deps (only offered 'fix' is downgrading next to 9.x, which is wrong). All dev-time/build-time, none shipped to clients. Re-check npm audit in later sessions."
+  - "npm audit reports 6 vulns (4 moderate, 2 high) as of last check — pre-existing 1 moderate postcss + 2 high sharp are transitive inside next@16.2.11's pinned deps (only offered 'fix' is downgrading next to 9.x, which is wrong). All dev-time/build-time, none shipped to clients. Re-check npm audit in later sessions."
 
-warnings:
-  - "The repo-root .gitignore contains a bare 'logs' pattern (line 2, from the generic Node template) that ignores .claude/logs/ — session logs are written but never committed/pushed. Governance decision needed: add '!.claude/logs/' negation (making verbose logs part of the repo, visible cross-environment) or explicitly bless local-only logs. Not changed unilaterally — out of scope again this session (Supabase section only)."
+warnings: []
 
 health: "clean"

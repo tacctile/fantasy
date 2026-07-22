@@ -25,10 +25,10 @@
 
 - [x] **Supabase account + project already exist** (https://supabase.com/dashboard/project/tszssadgsxjoymcttlwd). Handed over 2026-07-21: `SUPABASE_URL` + publishable key pulled via the Supabase connector, secret key pasted by Nick — all captured in gitignored `.env.local` (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`).
 - [x] **Run `supabase login`** — done 2026-07-21; project `tszssadgsxjoymcttlwd` is what got `supabase link`ed (verified via `supabase/.temp/project-ref`).
-- [ ] **Have the database password ready for the first `supabase db push`.** Link was performed without it (deliberate skip); the first schema-migration session that pushes to the remote will ask for it. It's the password set at project creation — resettable in the dashboard under Project Settings → Database if lost.
-- [ ] **Create a Vercel project and connect it to `tacctile/fantasy`.** Vercel account already exists — only project creation + repo connection is open. Decide: project name, team (if any).
-- [ ] **Paste Supabase secrets into Vercel's environment variables** (Production + Preview) — values come from the Supabase step above; blocked on the Vercel project existing first.
-- [ ] **Decide the admin authentication mechanism.** Confirmed: Supabase Auth, email/password, one user (Nick), no signup flow. Still open: the actual email + password to create that one auth user — hand to the Wave 1 build session when it reaches the RLS/auth step.
+- [~] **Have the database password ready for the first `supabase db push`.** Reset 2026-07-21 via Project Settings → Database and saved to Nick's password manager. Not yet handed to a build session — the first migration-push session will ask for it live (value name to request: "Supabase DB password — fantasy").
+- [x] **Create a Vercel project and connect it to `tacctile/fantasy`.** Done 2026-07-21 — project named `fantasy`, connected to GitHub repo `tacctile/fantasy`, Next.js framework preset auto-detected correctly.
+- [x] **Paste Supabase secrets into Vercel's environment variables** (Production + Preview). Done 2026-07-21 — `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY` all added for Production and Preview environments.
+- [~] **Decide the admin authentication mechanism.** Confirmed: Supabase Auth, email/password, one user (Nick), no signup flow. Decided 2026-07-21 — email is Nick's real email (nick@prolabelco.com), password chosen by Nick and saved to his password manager. Not yet handed to a build session — the Wave 1 RLS/auth session will ask for both live (value names to request: "fantasy app admin email" / "fantasy app admin password").
 
 ## Wave 2 — Data Pipeline
 
@@ -72,6 +72,12 @@
 ## Appending new items mid-build
 
 When a `BUILD_PROTOCOL.md` session flags a "MANUAL SETUP REQUIRED" item that isn't already listed above, add it here under the relevant wave before the build session continues, so this file always stays the single complete picture — not just what was known at the start.
+
+---
+
+## Decisions of record (non-checklist)
+
+- **2026-07-21 — `.claude/logs/` gitignore negation approved.** The repo-root `.gitignore` line 2 bare `logs` pattern currently ignores `.claude/logs/`, so session logs never reach GitHub. Nick authorized adding `!.claude/logs/` to `.gitignore` so logs are committed and visible across his VS Code/Cowork/claude.ai environments. Not applied in this session (non-code session, `.gitignore` out of scope per its prompt) — the next build session (or a dedicated small session) should add the negation line to `.gitignore` and commit it.
 
 ---
 
