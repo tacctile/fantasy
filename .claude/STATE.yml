@@ -2,20 +2,22 @@
 # Living "what happened last session" file. Overwritten completely at the end of every session — never patched.
 # Last Updated: 2026-07-21
 
-current_focus: "Wave 1 (Foundation) and Wave 2 (Data Pipeline) build files registered and scoped: .claude/build/01_foundation.md and .claude/build/02_data_pipeline.md. Both scoped by convergence-filtering 6 independent AI panel responses per wave against BUILD_INDEX.md's scope bullets, same methodology as wiki ingestion. Wave 2 depends on Wave 1's schema being live — execute in order. Ready to execute — next session should be a feature-build session against 01_foundation.md."
+current_focus: "Wave 1 (Foundation), Wave 2 (Data Pipeline), and Wave 3a (Draft Assistant — Static Board) build files registered and scoped: .claude/build/01_foundation.md, .claude/build/02_data_pipeline.md, .claude/build/03a_draft_assistant_static_board.md. All scoped by convergence-filtering 6 independent AI panel responses per wave against BUILD_INDEX.md's scope bullets, same methodology as wiki ingestion. Execution order: Wave 1 -> Wave 2 -> Wave 3a. Wave 3b (live draft, depends on 3a + Wave 2 ESPN) not yet scoped. None of the three registered waves have been executed yet — next session should be a feature-build session against 01_foundation.md."
 
 build_system:
   index: ".claude/BUILD_INDEX.md"
   files_location: ".claude/build/"
-  total_files: 2
-  next_build_file_number: 3
+  total_files: 3
+  next_build_file_number: 4
   current_build_files:
     - ".claude/build/01_foundation.md"
     - ".claude/build/02_data_pipeline.md"
+    - ".claude/build/03a_draft_assistant_static_board.md"
 
 nick_pending:
-  - "Kick off the Wave 1 (Foundation) feature-build session against .claude/build/01_foundation.md — Wave 2 depends on it and should not start first."
+  - "Kick off the Wave 1 (Foundation) feature-build session against .claude/build/01_foundation.md — Waves 2 and 3a both depend on it and should not start first."
   - "Confirm ESPN league visibility (public vs. private) for each ESPN league being connected, before ESPN cookie-auth work begins for that league (Wave 2 build file already accounts for per-league detection either way, but manual confirmation still speeds validation)."
+  - "When ready, run the same 6-model panel process for Wave 3b (Draft Assistant — Live Draft) — depends on 3a and Wave 2's ESPN integration being live."
 
 blockers: []
 

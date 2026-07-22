@@ -7,6 +7,18 @@ Newest entry on top.
 
 ---
 
+## 2026-07-21 — Wave 3a Build File Registered
+
+`.claude/build/03a_draft_assistant_static_board.md` created and registered in `BUILD_INDEX.md`, using the same 6-model convergence-filtering methodology as Waves 1 and 2.
+
+**What's in scope:** ADP schema (`adp_rankings` keyed by season/source/`sleeper_player_id`) and a defensively-isolated ADP ingestion service/cron route with sync-run tracking; a server-side draft-board query service joining Sleeper-anchored players, ADP, and league rosters scoped to one `league_id` (ESPN leagues resolved through the crosswalk, `share_token` explicitly excluded); an admin-only tablet/PC-first draft-board route with league selector, search/filter/sort toolbar, position-styled player rows with tabular-nums ADP data, a static roster/positional-need panel, and loading/empty/error states.
+
+**Explicitly deferred:** all live draft polling (ESPN or Sleeper), the manual click-to-draft write path, any write to `draft_state`, and the BPA recommendation engine — all three are Wave 3b, which ships together with live polling per the earlier scope reversal. Scoring computation, standings/matchups, and the spectator surface remain Wave 4+.
+
+**Dependency:** requires Wave 1's schema and Wave 2's Sleeper sync to be live; does not require ESPN sync to function to render Sleeper-league boards, but must degrade gracefully (not crash) if ESPN league data is stale/missing.
+
+---
+
 ## 2026-07-21 — Wave 2 Build File Registered
 
 `.claude/build/02_data_pipeline.md` created and registered in `BUILD_INDEX.md`, using the same 6-model convergence-filtering methodology as Wave 1.
