@@ -16,7 +16,7 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 
 import type { Database } from '@/lib/supabase/database.types'
 
-export type SyncRunSource = 'players_catalog' | 'league_state' | 'draft_poll'
+export type SyncRunSource = 'players_catalog' | 'league_state' | 'draft_poll' | 'adp_ingestion'
 export type SyncRunPlatform = Database['public']['Enums']['platform']
 export type SyncRunTerminalStatus = 'success' | 'failure' | 'skipped'
 

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 
 import { requireCronSecret } from "@/app/api/cron/auth"
 import { createClient } from "@/lib/supabase/admin"
+import { runTrackedAdpIngestion } from "@/services/adp/ingestion"
 import { getNflState, resolveMatchupSyncWeek } from "@/services/sleeper/nfl-state"
 import { syncAllSleeperLeagues } from "@/services/sleeper/sync-orchestrator"
 import type { LeagueSyncOutcome } from "@/services/sleeper/sync-orchestrator"
@@ -71,6 +72,24 @@ export async function GET(request: Request) {
         `(${run.startedAt} -> ${run.completedAt})`
     )
 
+    // ADP piggyback (Wave 3a, Nick's 2026-07-22 Clarify decision): both
+    // Hobby cron slots are taken, so the daily league-state run also
+    // triggers ADP ingestion — in its own containment boundary with its own
+    // sync_runs row. Its failure is logged and reported in the body but
+    // never affects this run's league-state outcome or status code, and the
+    // reverse ordering (ADP last) means it can never delay league sync.
+    const adp = await runTrackedAdpIngestion(db)
+    if (adp.ok) {
+      console.log(
+        `cron/sync-leagues: ADP piggyback ok — season ${adp.result.seasonYear}, ` +
+          `${adp.result.upsertedRowCount} rows upserted, ${adp.result.staleRowsDeletedCount} stale removed`
+      )
+    } else {
+      console.error(
+        `cron/sync-leagues: ADP piggyback failed (league-state outcome unaffected): ${adp.error}`
+      )
+    }
+
     const body = {
       ok: run.failedCount === 0,
       leagueCount: run.leagues.length,
@@ -78,6 +97,7 @@ export async function GET(request: Request) {
       failedCount: run.failedCount,
       seasonType: state.season_type ?? null,
       matchupWeek,
+      adpOk: adp.ok,
     }
     return NextResponse.json(body, { status: body.ok ? 200 : 500 })
   } catch (error) {

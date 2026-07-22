@@ -3,6 +3,12 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_15 — Wave 2 Sleeper sync surface complete: draft-state + orchestrator (2-item fold)
+
+- Draft ingestion `draft-state.ts`: walks `/league/{id}/drafts` (array — league's single `draft_id` never trusted), selection policy per Nick's Clarify: prefer `drafting` > `complete`, ambiguity errors explicitly naming candidates, all-`pre_draft` seasons succeed with zero picks; ownership always `roster_id` (never draft_slot/picked_by); pick_no/round as-received (snake arithmetic never used); auction `amount` string-coerced; first-write-wins as ON CONFLICT DO NOTHING. Live-verified: 170/170 picks written then 0/170 on re-run; all 170 match Sleeper's wire exactly; pick/round/roster distributions exact.
+- Orchestrator `sync-orchestrator.ts` (chain config → rosters → matchups → draft, Nick-signed draft addition): discovery from `leagues` platform='sleeper' in deterministic native_league_id order (declared wiki silence — no page governs orchestration); per-league failure isolation verified live (bad league fails at config, good league unaffected, exit 1). Client gained the global 250ms pacing gate (≤240/min worst case, retries included) per rate-limits.md; bulk-vs-interactive budget declared vacuously satisfied (no interactive Sleeper traffic exists).
+- Judgment calls: `paused` drafts not carved out (error branch); unknown-roster pick hard-fails (structural) vs missing-player skip-and-record (Nick's ruling); orchestrator excludes the player catalog (own once-per-day cadence). Runner `npm run sync:sleeper` (subset args). WIKI NOTE: none.
+
 ## 2026-07-22_14 — Wave 2 Sleeper league-scoped sync (3-item fold; first real league fully ingested)
 
 - League metadata → leagues/league_config (validate → previous_league_id chain against existing rows only → upsert; derived_config re-derived in full; `te_premium = bonus_rec_te > 0` filled under declared wiki silence); rosters+users → rosters/roster_players/standings (slot classification incl. three-way bench subtraction, delete-stale-before-upsert, split-fpts recombination; standings folded in as a Nick-signed scope correction); matchups → matchups/player_scores (18-week sweep; players_points as the league-scored source — Nick-signed scope correction; finality slice: lifecycle `complete` → all is_final=true, promotion machinery deferred to the cron sub-section).

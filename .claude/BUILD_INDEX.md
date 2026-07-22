@@ -1,6 +1,6 @@
 # BUILD_INDEX.md
 **Master build router — tacctile/fantasy**
-**Last Updated:** 2026-07-22 (Wave 2 begun — `02_data_pipeline.md` 🟡: Sleeper client + player catalog sub-section complete, first live ingestion verified (12,200 players). Prior: Wave 1 complete — `01_foundation.md` 🟢, deployed health-check gate passed)
+**Last Updated:** 2026-07-22 (Wave 3a begun — `03a_draft_assistant_static_board.md` 🟡: ADP schema + ingestion sub-section complete (adp_rankings live, quarantined api.sleeper.com ingestion, 2,946 rows/10 formats verified). `02_data_pipeline.md` stays 🟡: 9 ESPN items `[!]` external-timing, cron cadence `[~]`, finality promotion `[>]`. Prior: Wave 1 complete — `01_foundation.md` 🟢)
 
 Nothing gets built without a registered build file. No exceptions. Every new feature requires a registered build file in this index before a single line of code is written.
 
@@ -55,7 +55,7 @@ Each feature gets a numbered file at `.claude/build/NN_FEATURE_NAME.md`, registe
 | - | ---- | ---- | ------ |
 | 01 | [01_foundation.md](build/01_foundation.md) | 1 | 🟢 |
 | 02 | [02_data_pipeline.md](build/02_data_pipeline.md) | 2 | 🟡 |
-| 03a | [03a_draft_assistant_static_board.md](build/03a_draft_assistant_static_board.md) | 3a | ⬜ |
+| 03a | [03a_draft_assistant_static_board.md](build/03a_draft_assistant_static_board.md) | 3a | 🟡 |
 | 03b | [03b_draft_assistant_live_draft.md](build/03b_draft_assistant_live_draft.md) | 3b | ⬜ |
 | 04 | [04_league_dashboard.md](build/04_league_dashboard.md) | 4 | ⬜ |
 | 05 | [05_eye_candy.md](build/05_eye_candy.md) | 5 | ⬜ |

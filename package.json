@@ -13,7 +13,8 @@
     "sync:rosters": "tsx --env-file=.env.local scripts/sync-rosters.ts",
     "sync:matchups": "tsx --env-file=.env.local scripts/sync-matchups.ts",
     "sync:draft": "tsx --env-file=.env.local scripts/sync-draft.ts",
-    "sync:sleeper": "tsx --env-file=.env.local scripts/sync-sleeper.ts"
+    "sync:sleeper": "tsx --env-file=.env.local scripts/sync-sleeper.ts",
+    "sync:adp": "tsx --env-file=.env.local scripts/sync-adp.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

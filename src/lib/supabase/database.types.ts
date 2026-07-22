@@ -14,6 +14,50 @@ export type Database = {
   }
   public: {
     Tables: {
+      adp_rankings: {
+        Row: {
+          adp_overall: number
+          adp_source: string
+          created_at: string
+          ingested_at: string
+          positional_rank: number | null
+          scoring_format: string
+          season_year: number
+          sleeper_player_id: string
+          updated_at: string
+        }
+        Insert: {
+          adp_overall: number
+          adp_source: string
+          created_at?: string
+          ingested_at: string
+          positional_rank?: number | null
+          scoring_format: string
+          season_year: number
+          sleeper_player_id: string
+          updated_at?: string
+        }
+        Update: {
+          adp_overall?: number
+          adp_source?: string
+          created_at?: string
+          ingested_at?: string
+          positional_rank?: number | null
+          scoring_format?: string
+          season_year?: number
+          sleeper_player_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "adp_rankings_sleeper_player_id_fkey"
+            columns: ["sleeper_player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["sleeper_player_id"]
+          },
+        ]
+      }
       app_settings: {
         Row: {
           key: string
