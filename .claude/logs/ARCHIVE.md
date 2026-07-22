@@ -3,6 +3,14 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-21_07 — Wave 1 league_config (league + config section complete)
+
+- One migration applied + verified live: `league_config` — `league_id uuid` PK doubling as FK → `leagues.platform_league_uuid` on delete cascade (1:1 extension); three NOT NULL jsonb columns (`scoring_settings_raw`, `roster_settings_raw`, `derived_config`); timestamps + `set_updated_at`; RLS at creation.
+- Clarify decisions: ADR-exact three-column shape — no `platform`/`season_year` duplication (the 1:1 parent leagues row carries both, satisfying Schema Rules 2/3 intent); all three jsonb NOT NULL (ingestion writes raws + derived together); FK ON DELETE CASCADE.
+- Coverage map recorded pre-code. Declared silences: nullability, on-delete, timestamps — resolved via Clarify + repo pattern. Report: gap found and flagged.
+- Noted: the PK itself satisfies the integrity item's league_id-index requirement for this table — no redundant index later.
+- WIKI NOTE (standing): the league-configuration ADR is silent on DDL-level details (nullability, on-delete, timestamps) — a short addendum would make it self-sufficient for re-derivation.
+
 ## 2026-07-21_06 — Wave 1 leagues + share_token generation (folded) · db-push allow rule live
 
 - Two migrations applied + verified live: `leagues` (PK `platform_league_uuid` via `gen_random_uuid()`; `platform`/`season_year integer`/`native_league_id text` as-received; nullable self-FK `previous_platform_league_uuid` on delete set null; `name text not null`; `share_token text not null unique` defaulted to `generate_share_token()`; `owner_id uuid` nullable FK → auth.users on delete set null, backfilled at the integrity item; unique `(platform, native_league_id, season_year)`; RLS + trigger) and `generate_share_token()` (32 random bytes hex-encoded = 64 chars via `extensions.gen_random_bytes` — pgcrypto v1.3 verified pre-installed live before writing; `search_path = ''`; revocation is a plain UPDATE, no immutability constraint).
