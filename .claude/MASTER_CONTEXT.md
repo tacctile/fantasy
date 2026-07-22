@@ -132,6 +132,8 @@ Every Claude Code session reads files in this exact order:
 
 Do not read files not listed above unless the prompt explicitly requires them.
 
+**Autonomous build sessions:** when Nick starts a session without a hand-written prompt — dropping in `.claude/BUILD_PROTOCOL.md` or simply saying to read it and get to work — that file governs the entire session in place of the manual Prompt Format below: it self-locates the next unchecked build-file item from `STATE.yml`/`BUILD_INDEX.md`, asks 3-5 pointed clarifying questions, then builds. Session-End Steps still apply in full regardless of which mode started the session.
+
 ---
 
 ## Absolute Rules
