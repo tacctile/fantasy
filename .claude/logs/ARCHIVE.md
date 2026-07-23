@@ -3,6 +3,13 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_32 — 03b/03c restructure: Sleeper-snake split from ESPN+auction (non-code; governance)
+
+- Executed the restructure log `_31`'s report recommended (independently arrived at, then confirmed consistent): `03b_draft_assistant_live_draft.md` rewritten in place to Sleeper snake-draft scope only (manual write path, polling orchestration, client live sync, live board UI, BPA/VORP, tier-cliff, run detection, queue/auto-pick, resilience) — safe because 03b still had zero `[x]` items. All ESPN references removed; recent-picks source badge reads manual/sleeper_poll only.
+- New `03c_draft_assistant_espn_and_auction.md` registered: everything ESPN (client, cookie auth, crosswalk, polling, `source='espn_poll'` writes) + all auction mechanics (discretionary budget, dollar conversion, nomination/bid state, auction recommendations), every item `[!]` blocked on the ESPN commissioner unlock (~mid-Aug 2026); built to EXTEND 03b's shared shell, never duplicate it. No auction formula weights/thresholds invented (left to build time per prompt DO NOT).
+- Manual-pick mutation signature amended in 03b to accept optional nullable `amount` — 03c auction lands without a breaking signature change (`draft_state.amount` exists since Wave 1).
+- BUILD_INDEX: 3b row renamed (Sleeper Snake, depends on 3a only, self-locatable), new 3c row 🔴, dependency notes rewritten, registry gained 03c. STATE.yml full overwrite; total_files 7→8. No src/ code touched; zero DB operations. WIKI COVERAGE: complete (3 assigned pages read and cited).
+
 ## 2026-07-22_31 — Auction-scope planning/recommendation (non-code; report-only)
 
 - Nick-requested findings/recommendation session on the auction gap: MASTER_CONTEXT's original scope named snake/linear AND auction as supported draft formats, but auction was never registered as build items anywhere — 03b was written entirely snake-only, and the only auction artifact was Wave 1's never-wired `draft_state.amount` column. Wiki auction knowledge existed (high-confidence) but wasn't cited by 03b's WIKI PAGES section.
