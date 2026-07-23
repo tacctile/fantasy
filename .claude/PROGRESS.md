@@ -9,6 +9,12 @@ Newest entry on top.
 
 ---
 
+## 2026-07-23 — Share-Token Data-Exposure Boundary Live (Wave 4 Named-Singleton #5)
+
+The read-only share-link Access Model's enforcement layer is live on the shared prod DB. Spectator `SELECT` RLS (`spectator_share_read`, `TO anon`) on EIGHT fantasy tables (six from the build file + `players`/`roster_players`, Nick-signed correctness amendment) gated on a `share_token` presented via the `x-share-token` header (`current_share_token()`); `draft_state`/`draft_sessions` deliberately get NO policy — unreachable to anon even with a valid token. Owner-only `regenerate_share_token(uuid)` RPC (revoke == regenerate) behind `regenerateShareToken`; `services/spectator.ts` is the server-side loader reusing the dashboard getters via a token-scoped anon client. tsc/lint/build clean + 23/23 (9 new boundary tests) + live read-only RLS verification (draft tables 0 rows with a valid token; regenerate revokes the old link live). Next: share-link settings panel UI + the spectator UI surface.
+
+---
+
 ## 2026-07-23 — Wave 3b Complete + Durable Test Framework Activated (Resilience Sub-Section 2/2)
 
 `03b_draft_assistant_live_draft.md` is 🟢 — the full Sleeper-snake live-draft wave is built. Final fold shipped the Resilience sub-section: (1) a reusable `ui/error-boundary.tsx` wraps each live-enhancement region so a render fault degrades only that region (quiet notice) while the static 3a board stays usable — the merge falls back to the base pool, auto-pick disarms on fault (Nick's Clarify: per-region + 3a fallback + quiet notices); (2) **Vitest** is now the project's durable test runner (the repo had none — every prior verification was a throwaway harness), with 14 co-located tests covering the DB first-write-wins race (fake in-memory client per Rule 13), BPA/tier recompute, run-window trigger/reset, and auto-pick's hard-rule skip. tsc/lint/build clean + 14/14; READ-ONLY, no migration. Next self-locatable work: Wave 4 nav-shell.
@@ -30,12 +36,6 @@ First working 3b feature since the Sleeper-snake restructure: `src/services/draf
 ## 2026-07-22 — League Dashboard Is a Working Feature: Page Assembled + League Selector Live
 
 First browsable Wave 4 surface: the owner dashboard now mounts at `/leagues/[leagueId]` (Nick-signed league root; auto-land re-signed to land here), composing MatchupsGrid (URL-driven `?week=N`, default = latest scored week via new `listScoredWeeks`) over StandingsTable + PowerRankingsList, with the PlayerCard opening as a URL-driven `?player=` sheet from matchup player links. Draft board's LeagueSelector generalized (`subPath`) and reused. tsc/lint/build clean + 21/21 live render checks. Next: nav-shell sub-section (share-link panel rides the share-token singleton).
-
----
-
-## 2026-07-22 — Wave 4 Begun: League-Dashboard Data Layer Live (Admin Data-Access Sub-Section Done)
-
-First working Wave 4 feature: `src/services/dashboard.ts` shipped as one 5-item query-service fold — `getStandings` (Nick-signed wins→PF→roster-id ordering, flat), `getMatchups` (wiki-grounded pairing, byes as unpaired, full-roster lines + freshness pass-through), `getPowerRankings` (All-Play record per the wiki's decided measure; regular-season weeks via `playoff_week_start`; low-confidence flag <6 weeks), `getPlayerCard` (explicit `not_rostered` FA-gap entries, holding-team attribution), plus the scoping/security assurance (static audit + live anon-RLS zero-data proof). All live-verified against the real league incl. an exact independent all-play recomputation. Next: 04 admin UI sub-section (freshness item rides with it).
 
 ---
 

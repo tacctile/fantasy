@@ -51,7 +51,7 @@ Registered 2026-07-21 on the premise that Wave 2 would sync raw per-player stat 
 - [x] Build a `PlayerCard`/detail panel — identity, roster status, per-week score line for the current season, tabular-nums (no charts — Wave 5 scope)
 - [x] Assemble the admin league dashboard page composing the four components above under owner auth, for any connected `league_id` (no hardcoded league count) — shipped 2026-07-22 at `/leagues/[leagueId]` (Nick-signed: league root, not `/dashboard`; auto-land re-signed to land here; PlayerCard opens as a URL-driven `?player=` sheet; matchups full-width over standings+power 2-col)
 - [x] Add a league selector so Nick can switch between all connected Sleeper/ESPN leagues from this dashboard — shipped 2026-07-22 (Nick-signed: the draft board's LeagueSelector generalized with a `subPath` prop and reused, not duplicated)
-- [ ] Add a share-link settings panel (copyable spectator URL + a regenerate-token action) on the admin dashboard only
+- [ ] Add a share-link settings panel (copyable spectator URL + a regenerate-token action) on the admin dashboard only — the `regenerateShareToken` action it calls shipped with the share-token infrastructure fold (2026-07-23); this remaining item is the panel UI
 
 ### Admin navigation shell and information architecture
 
@@ -63,12 +63,12 @@ This is the persistent admin shell that Wave 3a/3b's draft-day surface and Wave 
 - [x] Leave explicit mount points/route slots in the sidebar for Wave 5's sections (Score Trends, Luck, Positional, Playoff Picture, Trade Evaluator, Waiver Recommendations) and Wave 6's report/free-agent-board sections, so those waves extend this shell rather than each building their own navigation frame — rendered as visible disabled "coming soon" rows (Nick's Clarify), wave mapping in the FUTURE_NAV config
 
 ### Share-token infrastructure
-- [ ] Add RLS `SELECT` policies on `leagues`, `league_config`, `rosters`, `matchups`, `standings`, and `player_scores` granting read access when a valid, matching `share_token` is presented — writes remain owner-only on every table
-- [ ] Explicitly do NOT add any spectator read policy on `draft_state` — it must remain inaccessible via `share_token` entirely
-- [ ] Implement an owner-only share-token regenerate/revoke action that issues a new unguessable token for a `league_id` and immediately invalidates the old one, without recreating the league
+- [x] Add RLS `SELECT` policies on `leagues`, `league_config`, `rosters`, `matchups`, `standings`, and `player_scores` granting read access when a valid, matching `share_token` is presented — writes remain owner-only on every table — 2026-07-23; Nick-signed correctness amendment: `players` (global identity catalog) + `roster_players` (league membership) also get spectator SELECT policies, because the reused `getMatchups`/`getPlayerCard` getters read them (8 tables, not 6). Token presented via the `x-share-token` header, read by `public.current_share_token()`; anon-role policies gated on it; live-verified (valid token unlocks the league across all 8 tables; wrong/no token → nothing)
+- [x] Explicitly do NOT add any spectator read policy on `draft_state` — it must remain inaccessible via `share_token` entirely — 2026-07-23; `draft_sessions` likewise excluded; live-verified both return 0 rows even with a valid token
+- [x] Implement an owner-only share-token regenerate/revoke action that issues a new unguessable token for a `league_id` and immediately invalidates the old one, without recreating the league — 2026-07-23; `regenerateShareToken` server action → `regenerate_share_token(uuid)` RPC (SECURITY INVOKER; RLS UPDATE policy authorizes, EXECUTE revoked from anon); revoke == regenerate (share_token is NOT NULL). Live-verified: regenerate revokes the old link and the new one works
 
 ### Spectator surface (genuinely separate rendering path, mobile-first)
-- [ ] Build a server-side spectator data loader that resolves `share_token` → `league_id` and fetches only standings/matchups/power-rankings/player-card data — returns a clean not-found result for invalid/revoked tokens, never touches `draft_state`
+- [x] Build a server-side spectator data loader that resolves `share_token` → `league_id` and fetches only standings/matchups/power-rankings/player-card data — returns a clean not-found result for invalid/revoked tokens, never touches `draft_state` — 2026-07-23; `services/spectator.ts` (`loadSpectatorDashboard`/`loadSpectatorPlayerCard`) via the token-scoped anon client (`lib/supabase/spectator.ts`), reusing the `dashboard.ts` getters; imports nothing draft-related
 - [ ] Create the spectator route (e.g. `/share/[share_token]`) as a page that imports zero components from the admin dashboard path — shared data-access utilities are fine, shared UI components are not
 - [ ] Build `SpectatorStandings` — mobile-first stacked cards, compact, tabular-nums, no admin controls
 - [ ] Build `SpectatorMatchups` — mobile-first vertically stacked current-week score cards, no week-navigation control (current week only), no admin markup
@@ -79,8 +79,8 @@ This is the persistent admin shell that Wave 3a/3b's draft-day surface and Wave 
 ### Resilience and verification
 - [ ] Add loading/empty/error states for standings, matchups, power rankings, and player cards on both surfaces, without leaking internal errors, and keeping ESPN-specific failures isolated from Sleeper-backed data
 - [ ] Write a test asserting the spectator route's rendered response contains no admin-surface markup (draft board, BPA, admin nav, regenerate-token control)
-- [ ] Write a test confirming `share_token`-scoped queries never return another league's data
-- [ ] Write a test confirming `draft_state` is inaccessible via `share_token` (empty result or permission denied)
+- [x] Write a test confirming `share_token`-scoped queries never return another league's data — 2026-07-23; `services/spectator.test.ts` cross-league isolation cases (RLS-enforcing fake client per Rule 13: token A returns only league A, token B only league B, from the same loader) + live read-only RLS verification
+- [x] Write a test confirming `draft_state` is inaccessible via `share_token` (empty result or permission denied) — 2026-07-23; durable test asserts the loader never queries `draft_state`/`draft_sessions`; live-verified both return 0 rows through the anon+token client
 
 ---
 

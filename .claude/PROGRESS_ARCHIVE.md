@@ -179,3 +179,7 @@ The board's final sub-section shipped in one fold: route-segment loading skeleto
 ## 2026-07-22 — Governance: Wave Order Ruled — Wave 4 Begins Ahead of ESPN-Blocked 3b; Scoring-Engine Sub-Section Cut
 
 Nick authorized Wave 4 (League Dashboard) ahead of 3b (ESPN-blocked ~mid-Aug) — the roadmap un-stalls immediately; 3b resumes in place when ESPN opens. Same session, Clarify surfaced 04's stale premise before any code: Wave 2 as shipped ingests `player_scores` platform-scored (never computes). Nick signed the correctness amendment — engine items 1–4 `[-]` cut, item 5 re-worded to freshness surfacing, FA-week gap accepted for v1 — with backsweep to 02's exclusions line. Next: 04 admin data-access layer (`getStandings` first).
+
+## 2026-07-22 — Wave 4 Begun: League-Dashboard Data Layer Live (Admin Data-Access Sub-Section Done)
+
+First working Wave 4 feature: `src/services/dashboard.ts` shipped as one 5-item query-service fold — `getStandings` (Nick-signed wins→PF→roster-id ordering, flat), `getMatchups` (wiki-grounded pairing, byes as unpaired, full-roster lines + freshness pass-through), `getPowerRankings` (All-Play record per the wiki's decided measure; regular-season weeks via `playoff_week_start`; low-confidence flag <6 weeks), `getPlayerCard` (explicit `not_rostered` FA-gap entries, holding-team attribution), plus the scoping/security assurance (static audit + live anon-RLS zero-data proof). All live-verified against the real league incl. an exact independent all-play recomputation. Next: 04 admin UI sub-section (freshness item rides with it).

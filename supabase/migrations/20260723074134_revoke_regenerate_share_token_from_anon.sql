@@ -1,0 +1,16 @@
+-- Wave 4 named-singleton #5 follow-up: block the anon role from even invoking
+-- the owner-only regenerate mutation. The prior migration's
+-- `revoke ... from public` did not remove anon's grant, because Supabase grants
+-- function EXECUTE to anon/authenticated directly via default privileges (not
+-- via PUBLIC), so a live check showed anon could still call the function — a
+-- no-op (the fantasy_owner_all UPDATE policy blocks the write; anon updated
+-- zero rows and got null), but weaker defense-in-depth than intended.
+--
+-- The RLS UPDATE policy remains the real authorization wall; this revoke makes
+-- the "spectators cannot invoke the mutation at all" boundary actually hold.
+-- current_share_token() keeps its anon EXECUTE (the spectator SELECT policies
+-- call it as the anon role) — untouched here.
+--
+-- Blast radius (Rule 13): a privilege change on ONE fantasy-owned function only.
+-- No foreign object touched.
+revoke execute on function public.regenerate_share_token(uuid) from anon;

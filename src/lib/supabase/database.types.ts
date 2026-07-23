@@ -2991,8 +2991,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      current_share_token: { Args: never; Returns: string }
       generate_share_token: { Args: never; Returns: string }
       is_fantasy_admin: { Args: never; Returns: boolean }
+      regenerate_share_token: { Args: { p_league_id: string }; Returns: string }
       todd_get_email_by_username: {
         Args: { p_username: string }
         Returns: string
