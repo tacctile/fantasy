@@ -14,12 +14,17 @@ import type { RecordedPick } from '@/services/draft-picks'
 import type { DraftSessionState } from '@/services/draft-sessions'
 
 import DraftBoardHeader from './draft-board-header'
-import DraftPollTicker from './draft-poll-ticker'
+import DraftPollTicker, { type DraftPollTickReport } from './draft-poll-ticker'
 import {
   computeNextPickNumber,
   mergePicksIntoPlayers,
   picksFingerprint,
 } from './live-picks'
+import {
+  applyTickReport,
+  INITIAL_POLL_HEALTH,
+  type LivePollHealth,
+} from './live-status'
 import PlayerBoard from './player-board'
 import RosterPanel from './roster-panel'
 
@@ -91,6 +96,22 @@ export default function DraftBoardShell({
       picksFingerprint(previous) === picksFingerprint(picks) ? previous : picks
     )
   }, [])
+
+  // Poll health for the toolbar status indicator (live sync item 5) —
+  // aggregated here, rendered in the header. Reset when the session (re)arms
+  // so a past session's failures never bleed into a new one — render-time
+  // state adjustment, not an effect (react-hooks/set-state-in-effect).
+  const [pollHealth, setPollHealth] =
+    useState<LivePollHealth>(INITIAL_POLL_HEALTH)
+  const handleStatus = useCallback((report: DraftPollTickReport) => {
+    setPollHealth((previous) => applyTickReport(previous, report))
+  }, [])
+  const sessionEpoch = `${session.isDraftActive}:${session.activatedAt ?? ''}`
+  const [healthEpoch, setHealthEpoch] = useState(sessionEpoch)
+  if (healthEpoch !== sessionEpoch) {
+    setHealthEpoch(sessionEpoch)
+    setPollHealth(INITIAL_POLL_HEALTH)
+  }
 
   /** Adopt one authoritative draft_state row (accepted or conflict-winning)
    *  into the snapshot without waiting for the next poll tick. */
@@ -189,8 +210,17 @@ export default function DraftBoardShell({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col bg-background text-foreground">
-      <DraftPollTicker session={session} onPicks={handlePicks} />
-      <DraftBoardHeader context={context} leagues={leagues} session={session} />
+      <DraftPollTicker
+        session={session}
+        onPicks={handlePicks}
+        onStatus={handleStatus}
+      />
+      <DraftBoardHeader
+        context={context}
+        leagues={leagues}
+        session={session}
+        pollHealth={pollHealth}
+      />
       <div className="flex min-h-0 flex-1">
         <section aria-label="Player board" className="min-w-0 flex-1 p-4">
           <PlayerBoard

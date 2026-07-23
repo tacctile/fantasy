@@ -2,7 +2,7 @@
 
 import { Play, Square } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useState, useTransition } from 'react'
+import { useState, useTransition, type ReactNode } from 'react'
 
 import {
   endDraftSession,
@@ -13,6 +13,9 @@ import type { DraftSessionState } from '@/services/draft-sessions'
 
 interface DraftSessionToggleProps {
   session: DraftSessionState
+  /** Rendered inside the live cluster right after the "Draft live" label —
+   *  home of the live status indicator (Nick's placement, 2026-07-22). */
+  statusSlot?: ReactNode
 }
 
 /**
@@ -25,6 +28,7 @@ interface DraftSessionToggleProps {
  */
 export default function DraftSessionToggle({
   session,
+  statusSlot,
 }: DraftSessionToggleProps) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
@@ -54,13 +58,16 @@ export default function DraftSessionToggle({
   return (
     <div className="flex items-center gap-2">
       {session.isDraftActive ? (
-        <span className="flex items-center gap-1.5 text-sm font-medium text-primary">
-          <span
-            aria-hidden
-            className="size-2 animate-pulse rounded-full bg-primary"
-          />
-          Draft live
-        </span>
+        <>
+          <span className="flex items-center gap-1.5 text-sm font-medium text-primary">
+            <span
+              aria-hidden
+              className="size-2 animate-pulse rounded-full bg-primary"
+            />
+            Draft live
+          </span>
+          {statusSlot}
+        </>
       ) : session.isStale ? (
         <span className="text-sm text-muted-foreground">Session expired</span>
       ) : null}

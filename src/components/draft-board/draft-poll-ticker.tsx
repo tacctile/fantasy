@@ -27,6 +27,12 @@ import type { DraftSessionState } from '@/services/draft-sessions'
  * `router.refresh()` remains only for stand-down outcomes, where the
  * server-rendered session state must take over.
  *
+ * Each executed tick's outcome is also reported upward via `onStatus`
+ * (client-side live sync item 5 — the toolbar status indicator renders it).
+ * Only EXECUTED ticks report: skipped ticks (hidden tab, in-flight overlap)
+ * and stand-down outcomes report nothing — the indicator handles hidden-tab
+ * display itself, and stand-down unmounts the live UI via refresh.
+ *
  * Normal-cadence fallback needs no code here: with no live session, draft
  * sync happens only via the daily league-state cron chain.
  */
@@ -34,14 +40,26 @@ import type { DraftSessionState } from '@/services/draft-sessions'
 /** Elevated cadence while a draft is live (Nick-signed, 2026-07-22). */
 const POLL_INTERVAL_MS = 5_000
 
+/** Outcome of one EXECUTED poll tick, stamped with the client clock. */
+export type DraftPollTickReport =
+  | { outcome: 'success'; at: number }
+  | { outcome: 'failure'; at: number }
+
 interface DraftPollTickerProps {
   session: DraftSessionState
   /** Receives each executed poll's draft_state snapshot. Must be referentially
    *  stable (useCallback) — it participates in the effect dependency list. */
   onPicks: (picks: RecordedPick[]) => void
+  /** Receives each executed tick's outcome. Same referential-stability
+   *  requirement as `onPicks`. */
+  onStatus: (report: DraftPollTickReport) => void
 }
 
-export default function DraftPollTicker({ session, onPicks }: DraftPollTickerProps) {
+export default function DraftPollTicker({
+  session,
+  onPicks,
+  onStatus,
+}: DraftPollTickerProps) {
   const router = useRouter()
   const inFlight = useRef(false)
   const halted = useRef(false)
@@ -61,6 +79,7 @@ export default function DraftPollTicker({ session, onPicks }: DraftPollTickerPro
         const result = await pollActiveDraft(session.leagueId)
         if (result.outcome === 'polled') {
           onPicks(result.picks)
+          onStatus({ outcome: 'success', at: Date.now() })
         } else {
           // inactive / unauthorized / league_not_found — stand down and let
           // the server-rendered session state take over on refresh.
@@ -69,6 +88,7 @@ export default function DraftPollTicker({ session, onPicks }: DraftPollTickerPro
         }
       } catch {
         // Transient network/action failure — the next tick retries.
+        onStatus({ outcome: 'failure', at: Date.now() })
       } finally {
         inFlight.current = false
       }
@@ -85,7 +105,14 @@ export default function DraftPollTicker({ session, onPicks }: DraftPollTickerPro
       clearInterval(id)
       document.removeEventListener('visibilitychange', onVisibilityChange)
     }
-  }, [session.isDraftActive, session.activatedAt, session.leagueId, router, onPicks])
+  }, [
+    session.isDraftActive,
+    session.activatedAt,
+    session.leagueId,
+    router,
+    onPicks,
+    onStatus,
+  ])
 
   return null
 }

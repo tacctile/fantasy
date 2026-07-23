@@ -9,11 +9,15 @@ import type { DraftSessionState } from '@/services/draft-sessions'
 
 import DraftSessionToggle from './draft-session-toggle'
 import LeagueSelector from './league-selector'
+import LiveStatusIndicator from './live-status-indicator'
+import type { LivePollHealth } from './live-status'
 
 interface DraftBoardHeaderProps {
   context: DraftBoardLeagueContext
   leagues: ConnectedLeague[]
   session: DraftSessionState
+  /** Aggregated poll health from the shell (live sync item 5). */
+  pollHealth: LivePollHealth
 }
 
 // Fixed locale + UTC keeps server and client renders identical (no hydration
@@ -37,6 +41,7 @@ export default function DraftBoardHeader({
   context,
   leagues,
   session,
+  pollHealth,
 }: DraftBoardHeaderProps) {
   return (
     <header className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b px-4 py-3">
@@ -52,7 +57,12 @@ export default function DraftBoardHeader({
         </span>
       </div>
       <div className="ml-auto flex items-center gap-3">
-        <DraftSessionToggle session={session} />
+        <DraftSessionToggle
+          session={session}
+          statusSlot={
+            <LiveStatusIndicator session={session} health={pollHealth} />
+          }
+        />
         <Separator orientation="vertical" className="h-5" />
         <LeagueSelector
           leagues={leagues}
