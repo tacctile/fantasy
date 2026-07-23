@@ -29,7 +29,8 @@ export default function DraftBoardLoading() {
       className="flex min-h-0 flex-1 flex-col bg-background text-foreground"
     >
       <span className="sr-only">Loading draft board…</span>
-      {/* Header: league name + platform badge + season left; selector/ADP/sign-out right */}
+      {/* Header: league name + platform badge + season left; session control + ADP right
+          (selector and sign-out live in the persistent sidebar now) */}
       <header className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b px-4 py-3">
         <div className="flex items-center gap-2">
           <Skeleton className="h-6 w-44" />
@@ -37,9 +38,8 @@ export default function DraftBoardLoading() {
           <Skeleton className="h-4 w-10" />
         </div>
         <div className="ml-auto flex items-center gap-3">
-          <Skeleton className="h-8 w-44" />
+          <Skeleton className="h-8 w-28 rounded-full" />
           <Skeleton className="h-4 w-48" />
-          <Skeleton className="h-8 w-20 rounded-full" />
         </div>
       </header>
       <div className="flex min-h-0 flex-1">

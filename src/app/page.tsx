@@ -9,11 +9,10 @@ import { listConnectedLeagues } from '@/services/draft-board'
 /**
  * Root router for the owner surface (Nick-signed auto-land, re-signed
  * 2026-07-22 for Wave 4): unauthenticated → /login; admin with leagues →
- * first connected league's dashboard (the in-season default; the draft board
- * is one click away from its header); admin with none → a minimal empty note
- * (league sync is how leagues appear, per Wave 2's runners); non-admin
- * session → not-authorized. Wave 4's command-center home replaces the empty
- * note when it lands.
+ * first connected league's command-center home (the league root; the full
+ * dashboard and draft board are one click away in the persistent sidebar);
+ * admin with none → a minimal empty note (league sync is how leagues appear,
+ * per Wave 2's runners); non-admin session → not-authorized.
  */
 export default async function Home() {
   const db = await createClient()

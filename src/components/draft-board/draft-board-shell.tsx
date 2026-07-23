@@ -18,7 +18,6 @@ import ErrorBoundary from '@/components/ui/error-boundary'
 import { detectPositionalRuns, type RunBoard } from '@/services/bpa/runs'
 import type { PositionTierSummary } from '@/services/bpa/tiers'
 import type {
-  ConnectedLeague,
   DraftablePlayer,
   DraftBoardLeagueContext,
   DraftBoardPlayer,
@@ -62,7 +61,6 @@ import RosterPanel from './roster-panel'
 interface DraftBoardShellProps {
   context: DraftBoardLeagueContext
   players: DraftBoardPlayer[]
-  leagues: ConnectedLeague[]
   session: DraftSessionState
   /** Server-rendered draft_state snapshot — live state until the first tick. */
   initialPicks: RecordedPick[]
@@ -150,7 +148,6 @@ function RegionFallback({ label }: { label: string }) {
 export default function DraftBoardShell({
   context,
   players,
-  leagues,
   session,
   initialPicks,
   rosters,
@@ -591,7 +588,6 @@ export default function DraftBoardShell({
       />
       <DraftBoardHeader
         context={context}
-        leagues={leagues}
         session={session}
         pollHealth={pollHealth}
       />

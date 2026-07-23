@@ -1,8 +1,4 @@
-import Link from 'next/link'
-
-import SignOutButton from '@/components/auth/sign-out-button'
 import { Badge } from '@/components/ui/badge'
-import { buttonVariants } from '@/components/ui/button'
 import type {
   MatchupsData,
   PowerRankingsData,
@@ -19,9 +15,6 @@ interface LeagueDashboardShellProps {
   powerRankings: PowerRankingsData
   /** Weeks the selector offers — the page's listScoredWeeks result. */
   weeks: number[]
-  /** Header slot for the league selector (item 2 of this sub-section); the
-   *  shell owns no cross-league data itself. */
-  headerActions?: React.ReactNode
 }
 
 const SECTION_HEADING =
@@ -29,19 +22,20 @@ const SECTION_HEADING =
 
 /**
  * Admin league dashboard composition (tablet/PC-first, Nick-signed layout):
- * header with league identity, then the current week's matchups full-width —
+ * a slim league-identity header, then the current week's matchups full-width —
  * the "what's happening" surface — with standings and power rankings
  * side-by-side beneath on wide screens, stacked on narrow. Pure composition:
  * every ordering, pairing, and delta renders the dashboard service's results
  * as-is (services/dashboard.ts is their single home). The player-card sheet
- * is the page's concern (URL-driven), not the shell's.
+ * is the page's concern (URL-driven), not the shell's. The league selector,
+ * draft-board link, and sign-out moved to the persistent sidebar (nav-shell
+ * sub-section) — the shell no longer duplicates that global chrome.
  */
 export default function LeagueDashboardShell({
   standings,
   matchups,
   powerRankings,
   weeks,
-  headerActions,
 }: LeagueDashboardShellProps) {
   const { context } = standings
   return (
@@ -57,16 +51,6 @@ export default function LeagueDashboardShell({
           <span className="text-sm text-muted-foreground tabular-nums">
             {context.seasonYear}
           </span>
-        </div>
-        <div className="ml-auto flex items-center gap-3">
-          {headerActions}
-          <Link
-            href={`/leagues/${context.leagueId}/draft`}
-            className={buttonVariants({ variant: 'secondary', size: 'sm' })}
-          >
-            Draft board
-          </Link>
-          <SignOutButton />
         </div>
       </header>
       <main className="flex flex-1 flex-col gap-6 p-4">

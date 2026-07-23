@@ -1,21 +1,15 @@
-import SignOutButton from '@/components/auth/sign-out-button'
 import { Badge } from '@/components/ui/badge'
 import ErrorBoundary from '@/components/ui/error-boundary'
 import { Separator } from '@/components/ui/separator'
-import type {
-  ConnectedLeague,
-  DraftBoardLeagueContext,
-} from '@/services/draft-board'
+import type { DraftBoardLeagueContext } from '@/services/draft-board'
 import type { DraftSessionState } from '@/services/draft-sessions'
 
 import DraftSessionToggle from './draft-session-toggle'
-import LeagueSelector from './league-selector'
 import LiveStatusIndicator from './live-status-indicator'
 import type { LivePollHealth } from './live-status'
 
 interface DraftBoardHeaderProps {
   context: DraftBoardLeagueContext
-  leagues: ConnectedLeague[]
   session: DraftSessionState
   /** Aggregated poll health from the shell (live sync item 5). */
   pollHealth: LivePollHealth
@@ -33,14 +27,16 @@ const INGESTED_AT_FORMAT = new Intl.DateTimeFormat('en-US', {
 })
 
 /**
- * Board header/toolbar: league name, platform badge, season year, the league
- * selector, and the active ADP source with its last successful ingestion time
- * (adp_rankings rows only ever exist from a fully validated ingestion —
- * validate-before-swap — so the snapshot's ingested_at IS that time).
+ * Board header/toolbar: league name, platform badge, season year, the draft
+ * session control with its live status, and the active ADP source with its
+ * last successful ingestion time (adp_rankings rows only ever exist from a
+ * fully validated ingestion — validate-before-swap — so the snapshot's
+ * ingested_at IS that time). The league selector and sign-out moved to the
+ * persistent admin sidebar (Wave 4 nav-shell) — the board no longer duplicates
+ * that global chrome.
  */
 export default function DraftBoardHeader({
   context,
-  leagues,
   session,
   pollHealth,
 }: DraftBoardHeaderProps) {
@@ -70,12 +66,6 @@ export default function DraftBoardHeader({
           }
         />
         <Separator orientation="vertical" className="h-5" />
-        <LeagueSelector
-          leagues={leagues}
-          activeLeagueId={context.leagueId}
-          subPath="/draft"
-        />
-        <Separator orientation="vertical" className="h-5" />
         <p className="text-sm text-muted-foreground">
           ADP: {context.adpSource}
           {' · '}
@@ -87,8 +77,6 @@ export default function DraftBoardHeader({
             </span>
           )}
         </p>
-        <Separator orientation="vertical" className="h-5" />
-        <SignOutButton />
       </div>
     </header>
   )
