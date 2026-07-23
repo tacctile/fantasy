@@ -18,6 +18,7 @@ import type {
   BpaRecommendation,
   BpaRecommendationsContext,
 } from '@/services/bpa/recommendations'
+import type { PositionTierSummary } from '@/services/bpa/tiers'
 import type { DraftablePlayer, LeagueRoster } from '@/services/draft-board'
 import type { RecordedPick } from '@/services/draft-picks'
 
@@ -36,6 +37,12 @@ const NEED_LABELS: Record<NeedKind, string> = {
   bench: 'Bench depth',
   full: 'Position full',
 }
+
+/** The tier-depth counter's positions, in standard display order (Nick's
+ *  2026-07-22 Clarify — QB/RB/WR/TE only, the four decision-relevant tiered
+ *  positions / build-file target bands; K/DEF tier tails are noise-prone dense
+ *  ranges and late-draft afterthoughts, omitted). */
+const TIER_COUNTER_POSITIONS = ['QB', 'RB', 'WR', 'TE'] as const
 
 interface BpaRecommendationsPanelProps {
   /** platform_league_uuid — the same id the board reads. */
@@ -109,6 +116,54 @@ function NeedBadge({ kind }: { kind: NeedKind }) {
     >
       {NEED_LABELS[kind]}
     </span>
+  )
+}
+
+/**
+ * Tier-depth counter (Wave 3b tier-cliff item 4) — the highest-leverage piece
+ * of the tier system: per position, how many players remain in the best still-
+ * available tier, the "reach now or wait for the next tier" signal. Consumes
+ * the per-position summaries the SAME fetchBpaRecommendations call already
+ * surfaced (`context.tiers` via `summarizeTiers`) — no second query and no
+ * second tier compute; it recomputes for free on the panel's per-pick refetch,
+ * against the shrinking undrafted pool. `topTierSize` is "N remaining in the
+ * best available tier" because the pool is the undrafted set (tiers.ts).
+ *
+ * Strictly informational and non-blocking (league-size-scarcity-effects.md Key
+ * Decisions — tier breaks are a weighted input alongside opportunity cost, NEVER
+ * a rigid "draft now" trigger, and algorithmic tiers are not authoritative
+ * without a qualitative review layer). Every position renders identically muted
+ * (Nick's Clarify — no nearly-exhausted emphasis); tabular-nums; teal stays
+ * reserved for live/interactive and amber for roster-need (STATE.yml dark-mode
+ * discipline), so no new token is introduced.
+ */
+function TierDepthStrip({
+  tiers,
+}: {
+  tiers: Record<string, PositionTierSummary>
+}) {
+  const entries = TIER_COUNTER_POSITIONS.map(
+    (position) => tiers[position]
+  ).filter((summary): summary is PositionTierSummary => summary !== undefined)
+  if (entries.length === 0) return null
+  return (
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 pb-2">
+      <span className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground/70">
+        Best-tier depth
+      </span>
+      {entries.map((summary) => (
+        <span
+          key={summary.position}
+          className="inline-flex items-center gap-1"
+          title={`${summary.topTierSize} in the best available tier · ${summary.tierCount} tier${summary.tierCount === 1 ? '' : 's'} remaining`}
+        >
+          <PositionBadge position={summary.position} />
+          <span className="text-xs font-semibold text-muted-foreground tabular-nums">
+            {summary.topTierSize}
+          </span>
+        </span>
+      ))}
+    </div>
   )
 }
 
@@ -291,6 +346,7 @@ function PanelBody({
           <> · set your team for roster fit</>
         )}
       </p>
+      <TierDepthStrip tiers={state.context.tiers} />
       <ul className="min-h-0 flex-1 space-y-1 overflow-y-auto">
         {state.recommendations.map((rec) => (
           <RecommendationRow
