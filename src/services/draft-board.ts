@@ -54,7 +54,14 @@ const SELECT_CHUNK_SIZE = 500
 const UUID_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
-export type DraftBoardAvailability = 'rostered' | 'available'
+/**
+ * 'rostered' | 'available' come from this service (roster_players presence).
+ * 'drafted' is produced ONLY by the client-side live merge (Wave 3b,
+ * components/draft-board/live-picks.ts) overlaying draft_state picks — this
+ * service never emits it, and 'rostered' always wins over the overlay (the
+ * roster sync's attribution is richer and post-draft authoritative).
+ */
+export type DraftBoardAvailability = 'rostered' | 'available' | 'drafted'
 
 export type DraftBoardPlayer = {
   sleeperPlayerId: string
@@ -67,6 +74,9 @@ export type DraftBoardPlayer = {
   adpOverall: number | null
   positionalRank: number | null
   availability: DraftBoardAvailability
+  /** Set only by the client live merge when availability is 'drafted' (the
+   *  winning pick_number) — this service always returns null. */
+  draftedPickNumber: number | null
   /** Set when availability is 'rostered' — which team holds the player. */
   rosteredByNativeRosterId: number | null
   rosteredByTeamName: string | null
@@ -358,6 +368,7 @@ export async function getDraftBoardData(
       adpOverall: adp?.adp_overall ?? null,
       positionalRank: adp?.positional_rank ?? null,
       availability: rostered ? 'rostered' : 'available',
+      draftedPickNumber: null,
       rosteredByNativeRosterId: rostered ? membership.nativeRosterId : null,
       rosteredByTeamName: names?.teamName ?? null,
       rosteredByOwnerDisplayName: names?.ownerDisplayName ?? null,

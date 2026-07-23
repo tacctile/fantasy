@@ -308,6 +308,30 @@ export async function undoLastManualPick(
   return { outcome: 'undone', pick: toRecordedPick(deleted[0]) }
 }
 
+/**
+ * Full draft_state snapshot for one league, `pick_number` ascending — the
+ * client-side live sync's per-tick payload (Wave 3b, Nick-signed 2026-07-22:
+ * full snapshot over incremental, so an undone pick's deleted row self-heals
+ * on the next tick instead of ghosting on the board). Malformed IDs resolve
+ * to an empty snapshot (listScoredWeeks precedent) so genuine query errors
+ * still throw rather than masquerading as "no picks".
+ */
+export async function listDraftPicks(
+  db: SupabaseClient<Database>,
+  leagueId: string
+): Promise<RecordedPick[]> {
+  if (!UUID_PATTERN.test(leagueId)) return []
+  const { data, error } = await db
+    .from('draft_state')
+    .select('league_id, pick_number, round, sleeper_player_id, native_roster_id, source')
+    .eq('league_id', leagueId)
+    .order('pick_number', { ascending: true })
+  if (error) {
+    throw new Error(`draft-picks snapshot query failed: ${error.message}`)
+  }
+  return data.map(toRecordedPick)
+}
+
 function toRecordedPick(row: {
   league_id: string
   pick_number: number

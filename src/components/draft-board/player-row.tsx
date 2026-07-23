@@ -26,18 +26,27 @@ function formatPositionalRank(player: DraftBoardPlayer): string {
  * team, overall ADP, positional rank, availability. Bye week is deliberately
  * absent (Nick-signed 2026-07-22): no schedule-derived bye source exists yet —
  * byes must never come from the player object (wiki: sleeper-api/
- * player-data-quirks). Rostered rows dim as a whole (opacity, not a color
- * tint) — drafted players are no longer actionable on a draft board.
+ * player-data-quirks). Rostered AND live-drafted rows dim as a whole
+ * (opacity, not a color tint) — drafted players are no longer actionable on a
+ * draft board. Live-drafted rows (the client merge's 'drafted' overlay) show
+ * "Drafted · Pick N" (Nick-signed 2026-07-22) — team attribution arrives when
+ * the roster sync graduates the row to 'rostered', or via the recent-picks
+ * feed (later 03b item).
  */
 export default function PlayerRow({ player }: PlayerRowProps) {
   const rostered = player.availability === 'rostered'
+  const drafted = player.availability === 'drafted'
   const rosteredBy =
     player.rosteredByTeamName ?? player.rosteredByOwnerDisplayName ?? 'Rostered'
+  const draftedLabel =
+    player.draftedPickNumber === null
+      ? 'Drafted'
+      : `Drafted · Pick ${player.draftedPickNumber}`
   return (
     <tr
       className={cn(
         'border-b border-border/50 transition-colors hover:bg-muted',
-        rostered && 'opacity-60'
+        (rostered || drafted) && 'opacity-60'
       )}
     >
       <td className="px-3 py-2">
@@ -64,6 +73,10 @@ export default function PlayerRow({ player }: PlayerRowProps) {
         {rostered ? (
           <span className="truncate text-secondary-foreground">
             {rosteredBy}
+          </span>
+        ) : drafted ? (
+          <span className="truncate tabular-nums text-secondary-foreground">
+            {draftedLabel}
           </span>
         ) : (
           <span className="text-muted-foreground">Available</span>

@@ -3,6 +3,14 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_30 — Wave 4 dashboard page assembly + league selector (2-item fold; dashboard mounted)
+
+- Fold = 04's Admin UI remaining pair: (1) admin league dashboard page composing StandingsTable/MatchupsGrid/PowerRankingsList/PlayerCard under owner auth; (2) league selector. Share-link panel stayed deferred to the share-token RLS singleton.
+- Nick-signed Clarify: route `/leagues/[leagueId]` as league root; root auto-land re-signed draft→dashboard; PlayerCard opens via URL-driven `?player=` right sheet (no client JS — Link-based dismissal preserving week; disclosed tradeoff: no Escape-close, no ui/sheet primitive existed); single-page layout (matchups full-width over standings+power 2-col); selector = generalize draft board's LeagueSelector with a `subPath` string prop (query params deliberately dropped on switch).
+- Coverage maps: all data semantics rendered AS-IS from services/dashboard.ts + components/dashboard (their own prior citations); declared wiki silence on admin routing/page-composition IA (established below-wiki-altitude category). Default week = latest league-scored week (disclosed mechanical judgment); invalid `?week` falls back, unknown player → honest in-sheet empty (never 404 on a good league).
+- Shipped: `listScoredWeeks` added to dashboard service; `player-card-sheet.tsx`, `league-dashboard-shell.tsx`, `[leagueId]` page/loading/error (draft-route error pattern); matchup player names → links; auto-land redirect updated; selector reuse wired both surfaces.
+- Verified: tsc/lint/build clean; live read-only render harness 21/21 against the real league (deleted after). Data finding: week 18 (default on the complete league) renders unpaired "No opponent" cards — honest playoff rendering; week 17 shows full H2H pairs. Browser eyeball carried to nick_pending (no session minted, Rule 13 posture). Blast radius: reads only, fantasy-owned tables. WIKI NOTE: none.
+
 ## 2026-07-22_29 — Wave 4 dashboard display components + freshness rider (5-item fold)
 
 - Fold (Nick-signed via a four-option split question) = the four display components (`StandingsTable`, `MatchupsGrid`+`MatchupCard`+`WeekSelector`, `PowerRankingsList`, `PlayerCard`) + the freshness rider, as one "dashboard display layer" artifact in new `src/components/dashboard/`; page assembly + selector deferred to the next fold, share-link panel to the share-token singleton.

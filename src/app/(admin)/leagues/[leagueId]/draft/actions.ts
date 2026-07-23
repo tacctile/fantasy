@@ -5,10 +5,12 @@ import { revalidatePath } from 'next/cache'
 import { getAdminAuthState } from '@/lib/supabase/auth'
 import { createClient } from '@/lib/supabase/server'
 import {
+  listDraftPicks,
   recordManualPick,
   undoLastManualPick,
   type ManualPickInput,
   type ManualPickResult,
+  type RecordedPick,
   type UndoManualPickResult,
 } from '@/services/draft-picks'
 import {
@@ -111,15 +113,26 @@ export async function endDraftSession(
 }
 
 export type PollActiveDraftActionResult =
-  | ActiveDraftPollResult
+  | (Extract<ActiveDraftPollResult, { outcome: 'polled' }> & {
+      /** Full draft_state snapshot after the poll — the live-sync payload. */
+      picks: RecordedPick[]
+    })
+  | Exclude<ActiveDraftPollResult, { outcome: 'polled' }>
   | { outcome: 'unauthorized' }
 
 /**
- * One elevated poll tick (Wave 3b orchestration items 2+3), invoked by the
- * board's interval ticker while the draft session is live. The service
- * re-checks `is_draft_active` (TTL-aware) authoritatively before any Sleeper
- * request, so a stale client can never force polling; every poll that runs is
- * recorded in `sync_runs`. Revalidates the board only when new picks landed.
+ * One elevated poll tick (Wave 3b orchestration items 2+3 + client-side live
+ * sync item 1), invoked by the board's interval ticker while the draft
+ * session is live. The service re-checks `is_draft_active` (TTL-aware)
+ * authoritatively before any Sleeper request, so a stale client can never
+ * force polling; every poll that runs is recorded in `sync_runs`.
+ *
+ * Every executed poll returns the league's full draft_state snapshot (Nick's
+ * 2026-07-22 Clarify decisions: full snapshot over incremental so undo
+ * deletions self-heal; the client merge REPLACES the previous refresh-on-picks
+ * — no revalidate/refresh churn while picks land). The snapshot is attached
+ * even when the Sleeper sync itself failed: current database state is still
+ * the honest board state, and the next tick retries the sync.
  */
 export async function pollActiveDraft(
   leagueId: string
@@ -129,12 +142,7 @@ export async function pollActiveDraft(
   if (auth.state !== 'admin') return { outcome: 'unauthorized' }
 
   const result = await runActiveDraftPoll(db, leagueId)
-  if (
-    result.outcome === 'polled' &&
-    result.sync.status === 'success' &&
-    result.sync.picksWritten > 0
-  ) {
-    revalidatePath(`/leagues/${leagueId}/draft`)
-  }
-  return result
+  if (result.outcome !== 'polled') return result
+  const picks = await listDraftPicks(db, leagueId)
+  return { ...result, picks }
 }
