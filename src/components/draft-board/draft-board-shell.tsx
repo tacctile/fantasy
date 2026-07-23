@@ -62,9 +62,10 @@ type PendingPick = {
  * identical snapshots from updating state at all (React skips the re-render
  * on same-reference state), and the merge overlay (live-picks.ts) recomputes
  * only when the snapshot, pending set, or pool genuinely changed. Both board
- * regions read the merged pool — one source of truth; 'drafted'/pending rows
- * are invisible to the roster panel by design (it derives from 'rostered'
- * only).
+ * regions read the merged pool — one source of truth; the roster panel
+ * additionally reads the confirmed snapshot directly for pick→team
+ * attribution (UI extensions item 3 — the merge deliberately carries no
+ * roster attribution; pending picks stay panel-invisible, Nick-signed).
  *
  * Optimistic flow (items 3–4): clicking Draft claims the next pick number
  * locally (pending → the row reads "Drafting…" and leaves the available set
@@ -264,7 +265,12 @@ export default function DraftBoardShell({
           aria-label="Roster panel"
           className="hidden w-80 shrink-0 border-l p-4 lg:block"
         >
-          <RosterPanel players={mergedPlayers} context={context} />
+          <RosterPanel
+            players={mergedPlayers}
+            context={context}
+            livePicks={livePicks}
+            rosters={rosters}
+          />
         </aside>
       </div>
     </div>

@@ -2,34 +2,45 @@ import { cn } from '@/lib/utils'
 import type {
   DraftBoardLeagueContext,
   DraftBoardPlayer,
+  LeagueRoster,
 } from '@/services/draft-board'
+import type { RecordedPick } from '@/services/draft-picks'
 
 import { computeRosterFill } from './roster-fill'
 
 interface RosterPanelProps {
   players: DraftBoardPlayer[]
   context: DraftBoardLeagueContext
+  /** Confirmed draft_state snapshot — live picks update fill/need as they
+   *  land from any source (Wave 3b UI extensions item 3). */
+  livePicks: RecordedPick[]
+  rosters: LeagueRoster[]
 }
 
 /**
- * Roster/positional-need sidebar: each team's roster fill as a static
- * snapshot (no live updates — Wave 3a). Per team: slot-group totals against
- * derived_config capacities, and per-position fill vs the league's dedicated
- * starting slots from the raw slot layout — under-filled positions flag in
- * the warning tier (actionable draft information). Flex slots render as their
- * own line, never force-assigned to a position. IR capacity reads
- * derived_config's ir_slot_count (reserve_slots-aware), not the raw IR label
- * count.
+ * Roster/positional-need sidebar, live as picks land (Wave 3b UI extensions
+ * item 3 — blend rules Nick-signed, see computeRosterFill). Per team:
+ * slot-group totals against derived_config capacities plus an honest
+ * "N drafted" pick count, and per-position fill vs the league's dedicated
+ * starting slots — under-filled positions flag in the warning tier
+ * (actionable draft information). Flex slots render as their own line, never
+ * force-assigned to a position. IR capacity reads derived_config's
+ * ir_slot_count (reserve_slots-aware), not the raw IR label count.
  */
-export default function RosterPanel({ players, context }: RosterPanelProps) {
-  const teams = computeRosterFill(players, context.slotLayout)
+export default function RosterPanel({
+  players,
+  context,
+  livePicks,
+  rosters,
+}: RosterPanelProps) {
+  const teams = computeRosterFill(players, context.slotLayout, livePicks, rosters)
   const flexEntries =
     context.slotLayout === null ? [] : Object.entries(context.slotLayout.flex)
 
   if (teams.length === 0) {
     return (
       <p className="p-4 text-sm text-muted-foreground">
-        No rostered players in this league yet.
+        No rostered or drafted players in this league yet.
       </p>
     )
   }
@@ -81,6 +92,7 @@ export default function RosterPanel({ players, context }: RosterPanelProps) {
                   </>
                 )}
                 {team.taxiCount > 0 && <> · {team.taxiCount} TX</>}
+                {team.draftedCount > 0 && <> · {team.draftedCount} drafted</>}
               </p>
             </div>
             {team.positions.length > 0 && (
