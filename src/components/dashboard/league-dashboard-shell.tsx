@@ -15,6 +15,11 @@ interface LeagueDashboardShellProps {
   powerRankings: PowerRankingsData
   /** Weeks the selector offers — the page's listScoredWeeks result. */
   weeks: number[]
+  /** Owner-only settings block rendered at the bottom of the dashboard flow
+   *  (the share-link panel). A layout slot — the shell stays agnostic about
+   *  its contents, keeping the admin-settings concern out of the pure data
+   *  composition above. */
+  settingsSlot?: React.ReactNode
 }
 
 const SECTION_HEADING =
@@ -36,6 +41,7 @@ export default function LeagueDashboardShell({
   matchups,
   powerRankings,
   weeks,
+  settingsSlot,
 }: LeagueDashboardShellProps) {
   const { context } = standings
   return (
@@ -67,6 +73,11 @@ export default function LeagueDashboardShell({
             <PowerRankingsList data={powerRankings} />
           </section>
         </div>
+        {settingsSlot !== undefined && (
+          <section aria-label="League settings" className="max-w-2xl">
+            {settingsSlot}
+          </section>
+        )}
       </main>
     </div>
   )

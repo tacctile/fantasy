@@ -1,8 +1,11 @@
+import type { SupabaseClient } from '@supabase/supabase-js'
 import { notFound } from 'next/navigation'
 
 import LeagueDashboardShell from '@/components/dashboard/league-dashboard-shell'
 import PlayerCard from '@/components/dashboard/player-card'
 import PlayerCardSheet from '@/components/dashboard/player-card-sheet'
+import ShareLinkPanel from '@/components/dashboard/share-link-panel'
+import type { Database } from '@/lib/supabase/database.types'
 import { createClient } from '@/lib/supabase/server'
 import {
   getMatchups,
@@ -14,6 +17,28 @@ import {
 
 const MIN_WEEK = 1
 const MAX_WEEK = 18
+
+/**
+ * The league's `share_token`, read here (not through services/dashboard.ts,
+ * whose boundary deliberately never selects it) because this is the one
+ * owner-authenticated surface that manages the spectator link. Gated by the
+ * (admin) layout + the owner RLS policy on `leagues`; the token never leaves
+ * this admin page except into the owner-only ShareLinkPanel. Null only if the
+ * row is somehow unreadable (the layout already 404s unknown leagues) — the
+ * panel is then simply not rendered rather than crashing the dashboard.
+ */
+async function fetchShareToken(
+  db: SupabaseClient<Database>,
+  leagueId: string
+): Promise<string | null> {
+  const { data, error } = await db
+    .from('leagues')
+    .select('share_token')
+    .eq('platform_league_uuid', leagueId)
+    .maybeSingle()
+  if (error) throw new Error(`share-token query failed: ${error.message}`)
+  return data?.share_token ?? null
+}
 
 /** First value when Next hands back an array; undefined stays undefined. */
 function firstParam(value: string | string[] | undefined): string | undefined {
@@ -53,11 +78,13 @@ export default async function LeagueDashboardPage({
   const [{ leagueId }, query] = await Promise.all([params, searchParams])
   const db = await createClient()
 
-  const [standingsResult, powerRankingsResult, weeks] = await Promise.all([
-    getStandings(db, leagueId),
-    getPowerRankings(db, leagueId),
-    listScoredWeeks(db, leagueId),
-  ])
+  const [standingsResult, powerRankingsResult, weeks, shareToken] =
+    await Promise.all([
+      getStandings(db, leagueId),
+      getPowerRankings(db, leagueId),
+      listScoredWeeks(db, leagueId),
+      fetchShareToken(db, leagueId),
+    ])
   if (!standingsResult.ok || !powerRankingsResult.ok) notFound()
 
   const defaultWeek = weeks.length > 0 ? weeks[weeks.length - 1] : MIN_WEEK
@@ -81,6 +108,11 @@ export default async function LeagueDashboardPage({
         matchups={matchupsResult.data}
         powerRankings={powerRankingsResult.data}
         weeks={weeks}
+        settingsSlot={
+          shareToken === null ? undefined : (
+            <ShareLinkPanel leagueId={leagueId} shareToken={shareToken} />
+          )
+        }
       />
       {playerResult !== null &&
         (playerResult.ok ? (
