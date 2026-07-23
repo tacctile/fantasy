@@ -28,6 +28,8 @@ async function main(): Promise<void> {
       `${result.sentinelSkippedCount} sentinel-skipped, ${result.implausibleValueCount} implausible-skipped, ` +
       `${result.unmappedPlayerCount} unmapped players` +
       (result.unmappedPlayerCount > 0 ? ` (${result.unmappedPlayerIds.join(', ')})` : '') +
+      `; projections: ${result.projectionRowsPersistedCount} rows persisted, ` +
+      `${result.projectionStaleRowsDeletedCount} stale removed` +
       ` (${result.startedAt} -> ${result.completedAt})`
   )
 }

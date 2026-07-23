@@ -57,6 +57,11 @@ export type AdpEntry = {
 /** Database row shape for `adp_rankings` writes. */
 export type AdpRow = Database['public']['Tables']['adp_rankings']['Insert']
 
+/** Database row shape for `player_projections` writes (Wave 3b BPA
+ * prerequisite — fused into the same ingestion run/fetch as ADP,
+ * Nick-signed 2026-07-22). */
+export type PlayerProjectionRow = Database['public']['Tables']['player_projections']['Insert']
+
 /** Outcome of one ADP ingestion run. Skip/unmapped counts are first-class:
  * nothing is silently dropped (unmapped players are recorded, never used to
  * mint identity rows — Schema Rule #4). */
@@ -75,8 +80,9 @@ export type AdpIngestionResult = {
   sentinelSkippedCount: number
   /** adp_* values excluded as non-numeric or out of the plausible range. */
   implausibleValueCount: number
-  /** Distinct players with ADP but no `players` catalog row (FK target).
-   * Self-heals after the next daily catalog sync. */
+  /** Distinct fetched players (ADP entries and/or projection records) with
+   * no `players` catalog row (FK target). Self-heals after the next daily
+   * catalog sync. */
   unmappedPlayerCount: number
   unmappedPlayerIds: string[]
   upsertedRowCount: number
@@ -85,4 +91,11 @@ export type AdpIngestionResult = {
   staleRowsDeletedCount: number
   /** Distinct scoring-format suffixes observed this run. */
   formatsSeen: string[]
+  /** `player_projections` rows persisted from this run's single fetch
+   * (fused ingestion — one player/source/season row carrying the full
+   * as-received stats object). */
+  projectionRowsPersistedCount: number
+  /** Prior-snapshot `player_projections` rows removed because this validated
+   * run no longer carries them (current-snapshot semantics). */
+  projectionStaleRowsDeletedCount: number
 }

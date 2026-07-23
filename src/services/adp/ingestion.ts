@@ -14,6 +14,15 @@
  * validated response no longer carries (current-snapshot semantics,
  * mirroring the catalog's complete-response-then-reconcile ordering).
  *
+ * Fused projections persist (Wave 3b BPA prerequisite, Nick-signed
+ * 2026-07-22): the same validated response additionally lands one
+ * `player_projections` row per fetched player — the full stats object
+ * as-received plus vendor/timestamp provenance — so the contractless host
+ * still sees exactly one request per run. Each table keeps its own
+ * plausibility gates and current-snapshot cleanup; the ADP swap completes
+ * first, so a projections failure after that point leaves the fresh ADP
+ * snapshot valid and the projections last-good snapshot untouched.
+ *
  * Isolation: this module (and the adp/ directory generally) is the same
  * fault-containment boundary the platform applies to ESPN — a failure here
  * must degrade only the ADP feature. It is never part of the Sleeper
@@ -37,14 +46,21 @@
  */
 import type { SupabaseClient } from '@supabase/supabase-js'
 
-import type { Database } from '@/lib/supabase/database.types'
+import type { Database, Json } from '@/lib/supabase/database.types'
 import { getNflState } from '@/services/sleeper/nfl-state'
 import { finishSyncRun, startSyncRun } from '@/services/sync-runs'
 
 import { fetchSeasonProjections } from './client'
-import type { AdpEntry, AdpIngestionResult, AdpProjectionRecord, AdpRow } from './types'
+import type {
+  AdpEntry,
+  AdpIngestionResult,
+  AdpProjectionRecord,
+  AdpRow,
+  PlayerProjectionRow,
+} from './types'
 
 const ADP_SOURCE = 'sleeper' as const
+const PROJECTION_SOURCE = 'sleeper' as const
 const ADP_FIELD_PREFIX = 'adp_'
 // Values >= this are the "no ADP in this format" sentinel (observed 999.0).
 const ADP_SENTINEL_MIN = 999
@@ -80,15 +96,43 @@ export async function syncAdpRankings(
     throw new Error(`adp_rankings count query failed: ${countError.message}`)
   }
 
+  const { count: existingProjectionRowCount, error: projectionCountError } = await db
+    .from('player_projections')
+    .select('*', { count: 'exact', head: true })
+    .eq('projection_source', PROJECTION_SOURCE)
+    .eq('season_year', seasonYear)
+  if (projectionCountError) {
+    throw new Error(`player_projections count query failed: ${projectionCountError.message}`)
+  }
+
   const raw = await fetchSeasonProjections(seasonYear)
   const records = validateProjectionsResponse(raw)
 
   const extraction = extractAdpEntries(records)
 
+  // Projection candidates (fused persist): one per distinct fetched player
+  // with a usable record — valid player_id plus a stats object, the same
+  // structural bar validation sampled for. First occurrence wins on a
+  // duplicated player_id (dedup is required for a single-statement upsert;
+  // duplicates are unobserved, but this surface has no contract).
+  const projectionCandidates = new Map<string, AdpProjectionRecord>()
+  for (const record of records) {
+    if (typeof record !== 'object' || record === null) continue
+    const playerId = record.player_id
+    if (typeof playerId !== 'string' || playerId.length === 0) continue
+    if (typeof record.stats !== 'object' || record.stats === null) continue
+    if (!projectionCandidates.has(playerId)) projectionCandidates.set(playerId, record)
+  }
+
   // Resolve entries against the canonical catalog: unmapped players are
   // reported, never inserted (their FK target doesn't exist) and never
   // identity-created here.
-  const uniquePlayerIds = [...new Set(extraction.entries.map((e) => e.sleeperPlayerId))]
+  const uniquePlayerIds = [
+    ...new Set([
+      ...extraction.entries.map((e) => e.sleeperPlayerId),
+      ...projectionCandidates.keys(),
+    ]),
+  ]
   const positionByPlayerId = await fetchCatalogPositions(db, uniquePlayerIds)
   const unmappedPlayerIds = uniquePlayerIds.filter((id) => !positionByPlayerId.has(id))
   const unmappedSet = new Set(unmappedPlayerIds)
@@ -107,6 +151,28 @@ export async function syncAdpRankings(
     throw new Error(
       `adp ingestion aborted: ${mappedEntries.length} insertable entries is implausibly low ` +
         `against ${existingRowCount} existing rows — last good snapshot preserved`
+    )
+  }
+
+  // The projections snapshot gates independently against its own table —
+  // both gates must pass before EITHER table is written (one fetch, one
+  // accept/reject decision per table, no partial acceptance of a degraded
+  // response).
+  const mappedProjectionRecords = [...projectionCandidates.entries()].filter(([playerId]) =>
+    positionByPlayerId.has(playerId)
+  )
+  if (mappedProjectionRecords.length === 0) {
+    throw new Error('adp ingestion aborted: response yielded zero insertable projection records')
+  }
+  if (
+    (existingProjectionRowCount ?? 0) > 0 &&
+    mappedProjectionRecords.length <
+      (existingProjectionRowCount ?? 0) * MIN_PLAUSIBLE_RATIO_OF_EXISTING
+  ) {
+    throw new Error(
+      `adp ingestion aborted: ${mappedProjectionRecords.length} insertable projection records ` +
+        `is implausibly low against ${existingProjectionRowCount} existing rows — last good ` +
+        `snapshot preserved`
     )
   }
 
@@ -148,6 +214,45 @@ export async function syncAdpRankings(
     throw new Error(`adp_rankings stale-row cleanup failed: ${deleteError.message}`)
   }
 
+  // Projections persist (fused): the ADP swap above is already complete, so
+  // a failure from here degrades only the projections snapshot — which keeps
+  // its own last good rows (nothing below deletes until every chunk lands).
+  const projectionRows: PlayerProjectionRow[] = mappedProjectionRecords.map(
+    ([playerId, record]) => ({
+      sleeper_player_id: playerId,
+      projection_source: PROJECTION_SOURCE,
+      season_year: seasonYear,
+      // Candidate selection guarantees a JSON-parsed object here.
+      stats: record.stats as Json,
+      company: typeof record.company === 'string' ? record.company : null,
+      source_last_modified: epochMsToIso(record.last_modified),
+      source_updated_at: epochMsToIso(record.updated_at),
+      ingested_at: startedAt,
+    })
+  )
+
+  for (let offset = 0; offset < projectionRows.length; offset += CHUNK_SIZE) {
+    const chunk = projectionRows.slice(offset, offset + CHUNK_SIZE)
+    const { error } = await db.from('player_projections').upsert(chunk, {
+      onConflict: 'sleeper_player_id,projection_source,season_year',
+    })
+    if (error) {
+      throw new Error(
+        `player_projections upsert failed at rows ${offset}–${offset + chunk.length - 1}: ${error.message}`
+      )
+    }
+  }
+
+  const { count: projectionStaleRowsDeletedCount, error: projectionDeleteError } = await db
+    .from('player_projections')
+    .delete({ count: 'exact' })
+    .eq('projection_source', PROJECTION_SOURCE)
+    .eq('season_year', seasonYear)
+    .lt('ingested_at', startedAt)
+  if (projectionDeleteError) {
+    throw new Error(`player_projections stale-row cleanup failed: ${projectionDeleteError.message}`)
+  }
+
   return {
     startedAt,
     completedAt: new Date().toISOString(),
@@ -163,6 +268,8 @@ export async function syncAdpRankings(
     upsertedRowCount: rows.length,
     staleRowsDeletedCount: staleRowsDeletedCount ?? 0,
     formatsSeen: [...new Set(mappedEntries.map((e) => e.scoringFormat))].sort(),
+    projectionRowsPersistedCount: projectionRows.length,
+    projectionStaleRowsDeletedCount: projectionStaleRowsDeletedCount ?? 0,
   }
 }
 
@@ -199,6 +306,8 @@ export async function runTrackedAdpIngestion(
           sentinel_skipped: result.sentinelSkippedCount,
           implausible_skipped: result.implausibleValueCount,
           unmapped_players: result.unmappedPlayerCount,
+          projections_persisted: result.projectionRowsPersistedCount,
+          projections_stale_deleted: result.projectionStaleRowsDeletedCount,
         },
       })
       return { ok: true, result }
@@ -333,6 +442,14 @@ async function fetchCatalogPositions(
     for (const row of data) positions.set(row.sleeper_player_id, row.position)
   }
   return positions
+}
+
+/** Epoch-millisecond wire timestamp → ISO string; anything implausible
+ * (non-numeric, non-positive) lands as null (permissive parsing — the
+ * provenance columns are nullable by design). */
+function epochMsToIso(value: unknown): string | null {
+  if (typeof value !== 'number' || !Number.isFinite(value) || value <= 0) return null
+  return new Date(value).toISOString()
 }
 
 function rankKey(entry: AdpEntry): string {
