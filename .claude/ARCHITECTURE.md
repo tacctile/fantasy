@@ -19,7 +19,7 @@ Wave 1 Project scaffold complete: Next.js app shell exists and builds. Supabase 
 src/
   proxy.ts          — Next 16 proxy (replaces middleware.ts): Supabase session refresh on every matched request + unauth /leagues/* → /login; matcher excludes /api (cron Bearer surface stays isolated), _next statics, favicon
   app/
-    layout.tsx      — root layout; registers Geist (--font-sans) + Geist Mono (--font-geist-mono), imports globals.css
+    layout.tsx      — root layout; registers Geist (--font-sans) + Geist Mono (--font-geist-mono), imports globals.css; mounts the app-wide sonner <Toaster /> (Wave 3b)
     page.tsx        — auth-aware root router: unauth → /login; non-admin → not-authorized; admin → first connected league's DASHBOARD (auto-land re-signed 2026-07-22 for Wave 4; draft board is one click from its header); zero leagues → minimal note. Wave 4's command-center home replaces the last case
     globals.css     — Tailwind v4 entry + the app's single always-on dark-only Sleeper token set (see DESIGN_SYSTEM.md; palette reconciliation fold 2026-07-22)
     favicon.ico
@@ -33,7 +33,7 @@ src/
         loading.tsx — route-segment skeleton mirroring the dashboard's real layout (header/week pills/mirrored matchup cards/standings+power 2-col); shadcn Skeleton on bg-muted, CSS pulse only
         error.tsx   — route-segment error boundary (draft route's pattern): generic copy, digest ref only, reset() retry + / escape link
         draft/
-          page.tsx    — admin-only static draft board RSC (Wave 3a): getDraftBoardData + listConnectedLeagues via the RLS server client → DraftBoardShell; league_not_found → 404
+          page.tsx    — admin-only draft board RSC (Wave 3a base, 3b live): getDraftBoardData (incl. the league roster list) + listConnectedLeagues + getDraftSessionState + listDraftPicks (initial snapshot) in parallel via the RLS server client → DraftBoardShell; league_not_found → 404
           actions.ts  — 'use server' draft actions (Wave 3b): submitManualPick + undoManualPick (→ services/draft-picks), startDraftSession + endDraftSession + pollActiveDraft (→ services/draft-sessions) — auth gate INSIDE each action (getAdminAuthState → typed 'unauthorized', zero data; server actions are POST endpoints, the layout gate doesn't cover them), all via the RLS server client (never the admin client); pollActiveDraft attaches the full draft_state snapshot (listDraftPicks) to every executed poll — the client merge consumes it, so it deliberately does NOT revalidate on picks (Nick-signed; the other actions revalidatePath on success)
           loading.tsx — route-segment skeleton mirroring the board's real layout density (header/toolbar/12-row six-column table/sidebar cards); shadcn Skeleton on bg-muted, CSS pulse only
           error.tsx   — route-segment error boundary: generic copy (raw errors never rendered; digest = log-correlation ref only), reset() retry + / escape link; data GAPS never land here — they degrade per-surface
@@ -46,16 +46,16 @@ src/
         sync-draft/route.ts — active-draft poll path: per-league draft-state sync, isolated; NO vercel.json schedule until Wave 3b tunes cadence
         sync-adp/route.ts — on-demand ADP ingestion (Wave 3a); NO vercel.json schedule (Hobby cap) — scheduled runs ride the sync-leagues piggyback
   components/
-    ui/             — shadcn-generated components (button, input, label, card, badge, select, separator, skeleton); never hand-edited casually
+    ui/             — shadcn-generated components (button, input, label, card, badge, select, separator, skeleton, dropdown-menu, sonner); never hand-edited casually. dropdown-menu = Base UI Menu vendored shadcn-style (the action-list counterpart to select — commands, not value choice); sonner = app-wide toast outlet (theme hardcoded dark, token CSS vars only), mounted once in the root layout
     auth/
       not-authorized-card.tsx — zero-data view for authed non-admin sessions (shared prolabel namespace); sign-out only
       sign-out-button.tsx     — signOut-action form button (header + not-authorized card)
     draft-board/    — admin draft-board UI (Wave 3a); client components, data via RSC props
-      draft-board-shell.tsx  — tablet/PC-first shell: header + PlayerBoard region + RosterPanel sidebar (sidebar hidden below lg); owns live-pick custody (Wave 3b): draft_state snapshot state seeded by the server render, replaced per poll tick with a fingerprint bail-out (identical snapshots never update state), merged pool memoized and fed to BOTH board regions
+      draft-board-shell.tsx  — tablet/PC-first shell: header + PlayerBoard region + RosterPanel sidebar (sidebar hidden below lg); owns live-pick custody (Wave 3b): draft_state snapshot state seeded by the server render, replaced per poll tick with a fingerprint bail-out (identical snapshots never update state), PLUS the optimistic pending overlay (items 3–4): handleDraft claims next pick = max(snapshot ∪ pending)+1 (round = ceil(pick/league_size); refs mirror both pick sets so rapid clicks claim distinct numbers), reconciles accepted/conflict by adopting the returned authoritative row into the snapshot, rolls back every non-accepted outcome with a sonner toast (conflict names the winner; no retry loop); merged pool memoized and fed to BOTH board regions; Draft actions render only with an active session + known league size + a non-empty roster list
       draft-board-header.tsx — league name, platform badge, season year, ADP source + ingested-at (UTC), selector, DraftSessionToggle, sign-out
       draft-session-toggle.tsx — toolbar Start/End draft control (Wave 3b): startDraftSession/endDraftSession actions; pulsing teal "Draft live" dot while active (the live semantic — sanctioned teal), stale TTL reads "Session expired"
       draft-poll-ticker.tsx  — renders nothing: 5s pollActiveDraft interval while board mounted + session active; in-flight guard; tab-visibility gated (skip hidden, instant catch-up tick on return); delivers each executed poll's snapshot to the shell via onPicks (merge replaced refresh-on-picks — router.refresh only on stand-down outcomes)
-      live-picks.ts          — pure merge layer (Wave 3b): picksFingerprint (order-insensitive dedup key) + mergePicksIntoPlayers (overlay by pick identity: available+picked → 'drafted' with pick number; 'rostered' wins precedence; out-of-pool picks skipped; unchanged input returns the same reference)
+      live-picks.ts          — pure merge layer (Wave 3b): picksFingerprint (order-insensitive dedup key) + mergePicksIntoPlayers (overlay by pick identity: available+picked → 'drafted' with pick number; optimistic pending set → 'drafted' with draftPending=true and no number, confirmed rows always win over pending; 'rostered' wins precedence; out-of-pool picks skipped; unchanged input returns the same reference) + computeNextPickNumber (max of snapshot ∪ pending, +1 — gaps stay backfillable)
       league-selector.tsx    — Select over all connected leagues; generalized 2026-07-22 (Nick-signed): pushes /leagues/{id}{subPath} — '/draft' from the board header, '' (league root = dashboard) from the dashboard header; query params deliberately don't survive a switch
       player-board.tsx       — player-list region: owns filter/sort state, composes ADP notice + toolbar + table via usePlayerList; truly-empty pool → full-region BoardEmptyState (banner/toolbar/table suppressed — no double-messaging)
       board-toolbar.tsx      — debounced search, position multi-select pill-chips (canonical six), available/all toggle, match count
@@ -63,7 +63,7 @@ src/
       adp-notice.tsx         — pure deriveAdpNoticeKind (the ONE ADP-absence classifier — never re-derive) + warning-tier banner: no snapshot → sync:adp / format unresolved → sync:league / format zero-rows → explicit empty state (no cross-format fallback)
       board-empty-state.tsx  — shared empty-state body (title/detail/action slot) for the table and region call sites
       command-chip.tsx       — inline bg-well terminal-command chip for owner-facing next-action copy
-      player-row.tsx         — one row: name + injury chip, position badge, team, ADP (1-dec), POS+rank composite, availability; rostered AND live-drafted rows dim via opacity ('drafted' shows "Drafted · Pick N", Nick-signed); bye week deferred ([>] item — no schedule source exists)
+      player-row.tsx         — one row: name + injury chip, position badge, team, ADP (1-dec), POS+rank composite, availability; rostered AND live-drafted rows dim via opacity ('drafted' shows "Drafted · Pick N", Nick-signed); optimistic pending rows read "Drafting…" (pulse, drafted-look, Nick-signed); while draftEnabled, an available row's Status cell swaps to the Draft button → per-click roster dropdown (Nick-signed placement + picker), in-flight disable structural (the row leaves 'available' instantly); bye week deferred ([>] item — no schedule source exists)
       position-badge.tsx     — pill badge on the --pos-* tokens (bg /15 + full text); non-canonical positions → neutral fallback
       injury-chip.tsx        — Q/D → warning, O/IR → destructive, unknown designations → muted raw tag (open enumeration per wiki)
       use-player-list.ts     — pure filterAndSortPlayers (nulls last both directions, sleeper_player_id tie-break) + usePlayerList memo hook + useDebouncedValue (named exports)
@@ -104,9 +104,9 @@ src/
       ingestion.ts  — syncAdpRankings(): validate-before-swap → pattern-extract adp_* → positional-rank derivation → chunked upsert → stale-row cleanup; runTrackedAdpIngestion(): never-throws sync_runs-tracked wrapper
       types.ts      — permissive wire types (AdpProjectionRecord) + AdpEntry/AdpRow/AdpIngestionResult
     sync-runs.ts      — platform-agnostic sync_runs write/read surface: start/finish/record(+Safely) + hasRecentCatalogRun() guard
-    draft-board.ts    — draft-board query service (Wave 3a): getDraftBoardData() merged ADP-ordered board pool + league context; resolveAdpScoringFormat() league-format→scoring_format mapping; admin surface only
+    draft-board.ts    — draft-board query service (Wave 3a): getDraftBoardData() merged ADP-ordered board pool + league context + the full LeagueRoster list (Wave 3b manual-pick targets, from the same rosters query); resolveAdpScoringFormat() league-format→scoring_format mapping; admin surface only
     dashboard.ts      — league-dashboard query service (Wave 4): getStandings/getMatchups/getPowerRankings/getPlayerCard/listScoredWeeks; single home of the standings ordering + all-play power formula; owner dashboard primary consumer, spectator loader may reuse (data-access sharing sanctioned, UI never)
-    draft-picks.ts    — manual draft-pick write path (Wave 3b): recordManualPick + undoLastManualPick into the shared draft_state table (source='manual', first-write-wins); admin surface only; 3b auto-pick MUST write through recordManualPick (never its own insert)
+    draft-picks.ts    — manual draft-pick write path (Wave 3b): recordManualPick + undoLastManualPick into the shared draft_state table (source='manual', first-write-wins) + listDraftPicks (full per-league snapshot, the live-sync payload); admin surface only; 3b auto-pick MUST write through recordManualPick (never its own insert)
 scripts/            — tsx-run operational scripts (outside src; type-checked by tsc)
   sync-players.ts   — manual runner for syncPlayersCatalog (npm run sync:players; loads .env.local via --env-file)
   sync-league.ts    — manual runner for syncLeagueConfig (npm run sync:league -- <sleeper_league_id>)

@@ -5,6 +5,7 @@ import { useState } from 'react'
 import type {
   DraftBoardLeagueContext,
   DraftBoardPlayer,
+  LeagueRoster,
 } from '@/services/draft-board'
 
 import AdpNotice from './adp-notice'
@@ -22,6 +23,11 @@ import {
 interface PlayerBoardProps {
   players: DraftBoardPlayer[]
   context: DraftBoardLeagueContext
+  /** True while a draft session is live AND a pick is fully submittable
+   *  (known league size for the round, at least one roster target). */
+  draftEnabled: boolean
+  rosters: LeagueRoster[]
+  onDraft: (player: DraftBoardPlayer, nativeRosterId: number) => void
 }
 
 /**
@@ -33,7 +39,13 @@ interface PlayerBoardProps {
  * fresh league) renders a full-region empty state instead of banner + table,
  * carrying its own next actions so the two surfaces never double-message.
  */
-export default function PlayerBoard({ players, context }: PlayerBoardProps) {
+export default function PlayerBoard({
+  players,
+  context,
+  draftEnabled,
+  rosters,
+  onDraft,
+}: PlayerBoardProps) {
   const [filterState, setFilterState] =
     useState<PlayerListFilterState>(DEFAULT_FILTER_STATE)
   const visiblePlayers = usePlayerList(players, filterState)
@@ -108,6 +120,9 @@ export default function PlayerBoard({ players, context }: PlayerBoardProps) {
         totalCount={players.length}
         hasActiveFilters={hasActiveFilters}
         onClearFilters={handleClearFilters}
+        draftEnabled={draftEnabled}
+        rosters={rosters}
+        onDraft={onDraft}
       />
     </div>
   )

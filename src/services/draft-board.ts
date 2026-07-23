@@ -77,6 +77,10 @@ export type DraftBoardPlayer = {
   /** Set only by the client live merge when availability is 'drafted' (the
    *  winning pick_number) — this service always returns null. */
   draftedPickNumber: number | null
+  /** True only for the client merge's optimistic pending overlay (a manual
+   *  pick awaiting its server response) — this service always returns false,
+   *  and a confirmed draft_state row always clears it. */
+  draftPending: boolean
   /** Set when availability is 'rostered' — which team holds the player. */
   rosteredByNativeRosterId: number | null
   rosteredByTeamName: string | null
@@ -127,9 +131,19 @@ export type DraftBoardLeagueContext = {
   adpIngestedAt: string | null
 }
 
+/** One league roster — the manual-pick target list (Wave 3b Draft action). */
+export type LeagueRoster = {
+  nativeRosterId: number
+  teamName: string | null
+  ownerDisplayName: string | null
+}
+
 export type DraftBoardData = {
   context: DraftBoardLeagueContext
   players: DraftBoardPlayer[]
+  /** Every roster in the league, nativeRosterId ascending — populated from
+   *  the same rosters query that names rostered players. */
+  rosters: LeagueRoster[]
 }
 
 export type DraftBoardResult =
@@ -369,6 +383,7 @@ export async function getDraftBoardData(
       positionalRank: adp?.positional_rank ?? null,
       availability: rostered ? 'rostered' : 'available',
       draftedPickNumber: null,
+      draftPending: false,
       rosteredByNativeRosterId: rostered ? membership.nativeRosterId : null,
       rosteredByTeamName: names?.teamName ?? null,
       rosteredByOwnerDisplayName: names?.ownerDisplayName ?? null,
@@ -410,6 +425,13 @@ export async function getDraftBoardData(
         adpIngestedAt,
       },
       players,
+      rosters: rosterRows
+        .map((row) => ({
+          nativeRosterId: row.native_roster_id,
+          teamName: row.team_name,
+          ownerDisplayName: row.owner_display_name,
+        }))
+        .sort((a, b) => a.nativeRosterId - b.nativeRosterId),
     },
   }
 }

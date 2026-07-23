@@ -4,7 +4,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import type { DraftBoardPlayer } from '@/services/draft-board'
+import type { DraftBoardPlayer, LeagueRoster } from '@/services/draft-board'
 
 import BoardEmptyState from './board-empty-state'
 import PlayerRow from './player-row'
@@ -20,6 +20,11 @@ interface PlayerTableProps {
   /** Whether any filter is narrowing the pool (drives the clear action). */
   hasActiveFilters: boolean
   onClearFilters: () => void
+  /** Live-session Draft action (Wave 3b) — rendered in available rows'
+   *  Status cells only while true. */
+  draftEnabled: boolean
+  rosters: LeagueRoster[]
+  onDraft: (player: DraftBoardPlayer, nativeRosterId: number) => void
 }
 
 const SORTABLE_COLUMNS: Array<{
@@ -93,6 +98,9 @@ export default function PlayerTable({
   totalCount,
   hasActiveFilters,
   onClearFilters,
+  draftEnabled,
+  rosters,
+  onDraft,
 }: PlayerTableProps) {
   const [nameColumn, adpColumn, posRankColumn] = SORTABLE_COLUMNS
   return (
@@ -166,7 +174,13 @@ export default function PlayerTable({
             </tr>
           ) : (
             players.map((player) => (
-              <PlayerRow key={player.sleeperPlayerId} player={player} />
+              <PlayerRow
+                key={player.sleeperPlayerId}
+                player={player}
+                draftEnabled={draftEnabled}
+                rosters={rosters}
+                onDraft={onDraft}
+              />
             ))
           )}
         </tbody>

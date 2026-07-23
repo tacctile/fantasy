@@ -1,11 +1,27 @@
+'use client'
+
+import { ChevronDown } from 'lucide-react'
+
+import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
-import type { DraftBoardPlayer } from '@/services/draft-board'
+import type { DraftBoardPlayer, LeagueRoster } from '@/services/draft-board'
 
 import InjuryChip from './injury-chip'
 import PositionBadge from './position-badge'
 
 interface PlayerRowProps {
   player: DraftBoardPlayer
+  /** True while the Draft action is live (session active + submittable). */
+  draftEnabled: boolean
+  rosters: LeagueRoster[]
+  onDraft: (player: DraftBoardPlayer, nativeRosterId: number) => void
 }
 
 // Source ADP carries one decimal of precision (wiki: sleeper-api/
@@ -21,6 +37,14 @@ function formatPositionalRank(player: DraftBoardPlayer): string {
   return `${player.position}${player.positionalRank}`
 }
 
+function rosterLabel(roster: LeagueRoster): string {
+  return (
+    roster.teamName ??
+    roster.ownerDisplayName ??
+    `Roster ${roster.nativeRosterId}`
+  )
+}
+
 /**
  * One draft-board table row: name + inline injury chip, position badge, NFL
  * team, overall ADP, positional rank, availability. Bye week is deliberately
@@ -32,8 +56,21 @@ function formatPositionalRank(player: DraftBoardPlayer): string {
  * "Drafted · Pick N" (Nick-signed 2026-07-22) — team attribution arrives when
  * the roster sync graduates the row to 'rostered', or via the recent-picks
  * feed (later 03b item).
+ *
+ * Live-session Draft action (Wave 3b): while `draftEnabled`, an available
+ * row's Status cell swaps its "Available" text for a Draft button opening the
+ * per-click roster picker (both Nick-signed 2026-07-22) — choosing a roster
+ * submits the optimistic pick. An in-flight optimistic row reads "Drafting…"
+ * (drafted-look + pending cue, Nick-signed): availability already left
+ * 'available', so the action is inherently disabled while its own request is
+ * in flight.
  */
-export default function PlayerRow({ player }: PlayerRowProps) {
+export default function PlayerRow({
+  player,
+  draftEnabled,
+  rosters,
+  onDraft,
+}: PlayerRowProps) {
   const rostered = player.availability === 'rostered'
   const drafted = player.availability === 'drafted'
   const rosteredBy =
@@ -75,9 +112,37 @@ export default function PlayerRow({ player }: PlayerRowProps) {
             {rosteredBy}
           </span>
         ) : drafted ? (
-          <span className="truncate tabular-nums text-secondary-foreground">
-            {draftedLabel}
-          </span>
+          player.draftPending ? (
+            <span className="animate-pulse text-secondary-foreground">
+              Drafting…
+            </span>
+          ) : (
+            <span className="truncate tabular-nums text-secondary-foreground">
+              {draftedLabel}
+            </span>
+          )
+        ) : draftEnabled ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              render={
+                <Button type="button" variant="outline" size="sm">
+                  Draft
+                  <ChevronDown aria-hidden />
+                </Button>
+              }
+            />
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Draft to roster</DropdownMenuLabel>
+              {rosters.map((roster) => (
+                <DropdownMenuItem
+                  key={roster.nativeRosterId}
+                  onClick={() => onDraft(player, roster.nativeRosterId)}
+                >
+                  {rosterLabel(roster)}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         ) : (
           <span className="text-muted-foreground">Available</span>
         )}

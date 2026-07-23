@@ -3,6 +3,14 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_31 — Auction-scope planning/recommendation (non-code; report-only)
+
+- Nick-requested findings/recommendation session on the auction gap: MASTER_CONTEXT's original scope named snake/linear AND auction as supported draft formats, but auction was never registered as build items anywhere — 03b was written entirely snake-only, and the only auction artifact was Wave 1's never-wired `draft_state.amount` column. Wiki auction knowledge existed (high-confidence) but wasn't cited by 03b's WIKI PAGES section.
+- Presented the wave-split tradeoff neutrally: Option A (separate 03c auction file) vs Option B (restructure 03b to build both formats together), with a lean toward restructuring while 03b was still zero-`[x]` (the cheapest moment). Nick's same-day decision landed a hybrid: 03b rescoped to Sleeper snake only (Sleeper doesn't support auction on this platform), new `03c_draft_assistant_espn_and_auction.md` registered for ESPN + all auction mechanics, blocked on the ESPN commissioner unlock.
+- Recommended adding the nullable `amount` param to the manual-pick mutation signature BEFORE its first ship (zero-risk additive vs a breaking change later) — adopted verbatim in the shipped `recordManualPick`.
+- No files modified beyond the log itself; zero DB operations. The report (incl. draft 03c amendment text) was delivered in chat as DRAFT PROPOSAL ONLY. WIKI NOTE: build-file citation gap only — no wiki content gap.
+- Housekeeping anomaly: this log file was stored base64-encoded as a single line (likely a web-session write artifact); decoded during the 2026-07-22 rotation. It also flagged the then-pending `_26` rotation, which a later session performed.
+
 ## 2026-07-22_30 — Wave 4 dashboard page assembly + league selector (2-item fold; dashboard mounted)
 
 - Fold = 04's Admin UI remaining pair: (1) admin league dashboard page composing StandingsTable/MatchupsGrid/PowerRankingsList/PlayerCard under owner auth; (2) league selector. Share-link panel stayed deferred to the share-token RLS singleton.

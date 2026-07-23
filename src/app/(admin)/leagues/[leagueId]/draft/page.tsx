@@ -36,6 +36,7 @@ export default async function DraftBoardPage({
       leagues={leagues}
       session={sessionResult.session}
       initialPicks={initialPicks}
+      rosters={result.data.rosters}
     />
   )
 }
