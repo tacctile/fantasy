@@ -1457,6 +1457,53 @@ export type Database = {
           },
         ]
       }
+      player_projections: {
+        Row: {
+          company: string | null
+          created_at: string
+          ingested_at: string
+          projection_source: string
+          season_year: number
+          sleeper_player_id: string
+          source_last_modified: string | null
+          source_updated_at: string | null
+          stats: Json
+          updated_at: string
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          ingested_at: string
+          projection_source: string
+          season_year: number
+          sleeper_player_id: string
+          source_last_modified?: string | null
+          source_updated_at?: string | null
+          stats: Json
+          updated_at?: string
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          ingested_at?: string
+          projection_source?: string
+          season_year?: number
+          sleeper_player_id?: string
+          source_last_modified?: string | null
+          source_updated_at?: string | null
+          stats?: Json
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "player_projections_sleeper_player_id_fkey"
+            columns: ["sleeper_player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["sleeper_player_id"]
+          },
+        ]
+      }
       player_scores: {
         Row: {
           created_at: string
