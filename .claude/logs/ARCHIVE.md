@@ -3,6 +3,13 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_33 — 3b manual click-to-draft write path (4-item sub-section fold; 03b's first shipped items)
+
+- Fold = the full "Manual click-to-draft write path" sub-section as one verifiable artifact (insert + conflict semantics + auth posture + undo). Nick-signed Clarify: vehicle = server action; any unclaimed pick number accepted (mid-draft backfill; UI defaults to next); duplicate player rejected server-side application-level (a unique constraint would fight the poller's authoritative ingestion).
+- Shipped `src/services/draft-picks.ts` (recordManualPick/undoLastManualPick; upsert ignoreDuplicates on the (league_id, pick_number) PK; `conflict` returns the authoritative winning row — later consumed by live-sync adoption) + auth-gated server actions (gate INSIDE each action via getAdminAuthState — actions are POST endpoints the layout gate doesn't cover; RLS server client, never secret-key).
+- Coverage map (pre-code): roster_id-as-ownership, snake math validation-only, opaque player IDs ← draft-endpoint; declared decline-to-invent: no absolute pick upper bound (total rounds unpersisted). `amount` persisted as-given for 03c signature stability.
+- Live-verified 21/21 on the real league (all validation reasons; conflict vs poller row; accepted+undo round-trip restoring the 170-row baseline; anon zero-data at both walls). Blast radius: draft_state only, net-zero final state. WIKI NOTE: none.
+
 ## 2026-07-22_32 — 03b/03c restructure: Sleeper-snake split from ESPN+auction (non-code; governance)
 
 - Executed the restructure log `_31`'s report recommended (independently arrived at, then confirmed consistent): `03b_draft_assistant_live_draft.md` rewritten in place to Sleeper snake-draft scope only (manual write path, polling orchestration, client live sync, live board UI, BPA/VORP, tier-cliff, run detection, queue/auto-pick, resilience) — safe because 03b still had zero `[x]` items. All ESPN references removed; recent-picks source badge reads manual/sleeper_poll only.
