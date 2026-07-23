@@ -3,6 +3,13 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_42 — 3b BPA recommendation engine items 7–9 (panel + one-click draft + recompute; 3-item fold at the live-behavior ceiling)
+
+- Fold = "the BPA recommendations panel" as one verifiable artifact (item 7 unverifiable without 8/9 wiring). No new wiki category (UI wiring). Nick's Clarify: candidate count = 8; my-team memory = re-pick each session (no persisted marker, no migration — the per-league-memory alternative declined); placement = top of the sidebar.
+- Shipped `src/components/draft-board/bpa-recommendations-panel.tsx` — top-N ranked PURELY by base VORP, market ADP beside the value, NeedBadge ALONGSIDE (never merged — item 5 hard constraint; 'starter' borrows --warning like RosterPanel, teal reserved), tabular-nums; my-team picker sets selfRosterId (value-only + no badges until picked). Item 8: rows call the shell's SAME handleDraft via a new `DraftablePlayer = Pick<DraftBoardPlayer,'sleeperPlayerId'|'fullName'>` seam (services/draft-board.ts) — no parallel submit, no cast. Item 9: fetch useEffect keyed on [leagueId, livePicks, selfRosterId] — the fingerprint bail-out means a steady 5s poll doesn't refetch; only real pick changes do. Request-seq guard drops out-of-order responses; stale-while-revalidate (no empty flicker).
+- Judgment calls: stale-while-revalidate with no separate spinner (avoids setState-in-effect, active rule); panel fetches always (useful pre-draft), only the Draft control gates on draftEnabled.
+- Verified: tsc/lint/build clean + live read-only on the real league (topN=8→8, calibration=adp, pool 3122=3292−170; need annotations ORDERING+VORP invariant vs value-only — need never reorders; all "full" = the documented fully-drafted extreme; anon→league_not_found RLS wall). Client render tsc/build-verified, not driven headlessly. Blast radius: reads only, no migration. WIKI NOTE: none.
+
 ## 2026-07-22_36 — 3b client-side live sync items 3–4 + UI-extensions item 1 (optimistic-write fold, 3 items under the live-behavior ceiling)
 
 - Fold = optimistic manual pick (live-sync items 3–4) + the Draft row button (UI-extensions item 1), as one verifiable artifact — the write path had ZERO client callers, so item 3's optimistic UI needed the visible Draft trigger; item 5 (status indicator) deferred. Nick-signed Clarify: add shadcn sonner (one new dep, reused later) for the toast; per-click roster picker (on-clock derivation is a later item); Draft button in the Status cell; pending render = drafted-look + "Drafting…" cue.
