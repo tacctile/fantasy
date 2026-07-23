@@ -81,8 +81,13 @@ export type ReplacementLevels = {
  * conventions under declared wiki silence (2026-07-22 session log). Any
  * flex-family label absent here is excluded from demand and reported via
  * `unknownFlexLabels` — honest degradation over invented eligibility.
+ *
+ * Exported as THE single flex-eligibility home (STATE.yml centralization
+ * discipline): the roster-need signal (BPA item 5, `need.ts`) reads this map,
+ * never re-derives its own — so league-wide replacement fill and per-roster
+ * need share one eligibility definition.
  */
-const FLEX_ELIGIBILITY: Record<string, readonly string[]> = {
+export const FLEX_ELIGIBILITY: Record<string, readonly string[]> = {
   FLEX: ['RB', 'WR', 'TE'],
   SUPER_FLEX: ['QB', 'RB', 'WR', 'TE'],
   REC_FLEX: ['WR', 'TE'],
