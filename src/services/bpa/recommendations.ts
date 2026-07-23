@@ -11,8 +11,15 @@
  *
  * Dynamic-recompute wiring (item 4): every call rebuilds the pool as
  * projections MINUS the current draft_state picks and recomputes the whole
- * chain via computeBpaBoard — no cached baseline. Item 9 (next session)
- * re-invokes this per pick, so the shrinking pool is realized here, not stored.
+ * chain via computeBpaBoard — no cached baseline. Item 9 re-invokes this per
+ * pick, so the shrinking pool is realized here, not stored.
+ *
+ * Tier-cliff surfacing (tier-cliff items 1–3): computeBpaBoard now also returns
+ * per-position tier structure over the same shrinking pool. Each recommendation
+ * row carries its within-position `tier`, and the context carries whole-board
+ * per-position tier summaries (count + "N in the best available tier") — the
+ * data the board's live tier counter (item 4, next session) renders. Tiers
+ * recompute per pick for free, riding the same re-call as the base values.
  *
  * Data-loading boundary (draft-board.ts precedent): explicit columns only;
  * never selects share_token / owner_id / native_league_id. Admin surface only —
@@ -43,6 +50,7 @@ import {
 } from './need'
 import type { ReplacementPoolPlayer } from './replacement'
 import { parseScoringWeights, scoreProjectionStats } from './scoring'
+import { summarizeTiers, type PositionTierSummary } from './tiers'
 
 const PROJECTION_SOURCE = 'sleeper'
 const ADP_SOURCE = 'sleeper'
@@ -70,6 +78,11 @@ export type BpaRecommendation = {
    *  selfRosterId was supplied or the layout is unavailable. NEVER an input to
    *  baseValue or ordering (build-file hard constraint). */
   need: NeedKind | null
+  /** This player's tier within its position (tier-cliff items 1–3), 1 = best
+   *  available tier. Null when the player sits below the replacement line
+   *  (untiered tail). A parallel display signal like `need` — never an input to
+   *  baseValue or ordering. */
+  tier: number | null
 }
 
 export type BpaRecommendationsContext = {
@@ -92,6 +105,11 @@ export type BpaRecommendationsContext = {
   /** Full roster need signal for the panel's roster-summary strip — present
    *  only when needComputed; separate from the per-row `need` annotations. */
   need: RosterNeedSignal | null
+  /** Per-position tier summaries over the WHOLE undrafted board (not just the
+   *  top-N rows) — tier count and "N remaining in the best available tier" per
+   *  position, the data the board's live tier counter renders (tier-cliff item
+   *  4 consumes this). Recomputed every call against the shrinking pool. */
+  tiers: Record<string, PositionTierSummary>
 }
 
 export type BpaRecommendationsResult =
@@ -258,8 +276,12 @@ export async function getBpaRecommendations(
         replacementSource: player.replacementSource,
         adpOverall: adpByPlayerId.get(player.sleeperPlayerId) ?? null,
         need: needSignal !== null ? classifyPositionNeed(needSignal, player.position) : null,
+        tier: board.tiers.byPosition[player.position]?.tierByPlayerId[player.sleeperPlayerId] ?? null,
       }
     })
+
+  // Per-position tier summaries over the full board (item 4's counter data).
+  const tierSummaries = summarizeTiers(board.tiers)
 
   return {
     ok: true,
@@ -280,6 +302,7 @@ export async function getBpaRecommendations(
         needComputed: needSignal !== null,
         selfRosterId,
         need: needSignal,
+        tiers: tierSummaries,
       },
     },
   }

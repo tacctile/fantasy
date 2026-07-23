@@ -1,7 +1,10 @@
 /**
  * Dynamic BPA recompute (Wave 3b BPA item 4): the ONE composition of the pure
  * layer's chain — scoring (upstream) → replacement → ADP calibration → base
- * value/VORP — run against whatever pool it is handed.
+ * value/VORP → per-position tier-cliff detection — run against whatever pool it
+ * is handed. Tier structure (tier-cliff items 1–3) is computed here off the
+ * same base-value ranking so it recomputes against the shrinking undrafted pool
+ * on the same per-pick re-call, with no separate cache or recompute driver.
  *
  * This is the item that makes positional scarcity real-time rather than a
  * pre-draft snapshot. There is no cached baseline anywhere: the whole chain is
@@ -35,6 +38,8 @@ import type { BaseValueResult } from './base-value'
 import { computeBaseValues } from './base-value'
 import type { ReplacementPoolPlayer } from './replacement'
 import { computeReplacementLevels } from './replacement'
+import type { TierBoard } from './tiers'
+import { computePositionTiers } from './tiers'
 
 export type BpaBoard = {
   /** Ranked base values (baseValue desc) over the pool, plus the unrankable
@@ -44,6 +49,10 @@ export type BpaBoard = {
    *  structural fallback), carried for the panel's separated-signals display
    *  and for surfacing the calibration flag. */
   replacementLevels: CalibratedReplacementLevels
+  /** Per-position tier structure over the same pool (tier-cliff items 1–3),
+   *  recomputed here so it shrinks with the undrafted pool exactly like the
+   *  base values do — no separate cache, no second recompute driver. */
+  tiers: TierBoard
 }
 
 /**
@@ -65,5 +74,6 @@ export function computeBpaBoard(
   const structural = computeReplacementLevels(pool, layout, leagueSize)
   const replacementLevels = calibrateReplacementLevels(structural, pool, adp)
   const baseValues = computeBaseValues(pool, replacementLevels)
-  return { baseValues, replacementLevels }
+  const tiers = computePositionTiers(baseValues.players)
+  return { baseValues, replacementLevels, tiers }
 }
