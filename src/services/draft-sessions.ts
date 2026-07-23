@@ -25,7 +25,10 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 
 import type { Database } from '@/lib/supabase/database.types'
 
-import { syncLeagueDraftState } from './sleeper/draft-state'
+import {
+  syncLeagueDraftState,
+  type DraftOrderMeta,
+} from './sleeper/draft-state'
 import { recordSyncRunSafely } from './sync-runs'
 
 const UUID_PATTERN =
@@ -61,6 +64,9 @@ export type DraftPollSyncOutcome =
       picksFetched: number
       picksWritten: number
       picksAlreadyRecorded: number
+      /** Selected draft's order metadata (Wave 3b UI item 2 — the client's
+       *  on-clock projection input); null in the pre-draft zero-pick state. */
+      draftOrder: DraftOrderMeta | null
     }
   /** Sync failed — the flag stays on (Nick's decision); polling will retry. */
   | { status: 'failure'; message: string }
@@ -288,6 +294,7 @@ async function runRecordedDraftPoll(
       picksFetched: result.picksFetched,
       picksWritten: result.picksWritten,
       picksAlreadyRecorded: result.picksAlreadyRecorded,
+      draftOrder: result.draftOrder,
     }
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)

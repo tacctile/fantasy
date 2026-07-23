@@ -37,7 +37,9 @@ function formatPositionalRank(player: DraftBoardPlayer): string {
   return `${player.position}${player.positionalRank}`
 }
 
-function rosterLabel(roster: LeagueRoster): string {
+/** THE roster display convention on the draft surface (picker + live strip
+ *  reuse it): team name, then owner, then the honest numeric fallback. */
+export function rosterLabel(roster: LeagueRoster): string {
   return (
     roster.teamName ??
     roster.ownerDisplayName ??

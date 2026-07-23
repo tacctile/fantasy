@@ -6,6 +6,7 @@ import { useEffect, useRef } from 'react'
 import { pollActiveDraft } from '@/app/(admin)/leagues/[leagueId]/draft/actions'
 import type { RecordedPick } from '@/services/draft-picks'
 import type { DraftSessionState } from '@/services/draft-sessions'
+import type { DraftOrderMeta } from '@/services/sleeper/draft-state'
 
 /**
  * The elevated-cadence poll driver (Wave 3b orchestration item 2 + client-side
@@ -53,12 +54,18 @@ interface DraftPollTickerProps {
   /** Receives each executed tick's outcome. Same referential-stability
    *  requirement as `onPicks`. */
   onStatus: (report: DraftPollTickReport) => void
+  /** Receives the selected draft's order metadata from each SUCCESSFUL sync
+   *  tick (UI extensions item 2 — the on-clock projection input). A failed
+   *  sync reports nothing: the last known order stays in effect. Same
+   *  referential-stability requirement as `onPicks`. */
+  onDraftOrder: (order: DraftOrderMeta | null) => void
 }
 
 export default function DraftPollTicker({
   session,
   onPicks,
   onStatus,
+  onDraftOrder,
 }: DraftPollTickerProps) {
   const router = useRouter()
   const inFlight = useRef(false)
@@ -79,6 +86,9 @@ export default function DraftPollTicker({
         const result = await pollActiveDraft(session.leagueId)
         if (result.outcome === 'polled') {
           onPicks(result.picks)
+          if (result.sync.status === 'success') {
+            onDraftOrder(result.sync.draftOrder)
+          }
           onStatus({ outcome: 'success', at: Date.now() })
         } else {
           // inactive / unauthorized / league_not_found — stand down and let
@@ -112,6 +122,7 @@ export default function DraftPollTicker({
     router,
     onPicks,
     onStatus,
+    onDraftOrder,
   ])
 
   return null

@@ -1,5 +1,6 @@
 import type { DraftBoardPlayer } from '@/services/draft-board'
 import type { RecordedPick } from '@/services/draft-picks'
+import type { DraftOrderMeta } from '@/services/sleeper/draft-state'
 
 /**
  * Client-side live-sync merge layer (Wave 3b, client-side live sync item 2):
@@ -122,4 +123,65 @@ export function computeNextPickNumber(
     if (pickNumber > highest) highest = pickNumber
   }
   return highest + 1
+}
+
+/** Who the next pick belongs to — or an honest reason we can't say. */
+export type OnClockProjection =
+  | { kind: 'team'; nativeRosterId: number }
+  /** Every scheduled pick is recorded (`rounds × slots` known and exceeded). */
+  | { kind: 'complete' }
+  /** No order metadata, unusable map, or a non-slot-ordered type (auction's
+   *  pick order is nomination order — never slot math). */
+  | { kind: 'unknown' }
+
+/**
+ * Project the team on the clock for `pickNumber` from the draft's order
+ * metadata (Wave 3b UI item 2 — Nick-signed correctness amendment: order
+ * comes from the selected draft object via the poll path, not league_config).
+ *
+ * This is a PROJECTION (Nick-signed 2026-07-22): recorded picks stay ground
+ * truth per the draft-endpoint page; keepers and in-draft pick trades can
+ * shift reality away from slot math and Sleeper exposes no on-clock field.
+ * `reversal_round` handling is a declared interpretation of the wiki's
+ * "flips snake order again partway through": rounds ≥ reversal_round invert
+ * the plain-snake direction (reproduces standard third-round reversal).
+ * `linear` repeats slot order every round (declared: the complement of
+ * snake's alternating order — wiki gives no explicit linear definition).
+ */
+export function projectOnClock(
+  pickNumber: number,
+  order: DraftOrderMeta | null
+): OnClockProjection {
+  if (order === null || order.slotToRosterId === null) {
+    return { kind: 'unknown' }
+  }
+  const slotCount = Object.keys(order.slotToRosterId).length
+  if (slotCount === 0) return { kind: 'unknown' }
+  // The map must cover slots 1..N exactly — a partial map would silently
+  // misproject (wrong slotCount shifts every round boundary), so it reads
+  // unknown instead.
+  for (let slot = 1; slot <= slotCount; slot++) {
+    if (!(String(slot) in order.slotToRosterId)) return { kind: 'unknown' }
+  }
+  if (order.rounds !== null && pickNumber > order.rounds * slotCount) {
+    return { kind: 'complete' }
+  }
+  if (order.type !== 'snake' && order.type !== 'linear') {
+    return { kind: 'unknown' }
+  }
+  const round = Math.ceil(pickNumber / slotCount)
+  const indexInRound = pickNumber - (round - 1) * slotCount
+  let ascending = order.type === 'linear' || round % 2 === 1
+  if (
+    order.type === 'snake' &&
+    order.reversalRound !== null &&
+    round >= order.reversalRound
+  ) {
+    ascending = !ascending
+  }
+  const slot = ascending ? indexInRound : slotCount - indexInRound + 1
+  const nativeRosterId = order.slotToRosterId[String(slot)]
+  return typeof nativeRosterId === 'number'
+    ? { kind: 'team', nativeRosterId }
+    : { kind: 'unknown' }
 }

@@ -12,8 +12,10 @@ import type {
 } from '@/services/draft-board'
 import type { RecordedPick } from '@/services/draft-picks'
 import type { DraftSessionState } from '@/services/draft-sessions'
+import type { DraftOrderMeta } from '@/services/sleeper/draft-state'
 
 import DraftBoardHeader from './draft-board-header'
+import LiveDraftStrip from './live-draft-strip'
 import DraftPollTicker, { type DraftPollTickReport } from './draft-poll-ticker'
 import {
   computeNextPickNumber,
@@ -113,6 +115,16 @@ export default function DraftBoardShell({
     setPollHealth(INITIAL_POLL_HEALTH)
   }
 
+  // Selected draft's order metadata (UI extensions item 2) — delivered by
+  // successful poll ticks; a stringify bail-out keeps identical payloads
+  // (the common case, every 5s) from causing state updates.
+  const [draftOrder, setDraftOrder] = useState<DraftOrderMeta | null>(null)
+  const handleDraftOrder = useCallback((order: DraftOrderMeta | null) => {
+    setDraftOrder((previous) =>
+      JSON.stringify(previous) === JSON.stringify(order) ? previous : order
+    )
+  }, [])
+
   /** Adopt one authoritative draft_state row (accepted or conflict-winning)
    *  into the snapshot without waiting for the next poll tick. */
   const adoptPick = useCallback((pick: RecordedPick) => {
@@ -198,6 +210,15 @@ export default function DraftBoardShell({
     () => new Set(pendingPicks.map((pending) => pending.sleeperPlayerId)),
     [pendingPicks]
   )
+  // The strip's current pick — the same number the next Draft click claims.
+  const nextPickNumber = useMemo(
+    () =>
+      computeNextPickNumber(
+        livePicks,
+        pendingPicks.map((pending) => pending.pickNumber)
+      ),
+    [livePicks, pendingPicks]
+  )
   const mergedPlayers = useMemo(
     () => mergePicksIntoPlayers(players, livePicks, pendingPlayerIds),
     [players, livePicks, pendingPlayerIds]
@@ -214,12 +235,20 @@ export default function DraftBoardShell({
         session={session}
         onPicks={handlePicks}
         onStatus={handleStatus}
+        onDraftOrder={handleDraftOrder}
       />
       <DraftBoardHeader
         context={context}
         leagues={leagues}
         session={session}
         pollHealth={pollHealth}
+      />
+      <LiveDraftStrip
+        session={session}
+        nextPickNumber={nextPickNumber}
+        leagueSize={context.leagueSize}
+        draftOrder={draftOrder}
+        rosters={rosters}
       />
       <div className="flex min-h-0 flex-1">
         <section aria-label="Player board" className="min-w-0 flex-1 p-4">

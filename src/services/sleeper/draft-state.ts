@@ -32,6 +32,26 @@ const UPSERT_CHUNK_SIZE = 500
 
 type DraftStateInsert = Database['public']['Tables']['draft_state']['Insert']
 
+/**
+ * Order metadata read off the selected draft object (Wave 3b UI item 2,
+ * Nick-signed 2026-07-22: carried through the poll path, never persisted).
+ * `slot_to_roster_id` is the authoritative slot→roster bridge per the
+ * draft-endpoint page; `draft_order` (user-keyed, incomplete for orphaned
+ * teams) is deliberately not used. Consumed client-side for the on-clock
+ * projection — recorded picks remain ground truth, this never writes.
+ */
+export type DraftOrderMeta = {
+  /** Draft slot (stringified 1..N wire keys) → native roster id; entries with
+   *  non-integer values dropped. Null when the wire omits the map entirely. */
+  slotToRosterId: Record<string, number> | null
+  /** `snake` | `linear` | `auction` (open set), null when absent. */
+  type: string | null
+  /** `settings.reversal_round` when a positive integer, else null. */
+  reversalRound: number | null
+  /** `settings.rounds` when a positive integer, else null. */
+  rounds: number | null
+}
+
 export type LeagueDraftSyncResult = {
   startedAt: string
   completedAt: string
@@ -43,6 +63,8 @@ export type LeagueDraftSyncResult = {
   draftStatus: string | null
   /** Selected draft's format (`snake` | `linear` | `auction`), null pre-draft. */
   draftType: string | null
+  /** Selected draft's order metadata — null in the pre-draft zero-pick state. */
+  draftOrder: DraftOrderMeta | null
   picksFetched: number
   /** Rows newly inserted this run (first-write-wins: conflicts never rewrite). */
   picksWritten: number
@@ -115,6 +137,7 @@ export async function syncLeagueDraftState(
       nativeDraftId: null,
       draftStatus: 'pre_draft',
       draftType: null,
+      draftOrder: null,
       picksFetched: 0,
       picksWritten: 0,
       picksAlreadyRecorded: 0,
@@ -214,6 +237,7 @@ export async function syncLeagueDraftState(
     nativeDraftId,
     draftStatus: selected.status,
     draftType: selected.type,
+    draftOrder: await resolveDraftOrderMeta(selected),
     picksFetched: validated.length,
     picksWritten,
     picksAlreadyRecorded: rows.length - picksWritten,
@@ -226,6 +250,65 @@ type SelectedDraft = {
   draftId: string
   status: string
   type: string | null
+  /** The selected draft object itself — order metadata is read off it. */
+  draft: SleeperDraft
+}
+
+/** Extract the order metadata off a draft object (drift-tolerant: every
+ *  field degrades to null rather than failing the sync — order metadata is
+ *  display-projection input, never a persistence requirement). */
+function toDraftOrderMeta(
+  draft: SleeperDraft,
+  type: string | null
+): DraftOrderMeta {
+  const rawMap = asPlainObject(draft.slot_to_roster_id)
+  let slotToRosterId: Record<string, number> | null = null
+  if (rawMap !== null) {
+    slotToRosterId = {}
+    for (const [slot, value] of Object.entries(rawMap)) {
+      if (typeof value === 'number' && Number.isInteger(value)) {
+        slotToRosterId[slot] = value
+      }
+    }
+    if (Object.keys(slotToRosterId).length === 0) slotToRosterId = null
+  }
+  const settings = asPlainObject(draft.settings)
+  return {
+    slotToRosterId,
+    type,
+    reversalRound: asPositiveInteger(settings?.reversal_round),
+    rounds: asPositiveInteger(settings?.rounds),
+  }
+}
+
+/**
+ * Resolve the selected draft's order metadata. The drafts-ARRAY element
+ * omits `slot_to_roster_id` (verified live 2026-07-22 on the real league —
+ * the array carries `draft_order` only, matching the draft-endpoint page's
+ * three-layer split), so when the map is missing the detail endpoint
+ * `GET /draft/{draft_id}` is fetched as a best-effort fallback: a failed
+ * detail fetch degrades the metadata, never the sync.
+ */
+async function resolveDraftOrderMeta(
+  selected: SelectedDraft
+): Promise<DraftOrderMeta> {
+  const fromArray = toDraftOrderMeta(selected.draft, selected.type)
+  if (fromArray.slotToRosterId !== null) return fromArray
+  try {
+    const detail = await sleeperGet<SleeperDraft>(`/draft/${selected.draftId}`)
+    const fromDetail = toDraftOrderMeta(
+      asPlainObject(detail) === null ? {} : detail,
+      selected.type
+    )
+    return {
+      slotToRosterId: fromDetail.slotToRosterId,
+      type: fromArray.type,
+      reversalRound: fromArray.reversalRound ?? fromDetail.reversalRound,
+      rounds: fromArray.rounds ?? fromDetail.rounds,
+    }
+  } catch {
+    return fromArray
+  }
 }
 
 /**
@@ -251,6 +334,7 @@ function selectDraft(seasonDrafts: SleeperDraft[]): SelectedDraft | null {
         draftId,
         status: preferredStatus,
         type: asString(candidates[0].type),
+        draft: candidates[0],
       }
     }
     if (candidates.length > 1) {
@@ -354,6 +438,12 @@ function asPlayerId(value: unknown): string | null {
 
 function asString(value: unknown): string | null {
   return typeof value === 'string' && value.length > 0 ? value : null
+}
+
+function asPositiveInteger(value: unknown): number | null {
+  return typeof value === 'number' && Number.isInteger(value) && value > 0
+    ? value
+    : null
 }
 
 /**
