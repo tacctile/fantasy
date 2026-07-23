@@ -175,3 +175,7 @@ First working implementation of the board's core feature — the placeholder reg
 ## 2026-07-22 — Wave 3a Buildable Scope Complete: States + Resilience Live (Static Draft Board Feature-Complete)
 
 The board's final sub-section shipped in one fold: route-segment loading skeleton (mirrors real density, `bg-muted` pulse), honest empty states (Nick-signed banner-over-rostered-list; pure `deriveAdpNoticeKind` — no-snapshot / format-unresolved / format-zero-rows, no cross-format fallback ever; zero-filter-match with "Clear filters"), and the route error boundary (retry + back-to-leagues escape; gaps degrade per-surface, only real failures bound). 14/14 checks incl. live no-false-positive. `03a` is now complete except the schedule-source-gated bye-week `[>]`. Next: Nick's wave-order call — Wave 4 ahead of ESPN-blocked 3b, the bye-week source decision, or hold (~mid-Aug).
+
+## 2026-07-22 — Governance: Wave Order Ruled — Wave 4 Begins Ahead of ESPN-Blocked 3b; Scoring-Engine Sub-Section Cut
+
+Nick authorized Wave 4 (League Dashboard) ahead of 3b (ESPN-blocked ~mid-Aug) — the roadmap un-stalls immediately; 3b resumes in place when ESPN opens. Same session, Clarify surfaced 04's stale premise before any code: Wave 2 as shipped ingests `player_scores` platform-scored (never computes). Nick signed the correctness amendment — engine items 1–4 `[-]` cut, item 5 re-worded to freshness surfacing, FA-week gap accepted for v1 — with backsweep to 02's exclusions line. Next: 04 admin data-access layer (`getStandings` first).

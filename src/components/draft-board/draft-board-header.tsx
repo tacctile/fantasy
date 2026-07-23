@@ -1,5 +1,6 @@
 import SignOutButton from '@/components/auth/sign-out-button'
 import { Badge } from '@/components/ui/badge'
+import ErrorBoundary from '@/components/ui/error-boundary'
 import { Separator } from '@/components/ui/separator'
 import type {
   ConnectedLeague,
@@ -60,7 +61,12 @@ export default function DraftBoardHeader({
         <DraftSessionToggle
           session={session}
           statusSlot={
-            <LiveStatusIndicator session={session} health={pollHealth} />
+            // Resilience item 1: the live status indicator degrades to nothing
+            // on a render fault (a supplementary indicator, not board content)
+            // rather than taking down the header; recovers on the next tick.
+            <ErrorBoundary fallback={null} resetKeys={[pollHealth]}>
+              <LiveStatusIndicator session={session} health={pollHealth} />
+            </ErrorBoundary>
           }
         />
         <Separator orientation="vertical" className="h-5" />

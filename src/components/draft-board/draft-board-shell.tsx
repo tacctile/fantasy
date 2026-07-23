@@ -14,7 +14,8 @@ import {
   submitManualPick,
   undoManualPick,
 } from '@/app/(admin)/leagues/[leagueId]/draft/actions'
-import { detectPositionalRuns } from '@/services/bpa/runs'
+import ErrorBoundary from '@/components/ui/error-boundary'
+import { detectPositionalRuns, type RunBoard } from '@/services/bpa/runs'
 import type { PositionTierSummary } from '@/services/bpa/tiers'
 import type {
   ConnectedLeague,
@@ -83,6 +84,39 @@ type PendingPick = {
  * mechanism — a conservative local constant, tunable.
  */
 const AUTO_PICK_DWELL_MS = 12_000
+
+/**
+ * The no-runs run board — the defensive fallback when `detectPositionalRuns`
+ * throws (resilience item 1). An empty `activeRuns` renders the badge as
+ * nothing (appear-only), so a run-detection fault degrades to its resting
+ * state instead of taking down the shell.
+ */
+const EMPTY_RUN_BOARD: RunBoard = {
+  windowSize: 0,
+  windowPickCount: 0,
+  windowStartPick: null,
+  windowEndPick: null,
+  byPosition: {},
+  activeRuns: [],
+}
+
+/**
+ * The quiet inline notice a degraded live region falls back to (resilience
+ * item 1, Nick's Clarify): a muted one-liner in the region's own slot — it
+ * tells Nick the region is down without alarm, consistent with the BPA panel's
+ * own self-degrade copy and the dark-mode muted-tier discipline. The static
+ * board and every other region stay live.
+ */
+function RegionFallback({ label }: { label: string }) {
+  return (
+    <p
+      role="status"
+      className="border-b p-4 text-xs text-muted-foreground"
+    >
+      {label}
+    </p>
+  )
+}
 
 /**
  * Client shell for the admin draft board — tablet/PC-first per MASTER_CONTEXT
@@ -357,26 +391,39 @@ export default function DraftBoardShell({
       ),
     [livePicks, pendingPicks]
   )
-  const mergedPlayers = useMemo(
-    () => mergePicksIntoPlayers(players, livePicks, pendingPlayerIds),
-    [players, livePicks, pendingPlayerIds]
-  )
+  // Resilience item 1 (Nick's Clarify): if the live merge itself throws, the
+  // player table falls back to Wave 3a's base static pool — still fully usable
+  // read-only (filter/search/sort/ADP all work), just without the live pick
+  // overlay — rather than bubbling to the route error.tsx and taking the whole
+  // board down. A throw inside this memo can't be caught by a child boundary,
+  // so it's guarded here at the source.
+  const mergedPlayers = useMemo(() => {
+    try {
+      return mergePicksIntoPlayers(players, livePicks, pendingPlayerIds)
+    } catch {
+      return players
+    }
+  }, [players, livePicks, pendingPlayerIds])
   // Positional-run detection (item 3) — the ONE run-detection source: the pure
   // detectPositionalRuns over the confirmed snapshot, recomputed as picks land
   // (an undo drops its row from the next call's window). Not routed through the
   // recommendations query — run detection stays decoupled from the value path
   // (item 4). Confirmed picks only, deliberately: a pending optimistic pick has
   // no catalog position and isn't yet a market fact.
-  const runBoard = useMemo(
-    () =>
-      detectPositionalRuns(
+  const runBoard = useMemo(() => {
+    try {
+      return detectPositionalRuns(
         livePicks.map((pick) => ({
           pickNumber: pick.pickNumber,
           position: pick.playerPosition,
         }))
-      ),
-    [livePicks]
-  )
+      )
+    } catch {
+      // Resilience item 1: run detection degrades to no-runs rather than
+      // crashing the shell — a weighted signal is never worth the board.
+      return EMPTY_RUN_BOARD
+    }
+  }, [livePicks])
 
   // Honest absence: no known league size means no derivable round, and no
   // rosters means no pick target — the Draft action simply doesn't render.
@@ -423,20 +470,27 @@ export default function DraftBoardShell({
   )
   const prunePrimedRef = useRef(false)
   useEffect(() => {
-    const { queue: kept, removed } = pruneDraftedFromQueue(queue, (id) =>
-      draftedIds.has(id)
-    )
-    if (removed.length === 0) return
-    if (prunePrimedRef.current) {
-      for (const id of removed) {
-        const name = playerIndex.get(id)?.fullName ?? `Player ${id}`
-        toast(`${name} was drafted — removed from your queue.`)
+    // Resilience item 1: a fault in the queue-prune path degrades the queue
+    // feature only — it must never throw out of the effect and reach the route
+    // error boundary (which would take down the whole board).
+    try {
+      const { queue: kept, removed } = pruneDraftedFromQueue(queue, (id) =>
+        draftedIds.has(id)
+      )
+      if (removed.length === 0) return
+      if (prunePrimedRef.current) {
+        for (const id of removed) {
+          const name = playerIndex.get(id)?.fullName ?? `Player ${id}`
+          toast(`${name} was drafted — removed from your queue.`)
+        }
       }
+      // setLeagueQueue notifies the external store (re-render via
+      // useSyncExternalStore) — NOT a React setState, so no cascading-render
+      // lint and no second queue source.
+      setLeagueQueue(context.leagueId, kept)
+    } catch {
+      // Leave the queue as-is; the next pick retries the prune.
     }
-    // setLeagueQueue notifies the external store (re-render via
-    // useSyncExternalStore) — NOT a React setState, so no cascading-render lint
-    // and no second queue source.
-    setLeagueQueue(context.leagueId, kept)
   }, [draftedIds, queue, playerIndex, context.leagueId])
   useEffect(() => {
     prunePrimedRef.current = true
@@ -460,13 +514,24 @@ export default function DraftBoardShell({
   const fireAutoPick = useCallback(() => {
     if (selfRosterId === null) return
     if (autoPickAttemptRef.current === nextPickNumber) return
-    const selection = selectAutoPickCandidate({
-      queue,
-      isDraftable: (id) => availableIds.has(id) && !pendingPlayerIds.has(id),
-      positionOf: (id) => playerIndex.get(id)?.position ?? null,
-      rosterPositions: selfRosterPositions,
-      layout: context.slotLayout,
-    })
+    // Resilience item 1: a fault in candidate selection disarms auto-pick
+    // rather than throwing out of a timer/visibility callback — a degraded
+    // auto-pick must not keep retrying, and Nick keeps drafting by hand.
+    let selection: ReturnType<typeof selectAutoPickCandidate>
+    try {
+      selection = selectAutoPickCandidate({
+        queue,
+        isDraftable: (id) => availableIds.has(id) && !pendingPlayerIds.has(id),
+        positionOf: (id) => playerIndex.get(id)?.position ?? null,
+        rosterPositions: selfRosterPositions,
+        layout: context.slotLayout,
+      })
+    } catch {
+      autoPickAttemptRef.current = nextPickNumber
+      setAutoPickArmed(false)
+      toast('Auto-pick disarmed after an error — draft manually.')
+      return
+    }
     if (selection === null) return
     const player = playerIndex.get(selection.candidateId)
     if (player === undefined) return
@@ -497,9 +562,13 @@ export default function DraftBoardShell({
   // ref, so advancing to the next pick allows a fresh attempt.
   useEffect(() => {
     if (!autoPickArmed || !draftEnabled || !onClockMine) return
+    // Hidden tab ("away") fires effectively immediately — via a 0ms timer, not
+    // a synchronous call, so fireAutoPick's own setState (the resilience
+    // disarm-on-error path) never runs synchronously inside this effect
+    // (react-hooks/set-state-in-effect).
     if (typeof document !== 'undefined' && document.visibilityState === 'hidden') {
-      fireAutoPick()
-      return
+      const immediate = setTimeout(fireAutoPick, 0)
+      return () => clearTimeout(immediate)
     }
     const timer = setTimeout(fireAutoPick, AUTO_PICK_DWELL_MS)
     const onVisibility = () => {
@@ -526,13 +595,24 @@ export default function DraftBoardShell({
         session={session}
         pollHealth={pollHealth}
       />
-      <LiveDraftStrip
-        session={session}
-        nextPickNumber={nextPickNumber}
-        leagueSize={context.leagueSize}
-        draftOrder={draftOrder}
-        rosters={rosters}
-      />
+      {/* Resilience item 1: each live-enhancement region is wrapped in its own
+          boundary (Nick's Clarify — per-region), so a render fault in one
+          degrades ONLY that region to a quiet notice while the static player
+          board and every sibling region stay usable. resetKeys let a region
+          revived by fresh data (a new pick, a re-picked team) recover instead
+          of staying dead for the rest of the draft. */}
+      <ErrorBoundary
+        fallback={<RegionFallback label="Live draft strip unavailable." />}
+        resetKeys={[livePicks, draftOrder]}
+      >
+        <LiveDraftStrip
+          session={session}
+          nextPickNumber={nextPickNumber}
+          leagueSize={context.leagueSize}
+          draftOrder={draftOrder}
+          rosters={rosters}
+        />
+      </ErrorBoundary>
       <div className="flex min-h-0 flex-1">
         <section aria-label="Player board" className="min-w-0 flex-1 p-4">
           <PlayerBoard
@@ -551,44 +631,64 @@ export default function DraftBoardShell({
           aria-label="Roster panel"
           className="hidden w-80 shrink-0 flex-col border-l lg:flex"
         >
-          <BpaRecommendationsPanel
-            leagueId={context.leagueId}
-            livePicks={livePicks}
-            rosters={rosters}
-            draftEnabled={draftEnabled}
-            pendingPlayerIds={pendingPlayerIds}
-            onDraft={handleDraft}
-            onTiers={handleTiers}
-            selfRosterId={selfRosterId}
-            onSelfRosterIdChange={setSelfRosterId}
-            queuedIds={queuedIds}
-            onToggleQueue={handleToggleQueue}
-          />
-          <DraftQueuePanel
-            queue={queue}
-            playerIndex={playerIndex}
-            autoPickArmed={autoPickArmed}
-            onToggleArm={() => setAutoPickArmed((armed) => !armed)}
-            selfRosterChosen={selfRosterId !== null}
-            draftEnabled={draftEnabled}
-            onRemove={handleRemoveFromQueue}
-            onMove={handleMoveInQueue}
-          />
-          <div className="min-h-0 flex-1 p-4">
-            <RosterPanel
-              players={mergedPlayers}
-              context={context}
+          <ErrorBoundary
+            fallback={<RegionFallback label="Recommendations unavailable." />}
+            resetKeys={[livePicks, selfRosterId]}
+          >
+            <BpaRecommendationsPanel
+              leagueId={context.leagueId}
               livePicks={livePicks}
               rosters={rosters}
+              draftEnabled={draftEnabled}
+              pendingPlayerIds={pendingPlayerIds}
+              onDraft={handleDraft}
+              onTiers={handleTiers}
+              selfRosterId={selfRosterId}
+              onSelfRosterIdChange={setSelfRosterId}
+              queuedIds={queuedIds}
+              onToggleQueue={handleToggleQueue}
             />
+          </ErrorBoundary>
+          <ErrorBoundary
+            fallback={<RegionFallback label="Draft queue unavailable." />}
+            resetKeys={[queue]}
+          >
+            <DraftQueuePanel
+              queue={queue}
+              playerIndex={playerIndex}
+              autoPickArmed={autoPickArmed}
+              onToggleArm={() => setAutoPickArmed((armed) => !armed)}
+              selfRosterChosen={selfRosterId !== null}
+              draftEnabled={draftEnabled}
+              onRemove={handleRemoveFromQueue}
+              onMove={handleMoveInQueue}
+            />
+          </ErrorBoundary>
+          <div className="min-h-0 flex-1 p-4">
+            <ErrorBoundary
+              fallback={<RegionFallback label="Roster view unavailable." />}
+              resetKeys={[livePicks]}
+            >
+              <RosterPanel
+                players={mergedPlayers}
+                context={context}
+                livePicks={livePicks}
+                rosters={rosters}
+              />
+            </ErrorBoundary>
           </div>
-          <RecentPicksFeed
-            picks={livePicks}
-            rosters={rosters}
-            session={session}
-            undoInFlight={undoInFlight}
-            onUndo={handleUndo}
-          />
+          <ErrorBoundary
+            fallback={<RegionFallback label="Recent picks unavailable." />}
+            resetKeys={[livePicks]}
+          >
+            <RecentPicksFeed
+              picks={livePicks}
+              rosters={rosters}
+              session={session}
+              undoInFlight={undoInFlight}
+              onUndo={handleUndo}
+            />
+          </ErrorBoundary>
         </aside>
       </div>
     </div>

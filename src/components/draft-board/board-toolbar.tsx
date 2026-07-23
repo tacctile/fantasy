@@ -2,6 +2,7 @@
 
 import type { RunBoard } from '@/services/bpa/runs'
 import type { PositionTierSummary } from '@/services/bpa/tiers'
+import ErrorBoundary from '@/components/ui/error-boundary'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 
@@ -105,7 +106,13 @@ export default function BoardToolbar({
           />
         ))}
       </div>
-      <PositionalRunBadges runBoard={runBoard} tiers={runTiers} />
+      {/* The one live element in an otherwise-static toolbar — a render fault
+          in run detection degrades to nothing (appear-only, so silence matches
+          its no-run resting state) and can never take down the static table.
+          Recovers on the next pick (resetKeys = the run board). */}
+      <ErrorBoundary fallback={null} resetKeys={[runBoard]}>
+        <PositionalRunBadges runBoard={runBoard} tiers={runTiers} />
+      </ErrorBoundary>
       <FilterChip
         label={availableOnly ? 'Available' : 'All players'}
         pressed={availableOnly}
