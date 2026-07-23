@@ -36,6 +36,9 @@ interface PlayerBoardProps {
   /** Top-tier depth lifted from the BPA panel, paired with the run flag; null
    *  when the panel is unmounted (sidebar hidden below `lg`). */
   runTiers: Record<string, PositionTierSummary> | null
+  /** Players on the draft queue (item 1) — drives each row's star toggle. */
+  queuedIds: Set<string>
+  onToggleQueue: (playerId: string) => void
 }
 
 /**
@@ -55,6 +58,8 @@ export default function PlayerBoard({
   onDraft,
   runBoard,
   runTiers,
+  queuedIds,
+  onToggleQueue,
 }: PlayerBoardProps) {
   const [filterState, setFilterState] =
     useState<PlayerListFilterState>(DEFAULT_FILTER_STATE)
@@ -135,6 +140,8 @@ export default function PlayerBoard({
         draftEnabled={draftEnabled}
         rosters={rosters}
         onDraft={onDraft}
+        queuedIds={queuedIds}
+        onToggleQueue={onToggleQueue}
       />
     </div>
   )

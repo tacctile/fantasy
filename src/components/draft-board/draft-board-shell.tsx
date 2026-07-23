@@ -1,6 +1,13 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from 'react'
 import { toast } from 'sonner'
 
 import {
@@ -22,12 +29,25 @@ import type { DraftOrderMeta } from '@/services/sleeper/draft-state'
 
 import BpaRecommendationsPanel from './bpa-recommendations-panel'
 import DraftBoardHeader from './draft-board-header'
+import DraftQueuePanel from './draft-queue-panel'
+import {
+  getQueueServerSnapshot,
+  getQueueSnapshot,
+  moveInQueue,
+  pruneDraftedFromQueue,
+  removeFromQueue,
+  selectAutoPickCandidate,
+  setLeagueQueue,
+  subscribeQueue,
+  toggleQueue,
+} from './draft-queue'
 import LiveDraftStrip from './live-draft-strip'
 import DraftPollTicker, { type DraftPollTickReport } from './draft-poll-ticker'
 import {
   computeNextPickNumber,
   mergePicksIntoPlayers,
   picksFingerprint,
+  projectOnClock,
 } from './live-picks'
 import {
   applyTickReport,
@@ -54,6 +74,15 @@ type PendingPick = {
   sleeperPlayerId: string
   pickNumber: number
 }
+
+/**
+ * Local dwell before auto-pick fires while Nick sits on the clock with the tab
+ * focused — a proxy for "the clock is expiring" (this tool never ingests the
+ * real Sleeper clock; on-clock is a display-only projection). A hidden tab
+ * ("away") fires immediately instead. Declared wiki silence on the trigger
+ * mechanism — a conservative local constant, tunable.
+ */
+const AUTO_PICK_DWELL_MS = 12_000
 
 /**
  * Client shell for the admin draft board — tablet/PC-first per MASTER_CONTEXT
@@ -148,6 +177,61 @@ export default function DraftBoardShell({
       setPanelTiers(tiers)
     },
     []
+  )
+
+  // "My team" roster — lifted here from the BPA panel (draft-queue sub-section,
+  // Nick's Clarify) so ONE picker feeds both the panel's need signal and the
+  // roster-aware auto-pick caps. No persisted marker; re-pick each session.
+  const [selfRosterId, setSelfRosterId] = useState<number | null>(null)
+
+  // The user-ordered draft queue (item 1) — client-side, per league, read
+  // through an external store (localStorage-backed) so the load is hydration-
+  // safe without a setState-in-effect: the server/hydration snapshot is empty,
+  // the client adopts the stored queue immediately after. Every mutation routes
+  // through the ONE writer, setLeagueQueue.
+  const subscribeToQueue = useCallback(
+    (onChange: () => void) => subscribeQueue(context.leagueId, onChange),
+    [context.leagueId]
+  )
+  const readQueue = useCallback(
+    () => getQueueSnapshot(context.leagueId),
+    [context.leagueId]
+  )
+  const queue = useSyncExternalStore(
+    subscribeToQueue,
+    readQueue,
+    getQueueServerSnapshot
+  )
+
+  // Auto-pick arm toggle (item 3) — off by default; only fires while armed AND
+  // a self roster is set AND the draft is live.
+  const [autoPickArmed, setAutoPickArmed] = useState(false)
+
+  // Queue mutations read the live store snapshot (closure-safe against rapid
+  // clicks) and write through the one path; the store notifies the subscription.
+  const handleToggleQueue = useCallback(
+    (playerId: string) =>
+      setLeagueQueue(
+        context.leagueId,
+        toggleQueue(getQueueSnapshot(context.leagueId), playerId)
+      ),
+    [context.leagueId]
+  )
+  const handleRemoveFromQueue = useCallback(
+    (playerId: string) =>
+      setLeagueQueue(
+        context.leagueId,
+        removeFromQueue(getQueueSnapshot(context.leagueId), playerId)
+      ),
+    [context.leagueId]
+  )
+  const handleMoveInQueue = useCallback(
+    (playerId: string, direction: 'up' | 'down') =>
+      setLeagueQueue(
+        context.leagueId,
+        moveInQueue(getQueueSnapshot(context.leagueId), playerId, direction)
+      ),
+    [context.leagueId]
   )
 
   /** Adopt one authoritative draft_state row (accepted or conflict-winning)
@@ -299,6 +383,135 @@ export default function DraftBoardShell({
   const draftEnabled =
     session.isDraftActive && context.leagueSize !== null && rosters.length > 0
 
+  // Catalog lookup for queued ids (name/position) — the base pool carries both.
+  const playerIndex = useMemo(() => {
+    const index = new Map<string, DraftBoardPlayer>()
+    for (const player of players) index.set(player.sleeperPlayerId, player)
+    return index
+  }, [players])
+  const queuedIds = useMemo(() => new Set(queue), [queue])
+  // Still-draftable ids from the ONE client merge (item 4 — queue/auto-pick
+  // read the same merged snapshot every other region reads, never a second
+  // availability source): available, i.e. not rostered/drafted/pending.
+  const availableIds = useMemo(() => {
+    const ids = new Set<string>()
+    for (const player of mergedPlayers) {
+      if (player.availability === 'available') ids.add(player.sleeperPlayerId)
+    }
+    return ids
+  }, [mergedPlayers])
+  // My roster's drafted positions so far (confirmed picks only) — the roster
+  // shape the auto-pick caps evaluate against.
+  const selfRosterPositions = useMemo(() => {
+    if (selfRosterId === null) return []
+    return livePicks
+      .filter(
+        (pick) =>
+          pick.nativeRosterId === selfRosterId && pick.playerPosition !== null
+      )
+      .map((pick) => pick.playerPosition as string)
+  }, [livePicks, selfRosterId])
+
+  // Item 2 — auto-remove drafted players from the queue and promote the next.
+  // The confirmed snapshot (livePicks) is the ONE source; a queued player
+  // drafted by ANY path (manual, Sleeper poll, our own auto-pick) drops off and
+  // the rest slide up. Silent on the first pass (players already off the board
+  // when the queue loaded), a brief toast on every pick after that.
+  const draftedIds = useMemo(
+    () => new Set(livePicks.map((pick) => pick.sleeperPlayerId)),
+    [livePicks]
+  )
+  const prunePrimedRef = useRef(false)
+  useEffect(() => {
+    const { queue: kept, removed } = pruneDraftedFromQueue(queue, (id) =>
+      draftedIds.has(id)
+    )
+    if (removed.length === 0) return
+    if (prunePrimedRef.current) {
+      for (const id of removed) {
+        const name = playerIndex.get(id)?.fullName ?? `Player ${id}`
+        toast(`${name} was drafted — removed from your queue.`)
+      }
+    }
+    // setLeagueQueue notifies the external store (re-render via
+    // useSyncExternalStore) — NOT a React setState, so no cascading-render lint
+    // and no second queue source.
+    setLeagueQueue(context.leagueId, kept)
+  }, [draftedIds, queue, playerIndex, context.leagueId])
+  useEffect(() => {
+    prunePrimedRef.current = true
+  }, [])
+
+  // Item 3 — roster-construction-aware auto-pick. Whether it's my pick right
+  // now, projected from the draft order (display-only projection; first-write-
+  // wins is the real arbiter, so acting on it can never desync a live Sleeper
+  // draft — a poller-won pick makes our attempt conflict and roll back).
+  const onClockMine = useMemo(() => {
+    if (selfRosterId === null) return false
+    const projection = projectOnClock(nextPickNumber, draftOrder)
+    return projection.kind === 'team' && projection.nativeRosterId === selfRosterId
+  }, [selfRosterId, nextPickNumber, draftOrder])
+
+  // One auto-pick attempt per pick number (never a retry loop): walk the queue
+  // with the roster-aware skip, then draft through the SAME handleDraft →
+  // recordManualPick path (source='manual', undoable, never a Sleeper write —
+  // build-file mandate).
+  const autoPickAttemptRef = useRef<number | null>(null)
+  const fireAutoPick = useCallback(() => {
+    if (selfRosterId === null) return
+    if (autoPickAttemptRef.current === nextPickNumber) return
+    const selection = selectAutoPickCandidate({
+      queue,
+      isDraftable: (id) => availableIds.has(id) && !pendingPlayerIds.has(id),
+      positionOf: (id) => playerIndex.get(id)?.position ?? null,
+      rosterPositions: selfRosterPositions,
+      layout: context.slotLayout,
+    })
+    if (selection === null) return
+    const player = playerIndex.get(selection.candidateId)
+    if (player === undefined) return
+    autoPickAttemptRef.current = nextPickNumber
+    const name = player.fullName ?? player.sleeperPlayerId
+    toast(
+      `Auto-pick: drafting ${name}` +
+        (selection.overCapFallThrough
+          ? ' (roster caps relaxed — nothing else eligible in the queue).'
+          : '.')
+    )
+    void handleDraft(player, selfRosterId)
+  }, [
+    selfRosterId,
+    nextPickNumber,
+    queue,
+    availableIds,
+    pendingPlayerIds,
+    playerIndex,
+    selfRosterPositions,
+    context.slotLayout,
+    handleDraft,
+  ])
+
+  // Fire when armed + on the clock + away: a hidden tab fires immediately,
+  // otherwise a dwell timer stands in for the clock winding down, with a
+  // visibility change to hidden firing early. Re-arms per pick via the attempt
+  // ref, so advancing to the next pick allows a fresh attempt.
+  useEffect(() => {
+    if (!autoPickArmed || !draftEnabled || !onClockMine) return
+    if (typeof document !== 'undefined' && document.visibilityState === 'hidden') {
+      fireAutoPick()
+      return
+    }
+    const timer = setTimeout(fireAutoPick, AUTO_PICK_DWELL_MS)
+    const onVisibility = () => {
+      if (document.visibilityState === 'hidden') fireAutoPick()
+    }
+    document.addEventListener('visibilitychange', onVisibility)
+    return () => {
+      clearTimeout(timer)
+      document.removeEventListener('visibilitychange', onVisibility)
+    }
+  }, [autoPickArmed, draftEnabled, onClockMine, fireAutoPick])
+
   return (
     <div className="flex min-h-0 flex-1 flex-col bg-background text-foreground">
       <DraftPollTicker
@@ -330,6 +543,8 @@ export default function DraftBoardShell({
             onDraft={handleDraft}
             runBoard={runBoard}
             runTiers={panelTiers}
+            queuedIds={queuedIds}
+            onToggleQueue={handleToggleQueue}
           />
         </section>
         <aside
@@ -344,6 +559,20 @@ export default function DraftBoardShell({
             pendingPlayerIds={pendingPlayerIds}
             onDraft={handleDraft}
             onTiers={handleTiers}
+            selfRosterId={selfRosterId}
+            onSelfRosterIdChange={setSelfRosterId}
+            queuedIds={queuedIds}
+            onToggleQueue={handleToggleQueue}
+          />
+          <DraftQueuePanel
+            queue={queue}
+            playerIndex={playerIndex}
+            autoPickArmed={autoPickArmed}
+            onToggleArm={() => setAutoPickArmed((armed) => !armed)}
+            selfRosterChosen={selfRosterId !== null}
+            draftEnabled={draftEnabled}
+            onRemove={handleRemoveFromQueue}
+            onMove={handleMoveInQueue}
           />
           <div className="min-h-0 flex-1 p-4">
             <RosterPanel

@@ -25,6 +25,9 @@ interface PlayerTableProps {
   draftEnabled: boolean
   rosters: LeagueRoster[]
   onDraft: (player: DraftBoardPlayer, nativeRosterId: number) => void
+  /** Players currently on the draft queue (item 1) — drives each row's star. */
+  queuedIds: Set<string>
+  onToggleQueue: (playerId: string) => void
 }
 
 const SORTABLE_COLUMNS: Array<{
@@ -101,6 +104,8 @@ export default function PlayerTable({
   draftEnabled,
   rosters,
   onDraft,
+  queuedIds,
+  onToggleQueue,
 }: PlayerTableProps) {
   const [nameColumn, adpColumn, posRankColumn] = SORTABLE_COLUMNS
   return (
@@ -180,6 +185,8 @@ export default function PlayerTable({
                 draftEnabled={draftEnabled}
                 rosters={rosters}
                 onDraft={onDraft}
+                queued={queuedIds.has(player.sleeperPlayerId)}
+                onToggleQueue={onToggleQueue}
               />
             ))
           )}

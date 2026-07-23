@@ -24,6 +24,7 @@ import type { RecordedPick } from '@/services/draft-picks'
 
 import { rosterLabel } from './player-row'
 import PositionBadge from './position-badge'
+import QueueToggle from './queue-toggle'
 
 /** How many candidates the sidebar panel shows (Nick's 2026-07-22 Clarify:
  *  8 — the "top few" glance without dominating the w-80 sidebar). */
@@ -72,6 +73,14 @@ interface BpaRecommendationsPanelProps {
    *  computes (no second tier compute). null while loading/errored, so the
    *  badge degrades to the run flag alone rather than showing stale depth. */
   onTiers?: (tiers: Record<string, PositionTierSummary> | null) => void
+  /** The shared "my team" roster (lifted to the shell for the draft queue /
+   *  auto-pick sub-section — one picker feeds the need signal AND the roster-
+   *  aware auto-pick caps; controlled here so both stay in sync). */
+  selfRosterId: number | null
+  onSelfRosterIdChange: (nativeRosterId: number | null) => void
+  /** Players on the draft queue (item 1) — drives each recommendation's star. */
+  queuedIds: Set<string>
+  onToggleQueue: (playerId: string) => void
 }
 
 type PanelState =
@@ -205,9 +214,12 @@ export default function BpaRecommendationsPanel({
   pendingPlayerIds,
   onDraft,
   onTiers,
+  selfRosterId,
+  onSelfRosterIdChange,
+  queuedIds,
+  onToggleQueue,
 }: BpaRecommendationsPanelProps) {
   const [state, setState] = useState<PanelState>({ status: 'loading' })
-  const [selfRosterId, setSelfRosterId] = useState<number | null>(null)
   // Monotonic request id: only the newest fetch is allowed to land, so an
   // older in-flight response (a slower earlier pick) can't clobber a newer one.
   const requestSeq = useRef(0)
@@ -282,13 +294,13 @@ export default function BpaRecommendationsPanel({
               {rosters.map((roster) => (
                 <DropdownMenuItem
                   key={roster.nativeRosterId}
-                  onClick={() => setSelfRosterId(roster.nativeRosterId)}
+                  onClick={() => onSelfRosterIdChange(roster.nativeRosterId)}
                 >
                   {rosterLabel(roster)}
                 </DropdownMenuItem>
               ))}
               {selfRosterId !== null && (
-                <DropdownMenuItem onClick={() => setSelfRosterId(null)}>
+                <DropdownMenuItem onClick={() => onSelfRosterIdChange(null)}>
                   Clear
                 </DropdownMenuItem>
               )}
@@ -304,6 +316,8 @@ export default function BpaRecommendationsPanel({
         draftEnabled={draftEnabled}
         pendingPlayerIds={pendingPlayerIds}
         onDraft={onDraft}
+        queuedIds={queuedIds}
+        onToggleQueue={onToggleQueue}
       />
     </section>
   )
@@ -317,6 +331,8 @@ function PanelBody({
   draftEnabled,
   pendingPlayerIds,
   onDraft,
+  queuedIds,
+  onToggleQueue,
 }: {
   state: PanelState
   selfRosterId: number | null
@@ -325,6 +341,8 @@ function PanelBody({
   draftEnabled: boolean
   pendingPlayerIds: Set<string>
   onDraft: (player: DraftablePlayer, nativeRosterId: number) => void
+  queuedIds: Set<string>
+  onToggleQueue: (playerId: string) => void
 }) {
   if (state.status === 'loading') {
     return (
@@ -371,6 +389,8 @@ function PanelBody({
             draftEnabled={draftEnabled}
             pending={pendingPlayerIds.has(rec.sleeperPlayerId)}
             onDraft={onDraft}
+            queued={queuedIds.has(rec.sleeperPlayerId)}
+            onToggleQueue={onToggleQueue}
           />
         ))}
       </ul>
@@ -384,12 +404,16 @@ function RecommendationRow({
   draftEnabled,
   pending,
   onDraft,
+  queued,
+  onToggleQueue,
 }: {
   rec: BpaRecommendation
   rosters: LeagueRoster[]
   draftEnabled: boolean
   pending: boolean
   onDraft: (player: DraftablePlayer, nativeRosterId: number) => void
+  queued: boolean
+  onToggleQueue: (playerId: string) => void
 }) {
   return (
     <li className="flex items-center gap-2 rounded-xl bg-card px-2 py-1.5">
@@ -438,6 +462,10 @@ function RecommendationRow({
           </DropdownMenuContent>
         </DropdownMenu>
       ) : null}
+      <QueueToggle
+        queued={queued}
+        onToggle={() => onToggleQueue(rec.sleeperPlayerId)}
+      />
     </li>
   )
 }

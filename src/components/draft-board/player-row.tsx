@@ -15,6 +15,7 @@ import type { DraftBoardPlayer, LeagueRoster } from '@/services/draft-board'
 
 import InjuryChip from './injury-chip'
 import PositionBadge from './position-badge'
+import QueueToggle from './queue-toggle'
 
 interface PlayerRowProps {
   player: DraftBoardPlayer
@@ -22,6 +23,10 @@ interface PlayerRowProps {
   draftEnabled: boolean
   rosters: LeagueRoster[]
   onDraft: (player: DraftBoardPlayer, nativeRosterId: number) => void
+  /** Whether this player is on the draft queue (item 1). */
+  queued: boolean
+  /** Toggle this player's queue membership. */
+  onToggleQueue: (playerId: string) => void
 }
 
 // Source ADP carries one decimal of precision (wiki: sleeper-api/
@@ -72,6 +77,8 @@ export default function PlayerRow({
   draftEnabled,
   rosters,
   onDraft,
+  queued,
+  onToggleQueue,
 }: PlayerRowProps) {
   const rostered = player.availability === 'rostered'
   const drafted = player.availability === 'drafted'
@@ -123,30 +130,38 @@ export default function PlayerRow({
               {draftedLabel}
             </span>
           )
-        ) : draftEnabled ? (
-          <DropdownMenu>
-            <DropdownMenuTrigger
-              render={
-                <Button type="button" variant="outline" size="sm">
-                  Draft
-                  <ChevronDown aria-hidden />
-                </Button>
-              }
-            />
-            <DropdownMenuContent>
-              <DropdownMenuLabel>Draft to roster</DropdownMenuLabel>
-              {rosters.map((roster) => (
-                <DropdownMenuItem
-                  key={roster.nativeRosterId}
-                  onClick={() => onDraft(player, roster.nativeRosterId)}
-                >
-                  {rosterLabel(roster)}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
         ) : (
-          <span className="text-muted-foreground">Available</span>
+          <span className="flex items-center gap-1.5">
+            {draftEnabled ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  render={
+                    <Button type="button" variant="outline" size="sm">
+                      Draft
+                      <ChevronDown aria-hidden />
+                    </Button>
+                  }
+                />
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>Draft to roster</DropdownMenuLabel>
+                  {rosters.map((roster) => (
+                    <DropdownMenuItem
+                      key={roster.nativeRosterId}
+                      onClick={() => onDraft(player, roster.nativeRosterId)}
+                    >
+                      {rosterLabel(roster)}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <span className="text-muted-foreground">Available</span>
+            )}
+            <QueueToggle
+              queued={queued}
+              onToggle={() => onToggleQueue(player.sleeperPlayerId)}
+            />
+          </span>
         )}
       </td>
     </tr>
