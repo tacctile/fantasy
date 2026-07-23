@@ -5,12 +5,15 @@ import type {
   ConnectedLeague,
   DraftBoardLeagueContext,
 } from '@/services/draft-board'
+import type { DraftSessionState } from '@/services/draft-sessions'
 
+import DraftSessionToggle from './draft-session-toggle'
 import LeagueSelector from './league-selector'
 
 interface DraftBoardHeaderProps {
   context: DraftBoardLeagueContext
   leagues: ConnectedLeague[]
+  session: DraftSessionState
 }
 
 // Fixed locale + UTC keeps server and client renders identical (no hydration
@@ -33,6 +36,7 @@ const INGESTED_AT_FORMAT = new Intl.DateTimeFormat('en-US', {
 export default function DraftBoardHeader({
   context,
   leagues,
+  session,
 }: DraftBoardHeaderProps) {
   return (
     <header className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b px-4 py-3">
@@ -48,6 +52,8 @@ export default function DraftBoardHeader({
         </span>
       </div>
       <div className="ml-auto flex items-center gap-3">
+        <DraftSessionToggle session={session} />
+        <Separator orientation="vertical" className="h-5" />
         <LeagueSelector
           leagues={leagues}
           activeLeagueId={context.leagueId}

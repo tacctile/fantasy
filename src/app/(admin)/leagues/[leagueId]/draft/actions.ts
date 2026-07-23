@@ -11,6 +11,14 @@ import {
   type ManualPickResult,
   type UndoManualPickResult,
 } from '@/services/draft-picks'
+import {
+  activateDraftSession,
+  deactivateDraftSession,
+  runActiveDraftPoll,
+  type ActivateDraftSessionResult,
+  type ActiveDraftPollResult,
+  type DeactivateDraftSessionResult,
+} from '@/services/draft-sessions'
 
 /**
  * Server actions for the manual click-to-draft write path (Wave 3b). Admin
@@ -55,6 +63,77 @@ export async function undoManualPick(
 
   const result = await undoLastManualPick(db, leagueId)
   if (result.outcome === 'undone') {
+    revalidatePath(`/leagues/${leagueId}/draft`)
+  }
+  return result
+}
+
+export type StartDraftSessionActionResult =
+  | ActivateDraftSessionResult
+  | { outcome: 'unauthorized' }
+export type EndDraftSessionActionResult =
+  | DeactivateDraftSessionResult
+  | { outcome: 'unauthorized' }
+
+/**
+ * Toggle the league's draft session ACTIVE (Wave 3b orchestration item 1) —
+ * the toolbar control Nick hits at the real start of a live draft. Runs the
+ * activation-time inline draft-state sync (Nick's Clarify decision) whose
+ * failure never rolls back the flag.
+ */
+export async function startDraftSession(
+  leagueId: string
+): Promise<StartDraftSessionActionResult> {
+  const db = await createClient()
+  const auth = await getAdminAuthState(db)
+  if (auth.state !== 'admin') return { outcome: 'unauthorized' }
+
+  const result = await activateDraftSession(db, leagueId)
+  if (result.outcome === 'activated') {
+    revalidatePath(`/leagues/${leagueId}/draft`)
+  }
+  return result
+}
+
+/** Toggle the league's draft session INACTIVE — idempotent stop. */
+export async function endDraftSession(
+  leagueId: string
+): Promise<EndDraftSessionActionResult> {
+  const db = await createClient()
+  const auth = await getAdminAuthState(db)
+  if (auth.state !== 'admin') return { outcome: 'unauthorized' }
+
+  const result = await deactivateDraftSession(db, leagueId)
+  if (result.outcome === 'deactivated') {
+    revalidatePath(`/leagues/${leagueId}/draft`)
+  }
+  return result
+}
+
+export type PollActiveDraftActionResult =
+  | ActiveDraftPollResult
+  | { outcome: 'unauthorized' }
+
+/**
+ * One elevated poll tick (Wave 3b orchestration items 2+3), invoked by the
+ * board's interval ticker while the draft session is live. The service
+ * re-checks `is_draft_active` (TTL-aware) authoritatively before any Sleeper
+ * request, so a stale client can never force polling; every poll that runs is
+ * recorded in `sync_runs`. Revalidates the board only when new picks landed.
+ */
+export async function pollActiveDraft(
+  leagueId: string
+): Promise<PollActiveDraftActionResult> {
+  const db = await createClient()
+  const auth = await getAdminAuthState(db)
+  if (auth.state !== 'admin') return { outcome: 'unauthorized' }
+
+  const result = await runActiveDraftPoll(db, leagueId)
+  if (
+    result.outcome === 'polled' &&
+    result.sync.status === 'success' &&
+    result.sync.picksWritten > 0
+  ) {
     revalidatePath(`/leagues/${leagueId}/draft`)
   }
   return result

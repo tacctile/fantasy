@@ -10,13 +10,16 @@ export const dynamic = "force-dynamic"
 export const maxDuration = 300
 
 /**
- * Active-draft polling path (Wave 2 cron sub-section): draft-state sync only,
- * for every connected Sleeper league, with per-league failure isolation and
- * one sync_runs row per league. Deliberately has NO vercel.json schedule
- * entry — Wave 2 wires the mechanism; Wave 3b decides the live-draft polling
- * cadence and trigger once the draft board consumes it (Nick's 2026-07-22
- * Clarify decision). First-write-wins semantics live in the draft-state
- * service, so repeated invocations never rewrite recorded picks.
+ * Manual/fallback draft-state sync path (Wave 2 cron sub-section): every
+ * connected Sleeper league, per-league failure isolation, one sync_runs row
+ * per league. Deliberately has NO vercel.json schedule entry — Wave 3b's
+ * orchestration decision (Nick, 2026-07-22) made live-draft polling
+ * client-driven: the open admin board triggers `pollActiveDraft` every 5s
+ * while `draft_sessions.is_draft_active` is true (Hobby crons are daily-only,
+ * so a scheduled elevated cadence was never possible). Normal cadence is the
+ * daily league-state cron's orchestrator chain; this route remains the
+ * Bearer-gated manual sweep. First-write-wins semantics live in the
+ * draft-state service, so repeated invocations never rewrite recorded picks.
  */
 export async function GET(request: Request) {
   const rejection = requireCronSecret(request)

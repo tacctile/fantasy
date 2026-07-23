@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import DraftBoardShell from '@/components/draft-board/draft-board-shell'
 import { createClient } from '@/lib/supabase/server'
 import { getDraftBoardData, listConnectedLeagues } from '@/services/draft-board'
+import { getDraftSessionState } from '@/services/draft-sessions'
 
 /**
  * Admin-only static draft board (Wave 3a). Server Component: fetches the
@@ -19,17 +20,19 @@ export default async function DraftBoardPage({
 }) {
   const { leagueId } = await params
   const db = await createClient()
-  const [result, leagues] = await Promise.all([
+  const [result, leagues, sessionResult] = await Promise.all([
     getDraftBoardData(db, leagueId),
     listConnectedLeagues(db),
+    getDraftSessionState(db, leagueId),
   ])
-  if (!result.ok) notFound()
+  if (!result.ok || sessionResult.outcome !== 'ok') notFound()
 
   return (
     <DraftBoardShell
       context={result.data.context}
       players={result.data.players}
       leagues={leagues}
+      session={sessionResult.session}
     />
   )
 }

@@ -5,8 +5,10 @@ import type {
   DraftBoardLeagueContext,
   DraftBoardPlayer,
 } from '@/services/draft-board'
+import type { DraftSessionState } from '@/services/draft-sessions'
 
 import DraftBoardHeader from './draft-board-header'
+import DraftPollTicker from './draft-poll-ticker'
 import PlayerBoard from './player-board'
 import RosterPanel from './roster-panel'
 
@@ -14,6 +16,7 @@ interface DraftBoardShellProps {
   context: DraftBoardLeagueContext
   players: DraftBoardPlayer[]
   leagues: ConnectedLeague[]
+  session: DraftSessionState
 }
 
 /**
@@ -28,10 +31,12 @@ export default function DraftBoardShell({
   context,
   players,
   leagues,
+  session,
 }: DraftBoardShellProps) {
   return (
     <div className="flex min-h-0 flex-1 flex-col bg-background text-foreground">
-      <DraftBoardHeader context={context} leagues={leagues} />
+      <DraftPollTicker session={session} />
+      <DraftBoardHeader context={context} leagues={leagues} session={session} />
       <div className="flex min-h-0 flex-1">
         <section aria-label="Player board" className="min-w-0 flex-1 p-4">
           <PlayerBoard players={players} context={context} />

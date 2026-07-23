@@ -198,6 +198,41 @@ export type Database = {
         }
         Relationships: []
       }
+      draft_sessions: {
+        Row: {
+          activated_at: string | null
+          created_at: string
+          deactivated_at: string | null
+          is_draft_active: boolean
+          league_id: string
+          updated_at: string
+        }
+        Insert: {
+          activated_at?: string | null
+          created_at?: string
+          deactivated_at?: string | null
+          is_draft_active?: boolean
+          league_id: string
+          updated_at?: string
+        }
+        Update: {
+          activated_at?: string | null
+          created_at?: string
+          deactivated_at?: string | null
+          is_draft_active?: boolean
+          league_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "draft_sessions_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: true
+            referencedRelation: "leagues"
+            referencedColumns: ["platform_league_uuid"]
+          },
+        ]
+      }
       draft_state: {
         Row: {
           amount: number | null
