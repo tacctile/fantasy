@@ -21,6 +21,11 @@ import {
   type ActiveDraftPollResult,
   type DeactivateDraftSessionResult,
 } from '@/services/draft-sessions'
+import {
+  getBpaRecommendations,
+  type BpaRecommendationsOptions,
+  type BpaRecommendationsResult,
+} from '@/services/bpa/recommendations'
 
 /**
  * Server actions for the manual click-to-draft write path (Wave 3b). Admin
@@ -145,4 +150,28 @@ export async function pollActiveDraft(
   if (result.outcome !== 'polled') return result
   const picks = await listDraftPicks(db, leagueId)
   return { ...result, picks }
+}
+
+export type BpaRecommendationsActionResult =
+  | BpaRecommendationsResult
+  | { ok: false; reason: 'unauthorized' }
+
+/**
+ * Top-N BPA recommendations for the board's sidebar panel (Wave 3b BPA item 6).
+ * A read, but a server action because the item-7 panel re-invokes it per pick
+ * from the client (item 9) — same client-driven pattern as `pollActiveDraft`.
+ * Admin-gated inside the action (server actions are POST endpoints), reads
+ * through the RLS server client as the signed-in admin; RLS is the second wall.
+ * player_projections/adp_rankings have no spectator consumer — this never
+ * reaches the share-token surface. No revalidate: a pure read.
+ */
+export async function fetchBpaRecommendations(
+  leagueId: string,
+  options?: BpaRecommendationsOptions
+): Promise<BpaRecommendationsActionResult> {
+  const db = await createClient()
+  const auth = await getAdminAuthState(db)
+  if (auth.state !== 'admin') return { ok: false, reason: 'unauthorized' }
+
+  return getBpaRecommendations(db, leagueId, options)
 }
