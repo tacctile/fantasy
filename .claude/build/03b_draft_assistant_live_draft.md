@@ -1,6 +1,6 @@
 # 03b_draft_assistant_live_draft.md
 **Wave 3b — Draft Assistant — Live Draft (Sleeper Snake)**
-**Status:** ⬜ Not started
+**Status:** 🟡 In progress
 **Registered:** 2026-07-21
 **Restructured:** 2026-07-22 (split from the original combined Sleeper+ESPN+auction file — see `03c_draft_assistant_espn_and_auction.md`)
 
@@ -31,10 +31,10 @@ Read these before starting, per Session-Start Protocol (max 3 unless the task ge
 ## Checklist
 
 ### Manual click-to-draft write path
-- [ ] Add a server-side manual-pick mutation (Route Handler or server action) that validates `league_id`, `pick_number`, `round`, `sleeper_player_id`, and target roster, then inserts into `draft_state` with `source='manual'`. Mutation signature accepts an optional `amount` field (nullable, unused for Sleeper snake) so the shared signature does not change when `03c`'s auction path lands
-- [ ] Rely solely on the existing `(league_id, pick_number)` unique constraint for conflict detection (`INSERT ... ON CONFLICT DO NOTHING` or equivalent) — return a typed result discriminating `accepted` vs. `conflict` (a poller already won that pick) vs. `validation_error`
-- [ ] Restrict the manual-pick endpoint to Nick's authenticated admin session only — never reachable from the spectator/share-token surface
-- [ ] Add an admin-only "undo last manual pick" action that deletes only the highest `pick_number` row for the league where `source='manual'` — must never delete `sleeper_poll` rows
+- [x] Add a server-side manual-pick mutation (Route Handler or server action) that validates `league_id`, `pick_number`, `round`, `sleeper_player_id`, and target roster, then inserts into `draft_state` with `source='manual'`. Mutation signature accepts an optional `amount` field (nullable, unused for Sleeper snake) so the shared signature does not change when `03c`'s auction path lands — *2026-07-22: server action (Nick's Clarify choice) `submitManualPick` wrapping `recordManualPick` in `src/services/draft-picks.ts`; any unclaimed pick accepted + server-side duplicate-player rejection (both Nick-signed); round cross-checked via ceil(pick/league_size) as validation only*
+- [x] Rely solely on the existing `(league_id, pick_number)` unique constraint for conflict detection (`INSERT ... ON CONFLICT DO NOTHING` or equivalent) — return a typed result discriminating `accepted` vs. `conflict` (a poller already won that pick) vs. `validation_error` — *2026-07-22: upsert `ignoreDuplicates`; `conflict` carries the authoritative winning row; live-verified against the real league's poller rows*
+- [x] Restrict the manual-pick endpoint to Nick's authenticated admin session only — never reachable from the spectator/share-token surface — *2026-07-22: auth gate inside each server action (`getAdminAuthState`, typed `unauthorized`, zero data) + deny-by-default RLS as the second wall; anon publishable-key client live-verified at both layers*
+- [x] Add an admin-only "undo last manual pick" action that deletes only the highest `pick_number` row for the league where `source='manual'` — must never delete `sleeper_poll` rows — *2026-07-22: `undoManualPick` action / `undoLastManualPick` service; delete keyed by PK + `source='manual'` guard, poll rows untouchable by construction; live-verified (170 poll rows intact, `no_manual_picks` when none remain)*
 
 ### Active-draft polling orchestration (Sleeper)
 - [ ] Add an `is_draft_active` flag on a new admin-only table (e.g. `draft_sessions`, keyed by `league_id`) — NOT on `leagues` or `league_config`, since both of those tables receive `share_token`-gated spectator SELECT access in Wave 4, and draft state must never be spectator-reachable at any wave. Add a start/stop control surfacing it — toggling this is what elevates polling cadence

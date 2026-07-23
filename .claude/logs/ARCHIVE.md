@@ -3,6 +3,12 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_28 — Full governance/documentation audit (non-code; zero discrepancies)
+
+- Prompt-driven audit of all nine tracked governance artifacts (STATE.yml, all 7 build files, BUILD_INDEX.md, ARCHITECTURE.md, DESIGN_SYSTEM.md, PROGRESS.md/ARCHIVE, MANUAL_SETUP_CHECKLIST.md) against actual repo state: full `src/**` glob (69 files), all 41 migration filenames, `globals.css` token-by-token, `vercel.json`. **Zero discrepancies found** — every `[x]`/`[ ]`/`[!]`/`[~]`/`[>]` matched code presence/absence; ARCHITECTURE.md tree diffed both directions clean; `dashboard.ts` (deepest check) matched its documentation exactly including boundary discipline (no share_token/owner_id/native_league_id/draft_state selected).
+- False-positive worth remembering: a bare-wildcard `Glob` on a mixed-extension component dir returned empty (suggesting drift); extension-split globs (`*.ts` + `*.tsx`) returned the full 15-file list. Prefer split globs in tree-diff audits.
+- No wiki topic pages read — no product/domain/schema decision made; declared explicitly. No corrections queued. Audit-only: zero DB operations, zero code writes; the log itself was the session's only artifact.
+
 ## 2026-07-22_27 — Wave 4 admin data-access layer (full 5-item fold; first Wave 4 code)
 
 - Fold = the full "Admin data-access layer" sub-section as one query-service artifact (Nick-signed full-sub-section over the 3-item cap, 03a data-layer precedent): `src/services/dashboard.ts` with `getStandings`, `getMatchups`, `getPowerRankings`, `getPlayerCard`, plus a scoping/security assurance pass as item 5.

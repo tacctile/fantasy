@@ -9,6 +9,12 @@ Newest entry on top.
 
 ---
 
+## 2026-07-22 — Wave 3b Begun: Manual Click-to-Draft Write Path Live (First Live-Draft Feature)
+
+First working 3b feature since the Sleeper-snake restructure: `src/services/draft-picks.ts` (`recordManualPick` — full referential validation, Nick-signed any-unclaimed-pick + server-side dup-player rejection, first-write-wins with a typed accepted/conflict/validation result carrying the authoritative row on conflict; `undoLastManualPick` — highest `source='manual'` row only, poll rows undeletable by construction) + auth-gated server actions under the draft route. 21/21 live checks against the real league, `draft_state` left at baseline; tsc/lint/build clean. Next: active-draft polling orchestration (`draft_sessions` + cadence).
+
+---
+
 ## 2026-07-22 — League Dashboard Is a Working Feature: Page Assembled + League Selector Live
 
 First browsable Wave 4 surface: the owner dashboard now mounts at `/leagues/[leagueId]` (Nick-signed league root; auto-land re-signed to land here), composing MatchupsGrid (URL-driven `?week=N`, default = latest scored week via new `listScoredWeeks`) over StandingsTable + PowerRankingsList, with the PlayerCard opening as a URL-driven `?player=` sheet from matchup player links. Draft board's LeagueSelector generalized (`subPath`) and reused. tsc/lint/build clean + 21/21 live render checks. Next: nav-shell sub-section (share-link panel rides the share-token singleton).
@@ -30,12 +36,6 @@ Nick authorized Wave 4 (League Dashboard) ahead of 3b (ESPN-blocked ~mid-Aug) �
 ## 2026-07-22 — Wave 3a Buildable Scope Complete: States + Resilience Live (Static Draft Board Feature-Complete)
 
 The board's final sub-section shipped in one fold: route-segment loading skeleton (mirrors real density, `bg-muted` pulse), honest empty states (Nick-signed banner-over-rostered-list; pure `deriveAdpNoticeKind` — no-snapshot / format-unresolved / format-zero-rows, no cross-format fallback ever; zero-filter-match with "Clear filters"), and the route error boundary (retry + back-to-leagues escape; gaps degrade per-surface, only real failures bound). 14/14 checks incl. live no-false-positive. `03a` is now complete except the schedule-source-gated bye-week `[>]`. Next: Nick's wave-order call — Wave 4 ahead of ESPN-blocked 3b, the bye-week source decision, or hold (~mid-Aug).
-
----
-
-## 2026-07-22 — Draft Board Is a Working Feature: Player List + Roster/Need Panel Live (Player-List Sub-Section Done)
-
-First working implementation of the board's core feature — the placeholder regions are gone. Rows (injury chips, six Nick-signed `--pos-*` position tokens — RB shifted off brand teal), debounced search + position/availability filters, header-click sorting (nulls-last, deterministic tie-break) via a pure memoized hook, and the roster/positional-need sidebar (need vs dedicated starter slots, flex honest). Companion Nick-signed fix: `ir_slot_count` = max(IR labels, `reserve_slots`) — re-synced, live-verified 0→1. Bye week deferred to a schedule-derived source (`[>]` item; wiki-mandated). 25/25 logic checks + live board query verified. Next: 03a "States + resilience" (final sub-section).
 
 ---
 
