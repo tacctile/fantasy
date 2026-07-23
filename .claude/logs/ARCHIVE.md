@@ -3,6 +3,13 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_35 — 3b client-side live sync items 1–2 (2-item fold under the live-behavior ceiling)
+
+- Fold = live sync items 1–2: client polling mechanism + merge/dedup into board state. Nick-signed: transport = interval re-fetch piggybacked on the existing 5s DraftPollTicker (Supabase Realtime explicitly declined — shared prolabel realtime publication config is Rule-13 ambiguity + a second live channel); fetch shape = FULL `draft_state` snapshot per executed tick (self-heals undo deletions, which incremental since-max-pick can never see); tab-visibility gating (pause hidden, instant catch-up tick on return); client merge REPLACES refresh-on-picks (refresh survives only for stand-down).
+- Shipped `listDraftPicks` (snapshot read on `pollActiveDraft`'s executed polls), shell-owned `livePicks` state (fingerprint-deduped, seeded by server render), pure merge layer `components/draft-board/live-picks.ts` — third availability value `'drafted'` (client-merge-only; `'rostered'` wins), "Drafted · Pick N" dimmed rows, out-of-pool picks skipped by the merge (Nick-signed; the later feed surfaces them).
+- Overlay-always Nick-signed after a real-data finding: 40 of 170 drafted players are unrostered on the 2025 league and honestly read as drafted outside any active session.
+- Live-verified 24/24 on the real league incl. record→merge→undo→heal cycle and anon RLS zero-data on the snapshot path. Declared silences: UI availability naming (no covering category); visibilitychange = generic web API below wiki altitude. Blast radius: read + the verification write path's own net-zero picks. WIKI NOTE: none.
+
 ## 2026-07-22_34 — 3b active-draft polling orchestration (3-item sub-section fold, live-behavior ceiling)
 
 - Fold = the full orchestration sub-section: `draft_sessions` table + toolbar Start/End control; elevated 5s cadence; sync-run recording. Capacity collision (Hobby 2-crons-daily vs 5s polling) surfaced at Clarify per Amendment Hygiene practice 2 — resolved Nick-signed as CLIENT-DRIVEN elevated polling (open admin board's ticker invokes an auth-gated `pollActiveDraft` action; server re-checks the TTL-aware flag before any Sleeper request — a stale tab can never force polling; no cron slot at any tier).
