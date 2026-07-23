@@ -66,6 +66,12 @@ interface BpaRecommendationsPanelProps {
    *  path). Accepts the minimal DraftablePlayer shape a recommendation
    *  satisfies. */
   onDraft: (player: DraftablePlayer, nativeRosterId: number) => void
+  /** Reports this fetch's per-position tier summaries up to the shell so the
+   *  positional-run badge (item 3, near the position filter) can pair the run
+   *  flag with top-tier depth — the SAME context.tiers this panel already
+   *  computes (no second tier compute). null while loading/errored, so the
+   *  badge degrades to the run flag alone rather than showing stale depth. */
+  onTiers?: (tiers: Record<string, PositionTierSummary> | null) => void
 }
 
 type PanelState =
@@ -198,6 +204,7 @@ export default function BpaRecommendationsPanel({
   draftEnabled,
   pendingPlayerIds,
   onDraft,
+  onTiers,
 }: BpaRecommendationsPanelProps) {
   const [state, setState] = useState<PanelState>({ status: 'loading' })
   const [selfRosterId, setSelfRosterId] = useState<number | null>(null)
@@ -232,6 +239,14 @@ export default function BpaRecommendationsPanel({
       cancelled = true
     }
   }, [leagueId, livePicks, selfRosterId])
+
+  // Report tier summaries up to the shell for the positional-run badge (item 3)
+  // — the same context.tiers this fetch already carries, so the badge pairs the
+  // run flag with top-tier depth without a second tier compute. null unless the
+  // fetch is ready, so the badge never shows stale depth.
+  useEffect(() => {
+    onTiers?.(state.status === 'ready' ? state.context.tiers : null)
+  }, [state, onTiers])
 
   const selfRoster =
     selfRosterId === null

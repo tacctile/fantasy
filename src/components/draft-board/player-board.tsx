@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 
+import type { RunBoard } from '@/services/bpa/runs'
+import type { PositionTierSummary } from '@/services/bpa/tiers'
 import type {
   DraftBoardLeagueContext,
   DraftBoardPlayer,
@@ -28,6 +30,12 @@ interface PlayerBoardProps {
   draftEnabled: boolean
   rosters: LeagueRoster[]
   onDraft: (player: DraftBoardPlayer, nativeRosterId: number) => void
+  /** Positional-run detection over the live pick sequence (item 3), computed in
+   *  the shell off `livePicks`; the badge renders beside the position filter. */
+  runBoard: RunBoard
+  /** Top-tier depth lifted from the BPA panel, paired with the run flag; null
+   *  when the panel is unmounted (sidebar hidden below `lg`). */
+  runTiers: Record<string, PositionTierSummary> | null
 }
 
 /**
@@ -45,6 +53,8 @@ export default function PlayerBoard({
   draftEnabled,
   rosters,
   onDraft,
+  runBoard,
+  runTiers,
 }: PlayerBoardProps) {
   const [filterState, setFilterState] =
     useState<PlayerListFilterState>(DEFAULT_FILTER_STATE)
@@ -111,6 +121,8 @@ export default function PlayerBoard({
         }
         matchCount={visiblePlayers.length}
         totalCount={players.length}
+        runBoard={runBoard}
+        runTiers={runTiers}
       />
       <PlayerTable
         players={visiblePlayers}

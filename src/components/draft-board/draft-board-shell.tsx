@@ -7,6 +7,8 @@ import {
   submitManualPick,
   undoManualPick,
 } from '@/app/(admin)/leagues/[leagueId]/draft/actions'
+import { detectPositionalRuns } from '@/services/bpa/runs'
+import type { PositionTierSummary } from '@/services/bpa/tiers'
 import type {
   ConnectedLeague,
   DraftablePlayer,
@@ -131,6 +133,22 @@ export default function DraftBoardShell({
       JSON.stringify(previous) === JSON.stringify(order) ? previous : order
     )
   }, [])
+
+  // Top-tier depth lifted from the BPA panel's own fetch (positional-run item 3
+  // — Nick's Clarify: pair the run flag with the tier counter to convey whether
+  // a run is draining the best available tier). The SAME context.tiers the panel
+  // already computes — no second tier compute here; null until it first lands
+  // and whenever the panel is unmounted (sidebar hidden below `lg`).
+  const [panelTiers, setPanelTiers] = useState<Record<
+    string,
+    PositionTierSummary
+  > | null>(null)
+  const handleTiers = useCallback(
+    (tiers: Record<string, PositionTierSummary> | null) => {
+      setPanelTiers(tiers)
+    },
+    []
+  )
 
   /** Adopt one authoritative draft_state row (accepted or conflict-winning)
    *  into the snapshot without waiting for the next poll tick. */
@@ -259,6 +277,22 @@ export default function DraftBoardShell({
     () => mergePicksIntoPlayers(players, livePicks, pendingPlayerIds),
     [players, livePicks, pendingPlayerIds]
   )
+  // Positional-run detection (item 3) — the ONE run-detection source: the pure
+  // detectPositionalRuns over the confirmed snapshot, recomputed as picks land
+  // (an undo drops its row from the next call's window). Not routed through the
+  // recommendations query — run detection stays decoupled from the value path
+  // (item 4). Confirmed picks only, deliberately: a pending optimistic pick has
+  // no catalog position and isn't yet a market fact.
+  const runBoard = useMemo(
+    () =>
+      detectPositionalRuns(
+        livePicks.map((pick) => ({
+          pickNumber: pick.pickNumber,
+          position: pick.playerPosition,
+        }))
+      ),
+    [livePicks]
+  )
 
   // Honest absence: no known league size means no derivable round, and no
   // rosters means no pick target — the Draft action simply doesn't render.
@@ -294,6 +328,8 @@ export default function DraftBoardShell({
             draftEnabled={draftEnabled}
             rosters={rosters}
             onDraft={handleDraft}
+            runBoard={runBoard}
+            runTiers={panelTiers}
           />
         </section>
         <aside
@@ -307,6 +343,7 @@ export default function DraftBoardShell({
             draftEnabled={draftEnabled}
             pendingPlayerIds={pendingPlayerIds}
             onDraft={handleDraft}
+            onTiers={handleTiers}
           />
           <div className="min-h-0 flex-1 p-4">
             <RosterPanel

@@ -1,8 +1,11 @@
 'use client'
 
+import type { RunBoard } from '@/services/bpa/runs'
+import type { PositionTierSummary } from '@/services/bpa/tiers'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 
+import PositionalRunBadges from './positional-run-badges'
 import { FILTER_POSITIONS } from './use-player-list'
 
 interface BoardToolbarProps {
@@ -15,6 +18,12 @@ interface BoardToolbarProps {
   /** Post-filter count, shown against the full pool size for honesty. */
   matchCount: number
   totalCount: number
+  /** Client-side positional-run detection over the live pick sequence
+   *  (positional-run item 3) — the badge renders beside the position filter. */
+  runBoard: RunBoard
+  /** Top-tier depth lifted from the BPA panel's fetch, paired with the run flag
+   *  to convey demand-driven significance; null when the panel is unmounted. */
+  runTiers: Record<string, PositionTierSummary> | null
 }
 
 function FilterChip({
@@ -61,6 +70,8 @@ export default function BoardToolbar({
   onAvailableOnlyChange,
   matchCount,
   totalCount,
+  runBoard,
+  runTiers,
 }: BoardToolbarProps) {
   const togglePosition = (position: string) => {
     onPositionsChange(
@@ -94,6 +105,7 @@ export default function BoardToolbar({
           />
         ))}
       </div>
+      <PositionalRunBadges runBoard={runBoard} tiers={runTiers} />
       <FilterChip
         label={availableOnly ? 'Available' : 'All players'}
         pressed={availableOnly}
