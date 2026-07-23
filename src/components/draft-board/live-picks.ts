@@ -125,6 +125,22 @@ export function computeNextPickNumber(
   return highest + 1
 }
 
+/**
+ * The one pick the undo action would delete: the league's highest
+ * `pick_number` row with `source='manual'` (mirrors undoLastManualPick's
+ * server semantics — Wave 3b UI extensions item 4; the feed renders the Undo
+ * affordance on exactly this row). Null when no manual pick exists.
+ */
+export function latestManualPickNumber(picks: RecordedPick[]): number | null {
+  let latest: number | null = null
+  for (const pick of picks) {
+    if (pick.source === 'manual' && (latest === null || pick.pickNumber > latest)) {
+      latest = pick.pickNumber
+    }
+  }
+  return latest
+}
+
 /** Who the next pick belongs to — or an honest reason we can't say. */
 export type OnClockProjection =
   | { kind: 'team'; nativeRosterId: number }

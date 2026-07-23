@@ -3,7 +3,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
-import { submitManualPick } from '@/app/(admin)/leagues/[leagueId]/draft/actions'
+import {
+  submitManualPick,
+  undoManualPick,
+} from '@/app/(admin)/leagues/[leagueId]/draft/actions'
 import type {
   ConnectedLeague,
   DraftBoardLeagueContext,
@@ -28,6 +31,7 @@ import {
   type LivePollHealth,
 } from './live-status'
 import PlayerBoard from './player-board'
+import RecentPicksFeed from './recent-picks-feed'
 import RosterPanel from './roster-panel'
 
 interface DraftBoardShellProps {
@@ -207,6 +211,35 @@ export default function DraftBoardShell({
     [adoptPick, context.leagueId, context.leagueSize, players, updatePending]
   )
 
+  // Undo the latest manual pick (UI extensions item 4 — the feed's Undo
+  // button, shell-owned like every pick write). The snapshot heals locally on
+  // success; the next poll tick would self-heal it anyway (full-snapshot rule).
+  const [undoInFlight, setUndoInFlight] = useState(false)
+  const handleUndo = useCallback(async () => {
+    setUndoInFlight(true)
+    try {
+      const result = await undoManualPick(context.leagueId)
+      if (result.outcome === 'undone') {
+        const name =
+          result.pick.playerFullName ?? `Player ${result.pick.sleeperPlayerId}`
+        setLivePicks((previous) =>
+          previous.filter((pick) => pick.pickNumber !== result.pick.pickNumber)
+        )
+        toast(`Undid pick ${result.pick.pickNumber} — ${name} is available again.`)
+      } else if (result.outcome === 'no_manual_picks') {
+        toast('No manual picks left to undo.')
+      } else if (result.outcome === 'validation_error') {
+        toast(`Could not undo: ${result.message}`)
+      } else {
+        toast('Not authorized — sign in again to undo.')
+      }
+    } catch {
+      toast('Undo failed — check the connection and try again.')
+    } finally {
+      setUndoInFlight(false)
+    }
+  }, [context.leagueId])
+
   const pendingPlayerIds = useMemo(
     () => new Set(pendingPicks.map((pending) => pending.sleeperPlayerId)),
     [pendingPicks]
@@ -263,13 +296,22 @@ export default function DraftBoardShell({
         </section>
         <aside
           aria-label="Roster panel"
-          className="hidden w-80 shrink-0 border-l p-4 lg:block"
+          className="hidden w-80 shrink-0 flex-col border-l lg:flex"
         >
-          <RosterPanel
-            players={mergedPlayers}
-            context={context}
-            livePicks={livePicks}
+          <div className="min-h-0 flex-1 p-4">
+            <RosterPanel
+              players={mergedPlayers}
+              context={context}
+              livePicks={livePicks}
+              rosters={rosters}
+            />
+          </div>
+          <RecentPicksFeed
+            picks={livePicks}
             rosters={rosters}
+            session={session}
+            undoInFlight={undoInFlight}
+            onUndo={handleUndo}
           />
         </aside>
       </div>

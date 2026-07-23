@@ -33,6 +33,13 @@ import type { Database } from '@/lib/supabase/database.types'
 const UUID_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
+/** Every RecordedPick read/write returns this shape — the players embed rides
+ *  the draft_state→players FK so all paths carry catalog identity. Name parts
+ *  are included because DST rows have no full_name — their identity is the
+ *  location/name split across the name fields (sleeper-api/dst-and-free-agents). */
+const PICK_SELECT =
+  'league_id, pick_number, round, sleeper_player_id, native_roster_id, source, players (full_name, first_name, last_name, position)'
+
 export type ManualPickInput = {
   /** platform_league_uuid — never a provider-native ID. */
   leagueId: string
@@ -63,6 +70,12 @@ export type RecordedPick = {
   sleeperPlayerId: string
   nativeRosterId: number
   source: Database['public']['Enums']['draft_pick_source']
+  /** Joined from the players catalog at read time (Wave 3b UI extensions
+   *  item 4, Nick-signed) — never from pick metadata, which is a
+   *  point-in-time snapshot per sleeper-api/draft-endpoint. Null when the
+   *  catalog row lacks the field. */
+  playerFullName: string | null
+  playerPosition: string | null
 }
 
 export type ManualPickResult =
@@ -215,7 +228,7 @@ export async function recordManualPick(
       },
       { onConflict: 'league_id,pick_number', ignoreDuplicates: true }
     )
-    .select('league_id, pick_number, round, sleeper_player_id, native_roster_id, source')
+    .select(PICK_SELECT)
   if (insertError) {
     throw new Error(`manual-pick insert failed: ${insertError.message}`)
   }
@@ -226,7 +239,7 @@ export async function recordManualPick(
   // Another write path won this pick number — surface its authoritative row.
   const { data: winner, error: winnerError } = await db
     .from('draft_state')
-    .select('league_id, pick_number, round, sleeper_player_id, native_roster_id, source')
+    .select(PICK_SELECT)
     .eq('league_id', input.leagueId)
     .eq('pick_number', input.pickNumber)
     .maybeSingle()
@@ -296,7 +309,7 @@ export async function undoLastManualPick(
     .eq('league_id', leagueId)
     .eq('pick_number', latest.pick_number)
     .eq('source', 'manual')
-    .select('league_id, pick_number, round, sleeper_player_id, native_roster_id, source')
+    .select(PICK_SELECT)
   if (deleteError) {
     throw new Error(`undo delete failed: ${deleteError.message}`)
   }
@@ -323,7 +336,7 @@ export async function listDraftPicks(
   if (!UUID_PATTERN.test(leagueId)) return []
   const { data, error } = await db
     .from('draft_state')
-    .select('league_id, pick_number, round, sleeper_player_id, native_roster_id, source')
+    .select(PICK_SELECT)
     .eq('league_id', leagueId)
     .order('pick_number', { ascending: true })
   if (error) {
@@ -339,7 +352,18 @@ function toRecordedPick(row: {
   sleeper_player_id: string
   native_roster_id: number
   source: Database['public']['Enums']['draft_pick_source']
+  players: {
+    full_name: string | null
+    first_name: string | null
+    last_name: string | null
+    position: string | null
+  } | null
 }): RecordedPick {
+  // DST rows carry no full_name — their identity is the location/name split
+  // across the name fields (sleeper-api/dst-and-free-agents), so compose it.
+  const composed = [row.players?.first_name, row.players?.last_name]
+    .filter((part): part is string => typeof part === 'string' && part.length > 0)
+    .join(' ')
   return {
     leagueId: row.league_id,
     pickNumber: row.pick_number,
@@ -347,6 +371,8 @@ function toRecordedPick(row: {
     sleeperPlayerId: row.sleeper_player_id,
     nativeRosterId: row.native_roster_id,
     source: row.source,
+    playerFullName: row.players?.full_name ?? (composed.length > 0 ? composed : null),
+    playerPosition: row.players?.position ?? null,
   }
 }
 

@@ -47,8 +47,9 @@ export type TeamRosterFill = {
  * Drafted (pick count): every attributed pick increments `draftedCount`,
  * rostered or not. Pick→team attribution is `nativeRosterId` (Sleeper's
  * roster_id — the ownership field per sleeper-api/draft-endpoint). A pick
- * whose player is outside the board pool contributes attribution only (no
- * position data client-side — the recent-picks feed surfaces its identity).
+ * whose player is outside the board pool fills via its catalog-joined
+ * `playerPosition` (Nick-signed backsweep 2026-07-22: the item-4 name join
+ * removed the no-position-data premise behind the earlier count-only rule).
  *
  * Positional need compares a team's player count at each dedicated position
  * against that position's dedicated slots only (Nick-signed depth):
@@ -137,7 +138,10 @@ export function computeRosterFill(
         continue
       }
       filledPickedPlayerIds.add(pick.sleeperPlayerId)
-      const position = positionByPlayerId.get(pick.sleeperPlayerId) ?? null
+      // Pool row first (same catalog source), joined position for
+      // out-of-pool picks.
+      const position =
+        positionByPlayerId.get(pick.sleeperPlayerId) ?? pick.playerPosition
       if (position !== null) {
         const counts = positionCounts.get(team.nativeRosterId)!
         counts.set(position, (counts.get(position) ?? 0) + 1)
