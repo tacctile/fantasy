@@ -3,6 +3,13 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 
 ---
 
+## 2026-07-22_34 — 3b active-draft polling orchestration (3-item sub-section fold, live-behavior ceiling)
+
+- Fold = the full orchestration sub-section: `draft_sessions` table + toolbar Start/End control; elevated 5s cadence; sync-run recording. Capacity collision (Hobby 2-crons-daily vs 5s polling) surfaced at Clarify per Amendment Hygiene practice 2 — resolved Nick-signed as CLIENT-DRIVEN elevated polling (open admin board's ticker invokes an auth-gated `pollActiveDraft` action; server re-checks the TTL-aware flag before any Sleeper request — a stale tab can never force polling; no cron slot at any tier).
+- Nick-signed: toolbar control placement; 6h soft TTL computed at READ time from `activated_at` (no job mutates the row); activation runs one immediate inline recorded sync; EVERY executed poll records a `sync_runs` `draft_poll` row (~2,100/3h draft accepted as fidelity); declined ticks record nothing by definition.
+- Shipped migration `20260723001620` (`draft_sessions`: league_id PK/FK, `active_requires_activated_at` check, owner-RLS only — deliberately its own table, never a column on leagues/league_config, which get Wave 4 spectator SELECT) + `services/draft-sessions.ts` (getDraftSessionState/activate/deactivate/runActiveDraftPoll, `DRAFT_ACTIVE_TTL_HOURS=6`) + start/end/poll server actions (gate inside each) + `DraftSessionToggle` (teal pulsing "Draft live") + `DraftPollTicker` (5s, in-flight guard, trigger-only).
+- Live-verified 37/37 on the real league (TTL aging/reset, idempotent deactivate, check-constraint rejection, anon zero-data both walls, declined ticks record nothing). Judgment calls disclosed: `deactivated_at` audit column; `skipped_non_sleeper` typed result; multi-tab duplicate ticks accepted (first-write-wins + pacing gate). Blast radius: draft_sessions + sync_runs only. WIKI NOTE: none.
+
 ## 2026-07-22_33 — 3b manual click-to-draft write path (4-item sub-section fold; 03b's first shipped items)
 
 - Fold = the full "Manual click-to-draft write path" sub-section as one verifiable artifact (insert + conflict semantics + auth posture + undo). Nick-signed Clarify: vehicle = server action; any unclaimed pick number accepted (mid-draft backfill; UI defaults to next); duplicate player rejected server-side application-level (a unique constraint would fight the poller's authoritative ingestion).
