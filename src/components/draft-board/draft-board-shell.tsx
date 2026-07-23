@@ -9,6 +9,7 @@ import {
 } from '@/app/(admin)/leagues/[leagueId]/draft/actions'
 import type {
   ConnectedLeague,
+  DraftablePlayer,
   DraftBoardLeagueContext,
   DraftBoardPlayer,
   LeagueRoster,
@@ -17,6 +18,7 @@ import type { RecordedPick } from '@/services/draft-picks'
 import type { DraftSessionState } from '@/services/draft-sessions'
 import type { DraftOrderMeta } from '@/services/sleeper/draft-state'
 
+import BpaRecommendationsPanel from './bpa-recommendations-panel'
 import DraftBoardHeader from './draft-board-header'
 import LiveDraftStrip from './live-draft-strip'
 import DraftPollTicker, { type DraftPollTickReport } from './draft-poll-ticker'
@@ -146,7 +148,7 @@ export default function DraftBoardShell({
   }, [])
 
   const handleDraft = useCallback(
-    async (player: DraftBoardPlayer, nativeRosterId: number) => {
+    async (player: DraftablePlayer, nativeRosterId: number) => {
       // Draft actions only render with a known league size (no invented
       // round) and never for a player already pending.
       const leagueSize = context.leagueSize
@@ -298,6 +300,14 @@ export default function DraftBoardShell({
           aria-label="Roster panel"
           className="hidden w-80 shrink-0 flex-col border-l lg:flex"
         >
+          <BpaRecommendationsPanel
+            leagueId={context.leagueId}
+            livePicks={livePicks}
+            rosters={rosters}
+            draftEnabled={draftEnabled}
+            pendingPlayerIds={pendingPlayerIds}
+            onDraft={handleDraft}
+          />
           <div className="min-h-0 flex-1 p-4">
             <RosterPanel
               players={mergedPlayers}

@@ -90,6 +90,15 @@ export type DraftBoardPlayer = {
 }
 
 /**
+ * The minimal player shape the shared draft handler (shell's `handleDraft`)
+ * actually consumes — sleeperPlayerId + fullName. Surfaces that don't hold a
+ * full DraftBoardPlayer (the BPA recommendations panel) reuse the ONE draft
+ * write path through this shape, never a parallel submit (Wave 3b build-file
+ * mandate + STATE.yml live-sync warning). DraftBoardPlayer satisfies it.
+ */
+export type DraftablePlayer = Pick<DraftBoardPlayer, 'sleeperPlayerId' | 'fullName'>
+
+/**
  * The league's lineup-slot layout, parsed from `roster_settings_raw`'s
  * `roster_positions` array (the raw-column escape hatch per the
  * league-configuration-data-model ADR — derived_config carries only totals).

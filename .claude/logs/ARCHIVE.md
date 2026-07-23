@@ -301,3 +301,9 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 - Discovered `.gitignore` bare `logs` pattern ignored `.claude/logs/` — flagged rather than fixed unilaterally (later resolved: `!.claude/logs/` negation, see MANUAL_SETUP_CHECKLIST decisions of record).
 - Verification: `npm run build` clean, `npm run lint` zero warnings, zero inline hex in src/, zero console.log.
 - WIKI NOTE: none.
+
+## 2026-07-22_37 — Live status indicator + live-draft strip (2 items, fold)
+
+- Live sync item 5 (toolbar status indicator) [x]: DraftPollTicker gains onStatus (reports EXECUTED ticks only); pure live-status.ts (LivePollHealth/applyTickReport/isDegraded ≥2/formatSyncAge); LiveStatusIndicator via a statusSlot on DraftSessionToggle ("Sleeper · synced Ns ago", degraded/paused states, all Nick-signed). Client-side live sync sub-section 5/5 complete. 18/18 pure; commit d225e29.
+- UI extensions item 2 (pick/round/on-clock strip) [x]: Nick-signed correctness amendment — order source carried through the poll path, NOT league_config (derived_config has no draft-order concept). DraftOrderMeta extracted in syncLeagueDraftState → onDraftOrder → pure projectOnClock (snake/linear + reversal_round flip + contiguity guard) → LiveDraftStrip. LIVE FINDING: the drafts-ARRAY element omits slot_to_roster_id (only GET /draft/{id} detail carries it) — added best-effort detail fallback + partial-map contiguity guard. Verified: projectOnClock matched ALL 170 real picks (non-identity slot map); commit 3c0d7af.
+- Two declared wiki interpretations (reversal_round flip formula; linear ordering) recorded pre-code, validated against 170 picks. Read-only + one net-zero draft_state upsert. WIKI NOTE: none.
