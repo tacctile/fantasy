@@ -1,6 +1,8 @@
 # BUILD_INDEX.md
 **Master build router — tacctile/fantasy**
 **Last Updated:** 2026-07-23
+> AUTHORING RULE: `Last Updated` is a single date — replace it each session, never append to it.
+> Status detail lives in `STATE.yml`. Session history lives in `PROGRESS.md` / `PROGRESS_ARCHIVE.md`.
 
 **Current status:** Wave 4 🟡 — Share-link settings panel UI complete (line 54 `[x]`). Next: spectator UI surface (`/share/[share_token]` route + mobile-first components + composition + resilience states + no-admin-markup render test). No named singleton remains in Wave 4. Wave 3b 🟢 complete. Wave 3c 🔴 ESPN-blocked (~mid-August 2026). Wave 3a 🟡 bye-week `[>]` schedule-gated. Wave 2 🟡 ESPN residue `[!]`, cron cadence `[~]`, finality promotion `[>]`.
 
