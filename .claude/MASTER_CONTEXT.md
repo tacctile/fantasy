@@ -1,6 +1,6 @@
 # MASTER_CONTEXT.md
 **Single source of truth — tacctile/fantasy**
-**Last Updated:** 2026-07-22
+**Last Updated:** 2026-07-30
 
 ---
 
@@ -79,6 +79,7 @@ These are two different builds with two different design priorities, not one und
 - Nick is the sole owner/admin of every league on the platform. There is no concept of another person owning or administering a league — leaguemates never get an admin account, never see draft controls, and never see any UI implying an admin layer exists.
 - Every league has a shareable, no-login read-only URL, built from that league's `share_token` (Schema Rules, above). Anyone with the link can view that league's spectator dashboard — no account, no signup, no auth flow for viewers.
 - The read-only surface is a genuinely separate rendering path, not the admin view with controls conditionally hidden. A viewer hitting the share link must never receive draft-board, admin, or in-season-management markup or data in the response — this is a data-exposure boundary, not just a UI toggle, since hidden-but-present admin UI in the client bundle would leak Nick's tooling to anyone who inspects the page.
+- **RLS is the enforcement wall** for the share-token boundary: `x-share-token` header → `current_share_token()` → spectator SELECT policies on the 8 authorized tables. `draft_state` and `draft_sessions` get NO spectator policy ever. Spectator surface extends only via new migration + anon SELECT grant — never via the admin client. `spectator.ts` createClient is the only factory used on spectator paths.
 - `share_token` must be revocable/regeneratable per league (Nick can invalidate a leaked or no-longer-wanted link and issue a new one) without needing a full league re-creation.
 - This access model applies per league, independent of platform (Sleeper or ESPN) and independent of league count — every league Nick connects gets its own owner view and its own share link, automatically, with no per-league special-casing in application code.
 
@@ -108,7 +109,20 @@ Reflects actual patterns as they're established in `src/`. Follow when adding or
 **TypeScript:**
 - No `any` without explicit justification.
 
-**JSX runtime:** default React JSX runtime (no custom pragma). Next.js standard.
+**JSX runtime:** default React JSX transform (no custom pragma). Next.js standard.
+
+---
+
+## Supabase Client Factories — Routing Rules
+
+Four path-disambiguated factories in `src/lib/supabase/`. Using the wrong one for a given path is a data-exposure bug:
+
+- **`client.ts`** — browser createClient. Client components only.
+- **`server.ts`** — async createClient with cookie forwarding. RSC, Server Actions, Route Handlers on owner/admin paths. Default for all owner-facing product paths.
+- **`admin.ts`** — service-role key, bypasses RLS entirely. Restricted to `/api/health` and deleted verification scripts. Never used on any product path.
+- **`spectator.ts`** — anonymous, session-less client with `x-share-token` header injection. Spectator loader and spectator Route Handlers only. Never used on admin paths.
+
+Rule: owner pages use `server.ts`; spectator loader uses `spectator.ts`; `admin.ts` is off-limits for product code.
 
 ---
 
@@ -116,11 +130,12 @@ Reflects actual patterns as they're established in `src/`. Follow when adding or
 
 - Reference CSS variables per shadcn convention (`--background`, `--radius`, etc.). Zero inline hex values ever — if a color isn't available as a token, add it to the token set first.
 - Spacing comes from Tailwind's default scale only. No arbitrary pixel values.
-- Radius via shadcn's `--radius` CSS variable, not a fixed custom scale.
+- Radius via shadcn's `--radius` CSS variable (`--radius: 0.625rem`), not a fixed custom scale.
 - Icon library: `lucide-react` (standard shadcn pairing).
 - Actual color/token values are decided in Wave 1 against a real UI — not specified here in advance.
 - Animation: 60fps minimum, test on lower-spec hardware. Prefer CSS transitions for simple state changes (hover, active, focus). Use `requestAnimationFrame` only for continuous rendering loops.
 - Tabular numbers (`font-variant-numeric: tabular-nums`) on all data displays.
+- **Dark mode only — load-bearing constraint.** The app has a single `:root` token set in `globals.css` and a permanent `dark` class on `<html>`. Never add a light-mode block, a second token set, or a theme toggle of any kind. The dark-mode-only constraint is not a preference — removing it would require re-deriving every color decision in the app. Token color semantics: `teal` = interactive/live state only; `--warning` (amber) = roster-need + regenerate-confirm exclusively.
 
 **New Component Checklist:**
 - [ ] TypeScript props interface (no `any`)
