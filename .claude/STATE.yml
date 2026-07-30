@@ -1,12 +1,12 @@
 # .claude/STATE.yml
 # Living "what happened last session" file. Overwritten completely at the end of every session — never patched.
-# Last Updated: 2026-07-23
+# Last Updated: 2026-07-30
 #
-# AUTHORING RULES FOR current_focus:
-#   - 3-5 lines MAX. A pointer, not a narrative.
-#   - State: what just completed, what is next, any active blocker.
-#   - Implementation detail belongs in .claude/logs/, not here.
-#   - Replace this field completely each session — never append.
+# AUTHORING RULES:
+#   current_focus: 3-5 lines MAX. A pointer, not a narrative. State: what just completed, what is next, any active blocker.
+#     Implementation detail belongs in .claude/logs/, not here. Replace completely each session — never append.
+#   nick_pending / known_issues / blockers: active, unresolved items only. Prune stale entries every session.
+#   warnings: REMOVED. Architectural invariants live permanently in MASTER_CONTEXT.md and ARCHITECTURE.md — not here.
 
 current_focus: |
   LAST COMPLETED: Wave 4 — share-link settings panel UI (04 line 54 [x]). Last item in Admin-UI sub-section. READ-ONLY session, no migration.
@@ -42,16 +42,5 @@ blockers:
 known_issues:
   - "npm audit: 6 vulns (4 moderate, 2 high) — transitive inside next@16.2.11 pinned deps, all build-time, none client-shipped. Re-check in later sessions."
   - "FINALITY PROMOTION GAP: matchups/player_scores rows stay is_final=false all season until the [>] build item ships. Zero live consequence until week 1→2 rollover (~2026-09-15/18). Wave 4 UI renders is_final/fetched_at honestly via UnofficialChip + AsOfTime."
-
-warnings:
-  - "ABSOLUTE RULE 13 — shared prolabel DB: never db reset, never migration repair on foreign history, no raw SQL reaching non-fantasy tables, collision check every new table name, blast radius confirmed on every report. Canonical: MASTER_CONTEXT.md 'Shared Database Protection'."
-  - "SHARE-TOKEN BOUNDARY: RLS is the wall (x-share-token header → current_share_token()). spectator_share_read TO anon on 8 tables. draft_state/draft_sessions get NO spectator policy ever. Extend only via new migration + anon SELECT grant — never via the admin client. Canonical: MASTER_CONTEXT.md Access Model."
-  - "ADMIN/SPECTATOR UI BOUNDARY: components/dashboard/ + draft-board/ are admin-only — spectator surface imports ZERO of them. Only sanctioned sharing: services/spectator.ts MAY reuse services/dashboard.ts getters via the anon client. ShareLinkPanel is admin-only, never imported by spectator."
-  - "TESTING: Vitest is the durable runner (vitest.config.ts, 23 tests / 6 files). Rule 13 discipline: fake in-memory client only, never a live DB write from a test. Extend with the fake-client pattern."
-  - "LIVE SYNC SEAMS (3b): one poll driver, one merge path, one pick-write path (recordManualPick). Never a second. ON-CLOCK IS A PROJECTION. rosterLabel is THE roster display convention."
-  - "PLAYER_SCORES IS INGESTED, NEVER COMPUTED. PROJECTIONS are the sanctioned exception (bpa/scoring.ts scores component stats at read time). Never invent score rows."
-  - "DARK MODE ONLY is load-bearing: single :root token set in globals.css, permanent `dark` class on <html>. Never add a light block or theme toggle. --radius 0.625rem. teal = interactive/live only; amber (--warning) = roster-need + regenerate-confirm."
-  - "FOUR supabase createClient factories (path-disambiguated): client.ts (browser), server.ts (RSC/action, RLS), admin.ts (secret, bypasses RLS — /api/health + deleted verification scripts only), spectator.ts (anon + x-share-token header). Owner pages use server.ts; spectator loader uses spectator.ts; never admin.ts for product paths."
-  - "SLEEPER CATALOG: once per day max. Per-league endpoints: 250ms min-gate. api.sleeper.com quarantined in services/adp/ only. Wave 4 + spectator make NO Sleeper calls — Supabase reads only."
 
 health: "clean"
