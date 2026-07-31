@@ -52,6 +52,7 @@ const PRIMARY_NAV: PrimaryItem[] = [
   // Wave 5's first section, lighting its reserved slot rather than reframing
   // the nav (the mount-point design this file was built around).
   { label: 'Score Trends', icon: LineChart, sub: '/score-trends', match: 'prefix' },
+  { label: 'Luck Tracker', icon: Sparkles, sub: '/luck', match: 'prefix' },
 ]
 
 /**
@@ -61,7 +62,6 @@ const PRIMARY_NAV: PrimaryItem[] = [
  * The `wave` field is the documented mount point for that future build.
  */
 const FUTURE_NAV: { label: string; icon: LucideIcon; wave: 5 | 6 }[] = [
-  { label: 'Luck Tracker', icon: Sparkles, wave: 5 },
   { label: 'Positional', icon: BarChart3, wave: 5 },
   { label: 'Playoff Picture', icon: Trophy, wave: 5 },
   { label: 'Trade Evaluator', icon: ArrowLeftRight, wave: 5 },

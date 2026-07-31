@@ -48,13 +48,13 @@ Read these before starting, per Session-Start Protocol (max 3 unless the task ge
 - [x] Integrate score charts into the existing admin surface as a new "Score Trends" section, with loading/empty (no weeks scored yet) states — mounted as its own route at `/leagues/[leagueId]/score-trends`, lighting the sidebar slot Wave 4 reserved for it, rather than appended to the `/dashboard` page (Nick-signed correctness amendment 2026-07-31: the original wording predated the Wave 4 nav shell, whose reserved mount points the Integration sub-section below is written around)
 
 ### Lucky/unlucky tracker
-- [ ] Implement an all-play expected-wins calculation: for each team each week, compute its win share against every other team that same week (ties split evenly), current season only
-- [ ] Implement a pure luck calculation (`actual wins − expected all-play wins`, plus cumulative luck through the current week) as a testable utility with no I/O
-- [ ] Add unit tests covering ties, byes, incomplete weeks, zero completed weeks, and odd/even team counts
-- [ ] Build the admin lucky/unlucky query service that loads current-season completed matchups/standings for one league and returns teams ranked by luck differential with stable tie-breakers
-- [ ] Build the admin luck visualization as a league-wide ranked horizontal diverging bar chart, centered at zero, sorted by luck magnitude — never a lone abstract score. Frame each team's bar/label in actual-vs-expected-record terms (e.g., "7-2 actual / 5.4-3.6 expected"), not an abstract index, so it reads without a legend. Use positive/negative CSS-variable colors and tabular-nums throughout
-- [ ] Build a per-team drill-down view (separate from the primary ranked view) showing weekly luck accumulation over the season as a diverging bar or line chart
-- [ ] Build a simplified spectator luck summary (a single season luck delta + short label per team, in actual-vs-expected terms) as a separate mobile component — no dense chart or table reused from admin
+- [x] Implement an all-play expected-wins calculation: for each team each week, compute its win share against every other team that same week (ties split evenly), current season only
+- [x] Implement a pure luck calculation (`actual wins − expected all-play wins`, plus cumulative luck through the current week) as a testable utility with no I/O
+- [x] Add unit tests covering ties, byes, incomplete weeks, zero completed weeks, and odd/even team counts
+- [x] Build the admin lucky/unlucky query service that loads current-season completed matchups/standings for one league and returns teams ranked by luck differential with stable tie-breakers
+- [x] Build the admin luck visualization as a league-wide ranked horizontal diverging bar chart, centered at zero, sorted by luck magnitude — never a lone abstract score. Frame each team's bar/label in actual-vs-expected-record terms (e.g., "7-2 actual / 5.4-3.6 expected"), not an abstract index, so it reads without a legend. Use positive/negative CSS-variable colors and tabular-nums throughout
+- [x] Build a per-team drill-down view (separate from the primary ranked view) showing weekly luck accumulation over the season as a diverging bar or line chart
+- [x] Build a simplified spectator luck summary (a single season luck delta + short label per team, in actual-vs-expected terms) as a separate mobile component — no dense chart or table reused from admin — component only; its wiring into the share-token surface stays with the Integration sub-section's own item below
 
 ### Positional breakdowns
 - [ ] Build a positional scoring aggregation service grouping current-season `player_scores` by roster and canonical position (QB/RB/WR/TE/K/DEF, flex/superflex attributed via `league_config` roster slots — no hardcoded standard roster shape)
