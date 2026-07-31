@@ -9,43 +9,45 @@
 #   warnings: REMOVED. Architectural invariants live permanently in MASTER_CONTEXT.md and ARCHITECTURE.md — not here.
 
 current_focus: |
-  LAST COMPLETED: Wave 5's Lucky/unlucky tracker sub-section — all 7 items (05 lines 51-57 [x]), one artifact fold.
-  services/luck.ts (all-play expectation vs. recomputed head-to-head record) + /leagues/<id>/luck (ranked diverging
-  bars labelled in actual-vs-expected terms, separate per-team drill-down) + spectator-luck-summary.tsx (component
-  only — share-surface wiring stays with the Integration sub-section). Sidebar's Luck Tracker slot now lit.
-  No migration, no DB write, no live-DB read. 211/211 tests (58 new), tsc/lint/build clean.
-  NEXT: Wave 5's "Positional breakdowns" sub-section (5 items). No blocker.
+  LAST COMPLETED: Wave 5's Positional breakdowns sub-section — all 5 items (05 lines 60-64 [x]), one artifact fold.
+  services/positional.ts (started-only per-slot aggregation; flex/superflex INFERRED dedicated-first, since no per-week
+  lineup slot exists in the schema) + /leagues/<id>/positional (league-average-anchored team bars, percentile heatmap
+  sortable by column via ?sort=, detail table) + the Positional sidebar slot lit. Unmapped players get their own
+  disclosed bucket. No migration, no DB write, no live-DB read. 267/267 tests (56 new), tsc/lint/build clean.
+  NEXT: Wave 5's "Playoff picture" sub-section (8 items) — its first item is the playoff-rules resolver, which needs
+  the playoff-fields decision below. No blocker.
 
 build_system:
   index: ".claude/BUILD_INDEX.md"
   files_location: ".claude/build/"
   total_files: 8
   current_build_files:
-    - ".claude/build/05_eye_candy.md"   # 🟡 — foundations + Score charts + Lucky/unlucky done; Positional breakdowns is the frontier
+    - ".claude/build/05_eye_candy.md"   # 🟡 — foundations + Score charts + Luck + Positional done; Playoff picture is the frontier
     - ".claude/build/03a_draft_assistant_static_board.md"  # 🟡 — bye-week [>] only, schedule-source-gated
     - ".claude/build/02_data_pipeline.md"  # ESPN [!] external-blocked, cron cadence [~], finality promotion [>]
 
 nick_pending:
-  - "VISUAL CHECK BACKLOG — never eyeballed in a real authed session on real data: all Wave 4 admin surfaces (nav-shell, command-center home, dashboard, share-link panel), all Wave 3b live-draft surfaces, the spectator page /share/<token>, Score Trends, and NEW this session the Luck Tracker. Nothing in this repo has been seen on a real phone yet. Luck-specific things a test cannot judge: whether the diverging bars read at a glance with 10 rows, whether the record label ('7-2 actual / 5.4-3.6 expected') survives a narrow admin viewport where it relocates under the team name, and whether the drill-down's two stacked charts are one scroll too many. The completed 2025 draft has no live clock, so live-draft timing can't be fully exercised until a real 2026 draft."
+  - "VISUAL CHECK BACKLOG — never eyeballed in a real authed session on real data: all Wave 4 admin surfaces (nav-shell, command-center home, dashboard, share-link panel), all Wave 3b live-draft surfaces, the spectator page /share/<token>, Score Trends, the Luck Tracker, and NEW this session the Positional Breakdowns page. Nothing in this repo has been seen on a real phone yet. Positional-specific things a test cannot judge: whether the heatmap's percentile shading is actually readable at the 0.08–0.55 opacity band on a real dark screen (the numbers are printed regardless, so worst case is a flat-looking grid, not a wrong one), whether a 10-team × 8-slot grid needs horizontal scrolling on the admin viewport you actually use, and whether the disclosure block — now up to five lines on a league with unmapped players — pushes the grid too far down the page."
   - "SPECTATOR PAGE IS LIVE and fails gracefully. MANUAL_SETUP's 'decide when/whether to share the link' is a real decision you can make — worth opening one on your phone first (see visual-check backlog)."
   - "POST-LOGIN LANDING: login/actions.ts still lands on /draft; root auto-land lands on command-center home. One-line fix in landingPath() if you want them consistent. Not blocking."
   - "FINALITY PROMOTION hard deadline ~2026-09-15/18 (before week 1→2 rollover). Registered as [>] in 02_data_pipeline.md. Flip [>]→[ ] when its build session starts."
-  - "ESPN UNBLOCK (~2026-08-19 → 2026-09-02): when leagues open, resolve in plain chat → flip MANUAL_SETUP + 02's 9 ESPN items + 03c's [!]→[ ]. Backsweep required against all shipped Wave 4 + 3b + Wave 5 surfaces (all platform-agnostic — ESPN leagues join automatically). The Luck Tracker included: it branches on no platform, reads effective_points and native_matchup_id as-received, and its playoff_week_start read degrades to 'all scored weeks' until ESPN's own raw settings parse. Worth a look then at whether ESPN's matchup grouping produces anomalous group sizes, which luck.ts treats as no-game."
+  - "ESPN UNBLOCK (~2026-08-19 → 2026-09-02): when leagues open, resolve in plain chat → flip MANUAL_SETUP + 02's 9 ESPN items + 03c's [!]→[ ]. Backsweep required against all shipped Wave 4 + 3b + Wave 5 surfaces (all platform-agnostic — ESPN leagues join automatically). Positional Breakdowns is the one that will show ESPN's seams first, by design: its Unmapped bucket is where crosswalk-unresolved ESPN players will surface, and its flex attribution degrades to canonical-position-only until an ESPN league's roster shape parses into a slot layout (disclosed on the surface either way)."
   - "SEASON START (~Sept 2026): sub-daily cron cadence needs Vercel Pro or alternative trigger. Currently daily on Hobby. Flip 02's cron item [~]→[x] when sub-daily ships."
   - "BYE-WEEK [>] (03a): plain-chat schedule-source decision → build session → 03a 🟢. DST fullName null issue also noted (abbreviation fallback renders; compose exists in draft-picks.ts)."
-  - "SLEEPER LEAGUE RENEWAL: when 2026 league_id is live, run npm run sync:league -- <new_id> once. Auto-land, share_token RLS, Score Trends, and the Luck Tracker all pick it up automatically."
+  - "SLEEPER LEAGUE RENEWAL: when 2026 league_id is live, run npm run sync:league -- <new_id> once. Auto-land, share_token RLS, Score Trends, Luck, and Positional all pick it up automatically."
   - "WAVE 5 WAIVER FORMULA: run a scoping session before building the waiver/FAAB recommendations item — no formula exists yet. Still the one thing gating a clean run at Wave 5; every other Wave 5 section is buildable now."
-  - "WAVE 5 PLAYOFF FIELDS: playoff team count / seeding rules are NOT in derived_config and were deliberately left unresolved. The playoff-rules resolver item needs a real answer for where they live — the raw playoff_week_start read (getPowerRankings, getScoreTrends, and now getLuck) is the precedent. Surfaces at that item's Clarify, not before."
-  - "OPTIONAL: superflex/best-ball run sensitivity (runs.ts QB threshold); demand-vs-panic run classification (needs new build item); per-league durable my-team + draft queue (small future migration)."
+  - "WAVE 5 PLAYOFF FIELDS — NOW IMMEDIATELY NEXT: playoff team count / seeding rules are NOT in derived_config and were deliberately left unresolved. The very next sub-section (Playoff picture) opens with the playoff-rules resolver item, which needs a real answer for where those fields live. The raw playoff_week_start read (getPowerRankings, getScoreTrends, getLuck, and now getPositionalBreakdown) is the precedent. Surfaces at that item's Clarify."
+  - "OPTIONAL: superflex/best-ball run sensitivity (runs.ts QB threshold); demand-vs-panic run classification (needs new build item); per-league durable my-team + draft queue (small future migration). The durable my-team gap is now felt in two places — the Luck drill-down and the Positional focus team both select via ?team= rather than defaulting to your own roster."
 
 blockers:
   - "EXTERNAL TIMING (2026-07-22): ESPN commissioner-locked until ~2026-08-19 → 2026-09-02. Blocks 02 ESPN sub-sections (9 items [!]) and 03c. Buildable frontier is unaffected: Wave 5, plus 02's finality-promotion [>] and 03a's bye-week [>]."
 
 known_issues:
   - "npm audit: vulnerabilities reported in transitive next@16.2.11 build-time deps, none client-shipped. Re-check in later sessions."
-  - "FINALITY PROMOTION GAP: matchups/player_scores rows stay is_final=false all season until the [>] build item ships. Zero live consequence until week 1→2 rollover (~2026-09-15/18). Wave 4, Score Trends, and the Luck Tracker all render is_final/fetched_at honestly (luck dims non-final weekly bars and counts the weeks)."
-  - "NO LIVE-DATA RUN, FOUR SESSIONS RUNNING: this container still has no .env.local, so getLeagueContext, getScoreTrends, and now getLuck have never executed against the real Supabase — all three are verified by tsc/lint/build plus fake-client suites that also assert their column boundaries. None writes, and the query shapes mirror getPowerRankings' already-live-verified reads, so the risk is low but the gap is real."
-  - "LUCK IS UNSEEN, NOT UNRENDERED: the render suite mounts the whole section over a 10-team × 14-week season with real luck in it and asserts geometry, labels, disclosures, and zero client JS — but no human has looked at the result. See the visual-check backlog entry for the three specific things a test cannot judge."
-  - "SCORE TRENDS IS UNSEEN, NOT UNRENDERED (narrowed 2026-07-31): same posture — charts render and are asserted, but label collisions on a narrow admin viewport and small-multiples legibility at 10+ facets still want Nick's eyes."
+  - "FINALITY PROMOTION GAP: matchups/player_scores rows stay is_final=false all season until the [>] build item ships. Zero live consequence until week 1→2 rollover (~2026-09-15/18). Wave 4, Score Trends, Luck, and Positional all render is_final/fetched_at honestly (positional counts and names the unofficial weeks in its week-scope line)."
+  - "NO LIVE-DATA RUN, FIVE SESSIONS RUNNING: this container still has no .env.local, so getLeagueContext, getScoreTrends, getLuck, and now getPositionalBreakdown have never executed against the real Supabase — all four are verified by tsc/lint/build plus fake-client suites that also assert their column boundaries. None writes. getPositionalBreakdown carries slightly more live risk than its siblings because it is the first Wave 5 service to use a PostgREST embed (players(position) through the player_scores FK) rather than a flat column list; the embed is read defensively (object OR array OR null all degrade to 'unmapped'), so a shape surprise renders an honest Unmapped bucket rather than throwing."
+  - "POSITIONAL FLEX ATTRIBUTION IS INFERRED, PERMANENTLY: no platform payload records which lineup slot a player filled in a past week, so dedicated-first reconstruction is the ceiling, not a v1 shortcut. It is disclosed on the surface. Expect it to differ from your Sleeper lineup screen in the specific case where you started a lower-scoring RB in the FLEX and a higher-scoring one at RB2 — the reconstruction always assigns the higher scorer to the dedicated slot."
+  - "POSITIONAL IS UNSEEN, NOT UNRENDERED: the render suite mounts the whole section over a 10-team × 14-week season and asserts geometry, shading bounds, links, disclosures, and zero client JS — but no human has looked at the result. See the visual-check backlog entry for the three specific things a test cannot judge."
+  - "LUCK AND SCORE TRENDS ARE UNSEEN, NOT UNRENDERED: same posture — charts render and are asserted, but the luck bars' legibility at 10 rows, the record label on a narrow viewport, and Score Trends' small-multiples legibility at 10+ facets still want Nick's eyes."
 
 health: "clean"
