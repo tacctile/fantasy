@@ -452,8 +452,13 @@ describe('spectator route — import graph carries no admin UI', () => {
   })
 
   it('imports no component from the admin surface', () => {
+    // Wave 5's admin section directories are named here too (2026-07-31): the
+    // spectator surface gets separately-built mobile components, so an import
+    // of `components/luck` or `components/score-trends` from a spectator path
+    // is the same boundary violation as importing the admin dashboard. Only
+    // `components/charts` (formatters and primitives) is shared, by decision.
     const adminUi = graph.filter((file) =>
-      /^components\/(dashboard|draft-board|auth)\//.test(file)
+      /^components\/(dashboard|draft-board|auth|luck|score-trends)\//.test(file)
     )
     expect(adminUi).toEqual([])
   })
