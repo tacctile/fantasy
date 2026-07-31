@@ -64,9 +64,9 @@ Read these before starting, per Session-Start Protocol (max 3 unless the task ge
 - [x] Add empty/edge-state handling for missing position data, byes, or incomplete current-season data, and unmapped ESPN players explicitly surfaced rather than silently dropped
 
 ### Playoff picture
-- [ ] Implement a playoff-rules resolver reading playoff team count, seeding order, and any division/bye rules from `league_config` — no hardcoded bracket size or seed count
-- [ ] Implement a pure playoff-picture calculation using current standings and remaining schedule to compute each team's clinched/eliminated/in-contention status and magic number to clinch, current season only
-- [ ] Add unit tests covering preseason/late-season states, ties, incomplete schedules, and arbitrary league sizes/playoff-spot counts
+- [x] Implement a playoff-rules resolver reading playoff team count, seeding order, and any division/bye rules from `league_config` — no hardcoded bracket size or seed count
+- [x] Implement a pure playoff-picture calculation using current standings and remaining schedule to compute each team's clinched/eliminated/in-contention status and magic number to clinch, current season only
+- [x] Add unit tests covering preseason/late-season states, ties, incomplete schedules, and arbitrary league sizes/playoff-spot counts
 - [ ] Build the admin playoff-picture table/matrix (seed, record, points-for, status badge, magic number) with tabular-nums. Status badges are one of Clinched / Controls Own Path / Needs Help / Eliminated, paired with a plain-language magic-number sentence (e.g., "Clinch with: a win, OR [Team X] loses") — do not build a probability-style bar or any probabilistic-looking visual, since this platform's playoff mechanism is deterministic clinch/eliminate, not simulation-based, and a probability-shaped display would misrepresent that
 - [ ] Build an optional interactive layer: matchup-outcome toggles for each remaining game that let the user set a hypothetical result and see standings/clinch-status recompute live using the existing deterministic playoff-picture calculation (no new probabilistic logic) — this was the most-praised interactive pattern across the research panel and is worth the build effort
 - [ ] Explicitly avoid full scenario trees or any visual resembling a probability distribution/simulation output
