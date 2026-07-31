@@ -1,6 +1,6 @@
 # 05_eye_candy.md
 **Wave 5 — Eye Candy**
-**Status:** ⬜ Not started
+**Status:** 🟡 In progress
 **Registered:** 2026-07-21
 
 ---
@@ -33,10 +33,10 @@ Read these before starting, per Session-Start Protocol (max 3 unless the task ge
 
 **Standing anti-pattern note (applies to every visualization built in this wave):** the following chart types are rejected outright, per unanimous convergence across 6 independent in-season-analytics-UX research passes — do not use them anywhere in Wave 5, including future amendments: radar/spider charts (fail at multi-entity comparison, area-distorts perception), gauges/speedometers (poor data-to-ink ratio), pie/donut charts for comparisons, full branching scenario trees (combinatorially unreadable), opaque composite scores/single "grade" numbers without a visible component breakdown, spaghetti multi-line charts with more than ~4 series on one chart (use small multiples instead), and 3D or animated-for-decoration charts.
 
-- [ ] Add chart color-scale CSS variables (categorical series, positive/negative divergence, positional accents, neutral grid/axis) to the existing shadcn theme — zero inline hex in any chart config, dark-mode compatible
-- [ ] Build a shared chart-primitives layer (responsive container, tooltip, legend, axis formatters, loading/empty skeletons) with `tabular-nums` enforced on every axis tick, tooltip, and legend value
-- [ ] Build a shared small-multiples layout primitive for any comparison exceeding ~4 series, reused across score trends, positional comparisons, and any future multi-team chart in this wave
-- [ ] Build a current-season league-context helper resolving `league_id`, `platform`, `season_year`, and `league_config` for both admin and share-token paths, with no hardcoded league count or platform assumption
+- [x] Add chart color-scale CSS variables (categorical series, positive/negative divergence, positional accents, neutral grid/axis) to the existing shadcn theme — zero inline hex in any chart config, dark-mode compatible
+- [x] Build a shared chart-primitives layer (responsive container, tooltip, legend, axis formatters, loading/empty skeletons) with `tabular-nums` enforced on every axis tick, tooltip, and legend value
+- [x] Build a shared small-multiples layout primitive for any comparison exceeding ~4 series, reused across score trends, positional comparisons, and any future multi-team chart in this wave
+- [x] Build a current-season league-context helper resolving `league_id`, `platform`, `season_year`, and `league_config` for both admin and share-token paths, with no hardcoded league count or platform assumption. Playoff team count / seeding rules are NOT resolved here — `derived_config` doesn't carry them; the playoff-rules resolver item below owns that decision
 
 ### Score charts
 - [ ] Build a weekly team-score aggregation query service returning each team's actual points per week for the current season, joined from existing `player_scores`/matchup data, scoped to one league
