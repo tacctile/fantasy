@@ -57,11 +57,11 @@ Read these before starting, per Session-Start Protocol (max 3 unless the task ge
 - [x] Build a simplified spectator luck summary (a single season luck delta + short label per team, in actual-vs-expected terms) as a separate mobile component — no dense chart or table reused from admin — component only; its wiring into the share-token surface stays with the Integration sub-section's own item below
 
 ### Positional breakdowns
-- [ ] Build a positional scoring aggregation service grouping current-season `player_scores` by roster and canonical position (QB/RB/WR/TE/K/DEF, flex/superflex attributed via `league_config` roster slots — no hardcoded standard roster shape)
-- [ ] Build the single-team-vs-league positional breakdown visualization as horizontal bars, one per position, centered/anchored on league average, with rank/percentile labeled at the bar endpoint — radar is explicitly rejected for this view
-- [ ] Build the multi-team positional comparison visualization as a heatmap grid (teams × positions, color-coded by percentile), sortable by column, with the requesting user's team pinned/highlighted
-- [ ] Build a positional detail table (per-team totals, share percentages) with tabular-nums
-- [ ] Add empty/edge-state handling for missing position data, byes, or incomplete current-season data, and unmapped ESPN players explicitly surfaced rather than silently dropped
+- [x] Build a positional scoring aggregation service grouping current-season `player_scores` by roster and canonical position (QB/RB/WR/TE/K/DEF, flex/superflex attributed via `league_config` roster slots — no hardcoded standard roster shape)
+- [x] Build the single-team-vs-league positional breakdown visualization as horizontal bars, one per position, centered/anchored on league average, with rank/percentile labeled at the bar endpoint — radar is explicitly rejected for this view
+- [x] Build the multi-team positional comparison visualization as a heatmap grid (teams × positions, color-coded by percentile), sortable by column, with the requesting user's team pinned/highlighted
+- [x] Build a positional detail table (per-team totals, share percentages) with tabular-nums
+- [x] Add empty/edge-state handling for missing position data, byes, or incomplete current-season data, and unmapped ESPN players explicitly surfaced rather than silently dropped
 
 ### Playoff picture
 - [ ] Implement a playoff-rules resolver reading playoff team count, seeding order, and any division/bye rules from `league_config` — no hardcoded bracket size or seed count
