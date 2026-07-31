@@ -222,6 +222,78 @@ export type PlayerCardResult =
   | { ok: false; reason: 'league_not_found' | 'player_not_found' }
 
 /**
+ * One dashboard section's render input, on either surface: real data, or the
+ * section failed to load. Distinct from an EMPTY section — an empty standings
+ * array is honest data ("nothing synced yet") and stays `status: 'ok'`, while
+ * `unavailable` means the query itself failed and the UI must say so rather
+ * than imply the league has no standings. Never carries the underlying error:
+ * the reason is logged server-side only (Access Model — internal error content
+ * never reaches a rendered response, admin or spectator).
+ */
+export type SectionOutcome<T> =
+  | { status: 'ok'; data: T }
+  | { status: 'unavailable' }
+
+/**
+ * Run one section's query and degrade a THROWN failure to `fallback` instead
+ * of letting it take down the whole page. Typed not-found/invalid results are
+ * passed through untouched — those are answers, not failures, and each caller
+ * decides what they mean (a not-found league is still a 404).
+ *
+ * This is what keeps one failing section — including, once ESPN is connected,
+ * an ESPN-league query failing while Sleeper-backed sections are fine —
+ * isolated from the rest of the surface (MASTER_CONTEXT Data Source
+ * Architecture: an ESPN break must never take down Sleeper-sourced features).
+ * The error is logged with its label for correlation and never returned.
+ */
+export async function settleQuery<T, F = T>(
+  label: string,
+  query: Promise<T>,
+  fallback: F
+): Promise<T | F> {
+  try {
+    return await query
+  } catch (error) {
+    console.error(`[dashboard] ${label} failed`, error)
+    return fallback
+  }
+}
+
+/** The `settleQuery` fallback for a getter that returns a typed result. */
+export const SECTION_UNAVAILABLE = {
+  ok: false,
+  reason: 'unavailable',
+} as const
+
+export type SectionUnavailableResult = typeof SECTION_UNAVAILABLE
+
+/**
+ * A getter's result as a section's render input. Any non-ok result becomes
+ * `unavailable` — callers that care about a specific reason (a not-found
+ * league is a 404, not a broken section) must handle it before calling.
+ */
+export function toSection<T>(
+  result: { ok: true; data: T } | { ok: false; reason: string }
+): SectionOutcome<T> {
+  return result.ok ? { status: 'ok', data: result.data } : { status: 'unavailable' }
+}
+
+/**
+ * The league identity context from whichever section loaded, so a page whose
+ * standings query failed still renders a titled header instead of dropping to
+ * the route error boundary. Null when every section failed — the caller's cue
+ * that the whole page genuinely has nothing to render.
+ */
+export function firstContext(
+  sections: readonly SectionOutcome<{ context: DashboardLeagueContext }>[]
+): DashboardLeagueContext | null {
+  for (const section of sections) {
+    if (section.status === 'ok') return section.data.context
+  }
+  return null
+}
+
+/**
  * Resolve the league's identity context, or null when the ID is malformed
  * or no such league is connected. Explicit columns only — the module
  * boundary discipline applies here and to every query built on top of it.

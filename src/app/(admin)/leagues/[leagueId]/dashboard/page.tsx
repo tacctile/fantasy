@@ -4,15 +4,20 @@ import { notFound } from 'next/navigation'
 import LeagueDashboardShell from '@/components/dashboard/league-dashboard-shell'
 import PlayerCard from '@/components/dashboard/player-card'
 import PlayerCardSheet from '@/components/dashboard/player-card-sheet'
+import SectionUnavailable from '@/components/dashboard/section-unavailable'
 import ShareLinkPanel from '@/components/dashboard/share-link-panel'
 import type { Database } from '@/lib/supabase/database.types'
 import { createClient } from '@/lib/supabase/server'
 import {
+  firstContext,
   getMatchups,
   getPlayerCard,
   getPowerRankings,
   getStandings,
   listScoredWeeks,
+  SECTION_UNAVAILABLE,
+  settleQuery,
+  toSection,
 } from '@/services/dashboard'
 
 const MIN_WEEK = 1
@@ -80,22 +85,52 @@ export default async function LeagueDashboardPage({
 
   const [standingsResult, powerRankingsResult, weeks, shareToken] =
     await Promise.all([
-      getStandings(db, leagueId),
-      getPowerRankings(db, leagueId),
-      listScoredWeeks(db, leagueId),
-      fetchShareToken(db, leagueId),
+      settleQuery('standings', getStandings(db, leagueId), SECTION_UNAVAILABLE),
+      settleQuery(
+        'powerRankings',
+        getPowerRankings(db, leagueId),
+        SECTION_UNAVAILABLE
+      ),
+      settleQuery('scoredWeeks', listScoredWeeks(db, leagueId), []),
+      settleQuery('shareToken', fetchShareToken(db, leagueId), null),
     ])
-  if (!standingsResult.ok || !powerRankingsResult.ok) notFound()
+  if (
+    (!standingsResult.ok && standingsResult.reason === 'league_not_found') ||
+    (!powerRankingsResult.ok &&
+      powerRankingsResult.reason === 'league_not_found')
+  ) {
+    notFound()
+  }
 
   const defaultWeek = weeks.length > 0 ? weeks[weeks.length - 1] : MIN_WEEK
   const week = parseWeekParam(firstParam(query.week)) ?? defaultWeek
 
-  const matchupsResult = await getMatchups(db, leagueId, week)
-  if (!matchupsResult.ok) notFound()
+  const matchupsResult = await settleQuery(
+    'matchups',
+    getMatchups(db, leagueId, week),
+    SECTION_UNAVAILABLE
+  )
+  if (!matchupsResult.ok && matchupsResult.reason === 'league_not_found') {
+    notFound()
+  }
+
+  const standings = toSection(standingsResult)
+  const powerRankings = toSection(powerRankingsResult)
+  const matchups = toSection(matchupsResult)
+  const context = firstContext([standings, powerRankings, matchups])
+  // Every section failed: no league identity to render a header with, so this
+  // is a whole-page failure — the route error boundary owns it from here.
+  if (context === null) throw new Error('league dashboard: all sections failed')
 
   const playerId = firstParam(query.player)
   const playerResult =
-    playerId === undefined ? null : await getPlayerCard(db, playerId, leagueId)
+    playerId === undefined
+      ? null
+      : await settleQuery(
+          'playerCard',
+          getPlayerCard(db, playerId, leagueId),
+          SECTION_UNAVAILABLE
+        )
   if (playerResult !== null && !playerResult.ok) {
     if (playerResult.reason === 'league_not_found') notFound()
   }
@@ -104,9 +139,10 @@ export default async function LeagueDashboardPage({
   return (
     <>
       <LeagueDashboardShell
-        standings={standingsResult.data}
-        matchups={matchupsResult.data}
-        powerRankings={powerRankingsResult.data}
+        context={context}
+        standings={standings}
+        matchups={matchups}
+        powerRankings={powerRankings}
         weeks={weeks}
         settingsSlot={
           shareToken === null ? undefined : (
@@ -124,6 +160,10 @@ export default async function LeagueDashboardPage({
             }
           >
             <PlayerCard data={playerResult.data} />
+          </PlayerCardSheet>
+        ) : playerResult.reason === 'unavailable' ? (
+          <PlayerCardSheet closeHref={closeHref} label="Player unavailable">
+            <SectionUnavailable label="This player's details" />
           </PlayerCardSheet>
         ) : (
           <PlayerCardSheet closeHref={closeHref} label="Player not found">

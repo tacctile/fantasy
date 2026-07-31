@@ -2,6 +2,7 @@ import type { SpectatorDashboardData } from '@/services/spectator'
 
 import SpectatorMatchups from './spectator-matchups'
 import SpectatorPowerRankings from './spectator-power-rankings'
+import SpectatorSectionNotice from './spectator-section-notice'
 import SpectatorStandings from './spectator-standings'
 
 interface SpectatorShellProps {
@@ -27,6 +28,11 @@ const SECTION_HEADING =
  * selector, no week selector, no share-link/regenerate control, no sign-out,
  * no nav shell, and no login or auth affordance of any kind. Only types and
  * the data-access layer are shared with the admin surface.
+ *
+ * Each section arrives as its own outcome (2026-07-31): a section whose query
+ * failed renders a quiet notice while its neighbours render real data — an
+ * empty section still renders its own honest empty state, which is a different
+ * message entirely.
  */
 export default function SpectatorShell({ data, playerSlot }: SpectatorShellProps) {
   const { context } = data
@@ -50,17 +56,29 @@ export default function SpectatorShell({ data, playerSlot }: SpectatorShellProps
         <h2 className={SECTION_HEADING}>
           {data.week === null ? 'Matchups' : `Week ${data.week}`}
         </h2>
-        <SpectatorMatchups data={data.matchups} />
+        {data.matchups.status === 'ok' ? (
+          <SpectatorMatchups data={data.matchups.data} />
+        ) : (
+          <SpectatorSectionNotice label="this week&apos;s matchups" />
+        )}
       </section>
 
       <section aria-label="Standings" className="flex flex-col gap-2">
         <h2 className={SECTION_HEADING}>Standings</h2>
-        <SpectatorStandings data={data.standings} />
+        {data.standings.status === 'ok' ? (
+          <SpectatorStandings data={data.standings.data} />
+        ) : (
+          <SpectatorSectionNotice label="the standings" />
+        )}
       </section>
 
       <section aria-label="Power rankings" className="flex flex-col gap-2">
         <h2 className={SECTION_HEADING}>Power rankings</h2>
-        <SpectatorPowerRankings data={data.powerRankings} />
+        {data.powerRankings.status === 'ok' ? (
+          <SpectatorPowerRankings data={data.powerRankings.data} />
+        ) : (
+          <SpectatorSectionNotice label="the power rankings" />
+        )}
       </section>
 
       {playerSlot}

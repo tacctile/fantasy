@@ -385,3 +385,12 @@ Condensed key decisions and outcomes from session logs rotated out under the 5-f
 - Shipped `draft-queue.ts` (pure) + `draft-queue-panel.tsx` + `queue-toggle.tsx`, queue toggles on both the main rows and the BPA rows.
 - Verified 32/32 pure harness (deleted) + tsc/lint/build clean. Honest limitation recorded: the timing-dependent trigger and UI wiring were build-verified only — no live draft exists to drive (the 2025 league is complete).
 - PROGRESS not updated (sub-section, not a full-file milestone). WIKI NOTE: demand-vs-panic run classification remains a standing scope question (unchanged).
+
+## 2026-07-23_04 — Wave 3b resilience sub-section (2 items) + Vitest activation
+
+- Fold = 03b's Resilience sub-section as one artifact: item 1's read-only fallback + item 2's durable suite covering it. READ-ONLY, no DB contact of any kind (the race test drives `recordManualPick` against a fake in-memory client per Rule 13; the other four tests are pure).
+- Item 1 shipped `src/components/ui/error-boundary.tsx` — the app's ONE class component (React requires it), `fallback` + `resetKeys` (clears on fresh data so a region revived by the next pick recovers). Every live-enhancement region in the draft shell wrapped individually (Nick's Clarify: per-region granularity, merge failure falls back to the 3a base pool, quiet inline notices). Appear-only micro-elements (run badges, live-status indicator) use `fallback={null}` — silence IS their honest resting state (disclosed judgment call). Shell-level derivations guarded at the source, since a child boundary can't catch a throw in the parent's own render; auto-pick disarms on a selection fault rather than retrying writes.
+- Item 2 activated **Vitest** as the project's durable test runner — the repo had none, every prior verification being a deleted throwaway harness. `vitest.config.ts` (node env, `@/`→src alias, `src/**/*.test.ts`), 14 tests across 5 co-located files: the `(league_id, pick_number)` first-write-wins race, BPA replacement deepening + survivor VORP rise, tier recompute across a cliff, run-window trigger/reset/shallow/K-DEF, and auto-pick's hard-rule skip + fall-through.
+- Verified 14/14 + tsc/lint/build clean. Milestone (03b → 🟢 AND core infrastructure activation) → PROGRESS entry added.
+- WIKI COVERAGE CHECK: complete — resilience mechanics and framework choice are declared wiki silence (no covering ROUTING/index category), disclosed at decision time; every test assertion encodes already-shipped, already-cited domain behavior.
+- WIKI NOTE: none new.

@@ -28,26 +28,34 @@ import {
   getPowerRankings,
   getStandings,
   listScoredWeeks,
+  SECTION_UNAVAILABLE,
+  settleQuery,
+  toSection,
   type DashboardLeagueContext,
   type MatchupsData,
   type PlayerCardData,
   type PowerRankingsData,
+  type SectionOutcome,
   type StandingsData,
 } from '@/services/dashboard'
 
 export type SpectatorDashboardData = {
   leagueId: string
+  /** Resolved from the `leagues` row at token resolution, so the header
+   *  survives any individual section failing. */
   context: DashboardLeagueContext
-  standings: StandingsData
-  powerRankings: PowerRankingsData
+  standings: SectionOutcome<StandingsData>
+  powerRankings: SectionOutcome<PowerRankingsData>
   /** Weeks the league has scored, ascending — the spectator's (current-week-only)
    *  matchup week is always the max; the array documents what exists. */
   availableWeeks: number[]
   /** The resolved week (latest scored, or the requested week when it exists),
    *  or null when nothing has been scored yet. */
   week: number | null
-  /** Current-week matchups, or null when the league has no scored week yet. */
-  matchups: MatchupsData | null
+  /** Current-week matchups. `data: null` inside an ok outcome is the honest
+   *  "nothing scored yet" state; an `unavailable` outcome means the query
+   *  failed — two different things a viewer must not see conflated. */
+  matchups: SectionOutcome<MatchupsData | null>
 }
 
 export type SpectatorDashboardResult =
@@ -66,22 +74,40 @@ export type SpectatorPlayerCardResult =
  * client to run the dashboard getters through.
  */
 async function resolveSpectatorLeague(shareToken: string): Promise<
-  | { ok: true; leagueId: string; db: ReturnType<typeof createClient> }
+  | {
+      ok: true
+      leagueId: string
+      context: DashboardLeagueContext
+      db: ReturnType<typeof createClient>
+    }
   | { ok: false; reason: 'invalid_token' }
 > {
   const token = shareToken.trim()
   if (token.length === 0) return { ok: false, reason: 'invalid_token' }
 
   const db = createClient(token)
+  // Identity columns only — never share_token or owner_id. Read here (rather
+  // than lifted out of the standings result) so the page keeps a titled header
+  // when an individual section's query fails.
   const { data, error } = await db
     .from('leagues')
-    .select('platform_league_uuid')
+    .select('platform_league_uuid, name, platform, season_year')
     .maybeSingle()
   if (error) {
     throw new Error(`spectator league resolution failed: ${error.message}`)
   }
   if (data === null) return { ok: false, reason: 'invalid_token' }
-  return { ok: true, leagueId: data.platform_league_uuid, db }
+  return {
+    ok: true,
+    leagueId: data.platform_league_uuid,
+    context: {
+      leagueId: data.platform_league_uuid,
+      name: data.name,
+      platform: data.platform,
+      seasonYear: data.season_year,
+    },
+    db,
+  }
 }
 
 /** Latest scored week, honoring a valid requested week; null when nothing is
@@ -110,34 +136,49 @@ export async function loadSpectatorDashboard(
 ): Promise<SpectatorDashboardResult> {
   const resolved = await resolveSpectatorLeague(shareToken)
   if (!resolved.ok) return resolved
-  const { db, leagueId } = resolved
+  const { db, leagueId, context } = resolved
 
+  // Each section is settled independently (2026-07-31): one failing query
+  // degrades to its own inline notice on the page instead of blanking a
+  // leaguemate's whole view. A section that resolves not-found is impossible
+  // here — resolution already proved the league is reachable through this
+  // client — so it collapses to the same unavailable outcome as a throw
+  // rather than leaking an internal inconsistency to the viewer.
   const [standings, powerRankings, availableWeeks] = await Promise.all([
-    getStandings(db, leagueId),
-    getPowerRankings(db, leagueId),
-    listScoredWeeks(db, leagueId),
+    settleQuery(
+      'spectator standings',
+      getStandings(db, leagueId),
+      SECTION_UNAVAILABLE
+    ),
+    settleQuery(
+      'spectator powerRankings',
+      getPowerRankings(db, leagueId),
+      SECTION_UNAVAILABLE
+    ),
+    settleQuery('spectator scoredWeeks', listScoredWeeks(db, leagueId), []),
   ])
-  // Resolution already proved the league is reachable through this client, so a
-  // not-found here would be an inconsistency — collapse it to the same honest
-  // not-found the viewer sees for a bad token rather than leaking an error.
-  if (!standings.ok || !powerRankings.ok) {
-    return { ok: false, reason: 'invalid_token' }
-  }
 
   const week = pickWeek(options?.week, availableWeeks)
-  let matchups: MatchupsData | null = null
-  if (week !== null) {
-    const result = await getMatchups(db, leagueId, week)
-    matchups = result.ok ? result.data : null
-  }
+  const matchupsResult =
+    week === null
+      ? null
+      : await settleQuery(
+          'spectator matchups',
+          getMatchups(db, leagueId, week),
+          SECTION_UNAVAILABLE
+        )
+  const matchups: SectionOutcome<MatchupsData | null> =
+    matchupsResult === null
+      ? { status: 'ok', data: null }
+      : toSection(matchupsResult)
 
   return {
     ok: true,
     data: {
       leagueId,
-      context: standings.data.context,
-      standings: standings.data,
-      powerRankings: powerRankings.data,
+      context,
+      standings: toSection(standings),
+      powerRankings: toSection(powerRankings),
       availableWeeks,
       week,
       matchups,
