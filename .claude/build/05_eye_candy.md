@@ -39,13 +39,13 @@ Read these before starting, per Session-Start Protocol (max 3 unless the task ge
 - [x] Build a current-season league-context helper resolving `league_id`, `platform`, `season_year`, and `league_config` for both admin and share-token paths, with no hardcoded league count or platform assumption. Playoff team count / seeding rules are NOT resolved here — `derived_config` doesn't carry them; the playoff-rules resolver item below owns that decision
 
 ### Score charts
-- [ ] Build a weekly team-score aggregation query service returning each team's actual points per week for the current season, joined from existing `player_scores`/matchup data, scoped to one league
-- [ ] Build the admin weekly-points chart as a bar chart, not a line chart — discrete per-week data is better communicated by bars than a line implying false continuity between weeks
-- [ ] Build the admin rolling/cumulative score-trend chart as a line chart with a league-average (or expectation) reference line for context — this is the one score-chart view where a line is correct, since it's tracking a genuine cumulative trend
-- [ ] Cap any single score chart at ~4 team series before switching to the shared small-multiples layout primitive (one mini-chart per team) rather than overplotting
-- [ ] Build a score-distribution/spread view (histogram or min/median/max band) contextualizing an individual team's scores against the league
-- [ ] Use sparklines (not full charts) for score trend in any table/list row context; expand to the full bar/line chart only on click/drill-down
-- [ ] Integrate score charts into the existing admin league dashboard as a new "Score Trends" section, with loading/empty (no weeks scored yet) states
+- [x] Build a weekly team-score aggregation query service returning each team's actual points per week for the current season, joined from existing `player_scores`/matchup data, scoped to one league
+- [x] Build the admin weekly-points chart as a bar chart, not a line chart — discrete per-week data is better communicated by bars than a line implying false continuity between weeks
+- [x] Build the admin rolling/cumulative score-trend chart as a line chart with a league-average (or expectation) reference line for context — this is the one score-chart view where a line is correct, since it's tracking a genuine cumulative trend
+- [x] Cap any single score chart at ~4 team series before switching to the shared small-multiples layout primitive (one mini-chart per team) rather than overplotting
+- [x] Build a score-distribution/spread view (histogram or min/median/max band) contextualizing an individual team's scores against the league
+- [x] Use sparklines (not full charts) for score trend in any table/list row context; expand to the full bar/line chart only on click/drill-down
+- [x] Integrate score charts into the existing admin surface as a new "Score Trends" section, with loading/empty (no weeks scored yet) states — mounted as its own route at `/leagues/[leagueId]/score-trends`, lighting the sidebar slot Wave 4 reserved for it, rather than appended to the `/dashboard` page (Nick-signed correctness amendment 2026-07-31: the original wording predated the Wave 4 nav shell, whose reserved mount points the Integration sub-section below is written around)
 
 ### Lucky/unlucky tracker
 - [ ] Implement an all-play expected-wins calculation: for each team each week, compute its win share against every other team that same week (ties split evenly), current season only
