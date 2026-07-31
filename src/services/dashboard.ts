@@ -323,8 +323,12 @@ type RosterNames = {
   ownerDisplayName: string | null
 }
 
-/** Display names per native_roster_id — mutable attributes, never join keys. */
-async function fetchRosterNames(
+/**
+ * Display names per native_roster_id — mutable attributes, never join keys.
+ * Exported for `services/score-trends.ts` (Wave 5): one roster-name query
+ * shape for the whole admin surface rather than a second one that drifts.
+ */
+export async function fetchRosterNames(
   db: SupabaseClient<Database>,
   leagueId: string
 ): Promise<Map<number, RosterNames>> {
@@ -860,8 +864,13 @@ export async function getPlayerCard(
  * league-configuration-data-model ADR's escape hatch; derived_config
  * carries no playoff fields). Null when absent, unparseable, or
  * non-positive — the caller then counts all scored weeks.
+ *
+ * Exported for `services/score-trends.ts` (Wave 5, Nick's Clarify: score
+ * charts plot the regular season only). ONE parser for the regular-season
+ * boundary across the admin surface — a second copy would drift the first
+ * time a platform spells the key differently.
  */
-function parsePlayoffWeekStart(raw: unknown): number | null {
+export function parsePlayoffWeekStart(raw: unknown): number | null {
   const record = asRecord(raw)
   const settings = record === null ? null : asRecord(record.settings)
   const value = settings?.playoff_week_start
