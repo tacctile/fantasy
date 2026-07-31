@@ -49,6 +49,8 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 
 import type { Database } from '@/lib/supabase/database.types'
 
+import { parseRosterSlotLayout, type RosterSlotLayout } from './league-context'
+
 const ADP_SOURCE = 'sleeper'
 const SELECT_CHUNK_SIZE = 500
 const UUID_PATTERN =
@@ -99,21 +101,15 @@ export type DraftBoardPlayer = {
 export type DraftablePlayer = Pick<DraftBoardPlayer, 'sleeperPlayerId' | 'fullName'>
 
 /**
- * The league's lineup-slot layout, parsed from `roster_settings_raw`'s
- * `roster_positions` array (the raw-column escape hatch per the
- * league-configuration-data-model ADR — derived_config carries only totals).
- * `ir` here is the raw IR-label count; display capacity should prefer
- * `derived_config`'s ir_slot_count, which also honors `settings.reserve_slots`.
+ * The lineup-slot layout type and its parser now live in
+ * `services/league-context.ts` (Nick's Clarify 2026-07-31): Wave 5's positional
+ * breakdown needs the same parse, and the spectator surface cannot import a
+ * draft-related module. Re-exported here so this module's existing consumers
+ * (bpa/*, the draft-board components) are untouched — the dependency runs
+ * draft-board → league-context, never the reverse.
  */
-export type RosterSlotLayout = {
-  /** Dedicated single-position starting slots, keyed by label, layout order. */
-  dedicated: Record<string, number>
-  /** Flex-family starting slots (any label containing FLEX), keyed by label. */
-  flex: Record<string, number>
-  bench: number
-  ir: number
-  taxi: number
-}
+export type { RosterSlotLayout }
+export { parseRosterSlotLayout }
 
 export type DraftBoardLeagueContext = {
   /** platform_league_uuid — never a provider-native ID. */
@@ -206,47 +202,6 @@ export function resolveAdpScoringFormat(derived: {
   if (ppr >= 1) return 'ppr'
   if (ppr > 0) return 'half_ppr'
   return 'std'
-}
-
-/**
- * Parse a `roster_settings_raw` payload into the lineup-slot layout. Shape-
- * tolerant, never throws: anything other than the Sleeper raw shape (an
- * object carrying a non-empty `roster_positions` string array) returns null
- * and the consumer degrades gracefully. Labels classify pattern-based — the
- * full label inventory is unpublished (wiki: sleeper-api/league-endpoint), so
- * BN/IR/TAXI are structural, any label containing FLEX is flex-family, and
- * everything else is a dedicated position slot (IDP labels land there
- * naturally, no closed list anywhere).
- */
-export function parseRosterSlotLayout(raw: unknown): RosterSlotLayout | null {
-  const record = asRecord(raw)
-  if (record === null) return null
-  const positions = record.roster_positions
-  if (
-    !Array.isArray(positions) ||
-    positions.length === 0 ||
-    !positions.every((slot): slot is string => typeof slot === 'string')
-  ) {
-    return null
-  }
-  const layout: RosterSlotLayout = {
-    dedicated: {},
-    flex: {},
-    bench: 0,
-    ir: 0,
-    taxi: 0,
-  }
-  for (const label of positions) {
-    if (label === 'BN') layout.bench += 1
-    else if (label === 'IR') layout.ir += 1
-    else if (label === 'TAXI') layout.taxi += 1
-    else if (label.includes('FLEX')) {
-      layout.flex[label] = (layout.flex[label] ?? 0) + 1
-    } else {
-      layout.dedicated[label] = (layout.dedicated[label] ?? 0) + 1
-    }
-  }
-  return layout
 }
 
 /** Fetch the merged draft-board dataset for one league Nick owns. */

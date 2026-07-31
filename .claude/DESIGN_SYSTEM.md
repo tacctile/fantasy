@@ -3,7 +3,7 @@
 
 **Parent:** `.claude/MASTER_CONTEXT.md`
 
-**Last Updated:** 2026-07-22 (player-list fold: six net-new position identity tokens `--pos-qb/rb/wr/te/k/def` added — Nick-signed Sleeper-convention hues with RB shifted off the brand teal; badges only, never row tints. Prior same-day: palette reconciliation fold applied the full Color System live in `src/app/globals.css`)
+**Last Updated:** 2026-07-31 (Wave 5 shared-foundations fold: the full chart colour system decided and live — a teal-free validated categorical ramp, a diverging pair + neutral midpoint, grid/axis furniture tokens, and the `--pos-*` usage rule widened to cover positional chart marks. Charting library resolved: none — hand-rolled SVG/CSS primitives. Prior: 2026-07-22 player-list fold added the six `--pos-*` tokens; palette reconciliation fold applied the Color System live in `src/app/globals.css`)
 
 ---
 
@@ -104,9 +104,39 @@ The shadcn token surface is wider than the researched palette. These derivations
 | `--ring` | `var(--primary)` | Focus rings are interactive state → teal (components apply it at `/50`) |
 | `--sidebar` family | aliases: `--card`/`--foreground`/`--primary`/`--accent`/`--border`/`--ring` equivalents | Nothing consumes them yet; 1:1 aliases prevent drift when a sidebar ships (Wave 4) |
 
-### Charts
+### Chart Color Scales (final — Wave 5 shared foundations, Nick-signed 2026-07-31)
 
-`--chart-1` = `--primary` (teal, positive framing); `--chart-2` = `--destructive` (coral, negative framing). Smooth/monotone lines with a soft gradient fill beneath, minimal/no gridlines or axes, annotation-light — not a dashboard/enterprise chart style. This is a styling constraint on whichever charting library gets picked in Wave 5 (library choice itself remains open), not a library recommendation.
+Supersedes the earlier placeholder (`--chart-1` = teal, `--chart-2` = coral, library choice open). Four scales, each doing exactly one job; a colour never does two.
+
+**Charting library: none — hand-rolled SVG/CSS primitives** (`src/components/charts/`), Nick-signed. Decisive reason: a measurement-based responsive container forces `'use client'`, and the spectator surface has a hard zero-client-JS guarantee. Percentage-positioned marks are correct at any width with no JS, so both surfaces stay server-rendered. Styling direction is unchanged from the placeholder: minimal/no gridlines, annotation-light, not a dashboard/enterprise look.
+
+**1. Categorical — series identity (which team).** Fixed slot order, assigned by stable entity key (`native_roster_id`), never by rank and never cycled — a filter that drops a team must not repaint the survivors. Deliberately clear of the teal hue band so "teal = interactive/live only" survives contact with charts; a highlighted or live series may still go teal, which is the rule working rather than an exception. `--chart-1` no longer aliases `--primary`.
+
+| Token | Value | Hue |
+|---|---|---|
+| `--chart-1` | `oklch(0.62 0.16 250)` | blue |
+| `--chart-2` | `oklch(0.66 0.16 45)` | orange |
+| `--chart-3` | `oklch(0.58 0.19 300)` | purple |
+| `--chart-4` | `oklch(0.65 0.17 140)` | green — off teal, same shift as `--pos-rb` |
+| `--chart-5` | `oklch(0.62 0.19 330)` | magenta |
+
+*Validated, not eyeballed* (dark mode, against both `--card` and `--background`): lightness band ✓, chroma ≥ 0.10 ✓, worst adjacent CVD ΔE **18.6** deuteranopia / 14.6 tritanopia (target ≥ 8), normal-vision floor **28.9** (gate ≥ 15), contrast ≥ 3:1 on all five. **Cap: 4 series on one chart**, then small multiples — `seriesVar()` returns null past slot 5 rather than cycling two teams onto one colour.
+
+**2. Diverging — polarity about a zero/average baseline** (luck differential, rank delta, position vs league average). Two poles + a neutral grey midpoint; never a hue at the middle.
+
+| Token | Value | Role |
+|---|---|---|
+| `--chart-positive` | `var(--positive)` | above baseline |
+| `--chart-negative` | `var(--destructive)` | below baseline |
+| `--chart-neutral` | `oklch(0.55 0.012 273.8)` | midpoint / no-data (3.34:1 on `--card`) |
+
+The poles alias the status colours deliberately — this section already sanctions `--primary` for positive deltas, and power rankings renders positive rank-delta teal today, so a positive luck bar reading teal is the documented usage, not a new one. They are separate tokens so a chart re-tune can move without dragging win/loss/injury semantics with it.
+
+**3. Positional accents — the existing `--pos-*` six, reused.** No chart-specific position palette. **The badge usage rule widens** from "badges/chips only" to **"badges, chips, and positional chart marks"** — one position colour language app-wide, so a QB bar matches its QB badge. The *never a row background or tint* half of the rule is unchanged. Positions outside the canonical six fall back to `--chart-neutral`, mirroring `position-badge.tsx`.
+
+**4. Grid / axis — recessive furniture.** `--chart-grid: oklch(0.96 0.005 273.8 / 6%)` sits deliberately *below* `--border`'s 10% so chart furniture can never compete with a data mark; `--chart-axis: oklch(0.96 0.005 273.8 / 18%)` is one step up. Axis *labels* wear `--muted-foreground` — **text never wears a series colour**; a coloured mark beside it carries identity.
+
+**Standing chart rules** (beyond the build file's rejected-chart-types list): one y-axis, never two; sequential = one hue, diverging = two hues + neutral, never a rainbow; a legend is present for 2+ series and absent for one (the title names it); small-multiples facets are monochrome with identity carried by the facet title, and share ONE domain across all facets so cross-facet comparison stays valid.
 
 ## Token Discipline
 
@@ -155,7 +185,7 @@ This section replaces the earlier generic "modern live-score app density" framin
 
 **Spectator surface — card-based, glanceable, chart-forward.**
 - Card-based layout, generous spacing, mobile-first stacking.
-- Chart-forward for any stats shown: line charts for trends, radar for positional breakdowns if used.
+- Chart-forward for any stats shown: line charts for trends, horizontal bars anchored on league average for positional breakdowns. (**Corrected 2026-07-31:** this line previously suggested radar for positional breakdowns. Radar/spider charts are now rejected project-wide — `05_eye_candy.md`'s standing anti-pattern note, unanimous across 6 independent UX research passes: they fail at multi-entity comparison and area distorts perception. No radar chart is to be built on either surface.)
 - Uses the mirrored head-to-head matchup pattern (below) as its centerpiece view.
 - Should read as a clean mobile sports app, not a dashboard shrunk to fit a phone.
 - Same color/type/component tokens as admin — just a less dense arrangement, not a different visual language.
@@ -223,7 +253,7 @@ Every delta this section previously listed is now applied in `src/app/globals.cs
 - Text tiers re-derived as alpha steps of one off-white (96% / 65% / 45%), per the Text Hierarchy table.
 - Net-new `--well`/`--warning`/`--positive` added with `@theme inline` mappings; supporting tokens derived and recorded in the Supporting Tokens table above.
 - **`--radius` resolved (Nick-signed Clarify, 2026-07-22): base stays `0.625rem`.** Containers reach the 12–16px band via the `--radius-xl` step (14px) shadcn's Card already uses; buttons/chips are pills and never consume the base. The companion pattern edits were signed in the same Clarify: `button.tsx` base `rounded-lg` → `rounded-full` (per-size radius overrides removed), `input.tsx` fill → `bg-well` (the old `dark:bg-input/30` tint mathematically could never render darker than the card it sits on).
-- **Still open (unchanged by this fold):** `--chart-3`..`--chart-5` remain the scaffold's achromatic grays — unspecified by the decision set, inert until a chart needs more than two series (Wave 5).
+- **RESOLVED 2026-07-31 (Wave 5 shared-foundations fold):** `--chart-3`..`--chart-5` are no longer scaffold grays, and `--chart-1`/`--chart-2` no longer alias `--primary`/`--destructive` — the full four-scale chart system is decided and live. See "Chart Color Scales (final)" above. Nothing consumed the old chart tokens, so the re-point had no call sites to migrate.
 
 ## New Component Checklist
 

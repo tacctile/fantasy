@@ -23,6 +23,11 @@
   --color-chart-3: var(--chart-3);
   --color-chart-2: var(--chart-2);
   --color-chart-1: var(--chart-1);
+  --color-chart-positive: var(--chart-positive);
+  --color-chart-negative: var(--chart-negative);
+  --color-chart-neutral: var(--chart-neutral);
+  --color-chart-grid: var(--chart-grid);
+  --color-chart-axis: var(--chart-axis);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -100,13 +105,50 @@
   --border: oklch(0.96 0.005 273.8 / 10%);
   --input: oklch(0.96 0.005 273.8 / 12%);
   --ring: var(--primary);
-  --chart-1: var(--primary);
-  --chart-2: var(--destructive);
-  /* --chart-3..5 are unspecified by DESIGN_SYSTEM.md (open until a chart
-     needs more than two series) — scaffold grays kept as inert placeholders. */
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+  /* Chart scales (Wave 5 shared foundations, Nick-signed 2026-07-31).
+     Four separate scales, each doing exactly one job — see DESIGN_SYSTEM.md
+     "Chart Color Scales" for the full decision record and the validator run.
+
+     CATEGORICAL — series identity (which team). Assigned in fixed slot order
+     by stable entity key, never by rank and never cycled: a filter that drops
+     a team must not repaint the survivors. Deliberately clear of the teal hue
+     band (168.6°) so "teal = interactive/live only" survives contact with
+     charts — a highlighted or live series may still go teal, which is the
+     rule working rather than an exception to it. Validated dark-mode on both
+     --card and --background surfaces: L in band, C >= 0.10, worst adjacent
+     CVD ΔE 18.6 (deutan) / 14.6 (tritan), normal-vision 28.9, contrast >= 3:1.
+     Cap: 4 series on one chart (build file), then small multiples — whose
+     facets are monochrome slot-1 by design, identity carried by facet title. */
+  --chart-1: oklch(0.62 0.16 250); /* blue */
+  --chart-2: oklch(0.66 0.16 45); /* orange */
+  --chart-3: oklch(0.58 0.19 300); /* purple */
+  --chart-4: oklch(0.65 0.17 140); /* green — off teal, same shift as --pos-rb */
+  --chart-5: oklch(0.62 0.19 330); /* magenta */
+
+  /* DIVERGING — polarity about a zero/average baseline (luck differential,
+     rank delta, position vs league average). Two poles + a NEUTRAL GRAY
+     midpoint, never a hue at the middle. The poles alias the status colors
+     deliberately: DESIGN_SYSTEM already sanctions --primary for positive
+     deltas (power rankings renders positive rank-delta teal today), so a
+     positive luck bar reading teal is the documented usage, not a new one.
+     They are separate tokens so a future chart re-tune can move without
+     dragging win/loss/injury semantics with it. */
+  --chart-positive: var(--positive);
+  --chart-negative: var(--destructive);
+  --chart-neutral: oklch(0.55 0.012 273.8); /* 3.34:1 on --card, 3.78:1 on --background */
+
+  /* GRID / AXIS — recessive by construction: the grid sits below --border's
+     10% so it never competes with a data mark, and the axis rule is one step
+     up from it. Axis *labels* wear --muted-foreground (an existing text tier);
+     text never wears a series color. */
+  --chart-grid: oklch(0.96 0.005 273.8 / 6%);
+  --chart-axis: oklch(0.96 0.005 273.8 / 18%);
+
+  /* POSITIONAL accents are NOT a fourth chart scale: positional charts reuse
+     the six --pos-* tokens above (Nick-signed 2026-07-31 — one position
+     colour language app-wide, so a QB bar matches its QB badge). The badge
+     usage rule widens to "badges and positional chart marks"; the
+     never-a-row-background/tint half of it is unchanged. */
   /* Nick-signed (palette reconciliation Clarify, 2026-07-22): base stays
      0.625rem — containers reach the 12–16px band via the --radius-xl step
      (14px) that Card uses; buttons/chips are pills and never consume it. */
