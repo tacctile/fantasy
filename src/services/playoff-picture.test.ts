@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest'
 import type { Database } from '@/lib/supabase/database.types'
 
 import {
+  applyHypotheticalResults,
   computePlayoffPicture,
   getPlayoffPicture,
   getPlayoffRules,
@@ -674,5 +675,118 @@ describe('getPlayoffPicture', () => {
       'is_final',
     ])
     expect(rec.selects.standings).toEqual(['native_roster_id', 'wins'])
+  })
+})
+
+describe('remaining games and hypothetical results (item 5)', () => {
+  it('lists only fully unplayed games, earliest week first', () => {
+    const data = computePlayoffPicture(MID_SEASON, NAMES, rules())
+    expect(data.remainingGames).toEqual([
+      { key: '2:1', week: 2, nativeMatchupId: 1, rosterIdA: 1, rosterIdB: 3 },
+      { key: '2:2', week: 2, nativeMatchupId: 2, rosterIdA: 2, rosterIdB: 4 },
+    ])
+  })
+
+  it('offers no toggle for a half-scored matchup', () => {
+    // One side in, the other pending, is a sync artifact rather than an
+    // upcoming game — a toggle there would invite overwriting a real result.
+    const half = MID_SEASON.map((r) =>
+      r.week === 2 && r.nativeRosterId === 1 ? { ...r, points: 111 } : r
+    )
+    const keys = computePlayoffPicture(half, NAMES, rules()).remainingGames.map(
+      (game) => game.key
+    )
+    expect(keys).toEqual(['2:2'])
+  })
+
+  it('lists nothing once every game is played', () => {
+    expect(
+      computePlayoffPicture(COMPLETED, NAMES, rules()).remainingGames
+    ).toEqual([])
+  })
+
+  it('turns a chosen winner into a played game and moves the record', () => {
+    const base = computePlayoffPicture(MID_SEASON, NAMES, rules())
+    const applied = applyHypotheticalResults(
+      base.scheduleRows,
+      new Map([['2:1', 3]])
+    )
+    const next = computePlayoffPicture(applied, NAMES, rules())
+    expect(team(next, 3).wins).toBe(team(base, 3).wins + 1)
+    expect(team(next, 1).losses).toBe(team(base, 1).losses + 1)
+    expect(team(next, 3).gamesRemaining).toBe(0)
+    expect(next.remainingGames.map((game) => game.key)).toEqual(['2:2'])
+  })
+
+  it('never lets a hypothetical result touch points for', () => {
+    // The seeding tiebreaker and the PF column stay the real season's numbers;
+    // a fabricated score would put an invented figure in a column the rest of
+    // the app reports as fact.
+    const base = computePlayoffPicture(MID_SEASON, NAMES, rules())
+    const next = computePlayoffPicture(
+      applyHypotheticalResults(
+        base.scheduleRows,
+        new Map([
+          ['2:1', 3],
+          ['2:2', 4],
+        ])
+      ),
+      NAMES,
+      rules()
+    )
+    for (const rosterId of [1, 2, 3, 4]) {
+      expect(team(next, rosterId).pointsFor).toBe(team(base, rosterId).pointsFor)
+    }
+  })
+
+  it('recomputes status through the same deterministic bounding', () => {
+    // T1 is 1-0 with one to play in a two-team field; deciding both remaining
+    // games in its favour has to settle the field entirely.
+    const base = computePlayoffPicture(MID_SEASON, NAMES, rules())
+    expect(team(base, 4).status).not.toBe('eliminated')
+    const next = computePlayoffPicture(
+      applyHypotheticalResults(
+        base.scheduleRows,
+        new Map([
+          ['2:1', 1],
+          ['2:2', 2],
+        ])
+      ),
+      NAMES,
+      rules()
+    )
+    expect(team(next, 1).status).toBe('clinched')
+    expect(team(next, 4).status).toBe('eliminated')
+    expect(next.scheduleExhausted).toBe(true)
+  })
+
+  it('ignores a winner who is not in the game, and an unknown game', () => {
+    const base = computePlayoffPicture(MID_SEASON, NAMES, rules())
+    const applied = applyHypotheticalResults(
+      base.scheduleRows,
+      new Map([
+        ['2:1', 4], // roster 4 does not play in matchup 2:1
+        ['9:9', 1], // no such game
+      ])
+    )
+    expect(applied.every((r) => r.isHypothetical === undefined)).toBe(true)
+    expect(computePlayoffPicture(applied, NAMES, rules()).remainingGames).toHaveLength(
+      2
+    )
+  })
+
+  it('never mutates the rows it was given', () => {
+    const base = computePlayoffPicture(MID_SEASON, NAMES, rules())
+    const before = JSON.stringify(base.scheduleRows)
+    applyHypotheticalResults(base.scheduleRows, new Map([['2:1', 3]]))
+    expect(JSON.stringify(base.scheduleRows)).toBe(before)
+  })
+
+  it('returns the real picture unchanged when nothing is set', () => {
+    const base = computePlayoffPicture(MID_SEASON, NAMES, rules())
+    const applied = applyHypotheticalResults(base.scheduleRows, new Map())
+    expect(computePlayoffPicture(applied, NAMES, rules()).teams).toEqual(
+      base.teams
+    )
   })
 })

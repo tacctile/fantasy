@@ -9,35 +9,35 @@
 #   warnings: REMOVED. Architectural invariants live permanently in MASTER_CONTEXT.md and ARCHITECTURE.md — not here.
 
 current_focus: |
-  LAST COMPLETED: Wave 5's Playoff picture items 1-3 (05 lines 67-69 [x]) — one artifact fold, the algorithm pipeline.
-  services/playoff-picture.ts: parsePlayoffRules/getPlayoffRules (raw-settings read of playoff_teams/type/round_type/
-  divisions — THE STANDING PLAYOFF-FIELDS GAP IS NOW CLOSED) + computePlayoffPicture (deterministic bounding, never
-  simulation; strict-under-any-tiebreaker clinch, asymmetric elimination) + 37 tests. No UI, no migration, no DB write.
-  304/304 tests, tsc/lint/build clean.
-  NEXT: 05 line 70 — the admin playoff-picture table (status badges + plain-language magic-number sentence, explicitly
-  NO probability-style visual). All its data comes from the service shipped this session. No blocker.
+  LAST COMPLETED: Wave 5's Playoff picture items 4-6 (05 lines 70-72 [x]) — one artifact fold, the admin surface.
+  Live at /leagues/[id]/playoff-picture (fourth reserved sidebar slot lit): deterministic status table + what-if
+  toggles whose recompute is the SAME pure function the server ran. Item 6's no-probability rule is machine-asserted
+  over the markup, not trusted. Signed governance change: --warning rescoped to "unmet condition or provisional state"
+  (MASTER_CONTEXT + DESIGN_SYSTEM both updated). 336/336 tests, tsc/lint/build clean. No migration, no DB write.
+  NEXT: 05 line 73 — the spectator playoff-status view (clinched/bubble/eliminated list only, no magic numbers, no
+  toggles) as a separate mobile component. Its share-surface WIRING stays with the Integration sub-section. No blocker.
 
 build_system:
   index: ".claude/BUILD_INDEX.md"
   files_location: ".claude/build/"
   total_files: 8
   current_build_files:
-    - ".claude/build/05_eye_candy.md"   # 🟡 — foundations + Score charts + Luck + Positional done; Playoff picture 3/7
+    - ".claude/build/05_eye_candy.md"   # 🟡 — foundations + Score charts + Luck + Positional done; Playoff picture 6/7
     - ".claude/build/03a_draft_assistant_static_board.md"  # 🟡 — bye-week [>] only, schedule-source-gated
     - ".claude/build/02_data_pipeline.md"  # ESPN [!] external-blocked, cron cadence [~], finality promotion [>]
 
 nick_pending:
-  - "VISUAL CHECK BACKLOG — never eyeballed in a real authed session on real data: all Wave 4 admin surfaces (nav-shell, command-center home, dashboard, share-link panel), all Wave 3b live-draft surfaces, the spectator page /share/<token>, Score Trends, the Luck Tracker, and the Positional Breakdowns page. Nothing in this repo has been seen on a real phone yet. Nothing was ADDED to this backlog this session — the playoff fold shipped no UI."
+  - "VISUAL CHECK BACKLOG — never eyeballed in a real authed session on real data: all Wave 4 admin surfaces (nav-shell, command-center home, dashboard, share-link panel), all Wave 3b live-draft surfaces, the spectator page /share/<token>, Score Trends, the Luck Tracker, the Positional Breakdowns page, and now the Playoff Picture page. The playoff page ADDS a first-of-its-kind item: the what-if toggles are the app's first click-driven recompute, and this container's vitest runs in a `node` environment with no DOM, so NO test presses a toggle. The two functions behind the click are pure and fully covered; the click path itself is unverified until you use it."
   - "SPECTATOR PAGE IS LIVE and fails gracefully. MANUAL_SETUP's 'decide when/whether to share the link' is a real decision you can make — worth opening one on your phone first (see visual-check backlog)."
   - "POST-LOGIN LANDING: login/actions.ts still lands on /draft; root auto-land lands on command-center home. One-line fix in landingPath() if you want them consistent. Not blocking."
   - "FINALITY PROMOTION hard deadline ~2026-09-15/18 (before week 1→2 rollover). Registered as [>] in 02_data_pipeline.md. Flip [>]→[ ] when its build session starts."
-  - "ESPN UNBLOCK (~2026-08-19 → 2026-09-02): when leagues open, resolve in plain chat → flip MANUAL_SETUP + 02's 9 ESPN items + 03c's [!]→[ ]. Backsweep required against all shipped Wave 4 + 3b + Wave 5 surfaces (all platform-agnostic — ESPN leagues join automatically). Positional Breakdowns shows ESPN's seams first by design (its Unmapped bucket). The playoff picture degrades honestly instead: an ESPN league whose settings don't carry playoff_teams resolves to null and every team reads 'undetermined' rather than getting a guessed field size."
+  - "ESPN UNBLOCK (~2026-08-19 → 2026-09-02): when leagues open, resolve in plain chat → flip MANUAL_SETUP + 02's 9 ESPN items + 03c's [!]→[ ]. Backsweep required against all shipped Wave 4 + 3b + Wave 5 surfaces (all platform-agnostic — ESPN leagues join automatically). Positional Breakdowns shows ESPN's seams first by design (its Unmapped bucket). The playoff picture degrades honestly instead: an ESPN league whose settings don't carry playoff_teams resolves to null and the whole table reads 'undetermined' behind a disclosure, rather than getting a guessed field size."
   - "SEASON START (~Sept 2026): sub-daily cron cadence needs Vercel Pro or alternative trigger. Currently daily on Hobby. Flip 02's cron item [~]→[x] when sub-daily ships."
   - "BYE-WEEK [>] (03a): plain-chat schedule-source decision → build session → 03a 🟢. DST fullName null issue also noted (abbreviation fallback renders; compose exists in draft-picks.ts)."
   - "SLEEPER LEAGUE RENEWAL: when 2026 league_id is live, run npm run sync:league -- <new_id> once. Auto-land, share_token RLS, Score Trends, Luck, Positional, and the playoff picture all pick it up automatically."
   - "WAVE 5 WAIVER FORMULA: run a scoping session before building the waiver/FAAB recommendations item — no formula exists yet. Still the one thing gating a clean run at Wave 5; every other Wave 5 section is buildable now."
-  - "PLAYOFF PICTURE NEEDS A REMAINING SCHEDULE TO SAY ANYTHING INTERESTING. The remaining schedule is matchup rows with a matchup_id and no points — written by the FULL-SEASON sweep (npm run sync:matchups), not by the daily cron, which syncs the current week only. On the connected 2025 league (season complete) the picture will correctly show a settled season; when the 2026 league is live, run the full sweep at least once so future weeks land, or every team will read as if the season already ended (the surface discloses this as scheduleExhausted rather than hiding it)."
-  - "OPTIONAL: superflex/best-ball run sensitivity (runs.ts QB threshold); demand-vs-panic run classification (needs new build item); per-league durable my-team + draft queue (small future migration). The durable my-team gap is felt in the Luck drill-down and the Positional focus team, and will be felt again in the playoff table's 'your team' highlight."
+  - "PLAYOFF PICTURE NEEDS A REMAINING SCHEDULE TO SAY ANYTHING INTERESTING — and now this is visible in the UI, not just a note. The remaining schedule is matchup rows with a matchup_id and no points, written by the FULL-SEASON sweep (npm run sync:matchups), not by the daily cron. On the connected 2025 league (season complete) the page correctly shows a settled season AND replaces the what-if toggles with a line explaining why there is nothing to toggle. When the 2026 league is live, run the full sweep at least once so future weeks land, or the toggles will never appear."
+  - "OPTIONAL: superflex/best-ball run sensitivity (runs.ts QB threshold); demand-vs-panic run classification (needs new build item); per-league durable my-team + draft queue (small future migration). The durable my-team gap is felt in the Luck drill-down, the Positional focus team, and now the playoff table's row focus — all three use a ?team= URL param as the honest stand-in, so the migration converts cleanly when it ships."
 
 blockers:
   - "EXTERNAL TIMING (2026-07-22): ESPN commissioner-locked until ~2026-08-19 → 2026-09-02. Blocks 02 ESPN sub-sections (9 items [!]) and 03c. Buildable frontier is unaffected: Wave 5, plus 02's finality-promotion [>] and 03a's bye-week [>]."
@@ -45,9 +45,10 @@ blockers:
 known_issues:
   - "npm audit: vulnerabilities reported in transitive next@16.2.11 build-time deps, none client-shipped. Re-check in later sessions."
   - "FINALITY PROMOTION GAP: matchups/player_scores rows stay is_final=false all season until the [>] build item ships. Zero live consequence until week 1→2 rollover (~2026-09-15/18). Wave 4, Score Trends, Luck, Positional, and the playoff picture all render is_final honestly (the picture counts non-final weeks so its table can read as provisional)."
-  - "NO LIVE-DATA RUN, SIX SESSIONS RUNNING: this container still has no .env.local, so getLeagueContext, getScoreTrends, getLuck, getPositionalBreakdown, and now getPlayoffRules/getPlayoffPicture have never executed against the real Supabase — all verified by tsc/lint/build plus fake-client suites that also assert their column boundaries. None writes. The playoff pair carries LESS live risk than its siblings: flat column lists on four tables already read by live services, no PostgREST embed, no new query shape."
-  - "PLAYOFF PICTURE IS UNRENDERED, NOT JUST UNSEEN: items 4-7 (admin table, interactive outcome toggles, spectator status view) are unbuilt, so nothing imports the service yet. The calculation has been exercised only against fixtures, never against real standings."
-  - "PLAYOFF SEEDS DELIBERATELY IGNORE DIVISION RULES (Nick's Clarify): hasDivisions is detected and disclosed, never applied to seed order, because no source documents how Sleeper seeds division winners. If a connected league ever uses divisions, its seed order will differ from Sleeper's own — visibly, with a disclosure, not silently."
+  - "NO LIVE-DATA RUN, SEVEN SESSIONS RUNNING: this container still has no .env.local, so getLeagueContext, getScoreTrends, getLuck, getPositionalBreakdown, getPlayoffRules/getPlayoffPicture and the new playoff page have never executed against the real Supabase — all verified by tsc/lint/build plus fake-client suites that also assert their column boundaries. None writes. This session added no new query shape at all: the playoff service's reads were already shipped and unchanged, and everything new is presentation over data already fetched."
+  - "THE WHAT-IF CLICK PATH IS UNTESTED BY CONSTRUCTION: vitest runs in a `node` environment with no DOM and the repo has no testing-library, so playoff-scenario.tsx is asserted only in its initial rendered state (controls present, no hypothetical applied). The recompute behind a click — applyHypotheticalResults + computePlayoffPicture — is pure and covered by 10 dedicated service tests. Adding a DOM environment would be its own decision, not a side effect of a feature fold."
+  - "PLAYOFF SEEDS DELIBERATELY IGNORE DIVISION RULES (Nick's Clarify): hasDivisions is detected and disclosed on the page, never applied to seed order, because no source documents how Sleeper seeds division winners. If a connected league ever uses divisions, its seed order will differ from Sleeper's own — visibly, with a disclosure, not silently."
+  - "A HYPOTHETICAL RESULT MOVES A RECORD, NOT POINTS-FOR. The what-if layer's synthetic 1-0 is barred from the points total, so a seed decided on the points tiebreaker still turns on the real season. Disclosed in the hypothetical banner. This is deliberate — inventing a plausible score would put a fabricated number in a column the rest of the app reports as fact."
   - "POSITIONAL FLEX ATTRIBUTION IS INFERRED, PERMANENTLY: no platform payload records which lineup slot a player filled in a past week, so dedicated-first reconstruction is the ceiling. Disclosed on the surface. Expect it to differ from your Sleeper lineup screen where you started a lower-scoring RB in the FLEX and a higher-scoring one at RB2."
   - "POSITIONAL / LUCK / SCORE TRENDS ARE UNSEEN, NOT UNRENDERED: all three render and are asserted, but the heatmap's percentile shading at the 0.08–0.55 opacity band, the luck bars' legibility at 10 rows, and Score Trends' small-multiples legibility at 10+ facets still want Nick's eyes on a real screen."
 

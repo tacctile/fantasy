@@ -1,6 +1,6 @@
 # MASTER_CONTEXT.md
 **Single source of truth — tacctile/fantasy**
-**Last Updated:** 2026-07-30
+**Last Updated:** 2026-07-31
 
 ---
 
@@ -135,7 +135,7 @@ Rule: owner pages use `server.ts`; spectator loader uses `spectator.ts`; `admin.
 - Actual color/token values are decided in Wave 1 against a real UI — not specified here in advance.
 - Animation: 60fps minimum, test on lower-spec hardware. Prefer CSS transitions for simple state changes (hover, active, focus). Use `requestAnimationFrame` only for continuous rendering loops.
 - Tabular numbers (`font-variant-numeric: tabular-nums`) on all data displays.
-- **Dark mode only — load-bearing constraint.** The app has a single `:root` token set in `globals.css` and a permanent `dark` class on `<html>`. Never add a light-mode block, a second token set, or a theme toggle of any kind. The dark-mode-only constraint is not a preference — removing it would require re-deriving every color decision in the app. Token color semantics: `teal` = interactive/live state only; `--warning` (amber) = roster-need + regenerate-confirm exclusively.
+- **Dark mode only — load-bearing constraint.** The app has a single `:root` token set in `globals.css` and a permanent `dark` class on `<html>`. Never add a light-mode block, a second token set, or a theme toggle of any kind. The dark-mode-only constraint is not a preference — removing it would require re-deriving every color decision in the app. Token color semantics: `teal` = interactive/live state only; `--warning` (amber) = **unmet condition or provisional state** — the single meaning covering roster-need, regenerate-confirm, injury Q/D chips, the playoff picture's Needs Help badge, and its hypothetical/what-if mode (scope signed by Nick 2026-07-31, widening the prior "roster-need + regenerate-confirm exclusively" wording, which was already narrower than the shipped injury-chip usage). Amber never means severity or a graded likelihood — `--destructive` carries severity, and nothing in this app grades likelihood.
 
 **New Component Checklist:**
 - [ ] TypeScript props interface (no `any`)
