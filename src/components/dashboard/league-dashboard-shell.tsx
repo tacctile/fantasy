@@ -1,18 +1,24 @@
 import { Badge } from '@/components/ui/badge'
 import type {
+  DashboardLeagueContext,
   MatchupsData,
   PowerRankingsData,
+  SectionOutcome,
   StandingsData,
 } from '@/services/dashboard'
 
 import MatchupsGrid from './matchups-grid'
 import PowerRankingsList from './power-rankings-list'
+import SectionUnavailable from './section-unavailable'
 import StandingsTable from './standings-table'
 
 interface LeagueDashboardShellProps {
-  standings: StandingsData
-  matchups: MatchupsData
-  powerRankings: PowerRankingsData
+  /** League identity for the header — resolved by the page from whichever
+   *  section loaded, so the header survives a failing section. */
+  context: DashboardLeagueContext
+  standings: SectionOutcome<StandingsData>
+  matchups: SectionOutcome<MatchupsData>
+  powerRankings: SectionOutcome<PowerRankingsData>
   /** Weeks the selector offers — the page's listScoredWeeks result. */
   weeks: number[]
   /** Owner-only settings block rendered at the bottom of the dashboard flow
@@ -35,15 +41,20 @@ const SECTION_HEADING =
  * is the page's concern (URL-driven), not the shell's. The league selector,
  * draft-board link, and sign-out moved to the persistent sidebar (nav-shell
  * sub-section) — the shell no longer duplicates that global chrome.
+ *
+ * Each section arrives as its own `SectionOutcome`: a section whose query
+ * failed renders an inline notice while its neighbours render real data
+ * (Nick's Clarify, 2026-07-31) — emptiness stays the components' own honest
+ * empty state, which is a different thing entirely.
  */
 export default function LeagueDashboardShell({
+  context,
   standings,
   matchups,
   powerRankings,
   weeks,
   settingsSlot,
 }: LeagueDashboardShellProps) {
-  const { context } = standings
   return (
     <div className="flex min-h-0 flex-1 flex-col bg-background text-foreground">
       <header className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b px-4 py-3">
@@ -61,16 +72,31 @@ export default function LeagueDashboardShell({
       </header>
       <main className="flex flex-1 flex-col gap-6 p-4">
         <section aria-label="Matchups">
-          <MatchupsGrid data={matchups} weeks={weeks} />
+          {matchups.status === 'ok' ? (
+            <MatchupsGrid data={matchups.data} weeks={weeks} />
+          ) : (
+            <div className="flex flex-col gap-3">
+              <h2 className={SECTION_HEADING}>Matchups</h2>
+              <SectionUnavailable label="This week's matchups" />
+            </div>
+          )}
         </section>
         <div className="grid gap-6 lg:grid-cols-2">
           <section aria-label="Standings" className="flex flex-col gap-3">
             <h2 className={SECTION_HEADING}>Standings</h2>
-            <StandingsTable data={standings} />
+            {standings.status === 'ok' ? (
+              <StandingsTable data={standings.data} />
+            ) : (
+              <SectionUnavailable label="Standings" />
+            )}
           </section>
           <section aria-label="Power rankings" className="flex flex-col gap-3">
             <h2 className={SECTION_HEADING}>Power rankings</h2>
-            <PowerRankingsList data={powerRankings} />
+            {powerRankings.status === 'ok' ? (
+              <PowerRankingsList data={powerRankings.data} />
+            ) : (
+              <SectionUnavailable label="Power rankings" />
+            )}
           </section>
         </div>
         {settingsSlot !== undefined && (

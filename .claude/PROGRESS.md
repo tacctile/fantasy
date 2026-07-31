@@ -9,6 +9,12 @@ Newest entry on top.
 
 ---
 
+## 2026-07-31 — Wave 4 Complete: League Dashboard 🟢, Both Surfaces Fail Gracefully
+
+`04_league_dashboard.md` is 🟢 — the final item shipped per-section resilience across the admin and spectator surfaces. A failed query now degrades to that section's own notice while its neighbours render real data (the league header survives from whichever section loaded); only a genuinely not-found league 404s. Failure copy is kept visibly distinct from empty copy, and no error text, digest, or cause ever reaches a rendered response. The spectator segment gained the `loading.tsx`/`error.tsx` it was missing — retry is a plain anchor, so the surface's zero-controls, zero-client-JS guarantee holds on the failure path too. 61/61 green, tsc/lint/build clean, no database touched. Wave 5 is the frontier.
+
+---
+
 ## 2026-07-31 — Read-Only Spectator Surface Is Live: `/share/[share_token]` Ships
 
 The Access Model's spectator half is now a real, browsable page — a leaguemate with the link sees standings, current-week matchups, and power rankings on a phone, no login and no account. A genuinely separate rendering path: `components/spectator/` imports zero admin components and ships zero client JS (plain anchors, not `next/link`). Hard current-week only, starters-only cards, `noindex`, and a friendly 404 dead-link page for a revoked token — all Nick-signed. Guarded by a 30-test boundary suite: rendered-output assertions plus a transitive import-graph walk that no snapshot could replace. 53/53 green, tsc/lint/build clean, no database touched.
@@ -30,12 +36,6 @@ The read-only share-link Access Model's enforcement layer is live on the shared 
 ## 2026-07-22 — BPA Recommendation Engine Is a Working Feature: Live Panel + One-Click Draft (Sub-Section 9/9)
 
 The BPA engine crossed from a headless query layer into a working draft-assist surface. `BpaRecommendationsPanel` mounts at the top of the board sidebar (Nick's placement): the top-8 candidates ranked purely by base VORP with market ADP beside the value and an independent roster-need badge shown alongside (never merged), a re-pick-each-session my-team picker, one-click draft wired into the SAME shared `handleDraft` (new `DraftablePlayer` seam — no duplication), and per-pick recompute off the shell's live snapshot. Live-verified read-only on the real league (topN=8; need never reorders value; ordering/VORP invariant). `03b` BPA sub-section 9/9 — file stays 🟡 (tier-cliff, positional-run, queue/auto-pick, resilience remain).
-
----
-
-## 2026-07-22 — Wave 3b Begun: Manual Click-to-Draft Write Path Live (First Live-Draft Feature)
-
-First working 3b feature since the Sleeper-snake restructure: `src/services/draft-picks.ts` (`recordManualPick` — full referential validation, Nick-signed any-unclaimed-pick + server-side dup-player rejection, first-write-wins with a typed accepted/conflict/validation result carrying the authoritative row on conflict; `undoLastManualPick` — highest `source='manual'` row only, poll rows undeletable by construction) + auth-gated server actions under the draft route. 21/21 live checks against the real league, `draft_state` left at baseline; tsc/lint/build clean. Next: active-draft polling orchestration (`draft_sessions` + cadence).
 
 ---
 

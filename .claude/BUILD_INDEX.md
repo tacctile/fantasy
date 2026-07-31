@@ -4,7 +4,7 @@
 > AUTHORING RULE: `Last Updated` is a single date — replace it each session, never append to it.
 > Status detail lives in `STATE.yml`. Session history lives in `PROGRESS.md` / `PROGRESS_ARCHIVE.md`.
 
-**Current status:** Wave 4 🟡 — the spectator UI surface is live (`/share/[share_token]` route + five mobile-first components + composition, lines 72–77 `[x]`) along with the no-admin-markup boundary test (line 81 `[x]`). **One item left in the wave:** loading/empty/error states across both surfaces (line 80 `[~]` — spectator empty states shipped; admin half + both surfaces' loading/error boundaries remain). No named singleton remains in Wave 4. Wave 3b 🟢 complete. Wave 3c 🔴 ESPN-blocked (~mid-August 2026). Wave 3a 🟡 bye-week `[>]` schedule-gated. Wave 2 🟡 ESPN residue `[!]`, cron cadence `[~]`, finality promotion `[>]`.
+**Current status:** Wave 4 🟢 **COMPLETE** (2026-07-31) — the resilience-states item closed the wave: both surfaces degrade per section (a failed query renders that section's own notice while its neighbours render real data), the spectator segment gained its missing `loading.tsx`/`error.tsx`, and failure copy is kept distinct from empty copy throughout. `04_league_dashboard.md` is 🟢. Wave 3b 🟢 complete. The buildable frontier is now **Wave 5 (`05_eye_candy.md`)** — run the waiver-formula scoping session in plain chat before that wave's waiver/FAAB item. Wave 3c 🔴 ESPN-blocked (~mid-August 2026). Wave 3a 🟡 bye-week `[>]` schedule-gated. Wave 2 🟡 ESPN residue `[!]`, cron cadence `[~]`, finality promotion `[>]`.
 
 > Full session history: `.claude/STATE.yml` (last session detail) · `.claude/PROGRESS.md` (5 most recent milestones) · `.claude/PROGRESS_ARCHIVE.md` (full history)
 
@@ -46,7 +46,7 @@ Atomic sessions per the Folding Policy (canonical text in `BUILD_PROTOCOL.md`): 
 | 3a | Draft Assistant — Static Board | 🟡 | Static draft board UI, ADP ingestion, no live polling — all five sub-sections complete 2026-07-22; only the bye-week `[>]` deferral remains |
 | 3b | Draft Assistant — Live Draft (Sleeper Snake) | 🟢 | Manual click-to-draft AND live Sleeper draft polling ship together — both write to the same shared `draft_state` table, first-write-wins, no staged manual-first/poller-later sequencing. BPA/VORP recommendation engine, tier-cliff detection, positional runs, queue/auto-pick. Sleeper snake only — no ESPN, no auction (Sleeper doesn't support auction on this platform). Depends on 3a only — unblocked, self-locatable now (restructured 2026-07-22, split from the original combined file) |
 | 3c | Draft Assistant — ESPN Live Draft + Auction | 🔴 | ESPN client/cookie-auth/crosswalk sync/live polling/draft-state writes, plus all auction-draft mechanics (nomination/bid state, budget tracking, auction valuation) — auction applies to ESPN only. Extends 3b's shared shell (manual-pick path, live board UI, BPA engine) rather than duplicating it. Depends on 3b and Wave 2's ESPN integration. Blocked pending ESPN commissioner unlock (~mid-August 2026), same external timing as `02_data_pipeline.md`'s ESPN sub-sections (registered 2026-07-22) |
-| 4 | League Dashboard | 🟡 | Standings, matchups, power rankings, player cards. Includes the read-only share-link surface (per `MASTER_CONTEXT.md` Access Model) — same dashboard data, gated by `share_token` instead of owner auth, not a separate later build. Also owns the admin surface's persistent sidebar navigation shell and command-center home, which Wave 5 and Wave 6 mount into. Scoring is NOT computed here — `player_scores` arrives platform-scored from Wave 2's sync (scoring-engine sub-section cut 2026-07-22, Nick-signed) |
+| 4 | League Dashboard | 🟢 | Standings, matchups, power rankings, player cards. Includes the read-only share-link surface (per `MASTER_CONTEXT.md` Access Model) — same dashboard data, gated by `share_token` instead of owner auth, not a separate later build. Also owns the admin surface's persistent sidebar navigation shell and command-center home, which Wave 5 and Wave 6 mount into. Scoring is NOT computed here — `player_scores` arrives platform-scored from Wave 2's sync (scoring-engine sub-section cut 2026-07-22, Nick-signed) |
 | 5 | Eye Candy | ⬜ | Score charts, lucky/unlucky tracker, positional breakdowns, playoff picture, trade evaluation, waiver/FAAB recommendations (trade + waiver amended into scope 2026-07-21 — see 05_eye_candy.md scope note; waiver scoring formula itself deferred to a follow-up session) |
 | 6 | Report + Tools | ⬜ | League report generator, free agent board, PWA manifest/service worker |
 
@@ -65,7 +65,7 @@ Each feature gets a numbered file at `.claude/build/NN_FEATURE_NAME.md`, registe
 | 03a | [03a_draft_assistant_static_board.md](build/03a_draft_assistant_static_board.md) | 3a | 🟡 |
 | 03b | [03b_draft_assistant_live_draft.md](build/03b_draft_assistant_live_draft.md) | 3b | 🟢 |
 | 03c | [03c_draft_assistant_espn_and_auction.md](build/03c_draft_assistant_espn_and_auction.md) | 3c | 🔴 |
-| 04 | [04_league_dashboard.md](build/04_league_dashboard.md) | 4 | 🟡 |
+| 04 | [04_league_dashboard.md](build/04_league_dashboard.md) | 4 | 🟢 |
 | 05 | [05_eye_candy.md](build/05_eye_candy.md) | 5 | ⬜ |
 | 06 | [06_report_and_tools.md](build/06_report_and_tools.md) | 6 | ⬜ |
 

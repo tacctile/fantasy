@@ -3,10 +3,14 @@ import { notFound } from 'next/navigation'
 
 import SpectatorPlayerCard from '@/components/spectator/spectator-player-card'
 import SpectatorPlayerDrawer from '@/components/spectator/spectator-player-drawer'
+import SpectatorSectionNotice from '@/components/spectator/spectator-section-notice'
 import SpectatorShell from '@/components/spectator/spectator-shell'
+import SpectatorUnavailable from '@/components/spectator/spectator-unavailable'
 import {
   loadSpectatorDashboard,
   loadSpectatorPlayerCard,
+  type SpectatorDashboardResult,
+  type SpectatorPlayerCardResult,
 } from '@/services/spectator'
 
 /**
@@ -23,6 +27,28 @@ export const metadata: Metadata = {
 /** First value when Next hands back an array; undefined stays undefined. */
 function firstParam(value: string | string[] | undefined): string | undefined {
   return Array.isArray(value) ? value[0] : value
+}
+
+/** Token resolution itself failing (as opposed to the token being wrong). */
+const LOADER_FAILED = { ok: false, reason: 'load_failed' } as const
+
+/**
+ * Degrade a thrown loader failure to a typed result so the page can render the
+ * static, zero-JS unavailable view itself instead of escalating to the client
+ * error boundary (Nick's Clarify: the spectator surface ships no client JS on
+ * its normal paths). The cause is logged server-side and never returned — a
+ * viewer sees no internal error content (Access Model).
+ */
+async function settleLoad<T>(
+  label: string,
+  load: Promise<T>
+): Promise<T | typeof LOADER_FAILED> {
+  try {
+    return await load
+  } catch (error) {
+    console.error(`[spectator] ${label} failed`, error)
+    return LOADER_FAILED
+  }
 }
 
 /**
@@ -55,14 +81,21 @@ export default async function SpectatorPage({
     searchParams,
   ])
 
-  const result = await loadSpectatorDashboard(shareToken)
-  if (!result.ok) notFound()
+  const result: SpectatorDashboardResult | typeof LOADER_FAILED =
+    await settleLoad('dashboard', loadSpectatorDashboard(shareToken))
+  // A bad/revoked token is a real 404 (not-found.tsx); a genuine fault is a
+  // different message on a live link — the two must never be conflated.
+  if (!result.ok && result.reason === 'invalid_token') notFound()
+  if (!result.ok) return <SpectatorUnavailable retryHref={`/share/${shareToken}`} />
 
   const playerId = firstParam(query.player)
-  const playerResult =
+  const playerResult: SpectatorPlayerCardResult | typeof LOADER_FAILED | null =
     playerId === undefined
       ? null
-      : await loadSpectatorPlayerCard(shareToken, playerId)
+      : await settleLoad(
+          'playerCard',
+          loadSpectatorPlayerCard(shareToken, playerId)
+        )
   const closeHref = `/share/${shareToken}`
 
   return (
@@ -79,11 +112,17 @@ export default async function SpectatorPage({
           >
             <SpectatorPlayerCard data={playerResult.data} />
           </SpectatorPlayerDrawer>
-        ) : (
+        ) : playerResult.reason === 'player_not_found' ? (
           <SpectatorPlayerDrawer closeHref={closeHref} label="Player not found">
             <p className="py-6 text-center text-sm text-muted-foreground">
               No player matches this link.
             </p>
+          </SpectatorPlayerDrawer>
+        ) : (
+          // The dashboard itself loaded, so this is this one card failing —
+          // the drawer says so and the page behind it stays intact.
+          <SpectatorPlayerDrawer closeHref={closeHref} label="Player unavailable">
+            <SpectatorSectionNotice label="this player&apos;s details" />
           </SpectatorPlayerDrawer>
         )
       }

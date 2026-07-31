@@ -9,40 +9,40 @@
 #   warnings: REMOVED. Architectural invariants live permanently in MASTER_CONTEXT.md and ARCHITECTURE.md — not here.
 
 current_focus: |
-  LAST COMPLETED: Wave 4 — spectator UI surface (04 lines 72–77 [x]) + the no-admin-markup boundary test (line 81 [x]).
-  /share/[share_token] is live: separate rendering path, zero admin imports, zero client JS. READ-ONLY, no migration, no DB connection in that session.
-  NEXT: 04 line 80 — loading/empty/error states across BOTH surfaces ([~]: spectator empty states shipped; admin half + both surfaces' loading/error boundaries remain). That is Wave 4's LAST unchecked item.
-  AFTER THAT: 04 is 🟢 and the frontier is Wave 5 (05_eye_candy.md) — but run the waiver-formula scoping session before reaching that item.
-  No named singleton remains in Wave 4.
+  LAST COMPLETED: Wave 4's final item — resilience states (04 line 80 [x]). WAVE 4 IS 🟢 COMPLETE.
+  Both surfaces now degrade per section (settleQuery/SectionOutcome in services/dashboard.ts); the spectator segment gained loading.tsx + error.tsx.
+  No migration, no DB write this session. 61/61 tests, tsc/lint/build clean.
+  NEXT: Wave 5 (05_eye_candy.md) is the frontier — but run the waiver-formula scoping session in plain chat BEFORE reaching that wave's waiver/FAAB item.
+  No blocker on starting Wave 5's other sections.
 
 build_system:
   index: ".claude/BUILD_INDEX.md"
   files_location: ".claude/build/"
   total_files: 8
   current_build_files:
-    - ".claude/build/04_league_dashboard.md"   # 🟡 ACTIVE — one item left: resilience states (line 80)
-    - ".claude/build/03b_draft_assistant_live_draft.md"  # 🟢 COMPLETE
+    - ".claude/build/05_eye_candy.md"   # ⬜ NEXT — the buildable frontier
+    - ".claude/build/04_league_dashboard.md"   # 🟢 COMPLETE
     - ".claude/build/03a_draft_assistant_static_board.md"  # 🟡 — bye-week [>] only, schedule-source-gated
     - ".claude/build/02_data_pipeline.md"  # ESPN [!] external-blocked, cron cadence [~], finality promotion [>]
 
 nick_pending:
-  - "SPECTATOR PAGE IS LIVE — the share link now actually leads somewhere. MANUAL_SETUP's 'decide when/whether to share the link' is now a real decision you can make. Worth opening one on your phone first (see visual-check backlog)."
-  - "VISUAL CHECK BACKLOG — never eyeballed in a real authed session on real data: Wave 4 admin surfaces (nav-shell, command-center home, dashboard, share-link panel), all Wave 3b live-draft surfaces, and now the spectator page /share/<token> (built and verified against a local stub, never seen on a real phone). The completed 2025 draft has no live clock, so live-draft timing can't be fully exercised until a real 2026 draft."
+  - "SPECTATOR PAGE IS LIVE and now fails gracefully too. MANUAL_SETUP's 'decide when/whether to share the link' is a real decision you can make. Worth opening one on your phone first (see visual-check backlog)."
+  - "VISUAL CHECK BACKLOG — never eyeballed in a real authed session on real data: Wave 4 admin surfaces (nav-shell, command-center home, dashboard, share-link panel), all Wave 3b live-draft surfaces, and the spectator page /share/<token>. Nothing in this repo has been seen on a real phone yet. The completed 2025 draft has no live clock, so live-draft timing can't be fully exercised until a real 2026 draft."
   - "POST-LOGIN LANDING: login/actions.ts still lands on /draft; root auto-land lands on command-center home. One-line fix in landingPath() if you want them consistent. Not blocking."
   - "FINALITY PROMOTION hard deadline ~2026-09-15/18 (before week 1→2 rollover). Registered as [>] in 02_data_pipeline.md. Flip [>]→[ ] when its build session starts."
-  - "ESPN UNBLOCK (~2026-08-19 → 2026-09-02): when leagues open, resolve in plain chat → flip MANUAL_SETUP + 02's 9 ESPN items + 03c's [!]→[ ]. Backsweep required against all shipped Wave 4 + 3b surfaces (all platform-agnostic — ESPN leagues join automatically, including the spectator surface)."
+  - "ESPN UNBLOCK (~2026-08-19 → 2026-09-02): when leagues open, resolve in plain chat → flip MANUAL_SETUP + 02's 9 ESPN items + 03c's [!]→[ ]. Backsweep required against all shipped Wave 4 + 3b surfaces (all platform-agnostic — ESPN leagues join automatically; the new per-section degradation means a failing ESPN query can only take down its own section)."
   - "SEASON START (~Sept 2026): sub-daily cron cadence needs Vercel Pro or alternative trigger. Currently daily on Hobby. Flip 02's cron item [~]→[x] when sub-daily ships."
   - "BYE-WEEK [>] (03a): plain-chat schedule-source decision → build session → 03a 🟢. DST fullName null issue also noted (abbreviation fallback renders; compose exists in draft-picks.ts)."
   - "SLEEPER LEAGUE RENEWAL: when 2026 league_id is live, run npm run sync:league -- <new_id> once. Auto-land and share_token RLS both pick it up automatically."
-  - "WAVE 5 WAIVER FORMULA: run a scoping session before building the waiver/FAAB recommendations item — no formula exists yet."
+  - "WAVE 5 WAIVER FORMULA: run a scoping session before building the waiver/FAAB recommendations item — no formula exists yet. This is the one thing gating a clean run at Wave 5."
   - "OPTIONAL: superflex/best-ball run sensitivity (runs.ts QB threshold); demand-vs-panic run classification (needs new build item); per-league durable my-team + draft queue (small future migration)."
 
 blockers:
-  - "EXTERNAL TIMING (2026-07-22): ESPN commissioner-locked until ~2026-08-19 → 2026-09-02. Blocks 02 ESPN sub-sections (9 items [!]) and 03c. Buildable frontier: Wave 4's resilience item (line 80), then Wave 5; 02 finality-promotion [>]; 03a bye-week [>]."
+  - "EXTERNAL TIMING (2026-07-22): ESPN commissioner-locked until ~2026-08-19 → 2026-09-02. Blocks 02 ESPN sub-sections (9 items [!]) and 03c. Buildable frontier is unaffected: Wave 5, plus 02's finality-promotion [>] and 03a's bye-week [>]."
 
 known_issues:
   - "npm audit: 6 vulns (4 moderate, 2 high) — transitive inside next@16.2.11 pinned deps, all build-time, none client-shipped. Re-check in later sessions."
-  - "FINALITY PROMOTION GAP: matchups/player_scores rows stay is_final=false all season until the [>] build item ships. Zero live consequence until week 1→2 rollover (~2026-09-15/18). Both Wave 4 surfaces render is_final/fetched_at honestly (admin: UnofficialChip + AsOfTime; spectator: its own local pair)."
-  - "SPECTATOR ERROR PATH: an unexpected throw inside the spectator loader (a genuine DB error, not a bad token) currently falls through to Next's default error page — no segment error.tsx on /share yet. Closed by 04 line 80, the next item."
+  - "FINALITY PROMOTION GAP: matchups/player_scores rows stay is_final=false all season until the [>] build item ships. Zero live consequence until week 1→2 rollover (~2026-09-15/18). Both Wave 4 surfaces render is_final/fetched_at honestly."
+  - "NO LIVE-DATA RUN THIS SESSION: the remote container has no .env.local, so the resilience work was verified by tsc/lint/build + 61/61 tests only — never against the real Supabase. The degradation paths (a section query actually throwing) have not been exercised on real data; nothing in them writes, so the risk is cosmetic."
 
 health: "clean"

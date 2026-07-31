@@ -2,6 +2,7 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { Database } from '@/lib/supabase/database.types'
+import type { SectionOutcome } from '@/services/dashboard'
 
 /**
  * Wave 4 named-singleton #5 — the two data-boundary tests of the share-token
@@ -208,12 +209,19 @@ describe('spectator loader — draft data is unreachable via a share token', () 
   })
 })
 
+/** A section outcome's data, failing loudly if the section didn't load —
+ *  these isolation cases are only meaningful against real section data. */
+function sectionData<T>(section: SectionOutcome<T>): T {
+  if (section.status !== 'ok') throw new Error('expected an ok section')
+  return section.data
+}
+
 describe('spectator loader — a share token exposes only its own league', () => {
   it("returns league A's teams and nothing from league B", async () => {
     const result = await loadSpectatorDashboard(TOKEN_A)
     if (!result.ok) throw new Error('expected ok')
-    const standingsTeams = result.data.standings.teams.map((t) => t.teamName)
-    const powerTeams = result.data.powerRankings.teams.map((t) => t.teamName)
+    const standingsTeams = sectionData(result.data.standings).teams.map((t) => t.teamName)
+    const powerTeams = sectionData(result.data.powerRankings).teams.map((t) => t.teamName)
     expect(new Set(standingsTeams)).toEqual(new Set(['Alpha One', 'Alpha Two']))
     expect(new Set(powerTeams)).toEqual(new Set(['Alpha One', 'Alpha Two']))
     // No league-B roster/team identity anywhere in the response.
@@ -224,7 +232,7 @@ describe('spectator loader — a share token exposes only its own league', () =>
   it("returns league B's teams from the SAME loader — isolation is per token", async () => {
     const result = await loadSpectatorDashboard(TOKEN_B)
     if (!result.ok) throw new Error('expected ok')
-    const standingsTeams = result.data.standings.teams.map((t) => t.teamName)
+    const standingsTeams = sectionData(result.data.standings).teams.map((t) => t.teamName)
     expect(new Set(standingsTeams)).toEqual(new Set(['Bravo One', 'Bravo Two']))
     const json = JSON.stringify(result)
     expect(json).not.toContain('Alpha One')

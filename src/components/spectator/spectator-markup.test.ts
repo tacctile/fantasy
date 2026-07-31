@@ -14,9 +14,12 @@ import type {
 } from '@/services/dashboard'
 import type { SpectatorDashboardData } from '@/services/spectator'
 
+import SpectatorLoading from '@/app/share/[share_token]/loading'
+
 import SpectatorPlayerCard from './spectator-player-card'
 import SpectatorPlayerDrawer from './spectator-player-drawer'
 import SpectatorShell from './spectator-shell'
+import SpectatorUnavailable from './spectator-unavailable'
 
 /**
  * Wave 4 build item: "assert the spectator route's rendered response contains
@@ -37,7 +40,15 @@ import SpectatorShell from './spectator-shell'
  */
 
 const SRC_ROOT = resolve(__dirname, '..', '..')
-const ROUTE_ENTRY = join(SRC_ROOT, 'app', 'share', '[share_token]', 'page.tsx')
+const SEGMENT_DIR = join(SRC_ROOT, 'app', 'share', '[share_token]')
+const ROUTE_ENTRY = join(SEGMENT_DIR, 'page.tsx')
+/** Every file the spectator segment can render a response from. */
+const SEGMENT_ENTRIES = [
+  ROUTE_ENTRY,
+  join(SEGMENT_DIR, 'loading.tsx'),
+  join(SEGMENT_DIR, 'error.tsx'),
+  join(SEGMENT_DIR, 'not-found.tsx'),
+]
 
 const CONTEXT = {
   leagueId: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
@@ -176,11 +187,19 @@ const MATCHUPS: MatchupsData = {
 const DASHBOARD: SpectatorDashboardData = {
   leagueId: CONTEXT.leagueId,
   context: CONTEXT,
-  standings: STANDINGS,
-  powerRankings: POWER_RANKINGS,
+  standings: { status: 'ok', data: STANDINGS },
+  powerRankings: { status: 'ok', data: POWER_RANKINGS },
   availableWeeks: [1, 2],
   week: 2,
-  matchups: MATCHUPS,
+  matchups: { status: 'ok', data: MATCHUPS },
+}
+
+/** The same league with every section's query failed — the resilience path. */
+const ALL_SECTIONS_UNAVAILABLE: SpectatorDashboardData = {
+  ...DASHBOARD,
+  standings: { status: 'unavailable' },
+  powerRankings: { status: 'unavailable' },
+  matchups: { status: 'unavailable' },
 }
 
 const PLAYER_CARD: PlayerCardData = {
@@ -312,6 +331,76 @@ describe('spectator response — no admin-surface markup', () => {
   })
 })
 
+/**
+ * The resilience surfaces (2026-07-31 build item): the loading skeleton, the
+ * whole-page unavailable view, and the degraded shell where every section's
+ * query failed. Each is a real response a leaguemate can receive, so each is
+ * held to the same no-admin-markup, no-auth, no-controls contract as the happy
+ * path — and, for the failure views, to leaking nothing about the fault.
+ */
+const RESILIENCE_RESPONSES: Array<[string, () => string]> = [
+  ['loading skeleton', () => renderToStaticMarkup(createElement(SpectatorLoading))],
+  [
+    'unavailable view',
+    () =>
+      renderToStaticMarkup(
+        createElement(SpectatorUnavailable, { retryHref: '/share/token' })
+      ),
+  ],
+  [
+    'all sections unavailable',
+    () =>
+      renderToStaticMarkup(
+        createElement(SpectatorShell, { data: ALL_SECTIONS_UNAVAILABLE })
+      ),
+  ],
+]
+
+describe('spectator resilience surfaces — same boundary as the happy path', () => {
+  it.each(RESILIENCE_RESPONSES)('%s: no admin affordances', (_label, render) => {
+    const html = render().toLowerCase()
+    for (const needle of FORBIDDEN_TEXT) {
+      expect(html).not.toContain(needle.toLowerCase())
+    }
+  })
+
+  it.each(RESILIENCE_RESPONSES)('%s: no controls, no admin links', (_label, render) => {
+    const html = render()
+    expect(html).not.toContain('<button')
+    expect(html).not.toContain('<form')
+    expect(html).not.toContain('<input')
+    expect(html).not.toContain('/leagues/')
+    expect(html).not.toContain('/login')
+  })
+
+  it('degraded sections say the data failed, never that the league is empty', () => {
+    const html = renderToStaticMarkup(
+      createElement(SpectatorShell, { data: ALL_SECTIONS_UNAVAILABLE })
+    )
+    // The league still identifies itself; only its sections are missing.
+    expect(html).toContain('Alpha League')
+    expect(html).toContain('Couldn&#x27;t load this week&#x27;s matchups')
+    expect(html).toContain('Couldn&#x27;t load the standings')
+    expect(html).toContain('Couldn&#x27;t load the power rankings')
+    // The empty-state copy would be a lie here — a failure is not an absence.
+    expect(html).not.toContain('No standings for this league yet')
+    expect(html).not.toContain('No scored weeks in this league yet')
+  })
+
+  it('the unavailable view leaks no error detail and names no league', () => {
+    const html = renderToStaticMarkup(
+      createElement(SpectatorUnavailable, { retryHref: '/share/token' })
+    )
+    expect(html).toContain('Try again')
+    expect(html).toContain('href="/share/token"')
+    // No digest/ref (Nick's Clarify), no stack, no message, no league identity.
+    expect(html.toLowerCase()).not.toContain('ref ')
+    expect(html.toLowerCase()).not.toContain('digest')
+    expect(html.toLowerCase()).not.toContain('error')
+    expect(html).not.toContain('Alpha League')
+  })
+})
+
 const IMPORT_PATTERN = /from\s+'([^']+)'/g
 const EXTENSIONS = ['.ts', '.tsx', '/index.ts', '/index.tsx']
 
@@ -346,9 +435,14 @@ function collectImportGraph(entry: string): string[] {
 }
 
 describe('spectator route — import graph carries no admin UI', () => {
-  const graph = collectImportGraph(ROUTE_ENTRY).map((file) =>
-    file.slice(SRC_ROOT.length + 1).replaceAll('\\', '/')
-  )
+  // Every entry point the segment can render from — the page plus its
+  // resilience siblings. Walking only the page would leave error.tsx and
+  // loading.tsx as unguarded holes in the same boundary (Nick's Clarify).
+  const graph = [
+    ...new Set(
+      SEGMENT_ENTRIES.flatMap((entry) => collectImportGraph(entry))
+    ),
+  ].map((file) => file.slice(SRC_ROOT.length + 1).replaceAll('\\', '/'))
 
   it('reaches the spectator components and the shared data layer', () => {
     expect(graph).toContain('components/spectator/spectator-shell.tsx')

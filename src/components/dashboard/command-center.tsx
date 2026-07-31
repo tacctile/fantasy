@@ -9,12 +9,22 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import type { PowerRankingsData, StandingsData } from '@/services/dashboard'
+import type {
+  DashboardLeagueContext,
+  PowerRankingsData,
+  SectionOutcome,
+  StandingsData,
+} from '@/services/dashboard'
+
+import SectionUnavailable from './section-unavailable'
 
 interface CommandCenterHomeProps {
   leagueId: string
-  standings: StandingsData
-  powerRankings: PowerRankingsData
+  /** League identity for the header — resolved by the page from whichever
+   *  snapshot loaded, so the header survives a failing one. */
+  context: DashboardLeagueContext
+  standings: SectionOutcome<StandingsData>
+  powerRankings: SectionOutcome<PowerRankingsData>
 }
 
 const SNAPSHOT_ROWS = 3
@@ -48,16 +58,23 @@ const DEEP_LINK =
  * the draft board — each card linking into its own full page. This is what
  * makes a 2-minute "quick check" work without full navigation. Reads the same
  * services/dashboard.ts results the full dashboard renders — never a second
- * ordering or formula. Empty arrays are the honest pre-sync state, not errors.
+ * ordering or formula. Empty arrays are the honest pre-sync state, not errors;
+ * a snapshot whose query actually failed arrives as an `unavailable` outcome
+ * and says so in its own card, leaving the other cards usable (Nick's Clarify,
+ * 2026-07-31).
  */
 export default function CommandCenterHome({
   leagueId,
+  context,
   standings,
   powerRankings,
 }: CommandCenterHomeProps) {
-  const { context } = standings
-  const topStandings = standings.teams.slice(0, SNAPSHOT_ROWS)
-  const topPower = powerRankings.teams.slice(0, SNAPSHOT_ROWS)
+  const topStandings =
+    standings.status === 'ok' ? standings.data.teams.slice(0, SNAPSHOT_ROWS) : []
+  const topPower =
+    powerRankings.status === 'ok'
+      ? powerRankings.data.teams.slice(0, SNAPSHOT_ROWS)
+      : []
 
   return (
     <div className="flex min-h-0 flex-1 flex-col bg-background text-foreground">
@@ -84,7 +101,9 @@ export default function CommandCenterHome({
               <CardTitle>Standings</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-1.5">
-              {topStandings.length === 0 ? (
+              {standings.status === 'unavailable' ? (
+                <SectionUnavailable label="Standings" />
+              ) : topStandings.length === 0 ? (
                 <p className={EMPTY_NOTE}>
                   No standings yet — run a league sync to populate this league.
                 </p>
@@ -121,12 +140,16 @@ export default function CommandCenterHome({
               <CardTitle>Power Rankings</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-1.5">
-              {powerRankings.lowConfidence && topPower.length > 0 && (
-                <p className="pb-1 text-xs text-muted-foreground">
-                  Provisional — under 6 weeks counted.
-                </p>
-              )}
-              {topPower.length === 0 ? (
+              {powerRankings.status === 'ok' &&
+                powerRankings.data.lowConfidence &&
+                topPower.length > 0 && (
+                  <p className="pb-1 text-xs text-muted-foreground">
+                    Provisional — under 6 weeks counted.
+                  </p>
+                )}
+              {powerRankings.status === 'unavailable' ? (
+                <SectionUnavailable label="Power rankings" />
+              ) : topPower.length === 0 ? (
                 <p className={EMPTY_NOTE}>
                   No games scored yet — rankings appear once weeks are played.
                 </p>
