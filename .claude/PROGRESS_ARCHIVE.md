@@ -193,3 +193,9 @@ Core infra activation — Supabase Auth exercised for the first time ever (Nick 
 ---
 
 _End of PROGRESS_ARCHIVE.md_
+
+---
+
+## 2026-07-22 — League Dashboard Is a Working Feature: Page Assembled + League Selector Live
+
+First browsable Wave 4 surface: the owner dashboard now mounts at `/leagues/[leagueId]` (Nick-signed league root; auto-land re-signed to land here), composing MatchupsGrid (URL-driven `?week=N`, default = latest scored week via new `listScoredWeeks`) over StandingsTable + PowerRankingsList, with the PlayerCard opening as a URL-driven `?player=` sheet from matchup player links. Draft board's LeagueSelector generalized (`subPath`) and reused. tsc/lint/build clean + 21/21 live render checks. Next: nav-shell sub-section (share-link panel rides the share-token singleton).

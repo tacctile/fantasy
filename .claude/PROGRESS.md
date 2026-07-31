@@ -9,6 +9,12 @@ Newest entry on top.
 
 ---
 
+## 2026-07-31 — Read-Only Spectator Surface Is Live: `/share/[share_token]` Ships
+
+The Access Model's spectator half is now a real, browsable page — a leaguemate with the link sees standings, current-week matchups, and power rankings on a phone, no login and no account. A genuinely separate rendering path: `components/spectator/` imports zero admin components and ships zero client JS (plain anchors, not `next/link`). Hard current-week only, starters-only cards, `noindex`, and a friendly 404 dead-link page for a revoked token — all Nick-signed. Guarded by a 30-test boundary suite: rendered-output assertions plus a transitive import-graph walk that no snapshot could replace. 53/53 green, tsc/lint/build clean, no database touched.
+
+---
+
 ## 2026-07-23 — Share-Token Data-Exposure Boundary Live (Wave 4 Named-Singleton #5)
 
 The read-only share-link Access Model's enforcement layer is live on the shared prod DB. Spectator `SELECT` RLS (`spectator_share_read`, `TO anon`) on EIGHT fantasy tables (six from the build file + `players`/`roster_players`, Nick-signed correctness amendment) gated on a `share_token` presented via the `x-share-token` header (`current_share_token()`); `draft_state`/`draft_sessions` deliberately get NO policy — unreachable to anon even with a valid token. Owner-only `regenerate_share_token(uuid)` RPC (revoke == regenerate) behind `regenerateShareToken`; `services/spectator.ts` is the server-side loader reusing the dashboard getters via a token-scoped anon client. tsc/lint/build clean + 23/23 (9 new boundary tests) + live read-only RLS verification (draft tables 0 rows with a valid token; regenerate revokes the old link live). Next: share-link settings panel UI + the spectator UI surface.
@@ -30,12 +36,6 @@ The BPA engine crossed from a headless query layer into a working draft-assist s
 ## 2026-07-22 — Wave 3b Begun: Manual Click-to-Draft Write Path Live (First Live-Draft Feature)
 
 First working 3b feature since the Sleeper-snake restructure: `src/services/draft-picks.ts` (`recordManualPick` — full referential validation, Nick-signed any-unclaimed-pick + server-side dup-player rejection, first-write-wins with a typed accepted/conflict/validation result carrying the authoritative row on conflict; `undoLastManualPick` — highest `source='manual'` row only, poll rows undeletable by construction) + auth-gated server actions under the draft route. 21/21 live checks against the real league, `draft_state` left at baseline; tsc/lint/build clean. Next: active-draft polling orchestration (`draft_sessions` + cadence).
-
----
-
-## 2026-07-22 — League Dashboard Is a Working Feature: Page Assembled + League Selector Live
-
-First browsable Wave 4 surface: the owner dashboard now mounts at `/leagues/[leagueId]` (Nick-signed league root; auto-land re-signed to land here), composing MatchupsGrid (URL-driven `?week=N`, default = latest scored week via new `listScoredWeeks`) over StandingsTable + PowerRankingsList, with the PlayerCard opening as a URL-driven `?player=` sheet from matchup player links. Draft board's LeagueSelector generalized (`subPath`) and reused. tsc/lint/build clean + 21/21 live render checks. Next: nav-shell sub-section (share-link panel rides the share-token singleton).
 
 ---
 

@@ -1,10 +1,10 @@
 # BUILD_INDEX.md
 **Master build router — tacctile/fantasy**
-**Last Updated:** 2026-07-23
+**Last Updated:** 2026-07-31
 > AUTHORING RULE: `Last Updated` is a single date — replace it each session, never append to it.
 > Status detail lives in `STATE.yml`. Session history lives in `PROGRESS.md` / `PROGRESS_ARCHIVE.md`.
 
-**Current status:** Wave 4 🟡 — Share-link settings panel UI complete (line 54 `[x]`). Next: spectator UI surface (`/share/[share_token]` route + mobile-first components + composition + resilience states + no-admin-markup render test). No named singleton remains in Wave 4. Wave 3b 🟢 complete. Wave 3c 🔴 ESPN-blocked (~mid-August 2026). Wave 3a 🟡 bye-week `[>]` schedule-gated. Wave 2 🟡 ESPN residue `[!]`, cron cadence `[~]`, finality promotion `[>]`.
+**Current status:** Wave 4 🟡 — the spectator UI surface is live (`/share/[share_token]` route + five mobile-first components + composition, lines 72–77 `[x]`) along with the no-admin-markup boundary test (line 81 `[x]`). **One item left in the wave:** loading/empty/error states across both surfaces (line 80 `[~]` — spectator empty states shipped; admin half + both surfaces' loading/error boundaries remain). No named singleton remains in Wave 4. Wave 3b 🟢 complete. Wave 3c 🔴 ESPN-blocked (~mid-August 2026). Wave 3a 🟡 bye-week `[>]` schedule-gated. Wave 2 🟡 ESPN residue `[!]`, cron cadence `[~]`, finality promotion `[>]`.
 
 > Full session history: `.claude/STATE.yml` (last session detail) · `.claude/PROGRESS.md` (5 most recent milestones) · `.claude/PROGRESS_ARCHIVE.md` (full history)
 
