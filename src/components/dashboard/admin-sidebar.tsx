@@ -54,6 +54,7 @@ const PRIMARY_NAV: PrimaryItem[] = [
   { label: 'Score Trends', icon: LineChart, sub: '/score-trends', match: 'prefix' },
   { label: 'Luck Tracker', icon: Sparkles, sub: '/luck', match: 'prefix' },
   { label: 'Positional', icon: BarChart3, sub: '/positional', match: 'prefix' },
+  { label: 'Playoff Picture', icon: Trophy, sub: '/playoff-picture', match: 'prefix' },
 ]
 
 /**
@@ -63,7 +64,6 @@ const PRIMARY_NAV: PrimaryItem[] = [
  * The `wave` field is the documented mount point for that future build.
  */
 const FUTURE_NAV: { label: string; icon: LucideIcon; wave: 5 | 6 }[] = [
-  { label: 'Playoff Picture', icon: Trophy, wave: 5 },
   { label: 'Trade Evaluator', icon: ArrowLeftRight, wave: 5 },
   { label: 'Waiver Wire', icon: PlusCircle, wave: 5 },
   { label: 'Season Report', icon: FileText, wave: 6 },

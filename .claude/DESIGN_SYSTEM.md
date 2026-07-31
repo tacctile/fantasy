@@ -3,7 +3,7 @@
 
 **Parent:** `.claude/MASTER_CONTEXT.md`
 
-**Last Updated:** 2026-07-31 (Wave 5 shared-foundations fold: the full chart colour system decided and live — a teal-free validated categorical ramp, a diverging pair + neutral midpoint, grid/axis furniture tokens, and the `--pos-*` usage rule widened to cover positional chart marks. Charting library resolved: none — hand-rolled SVG/CSS primitives. Prior: 2026-07-22 player-list fold added the six `--pos-*` tokens; palette reconciliation fold applied the Color System live in `src/app/globals.css`)
+**Last Updated:** 2026-07-31 (Wave 5 playoff-picture fold: `--warning` rescoped to "unmet condition or provisional state" — Nick-signed, unifying roster-need, regenerate-confirm, injury Q/D, the Needs Help badge, and the what-if mode; mirrored in MASTER_CONTEXT.md per Rule 11. Prior same-day: Wave 5 shared-foundations fold — the full chart colour system decided and live — a teal-free validated categorical ramp, a diverging pair + neutral midpoint, grid/axis furniture tokens, and the `--pos-*` usage rule widened to cover positional chart marks. Charting library resolved: none — hand-rolled SVG/CSS primitives. Prior: 2026-07-22 player-list fold added the six `--pos-*` tokens; palette reconciliation fold applied the Color System live in `src/app/globals.css`)
 
 ---
 
@@ -58,7 +58,7 @@ Elevation expressed via lightness steps only. **No drop shadows. No/minimal bord
 | Token | Value | Role |
 |---|---|---|
 | `--destructive` | `oklch(0.689 0.201 20.4)` | Coral-red (≈`#FF5964`) — loss, injury-severe (O/IR) |
-| *(new token)* `--warning` | `oklch(0.824 0.150 73.7)` | Amber/gold (≈`#FFB545`) — questionable/day-to-day (Q/D) |
+| *(new token)* `--warning` | `oklch(0.824 0.150 73.7)` | Amber/gold (≈`#FFB545`) — **unmet condition or provisional state**. Scope signed by Nick 2026-07-31 (playoff-picture fold), unifying every shipped use under one meaning: injury questionable/day-to-day (Q/D), roster-need, regenerate-confirm, the playoff picture's Needs Help badge, and its hypothetical/what-if mode (banner, chosen toggles, changed-row marks). Never severity — that is `--destructive` — and never a graded likelihood, which nothing in this app displays. |
 | *(new token)* `--positive` | same as `--primary`, `oklch(0.759 0.147 168.6)` | Win/live/positive-delta — green-teal family, shares the accent hue rather than a separate green |
 | Bye week | no token — muted text only | Deliberately uncolored. Rule: color = live/actionable information; absence of color = absence of urgency. Render in `--muted-foreground`, never a status color. |
 | Injury chip (Q/D/O/IR) | small colored letter/chip inline with player name, severity-scaled (`--warning` → `--destructive` as severity increases) | Never a full-row tint — the chip carries the color, not the row background. |

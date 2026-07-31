@@ -173,12 +173,35 @@ export type PlayoffPictureData = {
    */
   scheduleExhausted: boolean
   /**
+   * The field size every status on this table was actually decided against —
+   * `rules.playoffTeams` after clamping, or null when it isn't known.
+   *
+   * Returned rather than left for a caller to re-derive: the cut line a table
+   * draws and the bound a status was computed from must be the same number by
+   * construction, not by two copies of the same clamp agreeing.
+   */
+  fieldSize: number | null
+  /**
    * The field size exceeded the number of teams and was clamped. A league
    * configured this way would otherwise show everyone as clinched.
    */
   fieldSizeClamped: boolean
   /** True when any team's recomputed record differs from its standings row. */
   hasStandingsDisagreement: boolean
+  /**
+   * Every fully unplayed regular-season game, earliest week first. The what-if
+   * layer's toggle list, and empty whenever there is nothing left to decide.
+   */
+  remainingGames: RemainingGame[]
+  /**
+   * The regular-season rows this picture was computed from.
+   *
+   * Carried so the what-if layer can re-run the SAME calculation against
+   * user-supplied results instead of a second, subtly different one. It is the
+   * mechanism that makes the interactive layer provably free of new
+   * probabilistic logic: there is only one status function in the codebase.
+   */
+  scheduleRows: PlayoffScheduleRow[]
 }
 
 /** A matchup row reduced to what the picture needs — scored or not. */
@@ -190,6 +213,34 @@ export type PlayoffScheduleRow = {
   /** Null means scheduled but not yet scored — a remaining game. */
   points: number | null
   isFinal: boolean
+  /**
+   * A result the USER supplied in the what-if layer, not one that happened.
+   *
+   * Set only by `applyHypotheticalResults`. Its single effect on the
+   * calculation is that its points never reach `pointsFor` — a hypothetical
+   * moves a record, never a points total, because a made-up score would put a
+   * fabricated number in a column the rest of the app reports as fact.
+   */
+  isHypothetical?: boolean
+}
+
+/**
+ * A regular-season game that is scheduled and entirely unplayed — the unit the
+ * what-if layer lets the user decide.
+ *
+ * Only fully unscored pairs qualify. A half-scored matchup (one side in, the
+ * other pending) is a sync artifact rather than an upcoming game, and offering
+ * a toggle on it would invite the user to overwrite a result that already
+ * happened.
+ */
+export type RemainingGame = {
+  /** Stable toggle identity: `week:matchupId`. */
+  key: string
+  week: number
+  nativeMatchupId: number
+  /** Lower roster id first, so the pairing's presentation is stable. */
+  rosterIdA: number
+  rosterIdB: number
 }
 
 /**
@@ -409,7 +460,10 @@ export function computePlayoffPicture(
     }
 
     tally.gamesPlayed += 1
-    tally.pointsFor += row.points
+    // A hypothetical result moves the record and nothing else. Points-for stays
+    // the real season's total, so the seeding tiebreaker and the PF column are
+    // never a mix of what happened and what was imagined.
+    if (row.isHypothetical !== true) tally.pointsFor += row.points
     if (row.points > opponent.points) tally.wins += 1
     else if (row.points < opponent.points) tally.losses += 1
     else tally.ties += 1
@@ -485,10 +539,99 @@ export function computePlayoffPicture(
     weeksCounted,
     nonFinalWeeksCounted,
     gamesRemainingTotal,
+    fieldSize,
     scheduleExhausted: fieldSize !== null && gamesRemainingTotal === 0,
     fieldSizeClamped,
     hasStandingsDisagreement: teams.some((team) => team.disagreesWithStandings),
+    remainingGames: collectRemainingGames(byWeek),
+    scheduleRows: regularSeason.slice(),
   }
+}
+
+/**
+ * The fully unplayed games, earliest week first, then by matchup id.
+ *
+ * Read out of the same week groups the tally loop used, so the toggle list and
+ * the `gamesRemaining` counts can never describe different schedules.
+ */
+function collectRemainingGames(
+  byWeek: ReadonlyMap<number, PlayoffScheduleRow[]>
+): RemainingGame[] {
+  const games: RemainingGame[] = []
+  for (const [week, rows] of byWeek) {
+    const groups = new Map<number, PlayoffScheduleRow[]>()
+    for (const row of rows) {
+      if (row.nativeMatchupId === null) continue
+      const group = groups.get(row.nativeMatchupId)
+      if (group === undefined) groups.set(row.nativeMatchupId, [row])
+      else group.push(row)
+    }
+    for (const [matchupId, group] of groups) {
+      if (group.length !== 2) continue
+      if (group.some((row) => row.points !== null)) continue
+      const [a, b] = [...group].sort(
+        (left, right) => left.nativeRosterId - right.nativeRosterId
+      )
+      games.push({
+        key: `${week}:${matchupId}`,
+        week,
+        nativeMatchupId: matchupId,
+        rosterIdA: a.nativeRosterId,
+        rosterIdB: b.nativeRosterId,
+      })
+    }
+  }
+  return games.sort(
+    (a, b) => a.week - b.week || a.nativeMatchupId - b.nativeMatchupId
+  )
+}
+
+/**
+ * Apply user-chosen winners to the schedule, returning new rows (Wave 5 —
+ * Playoff picture, item 5). Pure: the input rows are never mutated.
+ *
+ * This is the ENTIRE interactive layer's logic. Deciding a game turns it from
+ * remaining into played, and `computePlayoffPicture` then produces the
+ * hypothetical picture through exactly the same deterministic bounding it uses
+ * for the real one — no second status function, no probabilistic anything,
+ * which is what keeps item 6's prohibition true of the what-if view as well as
+ * the live one.
+ *
+ * The synthetic 1–0 is a RESULT, not a score: it decides the win and is barred
+ * from `pointsFor` by the `isHypothetical` flag. A key naming a game that isn't
+ * in the rows, or a winner who isn't in that game, is ignored rather than
+ * throwing — a stale scenario should degrade to the real picture.
+ */
+export function applyHypotheticalResults(
+  rows: readonly PlayoffScheduleRow[],
+  winners: ReadonlyMap<string, number>
+): PlayoffScheduleRow[] {
+  if (winners.size === 0) return rows.slice()
+
+  // Which rosters each unplayed game actually involves — so a winner who isn't
+  // in the game is discarded instead of silently making both sides lose, which
+  // would read as a tie nobody asked for.
+  const participants = new Map<string, Set<number>>()
+  for (const row of rows) {
+    if (row.nativeMatchupId === null || row.points !== null) continue
+    const key = `${row.week}:${row.nativeMatchupId}`
+    const set = participants.get(key)
+    if (set === undefined) participants.set(key, new Set([row.nativeRosterId]))
+    else set.add(row.nativeRosterId)
+  }
+
+  return rows.map((row) => {
+    if (row.nativeMatchupId === null || row.points !== null) return row
+    const key = `${row.week}:${row.nativeMatchupId}`
+    const winner = winners.get(key)
+    if (winner === undefined) return row
+    if (participants.get(key)?.has(winner) !== true) return row
+    return {
+      ...row,
+      points: row.nativeRosterId === winner ? 1 : 0,
+      isHypothetical: true,
+    }
+  })
 }
 
 /** The bounds the status and magic-number logic both reason over. */
